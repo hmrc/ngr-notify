@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.config
+package uk.gov.hmrc.ngrnotify.utils
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import java.util.Base64
 
-@Singleton
-class AppConfig @Inject()(config: Configuration){
-  val appName: String                  = config.get[String]("appName")
-  val submissionExportEnabled: Boolean = config.get[Boolean]("sendSubmission.enabled")
-  val retryWindowHours: Int            = config.get[Int]("sendSubmission.retryWindowHours")
-  val exportFrequency: Int             = config.get[Int]("sendSubmission.frequencySeconds")
-  val exportBatchSize: Int             = config.get[Int]("sendSubmission.batchSize")
+object AuthHeaderBuilder {
+  def buildAuthHeader(clientId: String, clientSecret: String): String = {
+    val authHeaderRaw = Base64.getEncoder.encodeToString(s"$clientId:$clientSecret".getBytes("UTF-8"))
+    s"Basic $authHeaderRaw"
+  }
 }

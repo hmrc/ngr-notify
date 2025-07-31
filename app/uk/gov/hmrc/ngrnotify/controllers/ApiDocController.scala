@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.config
+package uk.gov.hmrc.ngrnotify.controllers
+
+import play.api.mvc.*
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
-import play.api.Configuration
 
 @Singleton
-class AppConfig @Inject()(config: Configuration){
-  val appName: String                  = config.get[String]("appName")
-  val submissionExportEnabled: Boolean = config.get[Boolean]("sendSubmission.enabled")
-  val retryWindowHours: Int            = config.get[Int]("sendSubmission.retryWindowHours")
-  val exportFrequency: Int             = config.get[Int]("sendSubmission.frequencySeconds")
-  val exportBatchSize: Int             = config.get[Int]("sendSubmission.batchSize")
-}
+class ApiDocController @Inject() (cc: ControllerComponents) extends BackendController(cc):
+
+  def apiSwaggerUI: Action[AnyContent] = Action {
+    Redirect("/assets/lib/swagger-ui/api.html")
+  }

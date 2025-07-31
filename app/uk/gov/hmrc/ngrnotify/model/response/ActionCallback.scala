@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.config
+package uk.gov.hmrc.ngrnotify.model.response
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import play.api.libs.json.{Json, OFormat}
 
-@Singleton
-class AppConfig @Inject()(config: Configuration){
-  val appName: String                  = config.get[String]("appName")
-  val submissionExportEnabled: Boolean = config.get[Boolean]("sendSubmission.enabled")
-  val retryWindowHours: Int            = config.get[Int]("sendSubmission.retryWindowHours")
-  val exportFrequency: Int             = config.get[Int]("sendSubmission.frequencySeconds")
-  val exportBatchSize: Int             = config.get[Int]("sendSubmission.batchSize")
-}
+import java.util.UUID
+
+/**
+  * @author Yuriy Tumakha
+  */
+case class ActionCallback(
+  trackerId: UUID,
+  action: String,
+  failures: Seq[ApiFailure]
+)
+
+object ActionCallback:
+  implicit val format: OFormat[ActionCallback] = Json.format
