@@ -16,14 +16,16 @@
 
 package uk.gov.hmrc.ngrnotify.config
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import play.api.inject.{Binding, Module as AppModule}
+import play.api.{Configuration, Environment}
 
-@Singleton
-class AppConfig @Inject()(config: Configuration) {
-  val appName: String = config.get[String]("appName")
-  val submissionExportEnabled: Boolean = config.get[Boolean]("sendSubmission.enabled")
-  val retryWindowHours: Int = config.get[Int]("sendSubmission.retryWindowHours")
-  val exportFrequency: Int = config.get[Int]("sendSubmission.frequencySeconds")
-  val exportBatchSize: Int = config.get[Int]("sendSubmission.batchSize")
-}
+import java.time.Clock
+
+class Module extends AppModule:
+
+  override def bindings(
+    environment  : Environment,
+    configuration: Configuration
+  ): Seq[Binding[_]] =
+    bind[Clock].toInstance(Clock.systemDefaultZone) :: // inject if current time needs to be controlled in unit tests
+    Nil

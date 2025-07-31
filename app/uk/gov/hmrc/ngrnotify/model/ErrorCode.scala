@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.config
+package uk.gov.hmrc.ngrnotify.model
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import play.api.libs.json.Format
 
-@Singleton
-class AppConfig @Inject()(config: Configuration) {
-  val appName: String = config.get[String]("appName")
-  val submissionExportEnabled: Boolean = config.get[Boolean]("sendSubmission.enabled")
-  val retryWindowHours: Int = config.get[Int]("sendSubmission.retryWindowHours")
-  val exportFrequency: Int = config.get[Int]("sendSubmission.frequencySeconds")
-  val exportBatchSize: Int = config.get[Int]("sendSubmission.batchSize")
-}
+/**
+  * @author Yuriy Tumakha
+  */
+enum ErrorCode:
+  case ACTION_FAILED,
+    BAD_REQUEST_BODY,
+    EMAIL_TEMPLATE_NOT_FOUND,
+    JSON_VALIDATION_ERROR,
+    MONGO_DB_ERROR,
+    WRONG_RESPONSE_STATUS
+end ErrorCode
+
+object ErrorCode:
+  implicit val format: Format[ErrorCode] = Scala3EnumJsonFormat.format
