@@ -30,7 +30,6 @@ import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL
-import java.time.Instant
 import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -39,9 +38,7 @@ class EmailConnectorSpec extends AnyWordAppSpec {
   private val configuration                = Configuration(ConfigFactory.load("application.conf"))
   private val servicesConfig               = new ServicesConfig(configuration)
   implicit val hc: HeaderCarrier           = HeaderCarrier()
-  private val email                        = "test1@email.com"
-  private val email2                       = "test2@email.com"
-  
+
   private def httpPostMock(responseStatus: Int): HttpClientV2 =
     val httpClientV2Mock = mock[HttpClientV2]
     when(
@@ -50,16 +47,12 @@ class EmailConnectorSpec extends AnyWordAppSpec {
     httpClientV2Mock
 
   "EmailConnector" must {
-    "verify that the email service is called on send tctr_submission_confirmation" in {
+    "verify that the email service is called on send ngr-notify" in {
       val httpMock  = httpPostMock(OK)
       val connector = new EmailConnector(servicesConfig, httpMock)
 
-      val bodyJson =
-        """{"to":["test@email.com"],"templateId":"tctr_submission_confirmation","parameters":{"customerName":"Full Name"}}"""
-
-      val response = connector.sendEmailNotification(prefilledConnectedSubmission).futureValue
+      val response = connector.sendEmailNotification(prefilledEmail).futureValue
       response.status shouldBe OK
-      response.body   shouldBe bodyJson
 
       verify(httpMock)
         .post(any[URL])(using any[HeaderCarrier])

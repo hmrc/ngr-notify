@@ -16,8 +16,10 @@
 
 package uk.gov.hmrc.ngrnotify.backend.testUtils
 
+import org.bson.types.ObjectId
 import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.connector.EmailConnector
+import uk.gov.hmrc.ngrnotify.model.EmailTemplate
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.ngr_registration_successful
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.ngrnotify.model.email.{AddPropertyRequestSent, RegistrationSuccessful}
@@ -34,6 +36,14 @@ trait FakeObjects {
   val prefilledRegistrationSuccessful: RegistrationSuccessful = RegistrationSuccessful("John", "Doe", "123456789")
   val prefilledAddPropertyRequest: AddPropertyRequestSent = AddPropertyRequestSent("John", "Doe", "123456789", "0AA")
 
+  val prefilledFakeFirstName = "John"
+  val prefilledFakeLastName = "Doe"
+  val prefilledFakeEmail = "test@email.com"
+  val prefilledFakeEmail2 = "test2@email.com"
+
+  val prefilledDateInput: LocalDate = LocalDate.of(2022, 6, 1)
+  val today: LocalDate = LocalDate.now
+
   val templateParamsJson = Json.obj(
     "firstName" -> "David",
     "lastName" -> "Jones",
@@ -44,7 +54,7 @@ trait FakeObjects {
   val bodyJsonRegistrationSuccessful = Json.obj(
     "emailTemplateId" -> ngr_registration_successful,
     "trackerId" -> UUID.randomUUID(),
-    "sendToEmails" -> Seq["test1@email.com", "test2.email.com"],
+    "sendToEmails" -> Seq(prefilledFakeEmail, prefilledFakeEmail2),
     "templateParams" -> templateParamsJson,
     "callbackUrl" -> "123123123"
   )
@@ -66,30 +76,40 @@ trait FakeObjects {
       |}""".stripMargin
 
 
-  val prefilledFakeFirstName                                            = "John"
-  val prefilledFakeLastName                                             = "Doe"
-  val prefilledFakeEmail                                                = "test@email.com"
-  val prefilledFakeEmail2                                               = "test2@email.com"
+  val baseFilledAddPropertyRequest: AddPropertyRequestSent =
+    AddPropertyRequestSent("John", "Smith", "1234567890", "0AA")
 
-  val prefilledDateInput: LocalDate               = LocalDate.of(2022, 6, 1)
-  val today: LocalDate                            = LocalDate.now
-//  val prefilledMonthYearInput: MonthsYearDuration = MonthsYearDuration(6, 2000)
+  val baseFilledRegistrationSuccessful: RegistrationSuccessful =
+    RegistrationSuccessful("John", "Smith", "1234567890")
 
-  val baseFilledConnectedSubmission: EmailNotification = EmailNotification(bodyJsonRegistrationSuccessful)
-
-
-  val prefilledConnectedSubmission: EmailNotification = baseFilledConnectedSubmission.copy(
-    emailTemplateId = ngr_registration_successful, 
-    trackerId = UUID.randomUUID(), 
-    sendToEmails = None,
-    templateParams = bodyJsonRegistrationSuccessful,
-    callbackUrl = None, 
-    client = None,
-    _id = ???, 
-    createdAt = ???
+  val prefilledEmail: EmailNotification = EmailNotification(
+    emailTemplateId = ngr_registration_successful,
+    trackerId = UUID.randomUUID(),
+    sendToEmails = Seq(prefilledFakeEmail, prefilledFakeEmail2),
+    templateParams = templateParamsJson,
+    callbackUrl = Some("abc"),
+    client = Some("xyz"),
+    _id = ObjectId("666f6f2d6261722d71757578"),
+    createdAt = Instant.now()
   )
 
+//  val prefilledMonthYearInput: MonthsYearDuration = MonthsYearDuration(6, 2000)
 
-  def createEmailNotification(): EmailNotification =
-    EmailNotification(prefilledConnectedSubmission)
+//  val baseFilledConnectedSubmission: EmailNotification = EmailNotification(bodyJsonRegistrationSuccessful)
+//
+//
+//  val prefilledConnectedSubmission: EmailNotification = baseFilledConnectedSubmission.copy(
+//    emailTemplateId = ngr_registration_successful,
+//    trackerId = UUID.randomUUID(),
+//    sendToEmails = Seq["test1@mail.com"],
+//    templateParams = bodyJsonRegistrationSuccessful,
+//    callbackUrl = None,
+//    client = None,
+//    _id = ???,
+//    createdAt = ???
+//  )
+//
+//
+//  def createEmailNotification(): EmailNotification =
+//    EmailNotification(prefilledConnectedSubmission)
 }
