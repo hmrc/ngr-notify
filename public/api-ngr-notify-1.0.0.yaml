@@ -63,7 +63,7 @@ paths:
                     firstName: "David"
                     lastName: "Jones"
                     reference: "REG12345"
-                    postcodeFirstPart: "AA1"
+                    postcodeEndPart: "0AA"
       responses:
         '201':
           description: Email dispatch task successfully created.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model.email
+package uk.gov.hmrc.ngrnotify.backend.base
 
-import play.api.libs.json.{JsObject, Json, OFormat}
+import org.scalatest.OptionValues
+import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
+import org.scalatest.matchers.should
+import play.api.test.{HasApp, Injecting}
+import uk.gov.hmrc.ngrnotify.backend.testUtils.FakeObjects
 
 /**
   * @author Yuriy Tumakha
   */
-case class AddPropertyRequestSent(
-  firstName: String,
-  lastName: String,
-  reference: String,
-  postcodeEndPart: String
-)
-
-object AddPropertyRequestSent:
-  implicit val format: OFormat[AddPropertyRequestSent] = Json.format
+trait AppSuiteBase
+    extends Injecting
+    with should.Matchers
+    with MockitoExtendedSugar
+    with OptionValues
+    with ScalaFutures
+    with IntegrationPatience
+    with FakeObjects {
+  self: HasApp =>
+}
