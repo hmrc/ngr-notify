@@ -20,7 +20,7 @@ import org.bson.types.ObjectId
 import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.connector.EmailConnector
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate
-import uk.gov.hmrc.ngrnotify.model.EmailTemplate.ngr_registration_successful
+import uk.gov.hmrc.ngrnotify.model.EmailTemplate.{ngr_add_property_request_sent, ngr_registration_successful}
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.ngrnotify.model.email.{AddPropertyRequestSent, RegistrationSuccessful}
 
@@ -44,18 +44,32 @@ trait FakeObjects {
   val prefilledDateInput: LocalDate = LocalDate.of(2022, 6, 1)
   val today: LocalDate = LocalDate.now
 
-  val templateParamsJson = Json.obj(
+  val templateParamsJsonRegistration = Json.obj(
     "firstName" -> "David",
     "lastName" -> "Jones",
     "reference" -> "REG12345"
+  )
 
+  val templateParamsJsonAddProperty = Json.obj(
+    "firstName" -> "David",
+    "lastName" -> "Jones",
+    "reference" -> "REG12345",
+    "postcodeEndString" -> "0AA"
   )
 
   val bodyJsonRegistrationSuccessful = Json.obj(
     "emailTemplateId" -> ngr_registration_successful,
     "trackerId" -> UUID.randomUUID(),
     "sendToEmails" -> Seq(prefilledFakeEmail, prefilledFakeEmail2),
-    "templateParams" -> templateParamsJson,
+    "templateParams" -> templateParamsJsonRegistration,
+    "callbackUrl" -> "123123123"
+  )
+
+  val bodyJsonAddProperty = Json.obj(
+    "emailTemplateId" -> ngr_add_property_request_sent,
+    "trackerId" -> UUID.randomUUID(),
+    "sendToEmails" -> Seq(prefilledFakeEmail, prefilledFakeEmail2),
+    "templateParams" -> templateParamsJsonAddProperty,
     "callbackUrl" -> "123123123"
   )
 
@@ -82,11 +96,22 @@ trait FakeObjects {
   val baseFilledRegistrationSuccessful: RegistrationSuccessful =
     RegistrationSuccessful("John", "Smith", "1234567890")
 
-  val prefilledEmail: EmailNotification = EmailNotification(
+  val prefilledEmailRegistrationSuccessful: EmailNotification = EmailNotification(
     emailTemplateId = ngr_registration_successful,
     trackerId = UUID.randomUUID(),
     sendToEmails = Seq(prefilledFakeEmail, prefilledFakeEmail2),
-    templateParams = templateParamsJson,
+    templateParams = templateParamsJsonRegistration,
+    callbackUrl = Some("abc"),
+    client = Some("xyz"),
+    _id = ObjectId("666f6f2d6261722d71757578"),
+    createdAt = Instant.now()
+  )
+
+  val prefilledEmailAddProperty: EmailNotification = EmailNotification(
+    emailTemplateId = ngr_add_property_request_sent,
+    trackerId = UUID.randomUUID(),
+    sendToEmails = Seq(prefilledFakeEmail, prefilledFakeEmail2),
+    templateParams = bodyJsonAddProperty,
     callbackUrl = Some("abc"),
     client = Some("xyz"),
     _id = ObjectId("666f6f2d6261722d71757578"),

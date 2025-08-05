@@ -23,10 +23,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
 
-//import uk.gov.hmrc.ngrnotify.backend.schema.Address
-//import uk.gov.hmrc.ngrnotify.backend.utils.DateUtilLocalised
 import uk.gov.hmrc.ngrnotify.connector.EmailConnector
-import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL
@@ -51,8 +48,21 @@ class EmailConnectorSpec extends AnyWordAppSpec {
       val httpMock  = httpPostMock(OK)
       val connector = new EmailConnector(servicesConfig, httpMock)
 
-      val response = connector.sendEmailNotification(prefilledEmail).futureValue
+      val response = connector.sendEmailNotification(prefilledEmailRegistrationSuccessful).futureValue
       response.status shouldBe OK
+
+      verify(httpMock)
+        .post(any[URL])(using any[HeaderCarrier])
+    }
+
+  "handle error response on send tctr_submission_confirmation" in {
+    val body = """{"trackerId": ["9d2dee33-7803-485a-a2b1-2c7538e597ee"], "sendToEmails": ["test1@email.com","test2@email.com"], "callbackUrl": "http://localhost:1501/ngr-stub/callback", "templateParams": {"firstName": "David", "lastName": "Jones", "reference": "REG12345", "postcodeEndPart": "XXX"}}"""
+      val httpMock = httpPostMock(BAD_REQUEST)
+      val emailConnector = new EmailConnector(servicesConfig, httpMock)
+
+      val response = emailConnector.sendEmailNotification(prefilledEmailAddProperty).futureValue
+      response.status shouldBe BAD_REQUEST
+      response.body shouldBe body
 
       verify(httpMock)
         .post(any[URL])(using any[HeaderCarrier])
