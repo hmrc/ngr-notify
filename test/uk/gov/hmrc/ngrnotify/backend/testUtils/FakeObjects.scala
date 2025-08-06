@@ -103,7 +103,7 @@ trait FakeObjects {
     callbackUrl = Some("abc"),
     client = Some("xyz"),
     _id = ObjectId("666f6f2d6261722d71757578"),
-    createdAt = Instant.now()
+    createdAt = Instant.ofEpochMilli(0)
   )
 
   val prefilledEmailAddProperty: EmailNotification = EmailNotification(

@@ -18,6 +18,7 @@ package uk.gov.hmrc.ngrnotify.infrastructure
 
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 
+import java.time.{Duration, ZonedDateTime}
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.duration.*
 import scala.language.postfixOps
@@ -33,4 +34,25 @@ trait RegularSchedule extends Schedule {
 @Singleton
 class DefaultRegularSchedule @Inject() (ngrConfig: AppConfig) extends RegularSchedule {
   override def timeUntilNextRun(): FiniteDuration = ngrConfig.exportFrequency seconds
+}
+
+class DefaultDailySchedule @Inject() (ngrConfig: AppConfig, clock: Clock) extends RegularSchedule {
+
+  private val importScheduleHour   = ngrConfig.importScheduleHour
+  private val importScheduleMinute = ngrConfig.importScheduleMinute
+
+  def timeUntilNextRun(): FiniteDuration = {
+    val now         = clock.now()
+    val todayRun    = today(now, importScheduleHour, importScheduleMinute)
+    val tomorrowRun = tomorrow(now, importScheduleHour, importScheduleMinute)
+    val target      = if now.plusMinutes(1).isBefore(todayRun) then todayRun else tomorrowRun
+    Duration.between(now, target).toMinutes minutes
+  }
+
+  private def tomorrow(now: ZonedDateTime, hour: Int, minute: Int): ZonedDateTime =
+    now.plusDays(1).withHour(hour).withMinute(minute)
+
+  private def today(now: ZonedDateTime, hour: Int, minute: Int): ZonedDateTime =
+    now.withHour(hour).withMinute(minute)
+
 }
