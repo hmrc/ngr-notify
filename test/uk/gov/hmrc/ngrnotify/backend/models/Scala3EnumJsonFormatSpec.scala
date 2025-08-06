@@ -29,9 +29,8 @@ class Scala3EnumJsonFormatSpec extends AnyFlatSpec with should.Matchers {
   enum Color:
     case Red, Green, Blue
 
-  implicit val format: Format[Color] = {
+  implicit val format: Format[Color] =
     Scala3EnumJsonFormat.format
-  }
 
   import Color.*
 

@@ -21,8 +21,8 @@ import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.ngrnotify.model.email.{AddPropertyRequestSent, RegistrationSuccessful}
 
 class RegistrationSuccessfulSpec extends AnyFlatSpec with Matchers {
-  
-  val registrationSuccessful = RegistrationSuccessful("Jane","Jones","0987654321")
+
+  val registrationSuccessful = RegistrationSuccessful("Jane", "Jones", "0987654321")
 
   "Registration successful" should "return the first name" in {
     val result = registrationSuccessful.firstName

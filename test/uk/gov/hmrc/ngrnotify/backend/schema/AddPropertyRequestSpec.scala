@@ -22,8 +22,8 @@ import uk.gov.hmrc.ngrnotify.model.email.{AddPropertyRequestSent, RegistrationSu
 
 class AddPropertyRequestSpec extends AnyFlatSpec with Matchers {
 
-  val addPropertyRequest = AddPropertyRequestSent("John","Smith","1234567890","0AA")
-  
+  val addPropertyRequest = AddPropertyRequestSent("John", "Smith", "1234567890", "0AA")
+
   "Add property request" should "return the first name" in {
     val result = addPropertyRequest.firstName
     result shouldBe "John"

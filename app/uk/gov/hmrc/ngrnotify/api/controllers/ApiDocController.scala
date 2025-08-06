@@ -22,7 +22,7 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class ApiDocController @Inject()(cc: ControllerComponents) extends BackendController(cc):
+class ApiDocController @Inject() (cc: ControllerComponents) extends BackendController(cc):
 
   def apiSwaggerUI: Action[AnyContent] = Action {
     Redirect("/assets/lib/swagger-ui/api.html")

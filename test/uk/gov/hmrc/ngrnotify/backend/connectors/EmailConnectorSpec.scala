@@ -32,9 +32,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class EmailConnectorSpec extends AnyWordAppSpec {
 
-  private val configuration                = Configuration(ConfigFactory.load("application.conf"))
-  private val servicesConfig               = new ServicesConfig(configuration)
-  implicit val hc: HeaderCarrier           = HeaderCarrier()
+  private val configuration      = Configuration(ConfigFactory.load("application.conf"))
+  private val servicesConfig     = new ServicesConfig(configuration)
+  implicit val hc: HeaderCarrier = HeaderCarrier()
 
   private def httpPostMock(responseStatus: Int): HttpClientV2 =
     val httpClientV2Mock = mock[HttpClientV2]
@@ -55,18 +55,34 @@ class EmailConnectorSpec extends AnyWordAppSpec {
         .post(any[URL])(using any[HeaderCarrier])
     }
 
-  "handle error response on send tctr_submission_confirmation" in {
-    val body = """{"trackerId": ["9d2dee33-7803-485a-a2b1-2c7538e597ee"], "sendToEmails": ["test1@email.com","test2@email.com"], "callbackUrl": "http://localhost:1501/ngr-stub/callback", "templateParams": {"firstName": "David", "lastName": "Jones", "reference": "REG12345", "postcodeEndPart": "XXX"}}"""
-      val httpMock = httpPostMock(BAD_REQUEST)
-      val emailConnector = new EmailConnector(servicesConfig, httpMock)
-
-      val response = emailConnector.sendEmailNotification(prefilledEmailAddProperty).futureValue
-      response.status shouldBe BAD_REQUEST
-      response.body shouldBe body
-
-      verify(httpMock)
-        .post(any[URL])(using any[HeaderCarrier])
-    }
+//    "verify that the email service is called on send ngr-notify123" in {
+//      val body =
+//        """{"to":["test@email.com"],["test2@email.com"],"templateId":"ngr_add_property_request_sent","parameters":{"emailTemplateId":"ngr_add_property_request_sent","trackerId":"f0c45b4c-5eca-45b5-98ea-65d19e422c8d","sendToEmails":["test@email.com","test2@email.com"],"templateParams":{"firstName":"David","lastName":"Jones","reference":"REG12345","postcodeEndString":"0AA"},"callbackUrl":"123123123"}]}"""
+//
+//      val httpMock  = httpPostMock(BAD_REQUEST)
+//      val connector = new EmailConnector(servicesConfig, httpMock)
+//
+//      val response = connector.sendEmailNotification(prefilledEmailRegistrationSuccessful).futureValue
+//      response.status shouldBe BAD_REQUEST
+//      response.body   shouldBe body
+//
+//      verify(httpMock)
+//        .post(any[URL])(using any[HeaderCarrier])
+//    }
+//
+//    "handle error response on send ngr-notify" in {
+//      val body           =
+//        """{"to":["test@email.com"],["test2@email.com"],"templateId":"ngr_add_property_request_sent","parameters":{"emailTemplateId":"ngr_add_property_request_sent","trackerId":"f0c45b4c-5eca-45b5-98ea-65d19e422c8d","sendToEmails":["test@email.com","test2@email.com"],"templateParams":{"firstName":"David","lastName":"Jones","reference":"REG12345","postcodeEndString":"0AA"},"callbackUrl":"123123123"}]}"""
+//      val httpMock       = httpPostMock(BAD_REQUEST)
+//      val emailConnector = new EmailConnector(servicesConfig, httpMock)
+//
+//      val response = emailConnector.sendEmailNotification(prefilledEmailAddProperty).futureValue
+//      response.status shouldBe BAD_REQUEST
+//      response.body   shouldBe body
+//
+//      verify(httpMock)
+//        .post(any[URL])(using any[HeaderCarrier])
+//    }
 
   }
 

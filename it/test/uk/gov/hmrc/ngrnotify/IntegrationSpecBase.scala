@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,34 +16,39 @@
 
 package uk.gov.hmrc.ngrnotify
 
+import org.scalatest.OptionValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
-import org.scalatest.matchers.should.Matchers
+import org.scalatest.matchers.should
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.WSClient
+import play.api.test.Injecting
+import play.api.{Application, Configuration}
 
-class HealthEndpointIntegrationSpec
+/**
+  * @author Yuriy Tumakha
+  */
+abstract class IntegrationSpecBase
     extends AnyWordSpec
-    with Matchers
+    with should.Matchers
+    with OptionValues
     with ScalaFutures
     with IntegrationPatience
-    with GuiceOneServerPerSuite:
-
-  private val wsClient = app.injector.instanceOf[WSClient]
-  private val baseUrl  = s"http://localhost:$port"
+    with GuiceOneServerPerSuite
+    with Injecting {
 
   override def fakeApplication(): Application =
     GuiceApplicationBuilder()
+      .configure(
+        "metrics.enabled" -> false
+      )
       .build()
 
-  "service health endpoint" should:
-    "respond with 200 status" in:
-      val response =
-        wsClient
-          .url(s"$baseUrl/ping/ping")
-          .get()
-          .futureValue
+  protected val wsClient: WSClient           = inject[WSClient]
+  protected val configuration: Configuration = inject[Configuration]
 
-      response.status shouldBe 200
+  protected val baseUrl    = s"http://localhost:$port"
+  protected val appBaseUrl = s"$baseUrl/${configuration.get[String]("appName")}"
+
+}

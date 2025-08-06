@@ -29,7 +29,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class NGRImpl @Inject()(
+class NGRImpl @Inject() (
   actorSystem: ActorSystem,
   appConfig: AppConfig,
   audit: NGRAudit,
@@ -45,7 +45,14 @@ class NGRImpl @Inject()(
   import appConfig.*
 
   if submissionExportEnabled then
-    val exporter = new ExportEmailNotificationVOA(emailNotificationRepo, systemClock, audit, emailConnector, callbackConnector, appConfig)
+    val exporter = new ExportEmailNotificationVOA(
+      emailNotificationRepo,
+      systemClock,
+      audit,
+      emailConnector,
+      callbackConnector,
+      appConfig
+    )
     new SendEmailExporter(
       mongoLockRepository,
       exporter,

@@ -31,46 +31,46 @@ import java.time.temporal.ChronoUnit.MILLIS
 import java.time.{Instant, LocalDate}
 
 trait FakeObjects {
-  val token: String                       = "Basic OTk5OTYwMTAwMDQ6U2Vuc2l0aXZlKC4uLik="
+  val token: String = "Basic OTk5OTYwMTAwMDQ6U2Vuc2l0aXZlKC4uLik="
 
   val prefilledRegistrationSuccessful: RegistrationSuccessful = RegistrationSuccessful("John", "Doe", "123456789")
-  val prefilledAddPropertyRequest: AddPropertyRequestSent = AddPropertyRequestSent("John", "Doe", "123456789", "0AA")
+  val prefilledAddPropertyRequest: AddPropertyRequestSent     = AddPropertyRequestSent("John", "Doe", "123456789", "0AA")
 
   val prefilledFakeFirstName = "John"
-  val prefilledFakeLastName = "Doe"
-  val prefilledFakeEmail = "test@email.com"
-  val prefilledFakeEmail2 = "test2@email.com"
+  val prefilledFakeLastName  = "Doe"
+  val prefilledFakeEmail     = "test@email.com"
+  val prefilledFakeEmail2    = "test2@email.com"
 
   val prefilledDateInput: LocalDate = LocalDate.of(2022, 6, 1)
-  val today: LocalDate = LocalDate.now
+  val today: LocalDate              = LocalDate.now
 
   val templateParamsJsonRegistration = Json.obj(
     "firstName" -> "David",
-    "lastName" -> "Jones",
+    "lastName"  -> "Jones",
     "reference" -> "REG12345"
   )
 
   val templateParamsJsonAddProperty = Json.obj(
-    "firstName" -> "David",
-    "lastName" -> "Jones",
-    "reference" -> "REG12345",
+    "firstName"         -> "David",
+    "lastName"          -> "Jones",
+    "reference"         -> "REG12345",
     "postcodeEndString" -> "0AA"
   )
 
   val bodyJsonRegistrationSuccessful = Json.obj(
     "emailTemplateId" -> ngr_registration_successful,
-    "trackerId" -> UUID.randomUUID(),
-    "sendToEmails" -> Seq(prefilledFakeEmail, prefilledFakeEmail2),
-    "templateParams" -> templateParamsJsonRegistration,
-    "callbackUrl" -> "123123123"
+    "trackerId"       -> UUID.randomUUID(),
+    "sendToEmails"    -> Seq(prefilledFakeEmail, prefilledFakeEmail2),
+    "templateParams"  -> templateParamsJsonRegistration,
+    "callbackUrl"     -> "123123123"
   )
 
   val bodyJsonAddProperty = Json.obj(
     "emailTemplateId" -> ngr_add_property_request_sent,
-    "trackerId" -> UUID.randomUUID(),
-    "sendToEmails" -> Seq(prefilledFakeEmail, prefilledFakeEmail2),
-    "templateParams" -> templateParamsJsonAddProperty,
-    "callbackUrl" -> "123123123"
+    "trackerId"       -> UUID.randomUUID(),
+    "sendToEmails"    -> Seq(prefilledFakeEmail, prefilledFakeEmail2),
+    "templateParams"  -> templateParamsJsonAddProperty,
+    "callbackUrl"     -> "123123123"
   )
 
   val bodyJsonAddPropertyRequestSent =
@@ -88,7 +88,6 @@ trait FakeObjects {
       |    "postcodeFirstPart": "AA1"
       |  }
       |}""".stripMargin
-
 
   val baseFilledAddPropertyRequest: AddPropertyRequestSent =
     AddPropertyRequestSent("John", "Smith", "1234567890", "0AA")
