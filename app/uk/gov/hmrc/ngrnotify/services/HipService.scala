@@ -38,5 +38,5 @@ object HipService {
   
   def extractClientId(requestHeaders: Headers): String = requestHeaders.get("Client-Id").getOrElse(throw new RuntimeException("extractClientId ERROR: Client Id missing from headers"))
 
-  def extractClientSecret(requestHeaders: Headers): String = requestHeaders.get("Client-Secret").getOrElse(throw new RuntimeException("extractClientId ERROR: Client Secret missing from headers"))
+  def extractClientSecret(requestHeaders: Headers): String = requestHeaders.get("Client-Secret").getOrElse(throw new RuntimeException("extractClientSecret ERROR: Client Secret missing from headers"))
 }
