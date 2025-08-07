@@ -31,12 +31,21 @@ import java.util.UUID
 
 class EmailNotificationSpec extends AnyFlatSpec with Matchers {
 
-  val id = "00000000-0000-0000-0000-000000000000"
-  val time = Instant.ofEpochMilli(0)
+  val id       = "00000000-0000-0000-0000-000000000000"
+  val time     = Instant.ofEpochMilli(0)
   val objectId = "000000000000000000000000"
 
   val EmailNotificationRequest: EmailNotification =
-    EmailNotification(ngr_registration_successful, UUID.fromString(id), Seq("test@email.com", "test2@email.com"), templateParamsJsonRegistration, Some("callback URL"), Some("client text"), ObjectId(objectId), time)
+    EmailNotification(
+      ngr_registration_successful,
+      UUID.fromString(id),
+      Seq("test@email.com", "test2@email.com"),
+      templateParamsJsonRegistration,
+      Some("callback URL"),
+      Some("client text"),
+      ObjectId(objectId),
+      time
+    )
 
   val EmailNotificationJson: JsValue = Json.parse(
     """
@@ -52,7 +61,7 @@ class EmailNotificationSpec extends AnyFlatSpec with Matchers {
       |}
       |""".stripMargin
   )
-  
+
   "ApiFailure deserialize" should
     "deserialize to json" in {
       Json.toJson(EmailNotificationRequest) mustBe EmailNotificationJson
@@ -60,7 +69,7 @@ class EmailNotificationSpec extends AnyFlatSpec with Matchers {
 
   "ApiFailure serialize" should
     "serialize to json" in {
-    EmailNotificationJson.as[EmailNotification] mustBe EmailNotificationRequest
+      EmailNotificationJson.as[EmailNotification] mustBe EmailNotificationRequest
     }
 
 }
