@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.backend.controllers
+package uk.gov.hmrc.ngrnotify.backend.api.controllers
 
 import org.scalatest.OptionValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.test.Helpers.*
 import play.api.test.{DefaultAwaitTimeout, FakeRequest, Helpers}
-import uk.gov.hmrc.ngrnotify.controllers.ApiDocController
+import uk.gov.hmrc.ngrnotify.api.controllers.ApiDocController
 
 /**
   * @author Yuriy Tumakha
