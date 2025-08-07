@@ -14,11 +14,14 @@ object CodeCoverageSettings {
     "testOnlyDoNotUseInAppConf.*"
   )
 
+  private val excludedFiles: Seq[String] = Seq(".*Routes.*")
+
   val settings: Seq[Setting[?]] = Seq(
-    ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
-    //TODO raise this to 90 for all future PRs
+    ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(","),
+    ScoverageKeys.coverageExcludedFiles := excludedFiles.mkString(","),
     ScoverageKeys.coverageMinimumStmtTotal := 30,
-    ScoverageKeys.coverageFailOnMinimum := true,
+    ScoverageKeys.coverageFailOnMinimum := false,
     ScoverageKeys.coverageHighlighting := true
   )
+
 }

@@ -20,6 +20,13 @@ import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 
 @Singleton
-class AppConfig @Inject()(config: Configuration):
+class AppConfig @Inject() (config: Configuration) {
+  val appName: String                  = config.get[String]("appName")
+  val submissionExportEnabled: Boolean = config.get[Boolean]("sendSubmission.enabled")
+  val retryWindowHours: Int            = config.get[Int]("sendSubmission.retryWindowHours")
+  val exportFrequency: Int             = config.get[Int]("sendSubmission.frequencySeconds")
+  val exportBatchSize: Int             = config.get[Int]("sendSubmission.batchSize")
 
-  val appName: String = config.get[String]("appName")
+  lazy val importScheduleHour: Int   = config.get[Int]("validationImport.hourToRunAt")
+  lazy val importScheduleMinute: Int = config.get[Int]("validationImport.minuteToRunAt")
+}

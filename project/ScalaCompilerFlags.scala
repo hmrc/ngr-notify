@@ -1,5 +1,5 @@
 object ScalaCompilerFlags {
-  val scalaCompilerOptions: Seq[String] = Seq(
+  val scalaCompilerOptions: Seq[String]       = Seq(
     "-language:implicitConversions",
     "-language:reflectiveCalls",
     // required in place of silencer plugin
@@ -24,4 +24,3 @@ object ScalaCompilerFlags {
     "-unchecked"
   )
 }
-

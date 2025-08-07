@@ -1,0 +1,260 @@
+openapi: 3.1.1
+info:
+  title: 'NGR Notify API'
+  description: >-
+    This API is intended for use by NGR services to facilitate the sending of email notifications. 
+    <br><br>
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:1515'
+    description: >-
+      Actual environment values can be obtained from MDTP configuration for each environment
+tags:
+  - name: 'NGR-notify'
+    description: >-
+      This API is intended for use by NGR services to facilitate the sending of email notifications.
+paths:
+  '/ngr-notify-proto/sendEmail/{emailTemplateId}':
+    post:
+      summary: 'NGR Notify API - Send email'
+      description: >
+        Send email notification
+      tags:
+        - 'NGR-notify'
+      parameters:
+        - in: path
+          name: emailTemplateId
+          required: true
+          schema:
+            type: string
+            enum:
+              - ngr_registration_successful
+              - ngr_add_property_request_sent
+          description: The email template ID
+      requestBody:
+        required: true
+        description: Request body
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              - $ref: "#/components/schemas/request"
+            examples:
+              Example1:
+                summary: Example 1 - RegistrationSuccessful
+                value:
+                  trackerId: "9d2dee33-7803-485a-a2b1-2c7538e597ee"
+                  sendToEmails:
+                    - "test1@email.com"
+                    - "test2@email.com"
+                  callbackUrl: "http://localhost:1501/ngr-stub/callback"
+                  templateParams:
+                    firstName: "David"
+                    lastName: "Jones"
+                    reference: "REG12345"
+              Example2:
+                summary: Example 2 - AddPropertyRequestSent
+                value:
+                  trackerId: "9d2dee33-7803-485a-a2b1-2c7538e597ee"
+                  sendToEmails:
+                    - "test1@email.com"
+                    - "test2@email.com"
+                  callbackUrl: "http://localhost:1501/ngr-stub/callback"
+                  templateParams:
+                    firstName: "David"
+                    lastName: "Jones"
+                    reference: "REG12345"
+                    postcodeEndPart: "0AA"
+      responses:
+        '201':
+          description: Email dispatch task successfully created.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/successResponse'
+              examples:
+                Example1:
+                  summary: Successful Response Example
+                  value:
+                    status: "Success"
+                    message: "Email dispatch task successfully created."
+        '400':
+          description: |-
+            Bad Request
+            ```
+            "code"                        "reason"
+            EMAIL_TEMPLATE_NOT_FOUND      Wrong email template id is used.
+            BAD_REQUEST_BODY              Request body has not passed validation.
+            JSON_VALIDATION_ERROR         Indicates that one or more errors occurred during the validation of the JSON payload.
+            MONGO_DB_ERROR                Indicates an error related to operations performed on the MongoDB database.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/failureResponse'
+              examples:
+                Example1_SingleCode:
+                  summary: Single Error Code
+                  value:
+                    failures:
+                      - code: EMAIL_TEMPLATE_NOT_FOUND
+                        reason: Wrong email template id is used.
+                Example2_MultipleErrorCodes:
+                  summary: Multiple Error Codes
+                  value:
+                    failures:
+                      - code: EMAIL_TEMPLATE_NOT_FOUND
+                        reason: Wrong email template id is used.
+                      - code: MISSED_PARAMETER
+                        reason: >-
+                          Submission has not passed validation. Missed parameter email.
+        '404':
+          description: |-
+            Not Found
+            ```
+            "code"                        "reason"
+            NOT_FOUND                     The remote endpoint has indicated that the requested resource could not be found..
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/failureResponse'
+              examples:
+                Example-Not_Found:
+                  value:
+                    failures:
+                      - code: NOT_FOUND
+                        reason: The remote endpoint has indicated that the requested resource could not be found.
+        '422':
+          description: |-
+            Unprocessable Entity
+            ```
+            "code"                        "reason"
+            INVALID_REQUEST               The remote endpoint has indicated that the request is invalid.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/failureResponse'
+              examples:
+                Example-Invalid_Request:
+                  value:
+                    failures:
+                      - code: INVALID_REQUEST
+                        reason: The remote endpoint has indicated that the request is invalid.
+        '500':
+          description: |-
+            Server Error
+            ```
+             "code"         "reason"
+             SERVER_ERROR   Service is currently experiencing problems that require live service intervention.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/failureResponse'
+              examples:
+                Server Error:
+                  value:
+                    failures:
+                      - code: SERVER_ERROR
+                        reason: Service is currently experiencing problems that require live service intervention.
+        '503':
+          description: |-
+            Service Unavailable
+            ```
+            "code"                "reason"
+            SERVICE_UNAVAILABLE   Dependent systems are currently not responding.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/failureResponse'
+              examples:
+                Example-Service_Unavailable:
+                  value:
+                    failures:
+                      - code: SERVICE_UNAVAILABLE
+                        reason: Dependent systems are currently not responding.
+components:
+  schemas:
+    request:
+      title: Send Email Request Schema
+      type: object
+      required:
+        - trackerId
+        - sendToEmails
+        - templateParams
+      properties:
+        trackerId:
+          description: UUID to track email
+          format: uuid
+          minLength: 1
+          maxLength: 64
+          example: 9d2dee33-7803-485a-a2b1-2c7538e597ee
+        sendToEmails:
+          description: List of email addresses to send to
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            type: string
+            minLength: 1
+            maxLength: 150
+            format: email
+        templateParams:
+          additionalProperties:
+            type: string
+          example:
+            firstName: "Joe"
+            lastName: "Noggins"
+            reference: "AP123456789"
+            postcode: "AA1 1AA"
+        callbackUrl:
+          description: Optional. Specifies the URL to be invoked in the event of a failure when attempting to send the email. If provided, this callback URL will receive information detailing the cause of the failure.
+          minLength: 1
+          maxLength: 255
+          format: uri
+          type: string
+      additionalProperties: false
+    failureResponse:
+      title: 'Send Email Error Response Schema'
+      type: object
+      required:
+        - failures
+      additionalProperties: false
+      properties:
+        failures:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            type: object
+            additionalProperties: false
+            required:
+              - code
+              - reason
+            properties:
+              code:
+                description: Keys for all the errors returned
+                type: string
+                pattern: '^[A-Z0-9_-]{1,160}$'
+              reason:
+                description: A simple description for the failure
+                type: string
+                minLength: 1
+                maxLength: 160
+    successResponse:
+      title: 'Send Email Successful Response Schema'
+      type: object
+      required:
+        - status
+        - message
+      additionalProperties: false
+      properties:
+        status:
+          minLength: 0
+          maxLength: 50
+          type: string
+          description: The response status
+          example: Success
+        message:
+          minLength: 0
+          maxLength: 100
+          type: string
+          description: The response message
+          example: Email dispatch task successfully created.

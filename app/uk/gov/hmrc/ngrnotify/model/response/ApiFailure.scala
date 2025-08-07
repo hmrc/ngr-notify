@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify
+package uk.gov.hmrc.ngrnotify.model.response
 
-import play.api.{Configuration, Environment}
-import play.api.inject.{Binding, Module => AppModule}
+import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.ngrnotify.model.ErrorCode
 
-import java.time.Clock
+/**
+  * @author Yuriy Tumakha
+  */
+case class ApiFailure(code: ErrorCode, reason: String)
 
-class Module extends AppModule:
-
-  override def bindings(
-    environment  : Environment,
-    configuration: Configuration
-  ): Seq[Binding[_]] =
-    bind[Clock].toInstance(Clock.systemDefaultZone) :: // inject if current time needs to be controlled in unit tests
-    Nil
+object ApiFailure:
+  implicit val format: OFormat[ApiFailure] = Json.format
