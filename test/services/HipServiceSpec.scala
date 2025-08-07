@@ -50,7 +50,7 @@ class HipServiceSpec extends AnyWordSpec with Matchers {
       val ex = intercept[RuntimeException] {
         HipService.extractClientSecret(emptyHeaders)
       }
-      ex.getMessage shouldBe "extractClientId ERROR: Client Secret missing from headers"
+      ex.getMessage shouldBe "extractClientSecret ERROR: Client Secret missing from headers"
     }
   }
 
