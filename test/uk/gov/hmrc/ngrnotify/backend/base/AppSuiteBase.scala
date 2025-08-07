@@ -20,7 +20,7 @@ import org.scalatest.OptionValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.matchers.should
 import play.api.test.{HasApp, Injecting}
-import uk.gov.hmrc.ngrnotify.backend.testUtils.FakeObjects
+import uk.gov.hmrc.ngrnotify.backend.testUtils.TestData
 
 /**
   * @author Yuriy Tumakha
@@ -32,6 +32,6 @@ trait AppSuiteBase
     with OptionValues
     with ScalaFutures
     with IntegrationPatience
-    with FakeObjects {
+    with TestData {
   self: HasApp =>
 }

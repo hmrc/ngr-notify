@@ -14,33 +14,37 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.backend.schema
+package uk.gov.hmrc.ngrnotify.backend.model.email
 
 import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatest.matchers.should.Matchers
+import play.api.libs.json.{JsString, JsValue, Json}
 import uk.gov.hmrc.ngrnotify.model.email.{AddPropertyRequestSent, RegistrationSuccessful}
 
 class AddPropertyRequestSpec extends AnyFlatSpec with Matchers {
 
-  val addPropertyRequest = AddPropertyRequestSent("John", "Smith", "1234567890", "0AA")
+  val addPropertyRequest: AddPropertyRequestSent = AddPropertyRequestSent("John", "Smith", "1234567890", "0AA")
 
-  "Add property request" should "return the first name" in {
-    val result = addPropertyRequest.firstName
-    result shouldBe "John"
-  }
+  val addPropertyRequestJson: JsValue = Json.parse(
+    """
+      |{
+      |"firstName": "John",
+      |"lastName": "Smith",
+      |"reference": "1234567890",
+      |"postcodeEndPart": "0AA"
+      |}
+      |""".stripMargin
+  )
 
-  "Add property request" should "return the last name" in {
-    val result = addPropertyRequest.lastName
-    result shouldBe "Smith"
-  }
+  "addPropertyRequest deserialize" should
+    "deserialize to json" in {
+      Json.toJson(addPropertyRequest) mustBe addPropertyRequestJson
+    }
 
-  "Add property request" should "return the reference number" in {
-    val result = addPropertyRequest.reference
-    result shouldBe "1234567890"
-  }
+  "addPropertyRequest serialize" should
+    "serialize to json" in {
+      addPropertyRequestJson.as[AddPropertyRequestSent] mustBe addPropertyRequest
+    }
 
-  "Add property request" should "return the postcode end part" in {
-    val result = addPropertyRequest.postcodeEndPart
-    result shouldBe "0AA"
-  }
 }

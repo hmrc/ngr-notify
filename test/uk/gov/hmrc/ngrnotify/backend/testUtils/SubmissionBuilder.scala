@@ -14,34 +14,41 @@
  * limitations under the License.
  */
 
-//package uk.gov.hmrc.ngrnotify.backend.testUtils
-//
-//import uk.gov.hmrc.ngrnotify.backend.models.NotConnectedSubmission
-//import uk.gov.hmrc.ngrnotify.backend.schema.Address
-//
-//import java.time.Instant
-//
-//object SubmissionBuilder {
-//
-//  def createNotConnectedSubmission(n: Int) = {
-//    val submissionSuffix = n match {
-//      case n: Int if n < 9  => s"00$n"
-//      case n: Int if n < 99 => s"0$n"
-//      case n: Int           => n.toString
-//    }
-//    NotConnectedSubmission(
-//      s"9999000$submissionSuffix",
-//      "FOR6010",
-//      Address("10", Some("xxxx"), "town", None, "BN12 4AX"),
-//      "Full Name",
-//      None,
-//      Some("012345678999"),
-//      Some("I left property"),
-//      Instant.now(),
-//      Some(false),
-//      Some("en")
-//    )
-//
-//  }
-//
-//}
+package uk.gov.hmrc.ngrnotify.backend.testUtils
+
+import org.bson.types.ObjectId
+import play.api.libs.json.Json
+import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
+import uk.gov.hmrc.ngrnotify.model.EmailTemplate.ngr_registration_successful
+
+import java.time.Instant
+import java.util.UUID
+
+object SubmissionBuilder {
+
+  val templateParamsJsonRegistration = Json.obj(
+    "firstName" -> "David",
+    "lastName"  -> "Jones",
+    "reference" -> "REG12345"
+  )
+
+  def createEmailNotification(n: Int) = {
+    val submissionSuffix = n match {
+      case n: Int if n < 9  => s"00$n"
+      case n: Int if n < 99 => s"0$n"
+      case n: Int           => n.toString
+    }
+    EmailNotification(
+      emailTemplateId = ngr_registration_successful,
+      trackerId = UUID.randomUUID(),
+      sendToEmails = Seq("test1@email.com", "test2@email.com"),
+      templateParams = templateParamsJsonRegistration,
+      callbackUrl = Some("abc"),
+      client = Some("xyz"),
+      _id = ObjectId("666f6f2d6261722d71757578"),
+      createdAt = Instant.ofEpochMilli(0)
+    )
+
+  }
+
+}

@@ -18,19 +18,15 @@ package uk.gov.hmrc.ngrnotify.backend.testUtils
 
 import org.bson.types.ObjectId
 import play.api.libs.json.Json
-import uk.gov.hmrc.ngrnotify.connector.EmailConnector
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.{ngr_add_property_request_sent, ngr_registration_successful}
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.ngrnotify.model.email.{AddPropertyRequestSent, RegistrationSuccessful}
 
 import java.util.UUID
-//import uk.gov.hmrc.ngrnotify.backend.schema.Address
-
-import java.time.temporal.ChronoUnit.MILLIS
 import java.time.{Instant, LocalDate}
 
-trait FakeObjects {
+trait TestData {
   val token: String = "Basic OTk5OTYwMTAwMDQ6U2Vuc2l0aXZlKC4uLik="
 
   val prefilledRegistrationSuccessful: RegistrationSuccessful = RegistrationSuccessful("John", "Doe", "123456789")

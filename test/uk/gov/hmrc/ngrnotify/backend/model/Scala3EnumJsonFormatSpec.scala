@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.backend.models
+package uk.gov.hmrc.ngrnotify.backend.model
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should

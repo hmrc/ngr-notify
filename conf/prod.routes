@@ -6,5 +6,5 @@
 GET         /assets/*file                   controllers.Assets.at(file)
 
 # Swagger UI
-GET         /                               uk.gov.hmrc.ngrnotify.api.controllers.ApiDocController.apiSwaggerUI
-GET         /api                            uk.gov.hmrc.ngrnotify.api.controllers.ApiDocController.apiSwaggerUI
+#GET         /                               uk.gov.hmrc.ngrnotify.api.controllers.ApiDocController.apiSwaggerUI
+#GET         /api                            uk.gov.hmrc.ngrnotify.api.controllers.ApiDocController.apiSwaggerUI

@@ -4,16 +4,19 @@ object AppDependencies {
 
   private val bootstrapVersion = "9.18.0"
   private val hmrcMongoVersion = "2.7.0"
+  val playLanguageVersion      = "9.1.0"
 
   val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"       %% "bootstrap-backend-play-30" % bootstrapVersion,
     "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-30"        % hmrcMongoVersion,
-    "org.webjars"        % "swagger-ui"                % "5.26.2"
+    "org.webjars"        % "swagger-ui"                % "5.26.2",
+    "uk.gov.hmrc"       %% "play-language-play-30"     % playLanguageVersion
   )
 
   val test: Seq[ModuleID] = Seq(
-    "uk.gov.hmrc"       %% "bootstrap-test-play-30"  % bootstrapVersion % Test,
-    "uk.gov.hmrc.mongo" %% "hmrc-mongo-test-play-30" % hmrcMongoVersion % Test
+    "uk.gov.hmrc"       %% "bootstrap-test-play-30"  % bootstrapVersion    % Test,
+    "uk.gov.hmrc.mongo" %% "hmrc-mongo-test-play-30" % hmrcMongoVersion    % Test,
+    "uk.gov.hmrc"       %% "play-language-play-30"   % playLanguageVersion % Test
   )
 
   val it: Seq[ModuleID] = Seq.empty

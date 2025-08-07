@@ -55,35 +55,15 @@ class EmailConnectorSpec extends AnyWordAppSpec {
         .post(any[URL])(using any[HeaderCarrier])
     }
 
-//    "verify that the email service is called on send ngr-notify123" in {
-//      val body =
-//        """{"to":["test@email.com"],["test2@email.com"],"templateId":"ngr_add_property_request_sent","parameters":{"emailTemplateId":"ngr_add_property_request_sent","trackerId":"f0c45b4c-5eca-45b5-98ea-65d19e422c8d","sendToEmails":["test@email.com","test2@email.com"],"templateParams":{"firstName":"David","lastName":"Jones","reference":"REG12345","postcodeEndString":"0AA"},"callbackUrl":"123123123"}]}"""
-//
-//      val httpMock  = httpPostMock(BAD_REQUEST)
-//      val connector = new EmailConnector(servicesConfig, httpMock)
-//
-//      val response = connector.sendEmailNotification(prefilledEmailRegistrationSuccessful).futureValue
-//      response.status shouldBe BAD_REQUEST
-//      response.body   shouldBe body
-//
-//      verify(httpMock)
-//        .post(any[URL])(using any[HeaderCarrier])
-//    }
-//
-//    "handle error response on send ngr-notify" in {
-//      val body           =
-//        """{"to":["test@email.com"],["test2@email.com"],"templateId":"ngr_add_property_request_sent","parameters":{"emailTemplateId":"ngr_add_property_request_sent","trackerId":"f0c45b4c-5eca-45b5-98ea-65d19e422c8d","sendToEmails":["test@email.com","test2@email.com"],"templateParams":{"firstName":"David","lastName":"Jones","reference":"REG12345","postcodeEndString":"0AA"},"callbackUrl":"123123123"}]}"""
-//      val httpMock       = httpPostMock(BAD_REQUEST)
-//      val emailConnector = new EmailConnector(servicesConfig, httpMock)
-//
-//      val response = emailConnector.sendEmailNotification(prefilledEmailAddProperty).futureValue
-//      response.status shouldBe BAD_REQUEST
-//      response.body   shouldBe body
-//
-//      verify(httpMock)
-//        .post(any[URL])(using any[HeaderCarrier])
-//    }
+    "verify that the email service is called on send ngr-notify sad path" in {
+      val httpMock  = httpPostMock(BAD_REQUEST)
+      val connector = new EmailConnector(servicesConfig, httpMock)
 
+      val response = connector.sendEmailNotification(prefilledEmailRegistrationSuccessful).futureValue
+      response.status shouldBe BAD_REQUEST
+
+      verify(httpMock)
+        .post(any[URL])(using any[HeaderCarrier])
+    }
   }
-
 }
