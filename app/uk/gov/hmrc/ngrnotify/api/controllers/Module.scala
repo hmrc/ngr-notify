@@ -17,8 +17,6 @@
 package uk.gov.hmrc.ngrnotify.api.controllers
 
 import com.google.inject.AbstractModule
-import play.api.inject.{Binding, Module as AppModule}
-import play.api.{Configuration, Environment}
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 
 class Module extends AbstractModule:
