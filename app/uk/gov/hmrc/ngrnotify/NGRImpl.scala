@@ -19,7 +19,7 @@ package uk.gov.hmrc.ngrnotify
 import org.apache.pekko.actor.ActorSystem
 import uk.gov.hmrc.mongo.lock.MongoLockRepository
 import uk.gov.hmrc.ngrnotify.config.{AppConfig, NGRAudit}
-import uk.gov.hmrc.ngrnotify.connector.{CallbackConnector, EmailConnector}
+import uk.gov.hmrc.ngrnotify.connectors.{CallbackConnector, EmailConnector}
 import uk.gov.hmrc.ngrnotify.exporter.*
 import uk.gov.hmrc.ngrnotify.infrastructure.RegularSchedule
 import uk.gov.hmrc.ngrnotify.repository.EmailNotificationRepo
