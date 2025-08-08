@@ -59,6 +59,7 @@ class EmailConnector @Inject() (
 
   private val emailServiceBaseUrl = servicesConfig.baseUrl("email")
   private val sendEmailURL        = url"$emailServiceBaseUrl/hmrc/email"
+  println("XXXX" + sendEmailURL)
 
   def sendEmailNotification(emailNotification: EmailNotification): Future[HttpResponse] =
     val parameters      = emailNotification.templateParams
