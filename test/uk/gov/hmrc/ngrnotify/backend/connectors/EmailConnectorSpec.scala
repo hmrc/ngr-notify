@@ -23,7 +23,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
 
-import uk.gov.hmrc.ngrnotify.connector.EmailConnector
+import uk.gov.hmrc.ngrnotify.connectors.EmailConnector
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL

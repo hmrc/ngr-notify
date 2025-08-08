@@ -21,7 +21,7 @@ import play.api.Logging
 import play.api.http.Status.{ACCEPTED, BAD_REQUEST, OK}
 import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.config.{AppConfig, NGRAudit}
-import uk.gov.hmrc.ngrnotify.connector.{CallbackConnector, EmailConnector}
+import uk.gov.hmrc.ngrnotify.connectors.{CallbackConnector, EmailConnector}
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.ngrnotify.model.response.HmrcSendEmailResponse

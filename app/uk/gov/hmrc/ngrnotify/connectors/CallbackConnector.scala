@@ -30,7 +30,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.connector
+package uk.gov.hmrc.ngrnotify.connectors
 
 import play.api.Logging
 import play.api.http.Status.{ACCEPTED, INTERNAL_SERVER_ERROR, OK}
