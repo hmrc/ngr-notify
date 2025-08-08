@@ -1,4 +1,4 @@
 # microservice specific routes
 
 # Send email
-POST    /sendEmail/:emailTemplateId             uk.gov.hmrc.ngrnotify.controllers.EmailSenderController.sendEmail(emailTemplateId)
+POST    /send-email/:emailTemplateId             uk.gov.hmrc.ngrnotify.controllers.EmailSenderController.sendEmail(emailTemplateId)

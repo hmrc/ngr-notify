@@ -14,7 +14,7 @@ tags:
     description: >-
       This API is intended for use by NGR services to facilitate the sending of email notifications.
 paths:
-  '/ngr-notify-proto/send-email/{emailTemplateId}':
+  '/ngr-notify/send-email/{emailTemplateId}':
     post:
       summary: 'NGR Notify API - Send email'
       description: >
