@@ -3,7 +3,7 @@ window.onload = function () {
         urls: [
             {
                 "url": "/assets/api-ngr-notify-1.0.0.yaml",
-                "name": "API-NGR-notify"
+                "name": "API-NGR-Notify"
             }
         ],
         dom_id: '#swagger-ui',
