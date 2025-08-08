@@ -22,7 +22,6 @@ import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatest.matchers.should.Matchers
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.ngrnotify.backend.testUtils.SubmissionBuilder.templateParamsJsonRegistration
-import uk.gov.hmrc.ngrnotify.backend.testUtils.TestData
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.ngr_registration_successful
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 

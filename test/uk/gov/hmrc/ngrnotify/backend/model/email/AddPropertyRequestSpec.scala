@@ -19,8 +19,8 @@ package uk.gov.hmrc.ngrnotify.backend.model.email
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatest.matchers.should.Matchers
-import play.api.libs.json.{JsString, JsValue, Json}
-import uk.gov.hmrc.ngrnotify.model.email.{AddPropertyRequestSent, RegistrationSuccessful}
+import play.api.libs.json.{JsValue, Json}
+import uk.gov.hmrc.ngrnotify.model.email.AddPropertyRequestSent
 
 class AddPropertyRequestSpec extends AnyFlatSpec with Matchers {
 

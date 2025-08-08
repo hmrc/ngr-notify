@@ -19,12 +19,9 @@ package uk.gov.hmrc.ngrnotify.backend.model.request
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatest.matchers.should.Matchers
-import play.api.libs.json.{JsString, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.ngrnotify.backend.testUtils.SubmissionBuilder.templateParamsJsonRegistration
-import uk.gov.hmrc.ngrnotify.model.ErrorCode.ACTION_FAILED
-import uk.gov.hmrc.ngrnotify.model.email.{AddPropertyRequestSent, RegistrationSuccessful}
 import uk.gov.hmrc.ngrnotify.model.request.SendEmailRequest
-import uk.gov.hmrc.ngrnotify.model.response.{ActionCallback, ApiFailure}
 
 import java.util.UUID
 
