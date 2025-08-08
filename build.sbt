@@ -4,7 +4,7 @@ val appName     = "ngr-notify"
 val defaultPort = 1515
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "3.7.1"
+ThisBuild / scalaVersion := "3.7.2"
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)

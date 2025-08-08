@@ -18,7 +18,7 @@ package uk.gov.hmrc.ngrnotify.backend.connectors
 
 import com.typesafe.config.ConfigFactory
 import play.api.Configuration
-import play.api.http.Status.{ACCEPTED, BAD_REQUEST, NOT_FOUND, OK}
+import play.api.http.Status.{BAD_REQUEST, OK}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec

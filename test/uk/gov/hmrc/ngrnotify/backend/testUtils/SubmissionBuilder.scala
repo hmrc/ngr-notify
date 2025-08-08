@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ngrnotify.backend.testUtils
 
 import org.bson.types.ObjectId
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.ngr_registration_successful
 
@@ -26,18 +26,13 @@ import java.util.UUID
 
 object SubmissionBuilder {
 
-  val templateParamsJsonRegistration = Json.obj(
+  val templateParamsJsonRegistration: JsObject = Json.obj(
     "firstName" -> "David",
     "lastName"  -> "Jones",
     "reference" -> "REG12345"
   )
 
-  def createEmailNotification(n: Int) = {
-    val submissionSuffix = n match {
-      case n: Int if n < 9  => s"00$n"
-      case n: Int if n < 99 => s"0$n"
-      case n: Int           => n.toString
-    }
+  def createEmailNotification: EmailNotification =
     EmailNotification(
       emailTemplateId = ngr_registration_successful,
       trackerId = UUID.randomUUID(),
@@ -48,7 +43,5 @@ object SubmissionBuilder {
       _id = ObjectId("666f6f2d6261722d71757578"),
       createdAt = Instant.ofEpochMilli(0)
     )
-
-  }
 
 }

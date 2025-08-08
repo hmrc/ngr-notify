@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.api.controllers
+package uk.gov.hmrc.ngrnotify.config
 
 import com.google.inject.AbstractModule
 import uk.gov.hmrc.ngrnotify.config.AppConfig

@@ -1,7 +1,10 @@
 
 # ngr-notify
 
-This is a placeholder README.md for a new repository
+### Run locally:
+* `cd` to the root of the project.
+* `sbt run`
+* Navigate to http://localhost:1515
 
 ### License
 
