@@ -33,7 +33,7 @@
 package uk.gov.hmrc.ngrnotify.connectors
 
 import play.api.Logging
-import play.api.http.Status.{ACCEPTED, OK}
+import play.api.http.Status.{ACCEPTED, INTERNAL_SERVER_ERROR, OK}
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import uk.gov.hmrc.http.HttpReads.Implicits.*
@@ -58,14 +58,16 @@ class CallbackConnector @Inject() (
 ) extends Logging:
 
   def callbackOnFailure(notification: EmailNotification, error: Throwable): Future[Unit] =
-    callbackOnFailure(notification, Seq(ApiFailure(ACTION_FAILED, error.getMessage)))
+    callbackOnFailure(notification, INTERNAL_SERVER_ERROR, ACTION_FAILED, error.getMessage)
 
-  def callbackOnFailure(notification: EmailNotification, code: ErrorCode, reason: String): Future[Unit] =
-    callbackOnFailure(notification, Seq(ApiFailure(code, reason)))
-
-  def callbackOnFailure(notification: EmailNotification, failures: Seq[ApiFailure]): Future[Unit] =
+  def callbackOnFailure(notification: EmailNotification, status: Int, code: ErrorCode, reason: String): Future[Unit] =
     val json = Json.toJsObject(
-      ActionCallback(notification.trackerId, notification.emailTemplateId.toString, failures)
+      ActionCallback(
+        notification.trackerId,
+        notification.emailTemplateId.toString,
+        status,
+        Seq(ApiFailure(code, reason))
+      )
     )
 
     given HeaderCarrier = HeaderCarrier()

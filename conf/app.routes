@@ -6,4 +6,4 @@ GET     /hip-person-details                     uk.gov.hmrc.ngrnotify.controller
 GET     /hip-items                              uk.gov.hmrc.ngrnotify.controllers.HipController.hipItems()
 
 # Send email
-POST    /sendEmail/:emailTemplateId             uk.gov.hmrc.ngrnotify.controllers.EmailSenderController.sendEmail(emailTemplateId)
+POST    /send-email/:emailTemplateId             uk.gov.hmrc.ngrnotify.controllers.EmailSenderController.sendEmail(emailTemplateId)

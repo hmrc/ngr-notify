@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,9 @@ import java.util.UUID
 
 class EmailNotificationSpec extends AnyFlatSpec with Matchers {
 
-  val id       = "00000000-0000-0000-0000-000000000000"
-  val time     = Instant.ofEpochMilli(0)
-  val objectId = "000000000000000000000000"
+  private val id       = "00000000-0000-0000-0000-000000000000"
+  private val time     = Instant.ofEpochMilli(0)
+  private val objectId = "000000000000000000000000"
 
   val EmailNotificationRequest: EmailNotification =
     EmailNotification(

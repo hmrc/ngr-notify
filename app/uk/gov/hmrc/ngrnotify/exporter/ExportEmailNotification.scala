@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,18 +79,24 @@ class ExportEmailNotificationVOA @Inject() (
               emailNotificationRepo.delete(emailNotification._id).map(_ => ())
             case BAD_REQUEST   =>
               auditActionFailed(emailNotification, BAD_REQUEST_BODY.toString, parseBadRequest(res.body))
-              callbackConnector.callbackOnFailure(emailNotification, BAD_REQUEST_BODY, parseBadRequest(res.body))
+              callbackConnector.callbackOnFailure(
+                emailNotification,
+                BAD_REQUEST,
+                BAD_REQUEST_BODY,
+                parseBadRequest(res.body)
+              )
             case _             =>
               auditActionFailed(emailNotification, res.status.toString, res.body)
               callbackConnector.callbackOnFailure(
                 emailNotification,
+                res.status,
                 WRONG_RESPONSE_STATUS,
                 s"Send email to user FAILED: ${res.status} ${res.body}"
               )
           }
         }
         .recoverWith { error =>
-          auditActionFailed(emailNotification, "ACTION_FAILED", error.getMessage)
+          auditActionFailed(emailNotification, ACTION_FAILED.toString, error.getMessage)
           callbackConnector.callbackOnFailure(emailNotification, error)
         }
       emailType(emailNotification)

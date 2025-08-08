@@ -19,9 +19,10 @@ package uk.gov.hmrc.ngrnotify.controllers
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.{Action, ControllerComponents, Request, Result}
-import uk.gov.hmrc.ngrnotify.model.{EmailTemplate, ErrorCode}
+import uk.gov.hmrc.ngrnotify.model.EmailTemplate
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.*
-import uk.gov.hmrc.ngrnotify.model.ErrorCode.{EMAIL_TEMPLATE_NOT_FOUND, JSON_VALIDATION_ERROR, MONGO_DB_ERROR}
+import uk.gov.hmrc.ngrnotify.model.ErrorCode
+import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.ngrnotify.model.email.*
 import uk.gov.hmrc.ngrnotify.model.request.SendEmailRequest
@@ -38,7 +39,6 @@ import scala.util.Try
 /**
   * @author Yuriy Tumakha
   */
-
 @Singleton
 class EmailSenderController @Inject() (
   emailNotificationRepo: EmailNotificationRepo,
@@ -58,7 +58,8 @@ class EmailSenderController @Inject() (
             case `ngr_add_property_request_sent` => parseAndValidateTemplateParams[AddPropertyRequestSent]
           }
         ).map { req =>
-          EmailNotification(emailTemplate, req.trackerId, req.sendToEmails, req.templateParams, req.callbackUrl)
+          val client = request.headers.get(USER_AGENT)
+          EmailNotification(emailTemplate, req.trackerId, req.sendToEmails, req.templateParams, req.callbackUrl, client)
         }
     ) match {
       case Right(notification) => saveEmailNotification(notification)
@@ -103,7 +104,7 @@ class EmailSenderController @Inject() (
     }
     error.message + msgArgs
 
-  private def saveEmailNotification[T](emailNotification: EmailNotification): Future[Result] =
+  private def saveEmailNotification(emailNotification: EmailNotification): Future[Result] =
     logger.info(s"\nSend ${emailNotification.emailTemplateId}. TrackerId: ${emailNotification.trackerId}")
 
     emailNotificationRepo

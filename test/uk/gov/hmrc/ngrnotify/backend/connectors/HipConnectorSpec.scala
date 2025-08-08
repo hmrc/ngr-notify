@@ -32,8 +32,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class HipConnectorSpec extends AnyWordAppSpec {
 
-  private val configuration      = Configuration(ConfigFactory.load("application.conf"))
-  private val servicesConfig     = new ServicesConfig(configuration)
+  private val configuration  = Configuration(ConfigFactory.load("application.conf"))
+  private val servicesConfig = new ServicesConfig(configuration)
 
   private def httpGetMock(responseStatus: Int): HttpClientV2 =
     val httpClientV2Mock = mock[HttpClientV2]
@@ -41,7 +41,6 @@ class HipConnectorSpec extends AnyWordAppSpec {
       httpClientV2Mock.get(any[URL])(using any[HeaderCarrier])
     ).thenReturn(RequestBuilderStub(Right(responseStatus)))
     httpClientV2Mock
-
 
   "callHelloWorld()" must {
     "return a successful JsValue response" in {
@@ -58,7 +57,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
 
   "callPersonDetails()" must {
     "return a successful JsValue response" in {
-      val httpMock = httpGetMock(OK)
+      val httpMock  = httpGetMock(OK)
       val connector = new HipConnector(httpMock)
 
       val response = connector.callPersonDetails(testHipHeaders).futureValue
@@ -71,7 +70,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
 
   "callItems()" must {
     "return a successful JsValue response" in {
-      val httpMock = httpGetMock(OK)
+      val httpMock  = httpGetMock(OK)
       val connector = new HipConnector(httpMock)
 
       val response = connector.callItems(testHipHeaders).futureValue
@@ -82,4 +81,3 @@ class HipConnectorSpec extends AnyWordAppSpec {
     }
   }
 }
-

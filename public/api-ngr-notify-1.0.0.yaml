@@ -10,17 +10,17 @@ servers:
     description: >-
       Actual environment values can be obtained from MDTP configuration for each environment
 tags:
-  - name: 'NGR-notify'
+  - name: 'NGR-Notify'
     description: >-
       This API is intended for use by NGR services to facilitate the sending of email notifications.
 paths:
-  '/ngr-notify-proto/send-email/{emailTemplateId}':
+  '/ngr-notify/send-email/{emailTemplateId}':
     post:
       summary: 'NGR Notify API - Send email'
       description: >
         Send email notification
       tags:
-        - 'NGR-notify'
+        - 'NGR-Notify'
       parameters:
         - in: path
           name: emailTemplateId

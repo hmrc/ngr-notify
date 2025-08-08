@@ -26,6 +26,7 @@ import java.util.UUID
 case class ActionCallback(
   trackerId: UUID,
   action: String,
+  status: Int,
   failures: Seq[ApiFailure]
 )
 

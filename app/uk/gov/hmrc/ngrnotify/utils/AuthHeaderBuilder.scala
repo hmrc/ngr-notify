@@ -24,4 +24,3 @@ object AuthHeaderBuilder {
     s"Basic $authHeaderRaw"
   }
 }
-
