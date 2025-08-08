@@ -31,7 +31,7 @@ object HipService {
       "OriginatorId" -> "NGR"
     ) ++ additionalHeader.toSeq
 
-    HeaderCarrier().withExtraHeaders(headers: _*)
+    HeaderCarrier().withExtraHeaders(headers*)
   }
 
   def buildAuthHeader(requestHeaders: Headers): String = AuthHeaderBuilder.buildAuthHeader(extractClientId(requestHeaders), extractClientSecret(requestHeaders))

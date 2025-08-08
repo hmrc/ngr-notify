@@ -21,27 +21,27 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import play.api.libs.json.JsValue
+import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 
 @Singleton()
 class HipController @Inject() (hipConnector: HipConnector, cc: ControllerComponents)(implicit executionContext: ExecutionContext) extends BackendController(cc) {
 
   def hipHelloWorld(): Action[AnyContent] = Action.async { implicit request =>
-    val eventuallyHelloWorldResponse: Future[JsValue] = hipConnector.callHelloWorld(request.headers)
+    val eventuallyHelloWorldResponse: Future[HttpResponse] = hipConnector.callHelloWorld(request.headers)
 
-    eventuallyHelloWorldResponse.map(helloWorldResponse => Ok(s"Response was: $helloWorldResponse"))
+    eventuallyHelloWorldResponse.map(helloWorldResponse => Ok(s"Response was: ${helloWorldResponse.body}"))
   }
 
   def hipPersonDetails(): Action[AnyContent] = Action.async { implicit request =>
-    val eventuallyPersonDetailsResponse: Future[JsValue] = hipConnector.callPersonDetails(request.headers)
+    val eventuallyPersonDetailsResponse: Future[HttpResponse] = hipConnector.callPersonDetails(request.headers)
 
-    eventuallyPersonDetailsResponse.map(personDetailsResponse => Ok(s"Response was: $personDetailsResponse"))
+    eventuallyPersonDetailsResponse.map(personDetailsResponse => Ok(s"Response was: ${personDetailsResponse.body}"))
   }
 
   def hipItems(): Action[AnyContent] = Action.async { implicit request =>
-    val eventuallyItemsResponse: Future[JsValue] = hipConnector.callItems(request.headers)
+    val eventuallyItemsResponse: Future[HttpResponse] = hipConnector.callItems(request.headers)
 
-    eventuallyItemsResponse.map(itemsResponse => Ok(s"Response was: $itemsResponse"))
+    eventuallyItemsResponse.map(itemsResponse => Ok(s"Response was: ${itemsResponse.body}"))
   }
 }

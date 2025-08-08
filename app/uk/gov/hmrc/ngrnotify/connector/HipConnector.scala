@@ -16,10 +16,9 @@
 
 package uk.gov.hmrc.ngrnotify.connectors
 
-import play.api.libs.json.JsValue
 import play.api.mvc.Headers
 import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.StringContextOps
+import uk.gov.hmrc.http.{HttpResponse, StringContextOps}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -31,26 +30,26 @@ import java.net.URL
 @Singleton
 class HipConnector @Inject() (httpClient: HttpClientV2)(implicit ec: ExecutionContext) {
 
-  def callHelloWorld(headers: Headers): Future[JsValue] = {
+  def callHelloWorld(headers: Headers): Future[HttpResponse] = {
     val url: URL = url"https://hip.ws.ibt.hmrc.gov.uk/demo/hello-world"
     httpClient
-      .get(url)(buildHipHeaderCarrier(headers))
-      .execute[JsValue]
+      .get(url)(using buildHipHeaderCarrier(headers))
+      .execute[HttpResponse]
   }
 
-  def callPersonDetails(headers: Headers): Future[JsValue] = {
+  def callPersonDetails(headers: Headers): Future[HttpResponse] = {
     val url: URL = url"https://hip.ws.ibt.hmrc.gov.uk/voa-prototype/api/persondetails"
     val additionalHeader: Option[(String, String)] = Some("CorrelationId" -> "f0bd1f32-de51-45cc-9b18-0520d6e3ab1a")
     httpClient
-      .get(url)(buildHipHeaderCarrier(headers, additionalHeader))
-      .execute[JsValue]
+      .get(url)(using buildHipHeaderCarrier(headers, additionalHeader))
+      .execute[HttpResponse]
   }
 
-  def callItems(headers: Headers): Future[JsValue] = {
+  def callItems(headers: Headers): Future[HttpResponse] = {
     val url: URL = url"https://hip.ws.ibt.hmrc.gov.uk/voa-prototype/api/item"
     val additionalHeader: Option[(String, String)] = Some("ItemNumber" -> "0")
     httpClient
-      .get(url)(buildHipHeaderCarrier(headers, additionalHeader))
-      .execute[JsValue]
+      .get(url)(using buildHipHeaderCarrier(headers, additionalHeader))
+      .execute[HttpResponse]
   }
 }
