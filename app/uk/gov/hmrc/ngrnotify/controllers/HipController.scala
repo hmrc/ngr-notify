@@ -25,7 +25,9 @@ import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 
 @Singleton()
-class HipController @Inject() (hipConnector: HipConnector, cc: ControllerComponents)(implicit executionContext: ExecutionContext) extends BackendController(cc) {
+class HipController @Inject() (hipConnector: HipConnector, cc: ControllerComponents)(implicit
+  executionContext: ExecutionContext
+) extends BackendController(cc) {
 
   def hipHelloWorld(): Action[AnyContent] = Action.async { implicit request =>
     val eventuallyHelloWorldResponse: Future[HttpResponse] = hipConnector.callHelloWorld(request.headers)

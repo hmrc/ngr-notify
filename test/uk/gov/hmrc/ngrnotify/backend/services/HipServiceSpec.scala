@@ -24,9 +24,9 @@ import uk.gov.hmrc.ngrnotify.utils.AuthHeaderBuilder
 import uk.gov.hmrc.ngrnotify.services.HipService
 
 class HipServiceSpec extends AnyWordSpec with Matchers {
-  private val clientIdOnlyHeaders: Headers = new Headers(Seq("Client-Id" -> testClientId))
+  private val clientIdOnlyHeaders: Headers     = new Headers(Seq("Client-Id" -> testClientId))
   private val clientSecretOnlyHeaders: Headers = new Headers(Seq("Client-Secret" -> testClientSecret))
-  private val emptyHeaders: Headers = new Headers(Seq())
+  private val emptyHeaders: Headers            = new Headers(Seq())
 
   "extractClientId()" should {
     "return the client ID when present" in {
@@ -70,15 +70,15 @@ class HipServiceSpec extends AnyWordSpec with Matchers {
 
       carrier.extraHeaders should contain allOf (
         "Authorization" -> expectedAuth,
-        "Accept" -> "application/json",
-        "Content-Type" -> "application/json",
-        "OriginatorId" -> "NGR"
+        "Accept"        -> "application/json",
+        "Content-Type"  -> "application/json",
+        "OriginatorId"  -> "NGR"
       )
     }
 
     "include additional headers when provided" in {
       val additional = Some("Extra-Header" -> "Extra-Value")
-      val carrier = HipService.buildHipHeaderCarrier(testHipHeaders, additional)
+      val carrier    = HipService.buildHipHeaderCarrier(testHipHeaders, additional)
 
       carrier.extraHeaders should contain("Extra-Header" -> "Extra-Value")
     }

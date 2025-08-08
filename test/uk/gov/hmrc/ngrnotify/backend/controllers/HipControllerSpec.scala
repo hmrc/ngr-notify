@@ -32,39 +32,43 @@ import scala.concurrent.Future
 
 class HipControllerSpec extends AsyncWordSpec with Matchers with MockitoSugar {
 
-  val mockHipConnector: HipConnector = mock[HipConnector]
-  val controllerComponents: ControllerComponents = Helpers.stubControllerComponents()
-  val controller = new HipController(mockHipConnector, controllerComponents)(using scala.concurrent.ExecutionContext.global)
+  val mockHipConnector: HipConnector               = mock[HipConnector]
+  val controllerComponents: ControllerComponents   = Helpers.stubControllerComponents()
+  val controller                                   = new HipController(mockHipConnector, controllerComponents)(using
+    scala.concurrent.ExecutionContext.global
+  )
   val headers: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(testHipHeaders)
 
   "hipHelloWorld()" should {
     "return OK with response from HipConnector" in {
-      when(mockHipConnector.callHelloWorld(testHipHeaders)).thenReturn(Future.successful(HttpResponse(200, "{\"message\":\"Hello World\"}")))
+      when(mockHipConnector.callHelloWorld(testHipHeaders))
+        .thenReturn(Future.successful(HttpResponse(200, "{\"message\":\"Hello World\"}")))
 
       val result = controller.hipHelloWorld()(headers)
-      status(result) shouldBe OK
+      status(result)          shouldBe OK
       contentAsString(result) shouldBe "Response was: {\"message\":\"Hello World\"}"
     }
   }
 
   "hipPersonDetails()" should {
     "return OK with person details from HipConnector" in {
-      when(mockHipConnector.callPersonDetails(testHipHeaders)).thenReturn(Future.successful(HttpResponse(200, "{\"name\":\"John Doe\"}")))
+      when(mockHipConnector.callPersonDetails(testHipHeaders))
+        .thenReturn(Future.successful(HttpResponse(200, "{\"name\":\"John Doe\"}")))
 
       val result = controller.hipPersonDetails()(headers)
-      status(result) shouldBe OK
+      status(result)          shouldBe OK
       contentAsString(result) shouldBe "Response was: {\"name\":\"John Doe\"}"
     }
   }
 
   "hipItems()" should {
     "return OK with items from HipConnector" in {
-      when(mockHipConnector.callItems(testHipHeaders)).thenReturn(Future.successful(HttpResponse(200, "{\"items\":\"item1\"}")))
+      when(mockHipConnector.callItems(testHipHeaders))
+        .thenReturn(Future.successful(HttpResponse(200, "{\"items\":\"item1\"}")))
 
       val result = controller.hipItems()(headers)
-      status(result) shouldBe OK
+      status(result)          shouldBe OK
       contentAsString(result) shouldBe "Response was: {\"items\":\"item1\"}"
     }
   }
 }
-

@@ -23,20 +23,28 @@ import uk.gov.hmrc.ngrnotify.utils.AuthHeaderBuilder
 
 object HipService {
 
-  def buildHipHeaderCarrier(requestHeaders: Headers, additionalHeader: Option[(String, String)] = None): HeaderCarrier = {
+  def buildHipHeaderCarrier(
+    requestHeaders: Headers,
+    additionalHeader: Option[(String, String)] = None
+  ): HeaderCarrier = {
     val headers: Seq[(String, String)] = Seq(
       HeaderNames.AUTHORIZATION -> buildAuthHeader(requestHeaders),
-      HeaderNames.ACCEPT -> "application/json",
-      HeaderNames.CONTENT_TYPE -> "application/json",
-      "OriginatorId" -> "NGR"
+      HeaderNames.ACCEPT        -> "application/json",
+      HeaderNames.CONTENT_TYPE  -> "application/json",
+      "OriginatorId"            -> "NGR"
     ) ++ additionalHeader.toSeq
 
     HeaderCarrier().withExtraHeaders(headers*)
   }
 
-  def buildAuthHeader(requestHeaders: Headers): String = AuthHeaderBuilder.buildAuthHeader(extractClientId(requestHeaders), extractClientSecret(requestHeaders))
+  def buildAuthHeader(requestHeaders: Headers): String =
+    AuthHeaderBuilder.buildAuthHeader(extractClientId(requestHeaders), extractClientSecret(requestHeaders))
 
-  def extractClientId(requestHeaders: Headers): String = requestHeaders.get("Client-Id").getOrElse(throw new RuntimeException("extractClientId ERROR: Client Id missing from headers"))
+  def extractClientId(requestHeaders: Headers): String = requestHeaders
+    .get("Client-Id")
+    .getOrElse(throw new RuntimeException("extractClientId ERROR: Client Id missing from headers"))
 
-  def extractClientSecret(requestHeaders: Headers): String = requestHeaders.get("Client-Secret").getOrElse(throw new RuntimeException("extractClientSecret ERROR: Client Secret missing from headers"))
+  def extractClientSecret(requestHeaders: Headers): String = requestHeaders
+    .get("Client-Secret")
+    .getOrElse(throw new RuntimeException("extractClientSecret ERROR: Client Secret missing from headers"))
 }

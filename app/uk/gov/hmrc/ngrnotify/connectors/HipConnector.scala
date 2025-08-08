@@ -38,7 +38,7 @@ class HipConnector @Inject() (httpClient: HttpClientV2)(implicit ec: ExecutionCo
   }
 
   def callPersonDetails(headers: Headers): Future[HttpResponse] = {
-    val url: URL = url"https://hip.ws.ibt.hmrc.gov.uk/voa-prototype/api/persondetails"
+    val url: URL                                   = url"https://hip.ws.ibt.hmrc.gov.uk/voa-prototype/api/persondetails"
     val additionalHeader: Option[(String, String)] = Some("CorrelationId" -> "f0bd1f32-de51-45cc-9b18-0520d6e3ab1a")
     httpClient
       .get(url)(using buildHipHeaderCarrier(headers, additionalHeader))
@@ -46,7 +46,7 @@ class HipConnector @Inject() (httpClient: HttpClientV2)(implicit ec: ExecutionCo
   }
 
   def callItems(headers: Headers): Future[HttpResponse] = {
-    val url: URL = url"https://hip.ws.ibt.hmrc.gov.uk/voa-prototype/api/item"
+    val url: URL                                   = url"https://hip.ws.ibt.hmrc.gov.uk/voa-prototype/api/item"
     val additionalHeader: Option[(String, String)] = Some("ItemNumber" -> "0")
     httpClient
       .get(url)(using buildHipHeaderCarrier(headers, additionalHeader))

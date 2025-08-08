@@ -19,7 +19,7 @@ package uk.gov.hmrc.ngrnotify.backend.testUtils
 import play.api.mvc.Headers
 
 object HipTestData {
-  val testClientId: String = "clientId"
+  val testClientId: String     = "clientId"
   val testClientSecret: String = "clientSecret"
-  val testHipHeaders: Headers = new Headers(Seq("Client-Id" -> "clientId", "Client-Secret" -> "clientSecret"))
+  val testHipHeaders: Headers  = new Headers(Seq("Client-Id" -> "clientId", "Client-Secret" -> "clientSecret"))
 }

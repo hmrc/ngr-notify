@@ -26,8 +26,9 @@ class AuthHeaderBuilderSpec extends AnyWordSpec with Matchers {
   "buildAuthHeader()" should {
 
     "return a valid Basic Auth header for given clientId and clientSecret" in {
-      val expectedEncoded = java.util.Base64.getEncoder.encodeToString(s"$testClientId:$testClientSecret".getBytes("UTF-8"))
-      val expectedHeader = s"Basic $expectedEncoded"
+      val expectedEncoded =
+        java.util.Base64.getEncoder.encodeToString(s"$testClientId:$testClientSecret".getBytes("UTF-8"))
+      val expectedHeader  = s"Basic $expectedEncoded"
 
       val result = AuthHeaderBuilder.buildAuthHeader(testClientId, testClientSecret)
 
@@ -36,7 +37,7 @@ class AuthHeaderBuilderSpec extends AnyWordSpec with Matchers {
 
     "handle empty clientId and clientSecret" in {
       val expectedEncoded = java.util.Base64.getEncoder.encodeToString(":".getBytes("UTF-8"))
-      val expectedHeader = s"Basic $expectedEncoded"
+      val expectedHeader  = s"Basic $expectedEncoded"
 
       val result = AuthHeaderBuilder.buildAuthHeader("", "")
 
@@ -44,10 +45,10 @@ class AuthHeaderBuilderSpec extends AnyWordSpec with Matchers {
     }
 
     "handle special characters in clientId and clientSecret" in {
-      val clientId = "id:with:special@chars"
-      val clientSecret = "secret/with?chars"
+      val clientId        = "id:with:special@chars"
+      val clientSecret    = "secret/with?chars"
       val expectedEncoded = java.util.Base64.getEncoder.encodeToString(s"$clientId:$clientSecret".getBytes("UTF-8"))
-      val expectedHeader = s"Basic $expectedEncoded"
+      val expectedHeader  = s"Basic $expectedEncoded"
 
       val result = AuthHeaderBuilder.buildAuthHeader(clientId, clientSecret)
 
@@ -62,4 +63,3 @@ class AuthHeaderBuilderSpec extends AnyWordSpec with Matchers {
     }
   }
 }
-
