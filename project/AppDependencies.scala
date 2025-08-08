@@ -1,3 +1,4 @@
+
 import sbt.*
 
 object AppDependencies {
@@ -7,6 +8,7 @@ object AppDependencies {
   val playLanguageVersion      = "9.1.0"
 
   val compile: Seq[ModuleID] = Seq(
+
     "uk.gov.hmrc"       %% "bootstrap-backend-play-30" % bootstrapVersion,
     "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-30"        % hmrcMongoVersion,
     "org.webjars"        % "swagger-ui"                % "5.26.2",
@@ -20,5 +22,4 @@ object AppDependencies {
   )
 
   val it: Seq[ModuleID] = Seq.empty
-
 }
