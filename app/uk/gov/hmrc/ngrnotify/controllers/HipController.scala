@@ -35,12 +35,6 @@ class HipController @Inject() (hipConnector: HipConnector, cc: ControllerCompone
     eventuallyHelloWorldResponse.map(helloWorldResponse => Ok(s"Response was: ${helloWorldResponse.body}"))
   }
 
-  def hipPersonDetails(): Action[AnyContent] = Action.async { implicit request =>
-    val eventuallyPersonDetailsResponse: Future[HttpResponse] = hipConnector.callPersonDetails(request.headers)
-
-    eventuallyPersonDetailsResponse.map(personDetailsResponse => Ok(s"Response was: ${personDetailsResponse.body}"))
-  }
-
   def hipItems(): Action[AnyContent] = Action.async { implicit request =>
     val eventuallyItemsResponse: Future[HttpResponse] = hipConnector.callItems(request.headers)
 

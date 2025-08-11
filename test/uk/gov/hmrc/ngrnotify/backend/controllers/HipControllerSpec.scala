@@ -50,17 +50,6 @@ class HipControllerSpec extends AsyncWordSpec with Matchers with MockitoSugar {
     }
   }
 
-  "hipPersonDetails()" should {
-    "return OK with person details from HipConnector" in {
-      when(mockHipConnector.callPersonDetails(testHipHeaders))
-        .thenReturn(Future.successful(HttpResponse(200, "{\"name\":\"John Doe\"}")))
-
-      val result = controller.hipPersonDetails()(headers)
-      status(result)          shouldBe OK
-      contentAsString(result) shouldBe "Response was: {\"name\":\"John Doe\"}"
-    }
-  }
-
   "hipItems()" should {
     "return OK with items from HipConnector" in {
       when(mockHipConnector.callItems(testHipHeaders))

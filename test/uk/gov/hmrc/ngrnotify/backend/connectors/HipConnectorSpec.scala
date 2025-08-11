@@ -55,19 +55,6 @@ class HipConnectorSpec extends AnyWordAppSpec {
     }
   }
 
-  "callPersonDetails()" must {
-    "return a successful JsValue response" in {
-      val httpMock  = httpGetMock(OK)
-      val connector = new HipConnector(httpMock)
-
-      val response = connector.callPersonDetails(testHipHeaders).futureValue
-      response.status shouldBe OK
-
-      verify(httpMock)
-        .get(eqTo(url"https://hip.ws.ibt.hmrc.gov.uk/voa-prototype/api/persondetails"))(using any[HeaderCarrier])
-    }
-  }
-
   "callItems()" must {
     "return a successful JsValue response" in {
       val httpMock  = httpGetMock(OK)
