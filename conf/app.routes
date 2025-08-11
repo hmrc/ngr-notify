@@ -2,7 +2,6 @@
 
 # HIP test endpoints
 GET     /hip-hello-world                        uk.gov.hmrc.ngrnotify.controllers.HipController.hipHelloWorld()
-GET     /hip-person-details                     uk.gov.hmrc.ngrnotify.controllers.HipController.hipPersonDetails()
 GET     /hip-items                              uk.gov.hmrc.ngrnotify.controllers.HipController.hipItems()
 
 # Send email
