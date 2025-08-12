@@ -1,0 +1,19 @@
+{
+  "id" : "one-two-three",
+  "idx" : "1",
+  "name" : "Register Ratepayer",
+  "compartments" : {
+    "persons" : [ {
+      "idx" : "1.2.1",
+      "name" : "Government Gateway User",
+      "data" : {
+        "names" : {
+          "title_common" : "Mr"
+        },
+        "communications" : {
+          "email" : "somebody@example.com"
+        }
+      }
+    } ]
+  }
+}
