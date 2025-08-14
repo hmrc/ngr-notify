@@ -20,7 +20,7 @@ class StatusControllerISpec extends AnyWordSpec with Matchers {
       status(result) shouldBe OK
       val json = contentAsJson(result)
       (json \ "ratepayerStatus").as[String] shouldBe "ACCEPTED"
-      (json \ "error").as[String] shouldBe "PLACEHOLDER ERROR MESSAGE :)"
+      (json \ "error").as[String] shouldBe "Registered. The ratepayer details have been accepted by the VOA."
     }
 
     "return 200 OK and UNKNOWN for unknown id" in {

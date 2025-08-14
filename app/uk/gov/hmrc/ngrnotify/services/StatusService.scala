@@ -28,8 +28,23 @@ object StatusService {
     case "TEST_REJECTED" => REJECTED
     case _ => UNKNOWN
   }
-  
-  def buildRatepayerStatusResponse(ratepayerStatus: RatepayerStatus): RatepayerStatusResponse = {
+
+  def buildRatepayerStatusResponse(ratepayerStatus: RatepayerStatus): RatepayerStatusResponse = ratepayerStatus match {
+    case UNKNOWN => RatepayerStatusResponse(
+      UNKNOWN,
+      Some("Unknown. The bridge has no details of this ratepayer. Possibly a signal that something has gone wrong if the Ratepayer has registered via a frontend service."))
+    case INPROGRESS => RatepayerStatusResponse(
+      INPROGRESS,
+      Some("In progress. Case officers are examining the ratepayer application but have not yet decided."))
+    case ACCEPTED => RatepayerStatusResponse(
+      ACCEPTED,
+      Some("Registered. The ratepayer details have been accepted by the VOA."))
+    case REJECTED => RatepayerStatusResponse(
+      REJECTED,
+      Some("Rejected. The ratepayer details have been rejected by the VOA."))
+  }
+
+  def buildRatepayerStatusResponseOLD(ratepayerStatus: RatepayerStatus): RatepayerStatusResponse = {
     RatepayerStatusResponse(ratepayerStatus, error = Some("PLACEHOLDER ERROR MESSAGE :)"))
   }
 }

@@ -18,10 +18,8 @@ package uk.gov.hmrc.ngrnotify.backend.services
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.model.RatepayerStatus
 import uk.gov.hmrc.ngrnotify.model.RatepayerStatus.*
-import uk.gov.hmrc.ngrnotify.model.response.RatepayerStatusResponse
 import uk.gov.hmrc.ngrnotify.services.StatusService
 
 class StatusServiceSpec extends AnyWordSpec with Matchers {
@@ -49,18 +47,28 @@ class StatusServiceSpec extends AnyWordSpec with Matchers {
   }
 
   "buildRatepayerStatusResponse()" should {
-    "build response with correct status and error message" in {
+    "build response with correct status and error message for UNKNOWN" in {
+      val response = StatusService.buildRatepayerStatusResponse(UNKNOWN)
+      response.ratepayerStatus shouldBe UNKNOWN
+      response.error shouldBe Some("Unknown. The bridge has no details of this ratepayer. Possibly a signal that something has gone wrong if the Ratepayer has registered via a frontend service.")
+    }
+    
+    "build response with correct status and error message for INPROGRESS" in {
+      val response = StatusService.buildRatepayerStatusResponse(INPROGRESS)
+      response.ratepayerStatus shouldBe INPROGRESS
+      response.error shouldBe Some("In progress. Case officers are examining the ratepayer application but have not yet decided.")
+    }
+    
+    "build response with correct status and error message for ACCEPTED" in {
       val response = StatusService.buildRatepayerStatusResponse(ACCEPTED)
       response.ratepayerStatus shouldBe ACCEPTED
-      response.error shouldBe Some("PLACEHOLDER ERROR MESSAGE :)")
+      response.error shouldBe Some("Registered. The ratepayer details have been accepted by the VOA.")
     }
-
-    "serialize response to JSON correctly" in {
+    
+    "build response with correct status and error message for REJECTED" in {
       val response = StatusService.buildRatepayerStatusResponse(REJECTED)
-      val json = Json.toJson(response)
-
-      (json \ "ratepayerStatus").as[RatepayerStatus] shouldBe REJECTED
-      (json \ "error").as[String] shouldBe "PLACEHOLDER ERROR MESSAGE :)"
+      response.ratepayerStatus shouldBe REJECTED
+      response.error shouldBe Some("Rejected. The ratepayer details have been rejected by the VOA.")
     }
   }
 }

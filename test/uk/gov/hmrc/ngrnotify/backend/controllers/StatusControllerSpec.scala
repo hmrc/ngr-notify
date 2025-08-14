@@ -39,7 +39,7 @@ class StatusControllerSpec extends AnyWordSpec with Matchers with MockitoSugar {
 
       val json = contentAsJson(result)
       (json \ "ratepayerStatus").as[RatepayerStatus] shouldBe INPROGRESS
-      (json \ "error").asOpt[String] shouldBe Some("PLACEHOLDER ERROR MESSAGE :)")
+      (json \ "error").asOpt[String] shouldBe Some("In progress. Case officers are examining the ratepayer application but have not yet decided.")
     }
   }
 }
