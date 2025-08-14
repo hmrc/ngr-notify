@@ -4,5 +4,8 @@
 GET     /hip-hello-world                        uk.gov.hmrc.ngrnotify.controllers.HipController.hipHelloWorld()
 GET     /hip-items                              uk.gov.hmrc.ngrnotify.controllers.HipController.hipItems()
 
+# Status endpoints
+GET     /ratepayer-status/:id                   uk.gov.hmrc.ngrnotify.controllers.StatusController.ratepayerStatus(id: String)
+
 # Send email
 POST    /send-email/:emailTemplateId             uk.gov.hmrc.ngrnotify.controllers.EmailSenderController.sendEmail(emailTemplateId)

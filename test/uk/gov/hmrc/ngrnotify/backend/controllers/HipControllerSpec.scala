@@ -34,17 +34,15 @@ class HipControllerSpec extends AsyncWordSpec with Matchers with MockitoSugar {
 
   val mockHipConnector: HipConnector               = mock[HipConnector]
   val controllerComponents: ControllerComponents   = Helpers.stubControllerComponents()
-  val controller                                   = new HipController(mockHipConnector, controllerComponents)(using
-    scala.concurrent.ExecutionContext.global
-  )
-  val headers: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(testHipHeaders)
+  val controller                                   = new HipController(mockHipConnector, controllerComponents)(using scala.concurrent.ExecutionContext.global)
+  val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(testHipHeaders)
 
   "hipHelloWorld()" should {
     "return OK with response from HipConnector" in {
       when(mockHipConnector.callHelloWorld(testHipHeaders))
         .thenReturn(Future.successful(HttpResponse(200, "{\"message\":\"Hello World\"}")))
 
-      val result = controller.hipHelloWorld()(headers)
+      val result = controller.hipHelloWorld()(request)
       status(result)          shouldBe OK
       contentAsString(result) shouldBe "Response was: {\"message\":\"Hello World\"}"
     }
@@ -55,7 +53,7 @@ class HipControllerSpec extends AsyncWordSpec with Matchers with MockitoSugar {
       when(mockHipConnector.callItems(testHipHeaders))
         .thenReturn(Future.successful(HttpResponse(200, "{\"items\":\"item1\"}")))
 
-      val result = controller.hipItems()(headers)
+      val result = controller.hipItems()(request)
       status(result)          shouldBe OK
       contentAsString(result) shouldBe "Response was: {\"items\":\"item1\"}"
     }
