@@ -43,8 +43,4 @@ object StatusService {
       REJECTED,
       Some("Rejected. The ratepayer details have been rejected by the VOA."))
   }
-
-  def buildRatepayerStatusResponseOLD(ratepayerStatus: RatepayerStatus): RatepayerStatusResponse = {
-    RatepayerStatusResponse(ratepayerStatus, error = Some("PLACEHOLDER ERROR MESSAGE :)"))
-  }
 }
