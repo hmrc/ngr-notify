@@ -16,8 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.exporter
 
-import org.apache.pekko.actor.Scheduler
-import org.apache.pekko.event.EventStream
+import org.apache.pekko.actor.ActorSystem
 import uk.gov.hmrc.mongo.lock.{LockService, MongoLockRepository}
 import uk.gov.hmrc.ngrnotify.infrastructure.{LockedJobScheduler, Schedule}
 
@@ -29,13 +28,11 @@ class SendEmailExporter(
   mongoLockRepository: MongoLockRepository,
   exporter: ExportEmailNotification,
   exportBatchSize: Int,
-  scheduler: Scheduler,
-  eventStream: EventStream,
+  actorSystem: ActorSystem,
   val schedule: Schedule
 ) extends LockedJobScheduler[SendEmailComplete](
       LockService(mongoLockRepository, "SendEmailExporterLock", 1 hour),
-      scheduler,
-      eventStream
+      actorSystem
     ) {
 
   override val name: String = "SendEmailScheduler"

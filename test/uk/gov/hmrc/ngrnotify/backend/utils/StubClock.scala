@@ -25,14 +25,5 @@ import javax.inject.Singleton
 
 @Singleton
 class StubClock extends Clock with Logging {
-
-  private var _now: ZonedDateTime = nowInUK
-
-  def setNow(d: ZonedDateTime): Unit = {
-    logger.warn(s"Setting new time $d, old time ${_now}")
-    _now = d
-  }
-
-  override def now(): ZonedDateTime = _now
-
+  override def now(): ZonedDateTime = nowInUK
 }

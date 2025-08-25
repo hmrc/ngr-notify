@@ -26,5 +26,5 @@ case class PersonData(
 )
 
 object PersonData:
-    import play.api.libs.json.*
-    given Format[PersonData] = Json.format
+  import play.api.libs.json.*
+  given Format[PersonData] = Json.format

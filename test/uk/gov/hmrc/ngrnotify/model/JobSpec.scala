@@ -25,15 +25,15 @@ import uk.gov.hmrc.ngrnotify.model.bridge.TitleCommon.*
 class JobSpec extends AnyWordSpec with Matchers:
 
   "The ngr-notify service" when {
-    "receiving the incoming JSON text" should {
+    "receiving the incoming JSON text"    should {
       "fully deserialize it into our Scala model" in {
 
         // Receive the incoming text,
         // parse it into an abstract syntax tree
         // and then convert it to our model
         val incomingText  = loadText("incoming_job.json")
-        val absSyntaxTree  = Json.parse(incomingText)
-        val actualModel = Json.fromJson[Job](absSyntaxTree)
+        val absSyntaxTree = Json.parse(incomingText)
+        val actualModel   = Json.fromJson[Job](absSyntaxTree)
 
         // Assert the actual model is the same as the expected one
         actualModel mustBe a[JsSuccess[Job]]
@@ -45,7 +45,7 @@ class JobSpec extends AnyWordSpec with Matchers:
 
         // Turn our model into a JSON abstract syntax tree
         // and the pretty print it to text
-        val abst = Json.toJson(jobDescr)
+        val abst       = Json.toJson(jobDescr)
         val actualText = Json.prettyPrint(abst)
 
         // Assert the actual text is the same as the expected one
@@ -54,7 +54,6 @@ class JobSpec extends AnyWordSpec with Matchers:
       }
     }
   }
-
 
   val jobDescr = Job(
     id = Some("one-two-three"),
@@ -68,7 +67,7 @@ class JobSpec extends AnyWordSpec with Matchers:
           name = "Government Gateway User",
           data = PersonData(
             names = Names(
-              titleCommon = Mr,
+              titleCommon = Mr
             ),
             communications = Communications(
               email = Some("somebody@example.com")
@@ -78,7 +77,6 @@ class JobSpec extends AnyWordSpec with Matchers:
       )
     )
   )
-
 
   def loadText(resource: String): String =
     scala.io.Source.fromResource(resource).getLines().mkString("\n")

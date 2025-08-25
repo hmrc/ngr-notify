@@ -24,7 +24,6 @@ case class Compartments(
   // relationships: List.empty
 )
 
-
 object Compartments:
-    import play.api.libs.json.*
-    given Format[Compartments] = Json.format
+  import play.api.libs.json.*
+  given Format[Compartments] = Json.format

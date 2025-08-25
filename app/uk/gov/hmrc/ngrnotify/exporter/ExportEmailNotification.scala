@@ -34,13 +34,13 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
-@ImplementedBy(classOf[ExportEmailNotificationVOA])
+@ImplementedBy(classOf[ExportEmailNotificationImpl])
 trait ExportEmailNotification {
   def exportNow(size: Int): Future[Unit]
 }
 
 @Singleton
-class ExportEmailNotificationVOA @Inject() (
+class ExportEmailNotificationImpl @Inject() (
   emailNotificationRepo: EmailNotificationRepo,
   clock: Clock,
   audit: NGRAudit,

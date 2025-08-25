@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-case class Communications (
+case class Communications(
   // postal_address
   // telephone_number
   email: Option[String]
 )
 
 object Communications:
-    import play.api.libs.json.*
-    given Format[Communications] = Json.format
+  import play.api.libs.json.*
+  given Format[Communications] = Json.format

@@ -16,10 +16,8 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-
 enum TitleCommon:
   case Mr, Ms, Mrs, Miss
-
 
 object TitleCommon:
   import play.api.libs.json.*

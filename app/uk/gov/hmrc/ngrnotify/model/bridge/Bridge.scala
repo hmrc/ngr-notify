@@ -18,7 +18,6 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.*
 
-
 object Bridge:
 
   type Id = String
@@ -30,7 +29,6 @@ object Bridge:
         case JsString(str) => JsSuccess(str)
         case _             => JsError("Expected a JSON number or string")
   }
-
 
   //
   //   NOTE
@@ -66,6 +64,3 @@ object Bridge:
   //      └──────────────────────────────────────────────────────────────────
   //
   //
-
-
-

@@ -31,6 +31,7 @@ import java.net.URLEncoder
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+// TODO Use HttpClientV2 instead of HttpPost, WSPost and WSProxy
 trait HodHttpClient extends HttpPost with WSPost
 
 @Singleton

@@ -44,7 +44,6 @@ case class Job(
 
 ) extends Standard
 
-
 object Job:
   import play.api.libs.json.*
   import Bridge.given

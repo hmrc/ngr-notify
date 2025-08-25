@@ -16,8 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.infrastructure
 
-import org.apache.pekko.actor.Scheduler
-import org.apache.pekko.event.EventStream
+import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.util.Timeout
 import play.api.Logging
 import uk.gov.hmrc.mongo.lock.LockService
@@ -28,8 +27,7 @@ import scala.language.postfixOps
 
 abstract class LockedJobScheduler[Event <: AnyRef](
   lockService: LockService,
-  scheduler: Scheduler,
-  eventStream: EventStream
+  actorSystem: ActorSystem
 ) extends Logging {
   implicit val t: Timeout = 1 hour
 
@@ -42,18 +40,20 @@ abstract class LockedJobScheduler[Event <: AnyRef](
 
   private def run()(implicit ec: ExecutionContext) = {
     logger.info(s"Starting job: $name")
-    runJob().map {
-      eventStream.publish
-    } recoverWith { case e: Exception =>
-      logger.error(s"Error running job: $name", e)
-      Future.failed(e)
-    }
+    runJob()
+      .map { event =>
+        actorSystem.eventStream.publish(event)
+      }
+      .recoverWith { case e: Exception =>
+        logger.error(s"Error running job: $name", e)
+        Future.failed(e)
+      }
   }
 
   private def scheduleNextImport()(implicit ec: ExecutionContext): Unit = {
     val t = schedule.timeUntilNextRun()
     logger.info(s"Scheduling $name to run in: $t")
-    scheduler.scheduleOnce(t) {
+    actorSystem.scheduler.scheduleOnce(t) {
       lockService.withLock(run()) onComplete { _ => scheduleNextImport() }
     }
   }
