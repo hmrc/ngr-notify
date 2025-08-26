@@ -28,4 +28,4 @@ trait Standard:
   // val origination: Option[#/$defs/COMMON/INSTANT]
   // val termination: Option[#/$defs/COMMON/INSTANT]
   // val protodata: List[#/$defs/COMMON/PROTODATA/ITEMS]
-  // val metadata: Metadata 
+  // val metadata: Metadata

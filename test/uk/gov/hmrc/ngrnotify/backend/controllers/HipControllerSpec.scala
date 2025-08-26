@@ -34,7 +34,9 @@ class HipControllerSpec extends AsyncWordSpec with Matchers with MockitoSugar {
 
   val mockHipConnector: HipConnector               = mock[HipConnector]
   val controllerComponents: ControllerComponents   = Helpers.stubControllerComponents()
-  val controller                                   = new HipController(mockHipConnector, controllerComponents)(using scala.concurrent.ExecutionContext.global)
+  val controller                                   = new HipController(mockHipConnector, controllerComponents)(using
+    scala.concurrent.ExecutionContext.global
+  )
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(testHipHeaders)
 
   "hipHelloWorld()" should {

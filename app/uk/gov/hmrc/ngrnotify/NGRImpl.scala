@@ -45,7 +45,7 @@ class NGRImpl @Inject() (
   import appConfig.*
 
   if submissionExportEnabled then
-    val exporter = new ExportEmailNotificationVOA(
+    val exporter = new ExportEmailNotificationImpl(
       emailNotificationRepo,
       systemClock,
       audit,
@@ -57,8 +57,7 @@ class NGRImpl @Inject() (
       mongoLockRepository,
       exporter,
       exportBatchSize,
-      actorSystem.scheduler,
-      actorSystem.eventStream,
+      actorSystem,
       regularSchedule
     ).start()
 }

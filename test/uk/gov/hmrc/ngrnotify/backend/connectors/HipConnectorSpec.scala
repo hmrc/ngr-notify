@@ -32,7 +32,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class HipConnectorSpec extends AnyWordAppSpec {
 
-  private val configuration  = Configuration(ConfigFactory.load("application.conf"))
+  private val configuration = Configuration(ConfigFactory.load("application.conf"))
 
   private def httpGetMock(responseStatus: Int): HttpClientV2 =
     val httpClientV2Mock = mock[HttpClientV2]

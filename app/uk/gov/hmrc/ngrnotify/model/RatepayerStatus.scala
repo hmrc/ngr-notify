@@ -20,9 +20,9 @@ import play.api.libs.json.Format
 
 enum RatepayerStatus:
   case UNKNOWN,
-  INPROGRESS,
-  ACCEPTED,
-  REJECTED
+    INPROGRESS,
+    ACCEPTED,
+    REJECTED
 end RatepayerStatus
 
 object RatepayerStatus:

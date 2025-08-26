@@ -28,18 +28,20 @@ import uk.gov.hmrc.ngrnotify.model.RatepayerStatus.INPROGRESS
 
 class StatusControllerSpec extends AnyWordSpec with Matchers with MockitoSugar {
   val controllerComponents: ControllerComponents = Helpers.stubControllerComponents()
-  val controller = new StatusController(controllerComponents)
+  val controller                                 = new StatusController(controllerComponents)
 
   "ratepayerStatus()" should {
     "return 200 OK with valid JSON" in {
       val request = FakeRequest(GET, "/ratepayer/status/12345")
-      val result = controller.ratepayerStatus("TEST_INPROGRESS")(request)
+      val result  = controller.ratepayerStatus("TEST_INPROGRESS")(request)
 
       status(result) shouldBe OK
 
       val json = contentAsJson(result)
       (json \ "ratepayerStatus").as[RatepayerStatus] shouldBe INPROGRESS
-      (json \ "error").asOpt[String] shouldBe Some("In progress. Case officers are examining the ratepayer application but have not yet decided.")
+      (json \ "error").asOpt[String]                 shouldBe Some(
+        "In progress. Case officers are examining the ratepayer application but have not yet decided."
+      )
     }
   }
 }

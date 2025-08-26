@@ -19,7 +19,7 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 import Bridge.Id
 
 // #/$defs/ENTITIES/PERSONS/PERSON
-case class Person (
+case class Person(
   // #/$defs/ENTITIES/STANDARD
   id: Option[Id],
   idx: String,
@@ -42,9 +42,8 @@ case class Person (
 
 ) extends Standard
 
-
 object Person:
-    import play.api.libs.json.*
-    import Bridge.given
+  import play.api.libs.json.*
+  import Bridge.given
 
-    given Format[Person] = Json.format
+  given Format[Person] = Json.format

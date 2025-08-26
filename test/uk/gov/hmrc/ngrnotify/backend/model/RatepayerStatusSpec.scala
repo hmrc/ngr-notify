@@ -24,15 +24,15 @@ import uk.gov.hmrc.ngrnotify.model.RatepayerStatus
 
 class RatepayerStatusSpec extends AnyFlatSpec with Matchers {
   "RatepayerStatus" should "serialize to JSON" in {
-      val status: RatepayerStatus = RatepayerStatus.ACCEPTED
-      val json: JsValue = Json.toJson(status)
+    val status: RatepayerStatus = RatepayerStatus.ACCEPTED
+    val json: JsValue           = Json.toJson(status)
 
-      json.toString() shouldBe "\"ACCEPTED\""
-    }
+    json.toString() shouldBe "\"ACCEPTED\""
+  }
 
   it should "deserialize from JSON" in {
     val json: JsValue = Json.parse("\"REJECTED\"")
-    val status = json.as[RatepayerStatus]
+    val status        = json.as[RatepayerStatus]
 
     status shouldBe RatepayerStatus.REJECTED
   }

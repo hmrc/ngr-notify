@@ -26,6 +26,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
+// TODO Rename it to NGRAuditConnector for better clarity
 class NGRAudit @Inject() (
   val auditingConfig: AuditingConfig,
   val auditChannel: AuditChannel,
