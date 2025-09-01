@@ -26,9 +26,14 @@ class AuthHeaderBuilderSpec extends AnyWordSpec with Matchers {
   "buildAuthHeader()" should {
 
     "return a valid Basic Auth header for given clientId and clientSecret" in {
+      val testClientIdX = "659e20b1-da89-41c3-8074-dc640d7deca8"
+      val testClientSecretX = "ZMIvNPFcHowPEzTUZC3GBhTCwqr189Cs"
       val expectedEncoded =
-        java.util.Base64.getEncoder.encodeToString(s"$testClientId:$testClientSecret".getBytes("UTF-8"))
+        java.util.Base64.getEncoder.encodeToString(s"$testClientIdX:$testClientSecretX".getBytes("UTF-8"))
+//      val expectedEncoded =
+//        java.util.Base64.getEncoder.encodeToString(s"$testClientId:$testClientSecret".getBytes("UTF-8"))
       val expectedHeader  = s"Basic $expectedEncoded"
+      println(" XXX" + expectedHeader)
 
       val result = AuthHeaderBuilder.buildAuthHeader(testClientId, testClientSecret)
 
