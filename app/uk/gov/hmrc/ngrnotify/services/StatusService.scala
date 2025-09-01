@@ -21,6 +21,7 @@ import uk.gov.hmrc.ngrnotify.model.RatepayerStatus.*
 import uk.gov.hmrc.ngrnotify.model.response.RatepayerStatusResponse
 
 object StatusService {
+
   def checkRatepayerStatus(id: String): RatepayerStatus = id match {
     case "TEST_UNKNOWN"    => UNKNOWN
     case "TEST_INPROGRESS" => INPROGRESS

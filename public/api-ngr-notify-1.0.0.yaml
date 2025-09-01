@@ -14,6 +14,111 @@ tags:
     description: >-
       This API is intended for use by NGR services to facilitate the sending of email notifications.
 paths:
+  '/ngr-notify/register-ratepayer':
+    post:
+      summary: 'NGR Notify API - Register ratepayer'
+      description: >
+        Transmits ratepayer data for verification to confirm the registration.
+      tags:
+        - 'Ratepayer'
+      requestBody:
+        required: true
+        description: Register ratepayer - request body
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: "#/components/schemas/registerRatepayerRequest"
+            examples:
+              Example1:
+                summary: Example 1 - minimal
+                value:
+                  ratepayerCredId: ratepayer_login
+                  name: David Jones
+                  email: test@email.com
+                  contactNumber: "07773332211"
+                  address:
+                    line1: 144 High Road
+                    town: London
+                    postcode: "ZZ11 1ZZ"
+              Example2:
+                summary: Example 2 - all properties
+                value:
+                  ratepayerCredId: ratepayer_login
+                  userType: individual
+                  agentStatus: agent
+                  name: David Jones
+                  tradingName: Trading Ltd
+                  email: test@email.com
+                  nino: QQ123456A
+                  contactNumber: "07773332211"
+                  secondaryNumber: "911"
+                  address:
+                    line1: 28 Birch Court
+                    line2: High Road
+                    town: London
+                    county: England
+                    postcode: "ZZ11 1ZZ"
+      responses:
+        '201':
+          description: Registration request accepted.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/registrationStatus'
+              examples:
+                Example1:
+                  summary: Successful Response Example
+                  value:
+                    status: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/registrationStatus'
+              examples:
+                Example1_INCOMPLETE:
+                  summary: Incomplete registration request properties
+                  value:
+                    status: INCOMPLETE
+                    message: Missed property - contactNumber
+                Example2_DUPLICATE:
+                  summary: Duplicate request
+                  value:
+                    status: DUPLICATE
+                    message: Ratepayer ID is already in use
+        '500':
+          description: |-
+            Server Error
+            ```
+             "code"         "reason"
+             SERVER_ERROR   Service is currently experiencing problems that require live service intervention.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/failureResponse'
+              examples:
+                Server Error:
+                  value:
+                    failures:
+                      - code: SERVER_ERROR
+                        reason: Service is currently experiencing problems that require live service intervention.
+        '503':
+          description: |-
+            Service Unavailable
+            ```
+            "code"                "reason"
+            SERVICE_UNAVAILABLE   Dependent systems are currently not responding.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/failureResponse'
+              examples:
+                Example-Service_Unavailable:
+                  value:
+                    failures:
+                      - code: SERVICE_UNAVAILABLE
+                        reason: Dependent systems are currently not responding.
   '/ngr-notify/send-email/{emailTemplateId}':
     post:
       summary: 'NGR Notify API - Send email'
@@ -37,7 +142,7 @@ paths:
         content:
           application/json;charset=UTF-8:
             schema:
-              - $ref: "#/components/schemas/request"
+              $ref: "#/components/schemas/request"
             examples:
               Example1:
                 summary: Example 1 - RegistrationSuccessful
@@ -237,7 +342,7 @@ components:
                 description: A simple description for the failure
                 type: string
                 minLength: 1
-                maxLength: 160
+                maxLength: 300
     successResponse:
       title: 'Send Email Successful Response Schema'
       type: object
@@ -254,7 +359,133 @@ components:
           example: Success
         message:
           minLength: 0
-          maxLength: 100
+          maxLength: 300
           type: string
           description: The response message
           example: Email dispatch task successfully created.
+    registerRatepayerRequest:
+      title: 'Register ratepayer - request schema'
+      type: object
+      required:
+        - ratepayerCredId
+        - name
+        - email
+        - contactNumber
+        - address
+      additionalProperties: false
+      properties:
+        ratepayerCredId:
+          minLength: 1
+          maxLength: 200
+          type: string
+          description: Ratepayer credential ID (OneLogin or Government Gateway)
+          example: ratepayer_credential
+        userType:
+          type: string
+          enum:
+            - individual
+            - organization
+          description: Ratepayer user type
+          example: organization
+        agentStatus:
+          type: string
+          enum:
+            - agent
+            - autonomous
+          description: Agent status
+          example: autonomous
+        name:
+          minLength: 1
+          maxLength: 200
+          type: string
+          description: Ratepayer full name
+          example: David Jones
+        tradingName:
+          minLength: 0
+          maxLength: 200
+          type: string
+          description: Ratepayer trading name
+          example: Company name
+        email:
+          minLength: 1
+          maxLength: 150
+          type: string
+          format: email
+        nino:
+          minLength: 0
+          maxLength: 50
+          type: string
+          description: NINO
+          example: QQ123456A
+        contactNumber:
+          minLength: 1
+          maxLength: 50
+          type: string
+          description: Ratepayer contact number
+        secondaryNumber:
+          minLength: 0
+          maxLength: 50
+          type: string
+          description: Ratepayer secondary contact number
+        address:
+          $ref: '#/components/schemas/address'
+    registrationStatus:
+      title: 'Register ratepayer - response schema'
+      type: object
+      required:
+        - status
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+            - OK
+            - INCOMPLETE
+            - DUPLICATE
+          description: Ratepayer registration status
+          example: INCOMPLETE
+        message:
+          minLength: 0
+          maxLength: 300
+          type: string
+          description: The response message
+          example: Missed property - email
+    address:
+      title: 'Address schema'
+      type: object
+      required:
+        - line1
+        - town
+        - postcode
+      additionalProperties: false
+      properties:
+        line1:
+          minLength: 1
+          maxLength: 100
+          type: string
+          description: Address line 1
+          example: 28 Birch Court
+        line2:
+          minLength: 0
+          maxLength: 100
+          type: string
+          description: Address line 2 (optional)
+          example: Victoria Road
+        town:
+          minLength: 1
+          maxLength: 100
+          type: string
+          description: City
+          example: London
+        county:
+          minLength: 0
+          maxLength: 100
+          type: string
+          description: County (optional)
+          example: England
+        postcode:
+          minLength: 1
+          maxLength: 9
+          type: string
+          description: Postcode
+          example: AA11 1AA

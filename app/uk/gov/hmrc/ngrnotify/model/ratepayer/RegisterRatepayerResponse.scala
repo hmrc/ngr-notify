@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model
+package uk.gov.hmrc.ngrnotify.model.ratepayer
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Json, OFormat}
 
-enum RatepayerStatus:
+/**
+  * @author Yuriy Tumakha
+  */
+case class RegisterRatepayerResponse(
+  status: RegistrationStatus,
+  error: Option[String] = None
+)
 
-  case UNKNOWN,
-    INPROGRESS,
-    ACCEPTED,
-    REJECTED
-end RatepayerStatus
-
-object RatepayerStatus:
-  implicit val format: Format[RatepayerStatus] = Scala3EnumJsonFormat.format
+object RegisterRatepayerResponse:
+  implicit val format: OFormat[RegisterRatepayerResponse] = Json.format

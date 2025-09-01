@@ -24,8 +24,7 @@ import scala.concurrent.duration.*
 import scala.language.postfixOps
 
 @Singleton
-class ScheduleImmediatelyOnceOnly @Inject() (ngrConfig: AppConfig, systemClock: SystemClock)
-    extends DefaultDailySchedule(ngrConfig, systemClock) {
+class ScheduleImmediatelyOnceOnly @Inject() (ngrConfig: AppConfig, systemClock: SystemClock) extends DefaultDailySchedule(ngrConfig, systemClock) {
   private var hasRun = false
 
   override def timeUntilNextRun(): FiniteDuration =

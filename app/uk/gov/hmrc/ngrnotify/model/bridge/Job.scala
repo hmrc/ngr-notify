@@ -41,7 +41,6 @@ case class Job(
   // data: #/$defs/ENTITIES/JOBS/JOB/DATA
   compartments: Compartments
   // items: List.empty
-
 ) extends Standard
 
 object Job:

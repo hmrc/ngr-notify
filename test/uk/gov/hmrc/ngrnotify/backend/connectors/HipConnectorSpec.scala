@@ -16,23 +16,18 @@
 
 package uk.gov.hmrc.ngrnotify.backend.connectors
 
-import com.typesafe.config.ConfigFactory
-import play.api.Configuration
 import play.api.http.Status.OK
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
 import uk.gov.hmrc.ngrnotify.backend.testUtils.HipTestData.testHipHeaders
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
-import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL
 import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class HipConnectorSpec extends AnyWordAppSpec {
-
-  private val configuration = Configuration(ConfigFactory.load("application.conf"))
 
   private def httpGetMock(responseStatus: Int): HttpClientV2 =
     val httpClientV2Mock = mock[HttpClientV2]

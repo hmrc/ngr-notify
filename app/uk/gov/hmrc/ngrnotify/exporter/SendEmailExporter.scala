@@ -31,9 +31,9 @@ class SendEmailExporter(
   actorSystem: ActorSystem,
   val schedule: Schedule
 ) extends LockedJobScheduler[SendEmailComplete](
-      LockService(mongoLockRepository, "SendEmailExporterLock", 1 hour),
-      actorSystem
-    ) {
+    LockService(mongoLockRepository, "SendEmailExporterLock", 1 hour),
+    actorSystem
+  ) {
 
   override val name: String = "SendEmailScheduler"
 

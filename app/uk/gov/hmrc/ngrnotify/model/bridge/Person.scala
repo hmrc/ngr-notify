@@ -39,7 +39,6 @@ case class Person(
   data: PersonData
   // compartments: Empty
   // items: List[#/$defs/ENTITIES/PERSONS/PERSON]
-
 ) extends Standard
 
 object Person:

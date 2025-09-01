@@ -28,6 +28,7 @@ import uk.gov.hmrc.ngrnotify.services.StatusService
 
 @Singleton()
 class StatusController @Inject() (cc: ControllerComponents)() extends BackendController(cc) {
+
   def ratepayerStatus(id: String): Action[AnyContent] = Action.async { implicit request =>
     val ratepayerStatus: RatepayerStatus                 = StatusService.checkRatepayerStatus(id)
     val ratepayerStatusResponse: RatepayerStatusResponse = StatusService.buildRatepayerStatusResponse(ratepayerStatus)

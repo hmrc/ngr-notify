@@ -16,15 +16,18 @@
 
 package uk.gov.hmrc.ngrnotify.model
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Json, OFormat}
 
-enum RatepayerStatus:
+/**
+  * @author Yuriy Tumakha
+  */
+case class Address(
+  line1: String,
+  line2: Option[String],
+  town: String,
+  county: Option[String],
+  postcode: String
+)
 
-  case UNKNOWN,
-    INPROGRESS,
-    ACCEPTED,
-    REJECTED
-end RatepayerStatus
-
-object RatepayerStatus:
-  implicit val format: Format[RatepayerStatus] = Scala3EnumJsonFormat.format
+object Address:
+  implicit val format: OFormat[Address] = Json.format

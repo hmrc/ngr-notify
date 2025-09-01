@@ -30,13 +30,13 @@ import play.api.{Application, Configuration}
   * @author Yuriy Tumakha
   */
 abstract class IntegrationSpecBase
-    extends AnyWordSpec
-    with should.Matchers
-    with OptionValues
-    with ScalaFutures
-    with IntegrationPatience
-    with GuiceOneServerPerSuite
-    with Injecting {
+  extends AnyWordSpec
+  with should.Matchers
+  with OptionValues
+  with ScalaFutures
+  with IntegrationPatience
+  with GuiceOneServerPerSuite
+  with Injecting {
 
   override def fakeApplication(): Application =
     GuiceApplicationBuilder()

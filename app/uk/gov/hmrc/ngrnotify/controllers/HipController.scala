@@ -25,7 +25,10 @@ import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 
 @Singleton()
-class HipController @Inject() (hipConnector: HipConnector, cc: ControllerComponents)(implicit
+class HipController @Inject() (
+  hipConnector: HipConnector,
+  cc: ControllerComponents
+)(implicit
   executionContext: ExecutionContext
 ) extends BackendController(cc) {
 

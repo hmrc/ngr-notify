@@ -35,9 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 trait HodHttpClient extends HttpPost with WSPost
 
 @Singleton
-class HodHttpClientImpl @Inject() (config: Configuration, client: WSClient, ac: ActorSystem)
-    extends HodHttpClient
-    with WSProxy {
+class HodHttpClientImpl @Inject() (config: Configuration, client: WSClient, ac: ActorSystem) extends HodHttpClient with WSProxy {
 
   override def wsClient: WSClient = client
 
@@ -53,7 +51,8 @@ class HodHttpClientImpl @Inject() (config: Configuration, client: WSClient, ac: 
     url: String,
     body: Map[String, Seq[String]],
     headers: Seq[(String, String)]
-  )(implicit ec: ExecutionContext): Future[HttpResponse] = {
+  )(implicit ec: ExecutionContext
+  ): Future[HttpResponse] = {
 
     val voaForCodec = Codec.javaSupported("x-voa-for")
 
@@ -87,8 +86,7 @@ class HodHttpClientImpl @Inject() (config: Configuration, client: WSClient, ac: 
 trait MdtpHttpClient extends HttpPost with WSPost {}
 
 @Singleton
-class MdtpHttpClientImpl @Inject() (val actorSystem: ActorSystem, conf: Configuration, client: WSClient)
-    extends MdtpHttpClient {
+class MdtpHttpClientImpl @Inject() (val actorSystem: ActorSystem, conf: Configuration, client: WSClient) extends MdtpHttpClient {
 
   override protected def configuration: Config = conf.underlying
 

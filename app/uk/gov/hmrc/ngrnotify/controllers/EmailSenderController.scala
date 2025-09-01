@@ -46,7 +46,7 @@ class EmailSenderController @Inject() (
 )(using
   ec: ExecutionContext
 ) extends BackendController(cc)
-    with Logging:
+  with Logging:
 
   def sendEmail(emailTemplateId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     Try(EmailTemplate.valueOf(emailTemplateId)).toEither.fold(
@@ -67,7 +67,8 @@ class EmailSenderController @Inject() (
     }
   }
 
-  private def parseAndValidateTemplateParams[T](using
+  private def parseAndValidateTemplateParams[T](
+    using
     request: Request[JsValue],
     rds: Reads[T]
   ): Either[Result, SendEmailRequest] =

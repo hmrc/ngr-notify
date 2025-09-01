@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model
+package uk.gov.hmrc.ngrnotify.model.ratepayer
 
-import play.api.libs.json.Format
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import play.api.libs.json.Json
+import uk.gov.hmrc.ngrnotify.model.ratepayer.RegistrationStatus.OK
 
 /**
   * @author Yuriy Tumakha
   */
-enum EmailTemplate:
+class RegisterRatepayerResponseSpec extends AnyWordSpec with Matchers:
 
-  case ngr_registration_successful,
-    ngr_add_property_request_sent
-end EmailTemplate
-
-object EmailTemplate:
-  implicit val format: Format[EmailTemplate] = Scala3EnumJsonFormat.format
+  "RegisterRatepayerResponse" should {
+    "be serialized/deserialized from JSON" in {
+      val registerRatepayerResponse = RegisterRatepayerResponse(OK)
+      val json                      = Json.toJson(registerRatepayerResponse)
+      json.as[RegisterRatepayerResponse] shouldBe registerRatepayerResponse
+    }
+  }
