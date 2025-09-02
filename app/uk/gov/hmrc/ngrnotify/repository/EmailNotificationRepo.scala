@@ -35,23 +35,25 @@ import scala.concurrent.{ExecutionContext, Future}
   * @author Yuriy Tumakha
   */
 @Singleton
-class EmailNotificationRepo @Inject() (mongo: MongoComponent)(using
+class EmailNotificationRepo @Inject() (
+  mongo: MongoComponent
+)(using
   ec: ExecutionContext
 ) extends PlayMongoRepository[EmailNotification](
-      collectionName = "emailNotification",
-      mongoComponent = mongo,
-      domainFormat = EmailNotification.format,
-      indexes = Seq(
-        IndexModel(
-          Indexes.ascending("createdAt"),
-          IndexOptions().name("emailNotificationTTL").expireAfter(saveForDays, TimeUnit.DAYS)
-        )
-      ),
-      extraCodecs = Seq(
-        new ObjectIdCodec,
-        Codecs.playFormatCodec(MongoJavatimeFormats.instantFormat)
+    collectionName = "emailNotification",
+    mongoComponent = mongo,
+    domainFormat = EmailNotification.format,
+    indexes = Seq(
+      IndexModel(
+        Indexes.ascending("createdAt"),
+        IndexOptions().name("emailNotificationTTL").expireAfter(saveForDays, TimeUnit.DAYS)
       )
-    ):
+    ),
+    extraCodecs = Seq(
+      new ObjectIdCodec,
+      Codecs.playFormatCodec(MongoJavatimeFormats.instantFormat)
+    )
+  ):
 
   private val _id = "_id"
 

@@ -19,6 +19,7 @@ package uk.gov.hmrc.ngrnotify.utils
 import java.util.Base64
 
 object AuthHeaderBuilder {
+
   def buildAuthHeader(clientId: String, clientSecret: String): String = {
     val authHeaderRaw = Base64.getEncoder.encodeToString(s"$clientId:$clientSecret".getBytes("UTF-8"))
     s"Basic $authHeaderRaw"

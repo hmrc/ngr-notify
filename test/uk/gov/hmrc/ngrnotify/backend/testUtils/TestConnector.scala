@@ -30,14 +30,14 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.ExecutionContext
 
 trait TestConnector
-    extends PlaySpec
-    with GuiceOneAppPerSuite
-    with Matchers
-    with MockitoSugar
-    with Injecting
-    with BeforeAndAfterEach
-    with ScalaFutures
-    with IntegrationPatience {
+  extends PlaySpec
+  with GuiceOneAppPerSuite
+  with Matchers
+  with MockitoSugar
+  with Injecting
+  with BeforeAndAfterEach
+  with ScalaFutures
+  with IntegrationPatience {
 
   protected def localGuiceApplicationBuilder(): GuiceApplicationBuilder =
     GuiceApplicationBuilder()
@@ -46,7 +46,7 @@ trait TestConnector
   override def beforeEach(): Unit =
     super.beforeEach()
 
-  override implicit lazy val app: Application = localGuiceApplicationBuilder().build()
+  implicit override lazy val app: Application = localGuiceApplicationBuilder().build()
 
   implicit val ec: ExecutionContext = inject[ExecutionContext]
   implicit val hc: HeaderCarrier    = HeaderCarrier()

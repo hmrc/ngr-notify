@@ -29,11 +29,7 @@ import scala.concurrent.Future
 import scala.concurrent.Future.successful
 import scala.concurrent.duration.*
 
-class SendEmailExporterSpec
-    extends TestKit(ActorSystem("test"))
-    with AsyncFlatSpecLike
-    with MockitoExtendedSugar
-    with Matchers:
+class SendEmailExporterSpec extends TestKit(ActorSystem("test")) with AsyncFlatSpecLike with MockitoExtendedSugar with Matchers:
 
   it should "run a job" in {
     // SETUP

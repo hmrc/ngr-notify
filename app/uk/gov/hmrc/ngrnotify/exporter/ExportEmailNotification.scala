@@ -47,9 +47,9 @@ class ExportEmailNotificationImpl @Inject() (
   emailConnector: EmailConnector,
   callbackConnector: CallbackConnector,
   forConfig: AppConfig
-)(implicit ec: ExecutionContext)
-    extends ExportEmailNotification
-    with Logging {
+)(implicit ec: ExecutionContext
+) extends ExportEmailNotification
+  with Logging {
 
   override def exportNow(size: Int): Future[Unit] =
     emailNotificationRepo.getNotificationsBatch(size).flatMap { emailNotifications =>
@@ -63,7 +63,8 @@ class ExportEmailNotificationImpl @Inject() (
 
   private def processNext(
     emailNotification: EmailNotification
-  )(implicit executionContext: ExecutionContext): Future[Unit] =
+  )(implicit executionContext: ExecutionContext
+  ): Future[Unit] =
     if isTooLongInQueue(emailNotification) then
       logger.warn(s"Unable to send email reached end of retry window, ref: ${emailNotification.trackerId}.")
       // TODO Audit removal from queue

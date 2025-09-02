@@ -25,13 +25,6 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.TestData
 /**
   * @author Yuriy Tumakha
   */
-trait AppSuiteBase
-    extends Injecting
-    with should.Matchers
-    with MockitoExtendedSugar
-    with OptionValues
-    with ScalaFutures
-    with IntegrationPatience
-    with TestData {
+trait AppSuiteBase extends Injecting with should.Matchers with MockitoExtendedSugar with OptionValues with ScalaFutures with IntegrationPatience with TestData {
   self: HasApp =>
 }

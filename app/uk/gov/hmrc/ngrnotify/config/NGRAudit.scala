@@ -31,9 +31,9 @@ class NGRAudit @Inject() (
   val auditingConfig: AuditingConfig,
   val auditChannel: AuditChannel,
   val datastreamMetrics: DatastreamMetrics
-)(using val ec: ExecutionContext)
-    extends AuditConnector
-    with Logging {
+)(using val ec: ExecutionContext
+) extends AuditConnector
+  with Logging {
 
   private val AUDIT_SOURCE = "ngr-notify"
 

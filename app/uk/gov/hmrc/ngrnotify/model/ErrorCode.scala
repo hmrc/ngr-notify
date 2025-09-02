@@ -22,6 +22,7 @@ import play.api.libs.json.Format
   * @author Yuriy Tumakha
   */
 enum ErrorCode:
+
   case ACTION_FAILED,
     BAD_REQUEST_BODY,
     EMAIL_TEMPLATE_NOT_FOUND,
