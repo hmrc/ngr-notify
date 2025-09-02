@@ -59,8 +59,8 @@ paths:
                     county: England
                     postcode: "ZZ11 1ZZ"
       responses:
-        '201':
-          description: Registration request accepted.
+        '202':
+          description: The registration request has been successfully forwarded to the downstream service.
           content:
             application/json;charset=UTF-8:
               schema:

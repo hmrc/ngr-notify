@@ -43,7 +43,7 @@ class RatepayerController @Inject() (
       case JsSuccess(registerRatepayerRequest, _)                   =>
         logger.info(s"Request:\n$registerRatepayerRequest")
 
-        Created(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
+        Accepted(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
       case JsError(errors: Seq[(JsPath, Seq[JsonValidationError])]) =>
         buildValidationErrorsResponse(errors)
     }
