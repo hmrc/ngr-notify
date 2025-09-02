@@ -37,11 +37,11 @@ class RatepayerController @Inject() (
 
   def registerRatepayer: Action[JsValue] = Action.async(parse.json) { implicit request =>
     val result = request.body.validate[RegisterRatepayerRequest] match {
-      case JsSuccess(registerRatepayerRequest, _) =>
-        logger.info(s"Request:\n$registerRatepayerRequest")
+      case JsSuccess(registerRatepayer, _) =>
+        logger.info(s"Request:\n$registerRatepayer")
 
         Accepted(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
-      case jsError: JsError                       => buildValidationErrorsResponse(jsError)
+      case jsError: JsError                => buildValidationErrorsResponse(jsError)
     }
 
     Future.successful(result)
