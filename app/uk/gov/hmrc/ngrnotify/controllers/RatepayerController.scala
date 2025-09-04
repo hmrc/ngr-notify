@@ -98,16 +98,19 @@ class RatepayerController @Inject() (
       )
     )
 
-  private def extractForenamesAndSurname(fullName: String): (String, String) =
-    val index = fullName.lastIndexOf(" ")
-    if index == -1 then ("", fullName) else fullName.splitAt(index)
+  private def extractForenamesAndSurname(fullName: String): (Option[String], Option[String]) =
+    val trimmedFullName = fullName.trim
+    val index = trimmedFullName.lastIndexOf(" ")
+    val (forenames, surname) =
+      if index == -1 then ("", trimmedFullName) else trimmedFullName.splitAt(index)
+    (Option.when(forenames.trim.nonEmpty)(forenames.trim), Some(surname.trim))
 
   private def extractNames(ratepayer: RegisterRatepayerRequest): Names =
-    val (forenames, surname) = extractForenamesAndSurname(ratepayer.name)
+    val (forenamesOpt, surnameOpt) = extractForenamesAndSurname(ratepayer.name)
 
     Names(
-      forenames = Option.when(forenames.nonEmpty)(forenames),
-      surname = Some(surname),
+      forenames = forenamesOpt,
+      surname = surnameOpt,
       corporateName = ratepayer.tradingName
     )
 
