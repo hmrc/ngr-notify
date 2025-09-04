@@ -7,13 +7,25 @@
       "idx" : "1.2.1",
       "name" : "Government Gateway User",
       "data" : {
+        "foreign_ids" : [ {
+          "system" : "Government_Gateway",
+          "location" : null,
+          "value" : "GGID123456"
+        } ],
         "names" : {
-          "title_common" : "Mr"
+          "title_common" : "Mr",
+          "forenames" : null,
+          "surname" : null,
+          "post_nominals" : null,
+          "corporate_name" : null
         },
         "communications" : {
+          "postal_address" : null,
+          "telephone_number" : null,
           "email" : "somebody@example.com"
         }
       }
-    } ]
+    } ],
+    "products" : [ ]
   }
 }

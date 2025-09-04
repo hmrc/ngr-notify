@@ -16,12 +16,18 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
+import play.api.libs.json.{Format, Json}
+
 case class Names(
-  titleCommon: TitleCommon
+  titleCommon: Option[TitleCommon] = None,
+  forenames: Option[String] = None,
+  surname: Option[String] = None,
+  postNominals: Option[String] = None,
+  corporateName: Option[String] = None
 )
 
 object Names:
-  import play.api.libs.json.*
+
   import uk.gov.hmrc.ngrnotify.model.given
 
   given Format[Names] = Json.format

@@ -88,7 +88,7 @@
           "foreign_names": [],
           "foreign_labels": [],
           "names": {
-            "title_common": "Mr",
+            "title_common": null,
             "title_uncommon": null,
             "forenames": null,
             "surname": null,
@@ -100,7 +100,7 @@
           "communications": {
             "postal_address": null,
             "telephone_number": null,
-            "email": "somebody@example.com"
+            "email": null
           }
         },
         "protodata": [],

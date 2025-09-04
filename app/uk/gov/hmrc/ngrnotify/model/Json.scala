@@ -18,5 +18,6 @@ package uk.gov.hmrc.ngrnotify.model
 
 import play.api.libs.json.JsonConfiguration
 import play.api.libs.json.JsonNaming.SnakeCase
+import play.api.libs.json.OptionHandlers.WritesNull
 
-given JsonConfiguration = JsonConfiguration(SnakeCase)
+given JsonConfiguration = JsonConfiguration(SnakeCase, WritesNull)

@@ -16,22 +16,18 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.Format
+import uk.gov.hmrc.ngrnotify.model.Scala3EnumJsonFormat
 
-import scala.collection.immutable.List
+/**
+  * @author Yuriy Tumakha
+  */
+enum ForeignIdSystem:
 
-// #/$defs/ENTITIES/PERSONS/PERSON/DATA
-case class PersonData(
-  foreignIds: List[ForeignId] = List.empty,
-  names: Names,
-  communications: Communications
-  // foreign_ids
-  // foreign_names
-  // foreign_labels
-)
+  case Government_Gateway,
+    Billing_Authority,
+    Companies_House
 
-object PersonData:
+object ForeignIdSystem:
 
-  import uk.gov.hmrc.ngrnotify.model.given
-
-  given Format[PersonData] = Json.format
+  given Format[ForeignIdSystem] = Scala3EnumJsonFormat.format

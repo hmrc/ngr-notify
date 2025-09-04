@@ -18,20 +18,17 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.{Format, Json}
 
-import scala.collection.immutable.List
-
-// #/$defs/ENTITIES/PERSONS/PERSON/DATA
-case class PersonData(
-  foreignIds: List[ForeignId] = List.empty,
-  names: Names,
-  communications: Communications
-  // foreign_ids
-  // foreign_names
-  // foreign_labels
+/**
+  * @author Yuriy Tumakha
+  */
+case class ForeignId(
+  system: Option[String] = None,
+  location: Option[String] = None,
+  value: Option[String] = None
 )
 
-object PersonData:
+object ForeignId:
 
   import uk.gov.hmrc.ngrnotify.model.given
 
-  given Format[PersonData] = Json.format
+  given Format[ForeignId] = Json.format
