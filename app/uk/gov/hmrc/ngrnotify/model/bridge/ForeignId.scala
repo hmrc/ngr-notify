@@ -22,7 +22,7 @@ import play.api.libs.json.{Format, Json}
   * @author Yuriy Tumakha
   */
 case class ForeignId(
-  system: Option[String] = None,
+  system: Option[ForeignIdSystem] = None,
   location: Option[String] = None,
   value: Option[String] = None
 )
