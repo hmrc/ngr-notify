@@ -39,7 +39,8 @@ class RatepayerControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
   "RatepayerController" should {
     "return 202" in {
       val fakeRequest = FakeRequest("POST", "/")
-        .withJsonBody(Json.toJson(
+        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
+        .withBody(Json.toJson(
           RegisterRatepayerRequest(
             "login",
             Some(organization),

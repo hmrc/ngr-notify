@@ -18,7 +18,7 @@ package uk.gov.hmrc.ngrnotify.controllers
 
 import play.api.Logging
 import play.api.libs.json.*
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.mvc.{Action, ControllerComponents}
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
 import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
@@ -37,8 +37,8 @@ class RatepayerController @Inject() (
   with JsonSupport
   with Logging:
 
-  def registerRatepayer: Action[AnyContent] = Action.async { implicit request =>
-    val result = request.body.asJson.getOrElse(JsNull).validate[RegisterRatepayerRequest] match {
+  def registerRatepayer: Action[JsValue] = Action.async(parse.json) { implicit request =>
+    val result = request.body.validate[RegisterRatepayerRequest] match {
       case JsSuccess(registerRatepayer, _) =>
         logger.info(s"Request:\n$registerRatepayer")
 
