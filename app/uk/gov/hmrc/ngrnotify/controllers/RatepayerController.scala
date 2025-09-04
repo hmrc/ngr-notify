@@ -18,7 +18,9 @@ package uk.gov.hmrc.ngrnotify.controllers
 
 import play.api.Logging
 import play.api.libs.json.*
-import play.api.mvc.{Action, ControllerComponents}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
+import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -35,10 +37,13 @@ class RatepayerController @Inject() (
   with JsonSupport
   with Logging:
 
-  def registerRatepayer: Action[JsValue] = Action.async(parse.json) { implicit request =>
-    val result = request.body.validate[RegisterRatepayerRequest] match {
+  def registerRatepayer: Action[AnyContent] = Action.async { implicit request =>
+    val result = request.body.asJson.getOrElse(JsNull).validate[RegisterRatepayerRequest] match {
       case JsSuccess(registerRatepayer, _) =>
         logger.info(s"Request:\n$registerRatepayer")
+
+        val bridgeRequest = toBridgeRequest(registerRatepayer)
+        logger.info(s"BridgeRequest:\n$bridgeRequest")
 
         Accepted(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
       case jsError: JsError                => buildValidationErrorsResponse(jsError)
@@ -46,3 +51,69 @@ class RatepayerController @Inject() (
 
     Future.successful(result)
   }
+
+  private def toBridgeRequest(ratepayer: RegisterRatepayerRequest): BridgeRequest =
+    BridgeRequest(
+      Job(
+        id = None,
+        idx = "1",
+        name = "Register Ratepayer",
+        compartments = Compartments(
+          products = List(
+            Person(
+              id = None,
+              idx = "1.4.1",
+              name = "Government Gateway User",
+              data = PersonData(
+                foreignIds = List(
+                  ForeignId(
+                    system = Some(Government_Gateway),
+                    value = Some(ratepayer.ratepayerCredId)
+                  ),
+                  ForeignId(
+                    location = Some("NINO"),
+                    value = ratepayer.nino
+                  ),
+                  ForeignId(
+                    location = Some("secondary_telephone_number"),
+                    value = ratepayer.secondaryNumber
+                  )
+                ),
+                foreignLabels = List(
+                  ForeignId(
+                    location = Some("RatepayerType"),
+                    value = ratepayer.userType.map(_.toString)
+                  ),
+                  ForeignId(
+                    location = Some("AgentStatus"),
+                    value = ratepayer.agentStatus.map(_.toString)
+                  )
+                ),
+                names = extractNames(ratepayer),
+                communications = extractCommunications(ratepayer)
+              )
+            )
+          )
+        )
+      )
+    )
+
+  private def extractForenamesAndSurname(fullName: String): (String, String) =
+    val index = fullName.lastIndexOf(" ")
+    if index == -1 then ("", fullName) else fullName.splitAt(index)
+
+  private def extractNames(ratepayer: RegisterRatepayerRequest): Names =
+    val (forenames, surname) = extractForenamesAndSurname(ratepayer.name)
+
+    Names(
+      forenames = Option.when(forenames.nonEmpty)(forenames),
+      surname = Some(surname),
+      corporateName = ratepayer.tradingName
+    )
+
+  private def extractCommunications(ratepayer: RegisterRatepayerRequest): Communications =
+    Communications(
+      postalAddress = Some(ratepayer.address.singleLine),
+      telephoneNumber = Some(ratepayer.contactNumber),
+      email = Some(ratepayer.email)
+    )

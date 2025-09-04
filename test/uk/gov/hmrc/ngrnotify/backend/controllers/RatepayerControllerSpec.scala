@@ -21,9 +21,14 @@ import org.apache.pekko.stream.testkit.NoMaterializer
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.libs.json.Json
 import play.api.test.Helpers.*
 import play.api.test.{FakeRequest, Helpers, Injecting}
 import uk.gov.hmrc.ngrnotify.controllers.RatepayerController
+import uk.gov.hmrc.ngrnotify.model.Address
+import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
+import uk.gov.hmrc.ngrnotify.model.ratepayer.RatepayerType.organization
+import uk.gov.hmrc.ngrnotify.model.ratepayer.RegisterRatepayerRequest
 
 class RatepayerControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with Injecting:
 
@@ -32,6 +37,28 @@ class RatepayerControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
   given Materializer = NoMaterializer
 
   "RatepayerController" should {
+    "return 202" in {
+      val fakeRequest = FakeRequest("POST", "/")
+        .withJsonBody(Json.toJson(
+          RegisterRatepayerRequest(
+            "login",
+            Some(organization),
+            Some(agent),
+            "Full name",
+            None,
+            "test@email.com",
+            Some("QQ123456A"),
+            "1111",
+            None,
+            Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")
+          )
+        ))
+
+      val result = controller.registerRatepayer.apply(fakeRequest)
+      status(result)          shouldBe ACCEPTED
+      contentAsString(result) shouldBe """{"status":"OK"}"""
+    }
+
     "return 400" in {
       val fakeRequest = FakeRequest("POST", "/")
         .withHeaders("Content-type" -> "application/json;charset=UTF-8")
