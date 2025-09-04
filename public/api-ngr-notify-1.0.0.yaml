@@ -444,11 +444,11 @@ components:
             - DUPLICATE
           description: Ratepayer registration status
           example: INCOMPLETE
-        message:
+        error:
           minLength: 0
           maxLength: 300
           type: string
-          description: The response message
+          description: The error details
           example: Missed property - email
     address:
       title: 'Address schema'

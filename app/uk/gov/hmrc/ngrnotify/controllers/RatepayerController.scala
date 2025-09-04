@@ -99,8 +99,8 @@ class RatepayerController @Inject() (
     )
 
   private def extractForenamesAndSurname(fullName: String): (Option[String], Option[String]) =
-    val trimmedFullName = fullName.trim
-    val index = trimmedFullName.lastIndexOf(" ")
+    val trimmedFullName      = fullName.trim
+    val index                = trimmedFullName.lastIndexOf(" ")
     val (forenames, surname) =
       if index == -1 then ("", trimmedFullName) else trimmedFullName.splitAt(index)
     (Option.when(forenames.trim.nonEmpty)(forenames.trim), Some(surname.trim))
