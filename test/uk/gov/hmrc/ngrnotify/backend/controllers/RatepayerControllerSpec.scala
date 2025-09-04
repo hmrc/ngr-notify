@@ -55,7 +55,7 @@ class RatepayerControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
           )
         ))
 
-      val result = controller.registerRatepayer.apply(fakeRequest)
+      val result = controller.registerRatepayer(fakeRequest)
       status(result)          shouldBe ACCEPTED
       contentAsString(result) shouldBe """{"status":"OK"}"""
     }
