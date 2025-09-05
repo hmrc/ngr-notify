@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.backend.connectors
+package uk.gov.hmrc.ngrnotify.backend.testUtils
 
 import izumi.reflect.Tag
 import play.api.libs.json.{JsValue, Json}

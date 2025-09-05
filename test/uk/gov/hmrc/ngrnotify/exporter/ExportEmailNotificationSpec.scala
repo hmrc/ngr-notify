@@ -33,6 +33,7 @@ import uk.gov.hmrc.ngrnotify.model.ErrorCode.{BAD_REQUEST_BODY, WRONG_RESPONSE_S
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.ngrnotify.repository.EmailNotificationRepo
 import uk.gov.hmrc.play.audit.http.config.AuditingConfig
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.time.temporal.ChronoUnit.{DAYS, HOURS}
 import java.time.{Clock, Instant, ZoneId}
@@ -223,9 +224,12 @@ class ExportEmailNotificationSpec extends FixtureAsyncFlatSpec with MockitoExten
         "validationImport.minuteToRunAt"  -> "0",
         "auditing.enabled "               -> "false",
         // ------
+        "microservice.services.hip.host"  -> "localhost",
+        "microservice.services.hip.port"  -> "1501",
         "sendSubmission.retryWindowHours" -> "24" // 1 day
       )
     )
+    val appConfig     = AppConfig(configuration, ServicesConfig(configuration))
 
     // Instruct the notificationRepo mock
     val notificationRepo = mock[EmailNotificationRepo]
@@ -253,7 +257,7 @@ class ExportEmailNotificationSpec extends FixtureAsyncFlatSpec with MockitoExten
         ),
         emailConnector,
         callbackConnector,
-        forConfig = AppConfig(configuration)
+        forConfig = appConfig
       )
     )
     testCase.apply(theFixture)

@@ -19,37 +19,45 @@ package uk.gov.hmrc.ngrnotify.controllers
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.{Action, ControllerComponents}
-import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
+import uk.gov.hmrc.ngrnotify.connectors.HipConnector
+import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.bridge.*
+import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * @author Yuriy Tumakha
   */
 @Singleton
 class RatepayerController @Inject() (
+  hipConnector: HipConnector,
   cc: ControllerComponents
+)(implicit ec: ExecutionContext
 ) extends BackendController(cc)
   with JsonSupport
   with Logging:
 
   def registerRatepayer: Action[JsValue] = Action.async(parse.json) { implicit request =>
-    val result = request.body.validate[RegisterRatepayerRequest] match {
+    request.body.validate[RegisterRatepayerRequest] match {
       case JsSuccess(registerRatepayer, _) =>
         logger.info(s"Request:\n$registerRatepayer")
 
         val bridgeRequest = toBridgeRequest(registerRatepayer)
         logger.info(s"BridgeRequest:\n$bridgeRequest")
 
-        Accepted(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
-      case jsError: JsError                => buildValidationErrorsResponse(jsError)
+        hipConnector.registerRatepayer(bridgeRequest).map { response =>
+          response.status match {
+            case 200 | 201 | 202 => Accepted(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
+            case 400             => BadRequest(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.INCOMPLETE, Some(response.body))))
+            case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+          }
+        }
+      case jsError: JsError                => Future.successful(buildValidationErrorsResponse(jsError))
     }
-
-    Future.successful(result)
   }
 
   private def toBridgeRequest(ratepayer: RegisterRatepayerRequest): BridgeRequest =
@@ -98,13 +106,6 @@ class RatepayerController @Inject() (
       )
     )
 
-  private def extractForenamesAndSurname(fullName: String): (Option[String], Option[String]) =
-    val trimmedFullName      = fullName.trim
-    val index                = trimmedFullName.lastIndexOf(" ")
-    val (forenames, surname) =
-      if index == -1 then ("", trimmedFullName) else trimmedFullName.splitAt(index)
-    (Option.when(forenames.trim.nonEmpty)(forenames.trim), Some(surname.trim))
-
   private def extractNames(ratepayer: RegisterRatepayerRequest): Names =
     val (forenamesOpt, surnameOpt) = extractForenamesAndSurname(ratepayer.name)
 
@@ -113,6 +114,13 @@ class RatepayerController @Inject() (
       surname = surnameOpt,
       corporateName = ratepayer.tradingName
     )
+
+  private def extractForenamesAndSurname(fullName: String): (Option[String], Option[String]) =
+    val trimmedFullName      = fullName.trim
+    val index                = trimmedFullName.lastIndexOf(" ")
+    val (forenames, surname) =
+      if index == -1 then ("", trimmedFullName) else trimmedFullName.splitAt(index)
+    (Option.when(forenames.trim.nonEmpty)(forenames.trim), Some(surname.trim))
 
   private def extractCommunications(ratepayer: RegisterRatepayerRequest): Communications =
     Communications(

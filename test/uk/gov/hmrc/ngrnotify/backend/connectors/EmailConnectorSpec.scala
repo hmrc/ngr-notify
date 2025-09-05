@@ -22,7 +22,7 @@ import play.api.http.Status.{BAD_REQUEST, OK}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
-
+import uk.gov.hmrc.ngrnotify.backend.testUtils.RequestBuilderStub
 import uk.gov.hmrc.ngrnotify.connectors.EmailConnector
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 

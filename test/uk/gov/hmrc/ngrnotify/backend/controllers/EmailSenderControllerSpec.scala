@@ -55,8 +55,8 @@ class EmailSenderControllerSpec extends AnyWordSpec with Matchers with GuiceOneA
         ))
 
       val result = controller.sendEmail(ngr_registration_successful.toString)(fakeRequest)
-      status(result)          shouldBe CREATED
-      contentAsString(result) shouldBe """{"status":"Success","message":"Email dispatch task successfully created."}"""
+      status(result)        shouldBe CREATED
+      contentAsJson(result) shouldBe Json.obj("status" -> "Success", "message" -> "Email dispatch task successfully created.")
     }
 
     "return 400" in {
