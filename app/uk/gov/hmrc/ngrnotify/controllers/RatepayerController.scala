@@ -49,13 +49,15 @@ class RatepayerController @Inject() (
         val bridgeRequest = toBridgeRequest(registerRatepayer)
         logger.info(s"BridgeRequest:\n$bridgeRequest")
 
-        hipConnector.registerRatepayer(bridgeRequest).map { response =>
-          response.status match {
-            case 200 | 201 | 202 => Accepted(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
-            case 400             => BadRequest(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.INCOMPLETE, Some(response.body))))
-            case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+        hipConnector.registerRatepayer(bridgeRequest)
+          .map { response =>
+            response.status match {
+              case 200 | 201 | 202 => Accepted(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
+              case 400             => BadRequest(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.INCOMPLETE, Some(response.body))))
+              case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+            }
           }
-        }
+          .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
       case jsError: JsError                => Future.successful(buildValidationErrorsResponse(jsError))
     }
   }
