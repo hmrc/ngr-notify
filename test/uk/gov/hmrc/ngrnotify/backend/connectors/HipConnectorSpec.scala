@@ -18,7 +18,9 @@ package uk.gov.hmrc.ngrnotify.backend.connectors
 
 import com.typesafe.config.ConfigFactory
 import play.api.Configuration
-import play.api.http.Status.OK
+import play.api.http.Status.{ACCEPTED, OK}
+import play.api.mvc.{AnyContent, Request}
+import play.api.test.FakeRequest
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
@@ -26,6 +28,7 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.HipTestData.testHipHeaders
 import uk.gov.hmrc.ngrnotify.backend.testUtils.RequestBuilderStub
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
+import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeRequest, Compartments, Job}
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL
@@ -43,6 +46,49 @@ class HipConnectorSpec extends AnyWordAppSpec {
       httpClientV2Mock.get(any[URL])(using any[HeaderCarrier])
     ).thenReturn(RequestBuilderStub(Right(responseStatus)))
     httpClientV2Mock
+
+  private def httpPostMock(responseStatus: Int): HttpClientV2 =
+    val httpClientV2Mock = mock[HttpClientV2]
+    when(
+      httpClientV2Mock.post(any[URL])(using any[HeaderCarrier])
+    ).thenReturn(RequestBuilderStub(Right(responseStatus), "{}"))
+    httpClientV2Mock
+
+  "registerRatepayer" must {
+    "return a successful response" in {
+      val httpMock              = httpPostMock(ACCEPTED)
+      val connector             = HipConnector(appConfig, httpMock)
+      given Request[AnyContent] = FakeRequest()
+      val bridgeRequest         = BridgeRequest(
+        Job(
+          id = None,
+          idx = "1",
+          name = "Register Ratepayer",
+          compartments = Compartments()
+        )
+      )
+
+      val response = connector.registerRatepayer(bridgeRequest).futureValue
+      response.status shouldBe ACCEPTED
+
+      verify(httpMock)
+        .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer"))(using any[HeaderCarrier])
+    }
+  }
+
+  "getRatepayer" must {
+    "return a successful response" in {
+      val httpMock              = httpGetMock(OK)
+      val connector             = HipConnector(appConfig, httpMock)
+      given Request[AnyContent] = FakeRequest()
+
+      val response = connector.getRatepayer("ID_123").futureValue
+      response.status shouldBe OK
+
+      verify(httpMock)
+        .get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer/ID_123"))(using any[HeaderCarrier])
+    }
+  }
 
   "callHelloWorld()" must {
     "return a successful JsValue response" in {

@@ -65,6 +65,11 @@ class HipConnector @Inject() (
       .withBody(Json.toJson(bridgeRequest))
       .execute[HttpResponse]
 
+  def getRatepayer(id: String)(using request: Request[?]): Future[HttpResponse] =
+    httpClient
+      .get(appConfig.getRatepayerUrl(id))(using hipHeaderCarrier)
+      .execute[HttpResponse]
+
   def callHelloWorld(headers: Headers): Future[HttpResponse] = {
     val url: URL = url"https://hip.ws.ibt.hmrc.gov.uk/demo/hello-world"
     httpClient
