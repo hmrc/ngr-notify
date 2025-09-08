@@ -26,10 +26,11 @@ import uk.gov.hmrc.ngrnotify.model.ratepayer.RegistrationStatus.OK
   */
 class RegisterRatepayerResponseSpec extends AnyWordSpec with Matchers:
 
-  "RegisterRatepayerResponse" should {
+  "Model RegisterRatepayerResponse" should {
     "be serialized/deserialized from JSON" in {
       val registerRatepayerResponse = RegisterRatepayerResponse(OK)
-      val json                      = Json.toJson(registerRatepayerResponse)
+
+      val json = Json.toJson(registerRatepayerResponse)
       json.as[RegisterRatepayerResponse] shouldBe registerRatepayerResponse
     }
   }

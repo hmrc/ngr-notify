@@ -16,17 +16,29 @@
 
 package uk.gov.hmrc.ngrnotify.config
 
-import javax.inject.{Inject, Singleton}
 import play.api.Configuration
+import uk.gov.hmrc.http.StringContextOps
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+
+import java.net.URL
+import javax.inject.{Inject, Singleton}
 
 @Singleton
-class AppConfig @Inject() (config: Configuration) {
+class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig):
+
   val appName: String                  = config.get[String]("appName")
   val submissionExportEnabled: Boolean = config.get[Boolean]("sendSubmission.enabled")
   val retryWindowHours: Int            = config.get[Int]("sendSubmission.retryWindowHours")
   val exportFrequency: Int             = config.get[Int]("sendSubmission.frequencySeconds")
   val exportBatchSize: Int             = config.get[Int]("sendSubmission.batchSize")
+  val importScheduleHour: Int          = config.getOptional[Int]("validationImport.hourToRunAt").getOrElse(0)
+  val importScheduleMinute: Int        = config.getOptional[Int]("validationImport.minuteToRunAt").getOrElse(0)
 
-  lazy val importScheduleHour: Int   = config.get[Int]("validationImport.hourToRunAt")
-  lazy val importScheduleMinute: Int = config.get[Int]("validationImport.minuteToRunAt")
-}
+  private val hipBaseUrl               = servicesConfig.baseUrl("hip")
+  private val registerRatepayerPath    = servicesConfig.getConfString("hip.registerRatepayerPath", "/job/ratepayer")
+  private val getRatepayerPath         = servicesConfig.getConfString("hip.getRatepayerPath", "/job/ratepayer/")
+  val registerRatepayerUrl: URL        = url"${hipBaseUrl + registerRatepayerPath}"
+  def getRatepayerUrl(id: String): URL = url"${hipBaseUrl + getRatepayerPath + id}"
+
+  val hipClientId: String     = servicesConfig.getConfString("hip.clientId", "CLIENT_ID")
+  val hipClientSecret: String = servicesConfig.getConfString("hip.clientSecret", "CLIENT_SECRET")

@@ -18,14 +18,17 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.{Format, Json}
 
-case class Compartments(
-  // properties: List.empty
-  persons: List[Person] = List.empty,
-  // processes: List.empty
-  products: List[Person] = List.empty
-  // relationships: List.empty
+/**
+  * @author Yuriy Tumakha
+  */
+case class ForeignId(
+  system: Option[ForeignIdSystem] = None,
+  location: Option[String] = None,
+  value: Option[String] = None
 )
 
-object Compartments:
+object ForeignId:
 
-  given Format[Compartments] = Json.format
+  import uk.gov.hmrc.ngrnotify.model.given
+
+  given Format[ForeignId] = Json.format

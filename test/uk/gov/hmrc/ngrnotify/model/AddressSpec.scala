@@ -14,36 +14,33 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model.ratepayer
+package uk.gov.hmrc.ngrnotify.model
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
-import uk.gov.hmrc.ngrnotify.model.Address
-import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
-import uk.gov.hmrc.ngrnotify.model.ratepayer.RatepayerType.organization
 
 /**
   * @author Yuriy Tumakha
   */
-class RegisterRatepayerRequestSpec extends AnyWordSpec with Matchers:
+class AddressSpec extends AnyWordSpec with Matchers:
 
-  "Model RegisterRatepayerRequest" should {
+  private val normalizedSingleLine = "Line 1, Line 2, City, ZZ11 1ZZ"
+
+  "Model Address" should {
     "be serialized/deserialized from JSON" in {
-      val registerRatepayerRequest = RegisterRatepayerRequest(
-        "login",
-        Some(organization),
-        Some(agent),
-        "Full name",
-        None,
-        "test@email.com",
-        Some("QQ123456A"),
-        "1111",
-        None,
-        Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")
-      )
+      val address = Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")
 
-      val json = Json.toJson(registerRatepayerRequest)
-      json.as[RegisterRatepayerRequest] shouldBe registerRatepayerRequest
+      val convertedAddress = Json.toJson(address).as[Address]
+      convertedAddress            shouldBe address
+      convertedAddress.singleLine shouldBe normalizedSingleLine
+    }
+
+    "be serialized/deserialized from JSON and postcode reformatted in .singleLine" in {
+      val address = Address("Line 1", Some("Line 2"), "City", None, "ZZ11   1ZZ")
+
+      val convertedAddress = Json.toJson(address).as[Address]
+      convertedAddress            shouldBe address
+      convertedAddress.singleLine shouldBe normalizedSingleLine
     }
   }

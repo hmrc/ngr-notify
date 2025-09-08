@@ -16,8 +16,14 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
+import play.api.libs.json.{Format, Json}
+
+import scala.collection.immutable.List
+
 // #/$defs/ENTITIES/PERSONS/PERSON/DATA
 case class PersonData(
+  foreignIds: List[ForeignId] = List.empty,
+  foreignLabels: List[ForeignId] = List.empty,
   names: Names,
   communications: Communications
   // foreign_ids
@@ -26,5 +32,7 @@ case class PersonData(
 )
 
 object PersonData:
-  import play.api.libs.json.*
+
+  import uk.gov.hmrc.ngrnotify.model.given
+
   given Format[PersonData] = Json.format

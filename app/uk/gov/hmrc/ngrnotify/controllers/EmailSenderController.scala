@@ -21,18 +21,15 @@ import play.api.libs.json.*
 import play.api.mvc.{Action, ControllerComponents, Request, Result}
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.*
-import uk.gov.hmrc.ngrnotify.model.ErrorCode
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.ngrnotify.model.email.*
 import uk.gov.hmrc.ngrnotify.model.request.SendEmailRequest
-import uk.gov.hmrc.ngrnotify.model.response.{ApiFailure, ApiSuccess}
+import uk.gov.hmrc.ngrnotify.model.response.ApiSuccess
 import uk.gov.hmrc.ngrnotify.repository.EmailNotificationRepo
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
-import scala.collection.Seq
-import scala.collection.immutable.ArraySeq
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
@@ -46,6 +43,7 @@ class EmailSenderController @Inject() (
 )(using
   ec: ExecutionContext
 ) extends BackendController(cc)
+  with JsonSupport
   with Logging:
 
   def sendEmail(emailTemplateId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
@@ -74,36 +72,15 @@ class EmailSenderController @Inject() (
   ): Either[Result, SendEmailRequest] =
     (
       request.body.validate[SendEmailRequest] match {
-        case JsSuccess(sendEmailRequest, _)                           => Right(sendEmailRequest)
-        case JsError(errors: Seq[(JsPath, Seq[JsonValidationError])]) => buildValidationErrorsResponse(errors)
+        case JsSuccess(sendEmailRequest, _) => Right(sendEmailRequest)
+        case jsError: JsError               => Left(buildValidationErrorsResponse(jsError))
       }
     ).flatMap(sendEmailRequest =>
       sendEmailRequest.templateParams.validate[T] match {
-        case JsSuccess(_, _)                                          => Right(sendEmailRequest)
-        case JsError(errors: Seq[(JsPath, Seq[JsonValidationError])]) => buildValidationErrorsResponse(errors)
+        case JsSuccess(_, _)  => Right(sendEmailRequest)
+        case jsError: JsError => Left(buildValidationErrorsResponse(jsError))
       }
     )
-
-  private def buildFailureResponse(code: ErrorCode, reason: String): JsValue =
-    Json.toJson(Seq(ApiFailure(code, reason)))
-
-  private def buildValidationErrorsResponse[T](
-    errors: Seq[(JsPath, Seq[JsonValidationError])]
-  ): Either[Result, T] =
-    val failures = errors.map { case (jsPath, jsonErrors) =>
-      ApiFailure(
-        JSON_VALIDATION_ERROR,
-        s"$jsPath <- ${jsonErrors.map(printValidationError).mkString(" | ")}"
-      )
-    }
-    Left(BadRequest(Json.toJson(failures)))
-
-  private def printValidationError(error: JsonValidationError): String =
-    val msgArgs = error.args match {
-      case arraySeq: ArraySeq[?] => arraySeq.mkString(", ")
-      case any                   => any.toString
-    }
-    error.message + msgArgs
 
   private def saveEmailNotification(emailNotification: EmailNotification): Future[Result] =
     logger.info(s"\nSend ${emailNotification.emailTemplateId}. TrackerId: ${emailNotification.trackerId}")

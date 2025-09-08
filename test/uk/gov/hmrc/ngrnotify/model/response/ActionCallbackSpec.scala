@@ -14,36 +14,32 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model.ratepayer
+package uk.gov.hmrc.ngrnotify.model.response
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import play.api.http.Status.BAD_REQUEST
 import play.api.libs.json.Json
-import uk.gov.hmrc.ngrnotify.model.Address
-import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
-import uk.gov.hmrc.ngrnotify.model.ratepayer.RatepayerType.organization
+import uk.gov.hmrc.ngrnotify.model.EmailTemplate.ngr_registration_successful
+import uk.gov.hmrc.ngrnotify.model.ErrorCode.BAD_REQUEST_BODY
+
+import java.util.UUID
 
 /**
   * @author Yuriy Tumakha
   */
-class RegisterRatepayerRequestSpec extends AnyWordSpec with Matchers:
+class ActionCallbackSpec extends AnyWordSpec with Matchers:
 
-  "Model RegisterRatepayerRequest" should {
+  "Model ActionCallback" should {
     "be serialized/deserialized from JSON" in {
-      val registerRatepayerRequest = RegisterRatepayerRequest(
-        "login",
-        Some(organization),
-        Some(agent),
-        "Full name",
-        None,
-        "test@email.com",
-        Some("QQ123456A"),
-        "1111",
-        None,
-        Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")
+      val actionCallback = ActionCallback(
+        UUID.fromString("9d2dee33-7803-485a-a2b1-2c7538e597ee"),
+        ngr_registration_successful.toString,
+        BAD_REQUEST,
+        Seq(ApiFailure(BAD_REQUEST_BODY, "Missed parameter - postcodeEndPart"))
       )
 
-      val json = Json.toJson(registerRatepayerRequest)
-      json.as[RegisterRatepayerRequest] shouldBe registerRatepayerRequest
+      val json = Json.toJson(actionCallback)
+      json.as[ActionCallback] shouldBe actionCallback
     }
   }

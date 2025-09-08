@@ -1,19 +1,34 @@
 {
-  "id" : "one-two-three",
-  "idx" : "1",
-  "name" : "Register Ratepayer",
-  "compartments" : {
-    "persons" : [ {
-      "idx" : "1.2.1",
-      "name" : "Government Gateway User",
-      "data" : {
-        "names" : {
-          "title_common" : "Mr"
-        },
-        "communications" : {
-          "email" : "somebody@example.com"
+  "job" : {
+    "id" : "one-two-three",
+    "idx" : "1",
+    "name" : "Register Ratepayer",
+    "compartments" : {
+      "persons" : [ {
+        "idx" : "1.2.1",
+        "name" : "Government Gateway User",
+        "data" : {
+          "foreign_ids" : [ {
+            "system" : "Government_Gateway",
+            "location" : null,
+            "value" : "GGID123456"
+          } ],
+          "foreign_labels" : [ ],
+          "names" : {
+            "title_common" : "Mr",
+            "forenames" : null,
+            "surname" : null,
+            "post_nominals" : null,
+            "corporate_name" : null
+          },
+          "communications" : {
+            "postal_address" : null,
+            "telephone_number" : null,
+            "email" : "somebody@example.com"
+          }
         }
-      }
-    } ]
+      } ],
+      "products" : [ ]
+    }
   }
 }
