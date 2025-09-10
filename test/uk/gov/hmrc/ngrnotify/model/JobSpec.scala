@@ -38,8 +38,8 @@ class JobSpec extends AnyWordSpec with Matchers:
               idx = "1.2.1",
               name = "Government Gateway User",
               data = PersonData(
-                names = Names(),
-                communications = Communications()
+                names = Some(Names()),
+                communications = Some(Communications())
               )
             )
           ),
@@ -55,17 +55,21 @@ class JobSpec extends AnyWordSpec with Matchers:
                     value = Some("GGID123345")
                   )
                 ),
-                names = Names(
-                  titleCommon = Some(Mr),
-                  forenames = Some("Alan"),
-                  surname = Some("O Neill"),
-                  postNominals = Some("BSc (Hons) Land Management"),
-                  corporateName = None
+                names = Some(
+                  Names(
+                    titleCommon = Some(Mr),
+                    forenames = Some("Alan"),
+                    surname = Some("O Neill"),
+                    postNominals = Some("BSc (Hons) Land Management"),
+                    corporateName = None
+                  )
                 ),
-                communications = Communications(
-                  postalAddress = Some("9 Anderton Close Tavistock Devon PL19 9RA"),
-                  telephoneNumber = Some("01548 830687"),
-                  email = Some("alan@somewhere.com")
+                communications = Some(
+                  Communications(
+                    postalAddress = Some("9 Anderton Close Tavistock Devon PL19 9RA"),
+                    telephoneNumber = Some("01548 830687"),
+                    email = Some("alan@somewhere.com")
+                  )
                 )
               )
             )
@@ -93,11 +97,15 @@ class JobSpec extends AnyWordSpec with Matchers:
                     value = Some("GGID123456")
                   )
                 ),
-                names = Names(
-                  titleCommon = Some(Mr)
+                names = Some(
+                  Names(
+                    titleCommon = Some(Mr)
+                  )
                 ),
-                communications = Communications(
-                  email = Some("somebody@example.com")
+                communications = Some(
+                  Communications(
+                    email = Some("somebody@example.com")
+                  )
                 )
               )
             )

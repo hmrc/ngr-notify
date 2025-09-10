@@ -120,13 +120,15 @@ class RatepayerController @Inject() (
       )
     )
 
-  private def extractNames(ratepayer: RegisterRatepayerRequest): Names =
+  private def extractNames(ratepayer: RegisterRatepayerRequest): Option[Names] =
     val (forenamesOpt, surnameOpt) = extractForenamesAndSurname(ratepayer.name)
 
-    Names(
-      forenames = forenamesOpt,
-      surname = surnameOpt,
-      corporateName = ratepayer.tradingName
+    Some(
+      Names(
+        forenames = forenamesOpt,
+        surname = surnameOpt,
+        corporateName = ratepayer.tradingName
+      )
     )
 
   private def extractForenamesAndSurname(fullName: String): (Option[String], Option[String]) =
@@ -136,11 +138,13 @@ class RatepayerController @Inject() (
       if index == -1 then ("", trimmedFullName) else trimmedFullName.splitAt(index)
     (Option.when(forenames.trim.nonEmpty)(forenames.trim), Some(surname.trim))
 
-  private def extractCommunications(ratepayer: RegisterRatepayerRequest): Communications =
-    Communications(
-      postalAddress = Some(ratepayer.address.singleLine),
-      telephoneNumber = Some(ratepayer.contactNumber),
-      email = Some(ratepayer.email)
+  private def extractCommunications(ratepayer: RegisterRatepayerRequest): Option[Communications] =
+    Some(
+      Communications(
+        postalAddress = Some(ratepayer.address.singleLine),
+        telephoneNumber = Some(ratepayer.contactNumber),
+        email = Some(ratepayer.email)
+      )
     )
 
   private def parsePropertyLinks(response: String): Result =

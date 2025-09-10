@@ -24,8 +24,8 @@ import scala.collection.immutable.List
 case class PersonData(
   foreignIds: List[ForeignId] = List.empty,
   foreignLabels: List[ForeignId] = List.empty,
-  names: Names,
-  communications: Communications
+  names: Option[Names] = None,
+  communications: Option[Communications] = None
   // foreign_ids
   // foreign_names
   // foreign_labels
