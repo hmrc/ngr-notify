@@ -14,24 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model
+package uk.gov.hmrc.ngrnotify.model.ratepayer
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Json, OFormat}
 
 /**
   * @author Yuriy Tumakha
   */
-enum ErrorCode:
+case class RatepayerPropertyLinksResponse(
+  linked: Boolean,
+  properties: Seq[String] = Seq.empty
+)
 
-  case ACTION_FAILED,
-    BAD_REQUEST_BODY,
-    EMAIL_TEMPLATE_NOT_FOUND,
-    JSON_VALIDATION_ERROR,
-    MONGO_DB_ERROR,
-    WRONG_RESPONSE_STATUS,
-    WRONG_RESPONSE_BODY,
-    INVALID_EMAIL
-end ErrorCode
-
-object ErrorCode:
-  implicit val format: Format[ErrorCode] = Scala3EnumJsonFormat.format
+object RatepayerPropertyLinksResponse:
+  implicit val format: OFormat[RatepayerPropertyLinksResponse] = Json.format

@@ -19,7 +19,7 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 import play.api.libs.json.{Format, Json}
 
 case class Compartments(
-  // properties: List.empty
+  properties: List[Property] = List.empty,
   persons: List[Person] = List.empty,
   // processes: List.empty
   products: List[Person] = List.empty

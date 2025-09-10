@@ -18,16 +18,17 @@ package uk.gov.hmrc.ngrnotify.controllers
 
 import play.api.Logging
 import play.api.libs.json.*
-import play.api.mvc.{Action, ControllerComponents}
+import play.api.mvc.*
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
-import uk.gov.hmrc.ngrnotify.model.ratepayer.{RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
+import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 
 /**
   * @author Yuriy Tumakha
@@ -60,6 +61,17 @@ class RatepayerController @Inject() (
           .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
       case jsError: JsError                => Future.successful(buildValidationErrorsResponse(jsError))
     }
+  }
+
+  def getRatepayerPropertyLinks(ratepayerCredId: String): Action[AnyContent] = Action.async { implicit request =>
+    hipConnector.getRatepayer(ratepayerCredId)
+      .map { response =>
+        response.status match {
+          case 200    => parsePropertyLinks(response.body)
+          case status => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+        }
+      }
+      .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
   }
 
   private def toBridgeRequest(ratepayer: RegisterRatepayerRequest): BridgeRequest =
@@ -130,3 +142,23 @@ class RatepayerController @Inject() (
       telephoneNumber = Some(ratepayer.contactNumber),
       email = Some(ratepayer.email)
     )
+
+  private def parsePropertyLinks(response: String): Result =
+    Try(Json.parse(response)).map {
+      _.validate[BridgeResponse] match {
+        case JsSuccess(bridgeResponse, _) =>
+          logger.info(s"Bridge Response:\n$bridgeResponse")
+
+          Try(bridgeResponse.job.compartments.properties).map { properties =>
+            val addresses = properties.map(_.data.address.propertyFullAddress.getOrElse(""))
+            Ok(Json.toJsObject(RatepayerPropertyLinksResponse(properties.nonEmpty, addresses)))
+          }.getOrElse {
+            InternalServerError(buildFailureResponse(WRONG_RESPONSE_BODY, "Linked properties could not be parsed from the HIP response."))
+          }
+
+        case jsError: JsError => buildValidationErrorsResponse(jsError).copy(header = ResponseHeader(INTERNAL_SERVER_ERROR))
+      }
+    }.getOrElse {
+      logger.warn(s"Bridge Response:\n$response")
+      InternalServerError(buildFailureResponse(WRONG_RESPONSE_BODY, "HIP response could not be parsed into JSON format."))
+    }

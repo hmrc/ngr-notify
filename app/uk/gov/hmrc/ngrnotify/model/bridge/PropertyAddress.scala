@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model
+package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Format, Json}
 
-/**
-  * @author Yuriy Tumakha
-  */
-enum ErrorCode:
+case class PropertyAddress(
+  propertyFullAddress: Option[String] = None,
+  addressLine1: Option[String] = None,
+  addressLine2: Option[String] = None,
+  addressLine3: Option[String] = None,
+  addressTown: Option[String] = None,
+  addressCounty: Option[String] = None,
+  addressPostcode: Option[String] = None
+)
 
-  case ACTION_FAILED,
-    BAD_REQUEST_BODY,
-    EMAIL_TEMPLATE_NOT_FOUND,
-    JSON_VALIDATION_ERROR,
-    MONGO_DB_ERROR,
-    WRONG_RESPONSE_STATUS,
-    WRONG_RESPONSE_BODY,
-    INVALID_EMAIL
-end ErrorCode
+object PropertyAddress:
 
-object ErrorCode:
-  implicit val format: Format[ErrorCode] = Scala3EnumJsonFormat.format
+  import uk.gov.hmrc.ngrnotify.model.given
+
+  given Format[PropertyAddress] = Json.format
