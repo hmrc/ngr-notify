@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.backend.base
+package uk.gov.hmrc.ngrnotify.model.bridge
 
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-
-import scala.io.Source
+import play.api.libs.json.Json
+import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
 
 /**
   * @author Yuriy Tumakha
   */
-class AnyWordAppSpec extends AnyWordSpec with GuiceOneAppPerSuite with AppSuiteBase:
+class BridgeResponseSpec extends AnyWordAppSpec:
 
-  def testResourceContent(resource: String): String =
-    Source.fromResource(resource).mkString
+  "Model RegisterRatepayerRequest" should {
+    "be serialized/deserialized from JSON" in {
+      val ratepayerResponseJson = Json.parse(testResourceContent("ratepayerHasPropertyLink.json"))
+      val bridgeResponse        = ratepayerResponseJson.as[BridgeResponse]
+
+      Json.toJson(bridgeResponse).as[BridgeResponse] shouldBe bridgeResponse
+    }
+  }

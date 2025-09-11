@@ -153,14 +153,10 @@ class RatepayerController @Inject() (
         case JsSuccess(bridgeResponse, _) =>
           logger.info(s"Bridge Response:\n$bridgeResponse")
 
-          Try(bridgeResponse.job.compartments.properties).map { properties =>
-            val addresses = properties.map(_.data.address.propertyFullAddress.getOrElse(""))
-            Ok(Json.toJsObject(RatepayerPropertyLinksResponse(properties.nonEmpty, addresses)))
-          }.getOrElse {
-            InternalServerError(buildFailureResponse(WRONG_RESPONSE_BODY, "Linked properties could not be parsed from the HIP response."))
-          }
-
-        case jsError: JsError => buildValidationErrorsResponse(jsError).copy(header = ResponseHeader(INTERNAL_SERVER_ERROR))
+          val addresses: Seq[String] = bridgeResponse.job.compartments.properties
+            .map(_.data.address.propertyFullAddress.getOrElse(""))
+          Ok(Json.toJsObject(RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)))
+        case jsError: JsError             => buildValidationErrorsResponse(jsError).copy(header = ResponseHeader(INTERNAL_SERVER_ERROR))
       }
     }.getOrElse {
       logger.warn(s"Bridge Response:\n$response")

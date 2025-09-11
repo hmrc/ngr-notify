@@ -1,0 +1,510 @@
+{
+  "job": {
+    "id": null,
+    "idx": "1",
+    "name": "Notify Valuation Officer",
+    "label": "Register Property Link",
+    "description": "Job for creating and updating information about the relationship between the current persona_ratepayer of a hereditament and the hereditaments list entry they are the current ratepayer of",
+    "origination": "20250722T012233Z",
+    "termination": null,
+    "category": {
+      "code": "LTX-DOM-JOB",
+      "meaning": "Local taxation domain job"
+    },
+    "type": {
+      "code": "INF",
+      "meaning": "Assisting information"
+    },
+    "class": {
+      "code": "LPP",
+      "meaning": "Link ratepayer and property"
+    },
+    "data": {
+      "foreign_ids": [],
+      "foreign_names": [],
+      "foreign_labels": []
+    },
+    "protodata": [],
+    "metadata": {
+      "sending": {
+        "extracting": {
+          "selecting": {}
+        },
+        "transforming": {
+          "filtering": {},
+          "supplementing": {},
+          "recontextualising": {}
+        },
+        "loading": {
+          "readying": {},
+          "assuring": {},
+          "signing": {},
+          "encrypting": {},
+          "sending": {}
+        }
+      },
+      "receiving": {
+        "unloading": {
+          "receiving": {},
+          "decrypting": {},
+          "verifying": {},
+          "assuring": {},
+          "readying": {}
+        },
+        "transforming": {
+          "recontextualising": {},
+          "dropping": {},
+          "restoring": {}
+        },
+        "storing": {
+          "inserting": {}
+        }
+      }
+    },
+    "compartments": {
+      "properties": [
+        {
+          "id": 19999997,
+          "idx": "1.1.1",
+          "name": "NDR Hereditament",
+          "label": "Current List Entry Property",
+          "description": "A local taxation hereditament for which there is a contemporary entry shown in the rating list for the billing Authority Area in which the hereditament is situated",
+          "origination": "19990729T000000Z",
+          "termination": null,
+          "category": {
+            "code": "LTX-DOM-PRP",
+            "meaning": "Local taxation domain property"
+          },
+          "type": {
+            "code": "OCC",
+            "meaning": "Constituted by reference to actual occupation (LGFA88+92=>GRA67=>CommonLaw)"
+          },
+          "class": {
+            "code": "HDT",
+            "meaning": "Statutory NDR Hereditament (LGFA88s64(1))"
+          },
+          "data": {
+            "foreign_ids": [
+              {
+                "system": "Government_Gateway",
+                "location": null,
+                "value": "GGID123345"
+              }
+            ],
+            "foreign_names": [],
+            "foreign_labels": [],
+            "address": {
+              "property_full_address": "88, Anderton Close, Tavistock, Devon, PL22 8DE",
+              "address_line_1": "'88'",
+              "address_line_2": "Anderton Close",
+              "address_line_3": null,
+              "address_town": "Tavistock",
+              "address_county": "Devon",
+              "address_postcode": "PL22 8DE"
+            },
+            "location": {
+              "ordanace_survey_coordinates": "SX25432765",
+              "google_maps_coordinates": "52.8765 43.8888"
+            }
+          },
+          "protodata": [],
+          "metadata": {
+            "sending": {
+              "extracting": {
+                "selecting": {}
+              },
+              "transforming": {
+                "filtering": {},
+                "supplementing": {},
+                "recontextualising": {}
+              },
+              "loading": {
+                "readying": {},
+                "assuring": {},
+                "signing": {},
+                "encrypting": {},
+                "sending": {}
+              }
+            },
+            "receiving": {
+              "unloading": {
+                "receiving": {},
+                "decrypting": {},
+                "verifying": {},
+                "assuring": {},
+                "readying": {}
+              },
+              "transforming": {
+                "recontextualising": {},
+                "dropping": {},
+                "restoring": {}
+              },
+              "storing": {
+                "inserting": {}
+              }
+            }
+          },
+          "compartments": {},
+          "items": []
+        }
+      ],
+      "persons": [
+        {
+          "id": 19999999,
+          "idx": "1.2.1",
+          "name": "Government Gateway User",
+          "label": "Authenticated Government Gateway System User",
+          "description": "A Government Gateway authenticated natural, corporate or crown user of online services provided by the UK Government/HMRC whose type and class are now known or re-confirmed.",
+          "origination": null,
+          "termination": null,
+          "category": {
+            "code": "LTX-DOM-PSN",
+            "meaning": "Local taxation domain person"
+          },
+          "type": {
+            "code": "NAT",
+            "meaning": "Natural"
+          },
+          "class": {
+            "code": "GGY",
+            "meaning": "Any government gateway user"
+          },
+          "data": {
+            "foreign_ids": [
+              {
+                "system": "Government_Gateway",
+                "location": null,
+                "value": "GGID123345"
+              }
+            ],
+            "foreign_names": [],
+            "foreign_labels": [],
+            "names": {
+              "title_common": "Mr",
+              "title_uncommon": null,
+              "forenames": "Alan",
+              "surname": "O Neill",
+              "post_nominals": "BSc (Hons) Land Management",
+              "corporate_name": null,
+              "crown_name": null,
+              "known_as": "Alan"
+            },
+            "communications": {
+              "postal_address": "9 Anderton Close Tavistock Devon PL19 9RA",
+              "telephone_number": "01548 830687",
+              "email": "alan@somewhere.com"
+            }
+          },
+          "protodata": [],
+          "metadata": {
+            "sending": {
+              "extracting": {
+                "selecting": {}
+              },
+              "transforming": {
+                "filtering": {},
+                "supplementing": {},
+                "recontextualising": {}
+              },
+              "loading": {
+                "readying": {},
+                "assuring": {},
+                "signing": {},
+                "encrypting": {},
+                "sending": {}
+              }
+            },
+            "receiving": {
+              "unloading": {
+                "receiving": {},
+                "decrypting": {},
+                "verifying": {},
+                "assuring": {},
+                "readying": {}
+              },
+              "transforming": {
+                "recontextualising": {},
+                "dropping": {},
+                "restoring": {}
+              },
+              "storing": {
+                "inserting": {}
+              }
+            }
+          },
+          "compartments": {},
+          "items": [
+            {
+              "id": 19999998,
+              "idx": "1.2.1.1",
+              "name": "Local Taxation Persona",
+              "label": "Authenticated Local Taxation Persona",
+              "description": "A local taxation domain authenticated persona whose type and class are known or re-confirmed as a LGFA88s43|45 ratepayer, that is assignable to the person.",
+              "origination": null,
+              "termination": null,
+              "category": {
+                "code": "LTX-DOM-PSA",
+                "meaning": "Local taxation domain persona"
+              },
+              "type": {
+                "code": "TXP",
+                "meaning": "LGFA taxpayer"
+              },
+              "class": {
+                "code": "RPO",
+                "meaning": "Ratepayer (occupier)"
+              },
+              "data": {
+                "foreign_ids": [
+                  {
+                    "system": "Billing_Authority",
+                    "location": null,
+                    "value": "BAACC1273645"
+                  }
+                ],
+                "foreign_names": [],
+                "foreign_labels": [],
+                "names": {
+                  "title_common": null,
+                  "title_uncommon": null,
+                  "forenames": "Alan",
+                  "surname": "O Neill",
+                  "post_nominals": null,
+                  "corporate_name": null,
+                  "crown_name": null,
+                  "known_as": "roysRus"
+                },
+                "communications": {
+                  "postal_address": "10 High street Tavistock Devon PL18 6XZ",
+                  "telephone_number": "01822 614448",
+                  "email": "mail@roysrus.uk"
+                }
+              },
+              "protodata": [],
+              "metadata": {
+                "sending": {
+                  "extracting": {
+                    "selecting": {}
+                  },
+                  "transforming": {
+                    "filtering": {},
+                    "supplementing": {},
+                    "recontextualising": {}
+                  },
+                  "loading": {
+                    "readying": {},
+                    "assuring": {},
+                    "signing": {},
+                    "encrypting": {},
+                    "sending": {}
+                  }
+                },
+                "receiving": {
+                  "unloading": {
+                    "receiving": {},
+                    "decrypting": {},
+                    "verifying": {},
+                    "assuring": {},
+                    "readying": {}
+                  },
+                  "transforming": {
+                    "recontextualising": {},
+                    "dropping": {},
+                    "restoring": {}
+                  },
+                  "storing": {
+                    "inserting": {}
+                  }
+                }
+              },
+              "compartments": {},
+              "items": []
+            }
+          ]
+        }
+      ],
+      "processes": [],
+      "products": [
+        {
+          "id": null,
+          "idx": "1.5.1",
+          "name": "Property Link",
+          "label": "Ratepayer-ListEntry-Property Link",
+          "description": "A relationships between LGFA88shd9para4J person-personas and LGFA88 hereditaments for which such personas are obliged to provide LGFA88shd9para4I(1) notofiable information.",
+          "origination": "20250222T000000Z",
+          "termination": null,
+          "category": {
+            "code": "LTX-DOM-REL",
+            "meaning": "Local taxation domain relationship"
+          },
+          "type": {
+            "code": "LIB",
+            "meaning": "Liability | One entity is liable for other entity(s) and the other entity(s) are the basis for the liabilities extent"
+          },
+          "class": {
+            "code": "OHC",
+            "meaning": "LGFA88s43(1) NDR Occupied Hereditament Charge"
+          },
+          "data": {
+            "foreign_ids": [],
+            "foreign_names": [],
+            "foreign_labels": [],
+            "nature": {
+              "attribute_1": null,
+              "attribute_2": null,
+              "attribute_3": null,
+              "attribute_4": null,
+              "attribute_5": null,
+              "attribute_6": null,
+              "attribute_7": null,
+              "attribute_8": null,
+              "attribute_9": null
+            },
+            "circumstances": {
+              "event": null,
+              "scenario": null
+            },
+            "linked_entities": [
+              {
+                "category": "LTX-DOM-PSA",
+                "entity_id": 19999998
+              },
+              {
+                "category": "LTX-DOM-PRP",
+                "entity_id": 19999997
+              }
+            ]
+          },
+          "protodata": [],
+          "metadata": {
+            "sending": {
+              "extracting": {
+                "selecting": {}
+              },
+              "transforming": {
+                "filtering": {},
+                "supplementing": {},
+                "recontextualising": {}
+              },
+              "loading": {
+                "readying": {},
+                "assuring": {},
+                "signing": {},
+                "encrypting": {},
+                "sending": {}
+              }
+            },
+            "receiving": {
+              "unloading": {
+                "receiving": {},
+                "decrypting": {},
+                "verifying": {},
+                "assuring": {},
+                "readying": {}
+              },
+              "transforming": {
+                "recontextualising": {},
+                "dropping": {},
+                "restoring": {}
+              },
+              "storing": {
+                "inserting": {}
+              }
+            }
+          },
+          "compartments": {},
+          "items": []
+        }
+      ],
+      "relationships": [
+        {
+          "id": null,
+          "idx": "1.5.1",
+          "name": "Property Link",
+          "label": "Ratepayer-ListEntry-Property Link",
+          "description": "A relationships between LGFA88shd9para4J person-personas and LGFA88 hereditaments for which such personas are obliged to provide LGFA88shd9para4I(1) notofiable information.",
+          "origination": null,
+          "termination": null,
+          "category": {
+            "code": "LTX-DOM-REL",
+            "meaning": "Local taxation domain relationship"
+          },
+          "type": {
+            "code": "",
+            "meaning": ""
+          },
+          "class": {
+            "code": "",
+            "meaning": ""
+          },
+          "data": {
+            "foreign_ids": [],
+            "foreign_names": [],
+            "foreign_labels": [],
+            "nature": {
+              "attribute_1": null,
+              "attribute_2": null,
+              "attribute_3": null,
+              "attribute_4": null,
+              "attribute_5": null,
+              "attribute_6": null,
+              "attribute_7": null,
+              "attribute_8": null,
+              "attribute_9": null
+            },
+            "circumstances": {
+              "event": null,
+              "scenario": null
+            }
+          },
+          "protodata": [],
+          "metadata": {
+            "sending": {
+              "extracting": {
+                "selecting": {}
+              },
+              "transforming": {
+                "filtering": {},
+                "supplementing": {},
+                "recontextualising": {}
+              },
+              "loading": {
+                "readying": {},
+                "assuring": {},
+                "signing": {},
+                "encrypting": {},
+                "sending": {}
+              }
+            },
+            "receiving": {
+              "unloading": {
+                "receiving": {},
+                "decrypting": {},
+                "verifying": {},
+                "assuring": {},
+                "readying": {}
+              },
+              "transforming": {
+                "recontextualising": {},
+                "dropping": {},
+                "restoring": {}
+              },
+              "storing": {
+                "inserting": {}
+              }
+            }
+          },
+          "compartments": {
+            "properties": [],
+            "persons": [],
+            "processes": [],
+            "products": [],
+            "relationships": []
+          },
+          "items": []
+        }
+      ]
+    },
+    "items": []
+  }
+}
