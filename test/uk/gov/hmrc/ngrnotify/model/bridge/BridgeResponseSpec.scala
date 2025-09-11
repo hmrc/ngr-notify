@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model
+package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.Format
+import play.api.libs.json.Json
+import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
 
 /**
   * @author Yuriy Tumakha
   */
-enum ErrorCode:
+class BridgeResponseSpec extends AnyWordAppSpec:
 
-  case ACTION_FAILED,
-    BAD_REQUEST_BODY,
-    EMAIL_TEMPLATE_NOT_FOUND,
-    JSON_VALIDATION_ERROR,
-    MONGO_DB_ERROR,
-    WRONG_RESPONSE_STATUS,
-    WRONG_RESPONSE_BODY,
-    INVALID_EMAIL
-end ErrorCode
+  "Model BridgeResponse" should {
+    "be serialized/deserialized from JSON" in {
+      val ratepayerResponseJson = Json.parse(testResourceContent("ratepayerHasPropertyLink.json"))
+      val bridgeResponse        = ratepayerResponseJson.as[BridgeResponse]
 
-object ErrorCode:
-  implicit val format: Format[ErrorCode] = Scala3EnumJsonFormat.format
+      Json.toJson(bridgeResponse).as[BridgeResponse] shouldBe bridgeResponse
+    }
+  }

@@ -19,7 +19,12 @@ package uk.gov.hmrc.ngrnotify.backend.base
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
+import scala.io.Source
+
 /**
   * @author Yuriy Tumakha
   */
-class AnyWordAppSpec extends AnyWordSpec with GuiceOneAppPerSuite with AppSuiteBase {}
+class AnyWordAppSpec extends AnyWordSpec with GuiceOneAppPerSuite with AppSuiteBase:
+
+  def testResourceContent(resource: String): String =
+    Source.fromResource(resource).mkString

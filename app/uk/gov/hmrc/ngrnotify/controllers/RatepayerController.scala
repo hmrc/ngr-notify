@@ -18,16 +18,17 @@ package uk.gov.hmrc.ngrnotify.controllers
 
 import play.api.Logging
 import play.api.libs.json.*
-import play.api.mvc.{Action, ControllerComponents}
+import play.api.mvc.*
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
-import uk.gov.hmrc.ngrnotify.model.ratepayer.{RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
+import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 
 /**
   * @author Yuriy Tumakha
@@ -60,6 +61,17 @@ class RatepayerController @Inject() (
           .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
       case jsError: JsError                => Future.successful(buildValidationErrorsResponse(jsError))
     }
+  }
+
+  def getRatepayerPropertyLinks(ratepayerCredId: String): Action[AnyContent] = Action.async { implicit request =>
+    hipConnector.getRatepayer(ratepayerCredId)
+      .map { response =>
+        response.status match {
+          case 200    => parsePropertyLinks(response.body)
+          case status => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+        }
+      }
+      .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
   }
 
   private def toBridgeRequest(ratepayer: RegisterRatepayerRequest): BridgeRequest =
@@ -108,13 +120,15 @@ class RatepayerController @Inject() (
       )
     )
 
-  private def extractNames(ratepayer: RegisterRatepayerRequest): Names =
+  private def extractNames(ratepayer: RegisterRatepayerRequest): Option[Names] =
     val (forenamesOpt, surnameOpt) = extractForenamesAndSurname(ratepayer.name)
 
-    Names(
-      forenames = forenamesOpt,
-      surname = surnameOpt,
-      corporateName = ratepayer.tradingName
+    Some(
+      Names(
+        forenames = forenamesOpt,
+        surname = surnameOpt,
+        corporateName = ratepayer.tradingName
+      )
     )
 
   private def extractForenamesAndSurname(fullName: String): (Option[String], Option[String]) =
@@ -124,9 +138,27 @@ class RatepayerController @Inject() (
       if index == -1 then ("", trimmedFullName) else trimmedFullName.splitAt(index)
     (Option.when(forenames.trim.nonEmpty)(forenames.trim), Some(surname.trim))
 
-  private def extractCommunications(ratepayer: RegisterRatepayerRequest): Communications =
-    Communications(
-      postalAddress = Some(ratepayer.address.singleLine),
-      telephoneNumber = Some(ratepayer.contactNumber),
-      email = Some(ratepayer.email)
+  private def extractCommunications(ratepayer: RegisterRatepayerRequest): Option[Communications] =
+    Some(
+      Communications(
+        postalAddress = Some(ratepayer.address.singleLine),
+        telephoneNumber = Some(ratepayer.contactNumber),
+        email = Some(ratepayer.email)
+      )
     )
+
+  private def parsePropertyLinks(response: String): Result =
+    Try(Json.parse(response)).map {
+      _.validate[BridgeResponse] match {
+        case JsSuccess(bridgeResponse, _) =>
+          logger.info(s"Bridge Response:\n$bridgeResponse")
+
+          val addresses: Seq[String] = bridgeResponse.job.compartments.properties
+            .map(_.data.address.propertyFullAddress.getOrElse(""))
+          Ok(Json.toJsObject(RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)))
+        case jsError: JsError             => buildValidationErrorsResponse(jsError).copy(header = ResponseHeader(INTERNAL_SERVER_ERROR))
+      }
+    }.getOrElse {
+      logger.warn(s"Bridge Response:\n$response")
+      InternalServerError(buildFailureResponse(WRONG_RESPONSE_BODY, "HIP response could not be parsed into JSON format."))
+    }

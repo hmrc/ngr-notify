@@ -4,6 +4,7 @@
     "idx" : "1",
     "name" : "Register Ratepayer",
     "compartments" : {
+      "properties" : [ ],
       "persons" : [ {
         "idx" : "1.2.1",
         "name" : "Government Gateway User",

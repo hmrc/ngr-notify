@@ -14,6 +14,58 @@ tags:
     description: >-
       This API is intended for use by NGR services to facilitate the sending of email notifications.
 paths:
+  '/ngr-notify/ratepayer-has-property/{credId}':
+    get:
+      summary: 'NGR Notify API - Ratepayer linked properties'
+      description: >
+        Checks whether the ratepayer has at least one linked property.
+      tags:
+        - 'Ratepayer'
+      parameters:
+        - in: path
+          name: credId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+            example: GGID123345
+          description: The ratepayer credentials ID
+      responses:
+        '200':
+          description: Linked properties were successfully parsed from the HIP response.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ratepayerPropertyLinksResponse'
+              examples:
+                Example1:
+                  summary: 'Successful Response Example 1 (linked: true)'
+                  value:
+                    linked: true
+                    properties:
+                      - "88, Anderton Close, Tavistock, Devon, PL22 8DE"
+                Example2:
+                  summary: 'Successful Response Example 2 (linked: false)'
+                  value:
+                    linked: false
+                    properties: []
+        '500':
+          description: |-
+            Server Error
+            ```
+             "code"         "reason"
+             SERVER_ERROR   Service is currently experiencing problems that require live service intervention.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/failureResponse'
+              examples:
+                Server Error:
+                  value:
+                    failures:
+                      - code: SERVER_ERROR
+                        reason: Service is currently experiencing problems that require live service intervention.
   '/ngr-notify/register-ratepayer':
     post:
       summary: 'NGR Notify API - Register ratepayer'
@@ -363,6 +415,24 @@ components:
           type: string
           description: The response message
           example: Email dispatch task successfully created.
+    ratepayerPropertyLinksResponse:
+      title: 'Ratepayer Property Links - response schema'
+      type: object
+      required:
+        - linked
+        - properties
+      additionalProperties: false
+      properties:
+        linked:
+          description: 'Has the ratepayer linked property?'
+          type: boolean
+        properties:
+          type: array
+          minItems: 0
+          uniqueItems: true
+          items:
+            type: string
+            example: '88, Anderton Close, Tavistock, Devon, PL22 8DE'
     registerRatepayerRequest:
       title: 'Register ratepayer - request schema'
       type: object
