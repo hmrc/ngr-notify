@@ -24,7 +24,7 @@ import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
   */
 class BridgeResponseSpec extends AnyWordAppSpec:
 
-  "Model RegisterRatepayerRequest" should {
+  "Model BridgeResponse" should {
     "be serialized/deserialized from JSON" in {
       val ratepayerResponseJson = Json.parse(testResourceContent("ratepayerHasPropertyLink.json"))
       val bridgeResponse        = ratepayerResponseJson.as[BridgeResponse]
