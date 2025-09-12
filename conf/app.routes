@@ -10,5 +10,7 @@ GET     /ratepayer-status/:id                   uk.gov.hmrc.ngrnotify.controller
 POST    /register-ratepayer                     uk.gov.hmrc.ngrnotify.controllers.RatepayerController.registerRatepayer
 GET     /ratepayer-has-property/:credId         uk.gov.hmrc.ngrnotify.controllers.RatepayerController.getRatepayerPropertyLinks(credId)
 
+GET     /allowed-in-private-beta/:credId        uk.gov.hmrc.ngrnotify.controllers.AllowedCredentialsController.isAllowedInPrivateBeta(credId)
+
 # Send email
 POST    /send-email/:emailTemplateId            uk.gov.hmrc.ngrnotify.controllers.EmailSenderController.sendEmail(emailTemplateId)
