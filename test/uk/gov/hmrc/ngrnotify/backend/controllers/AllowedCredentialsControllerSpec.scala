@@ -21,42 +21,43 @@ import play.api.test.Helpers.*
 import play.api.test.FakeRequest
 import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.controllers.AllowedCredentialsController
-import uk.gov.hmrc.ngrnotify.repository.AllowedCredentialsRepo
 import scala.concurrent.Future
-import play.api.Application
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.mvc.ControllerComponents
+import uk.gov.hmrc.ngrnotify.connectors.AllowedCredentialsConnector
 
 class AllowedCredentialsControllerSpec extends AnyWordAppSpec {
 
-  private val mockRepo = mock[AllowedCredentialsRepo]
-
-  private val controller =
-    inject[AllowedCredentialsController]
-
-  override def fakeApplication(): Application = {
-    when(mockRepo.isAllowed("test-cred-id")).thenReturn(Future.successful(true))
-    when(mockRepo.isAllowed("unknown-cred-id")).thenReturn(Future.successful(false))
-
-    new GuiceApplicationBuilder()
-      .overrides(bind[AllowedCredentialsRepo].toInstance(mockRepo))
-      .build()
-  }
+  private val mockConnector = mock[AllowedCredentialsConnector]
+  private val cc            = inject[ControllerComponents]
+  private val controller    = new AllowedCredentialsController(mockConnector, cc)(using scala.concurrent.ExecutionContext.global)
 
   "AllowedCredentialsController" should {
 
-    "return 200" in {
-      val result = controller.isAllowedInPrivateBeta("test-cred-id").apply(FakeRequest())
+    "return 200 for allowed id with true" in {
+      when(mockConnector.isAllowed("testId-1")).thenReturn(Future.successful(true))
+
+      val result = controller.isAllowedInPrivateBeta("testId-1").apply(FakeRequest())
 
       status(result)        shouldBe OK
       contentAsJson(result) shouldBe Json.obj("allowed" -> true)
     }
 
-    "return 403" in {
-      val result = controller.isAllowedInPrivateBeta("unknown-cred-id").apply(FakeRequest())
+    "return 200 for not allowed id with false" in {
+      when(mockConnector.isAllowed("testId-2")).thenReturn(Future.successful(false))
 
-      status(result)        shouldBe FORBIDDEN
+      val result = controller.isAllowedInPrivateBeta("testId-2").apply(FakeRequest())
+
+      status(result)        shouldBe OK
       contentAsJson(result) shouldBe Json.obj("allowed" -> false)
+    }
+
+    "return 500" in {
+      val exception = new RuntimeException("Service unavailable")
+      when(mockConnector.isAllowed("testId-3")).thenReturn(Future.failed(exception))
+
+      val result = controller.isAllowedInPrivateBeta("testId-3").apply(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
     }
   }
 }

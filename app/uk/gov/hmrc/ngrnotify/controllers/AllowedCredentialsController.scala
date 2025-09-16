@@ -19,29 +19,30 @@ package uk.gov.hmrc.ngrnotify.controllers
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.ngrnotify.connectors.AllowedCredentialsConnector
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.ngrnotify.repository.AllowedCredentialsRepo
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AllowedCredentialsController @Inject() (
-  allowedCredentialsRepo: AllowedCredentialsRepo,
+  connector: AllowedCredentialsConnector,
   cc: ControllerComponents
 )(implicit ec: ExecutionContext
 ) extends BackendController(cc)
-  with Logging:
+  with Logging
+  with JsonSupport:
 
   def isAllowedInPrivateBeta(credId: String): Action[AnyContent] = Action.async { implicit request =>
-    allowedCredentialsRepo.isAllowed(credId).map {
-
-      allowed =>
+    connector.isAllowed(credId)
+      .map { allowed =>
         logger.info(s"Private beta check for credId: $credId - allowed: $allowed")
-
-        val response = Json.obj("allowed" -> allowed)
-
-        if allowed then Ok(response)
-        else Forbidden(response)
-    }
+        Ok(Json.obj("allowed" -> allowed))
+      }
+      .recover {
+        case e: Exception =>
+          logger.error(s"Failed to check private beta access for credId: $credId", e)
+          InternalServerError
+      }
   }

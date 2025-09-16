@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model
+package uk.gov.hmrc.ngrnotify.connectors
 
-import org.mongodb.scala.bson.ObjectId
-import play.api.libs.json.{JsObject, Json, OFormat}
+import play.api.Logging
 
-case class AllowedCredentials(
-  _id: ObjectId = new ObjectId,
-  credId: String
-)
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
-object AllowedCredentials {
+@Singleton
+class AllowedCredentialsConnector @Inject() (
+  implicit
+  ec: ExecutionContext
+):
 
-  import uk.gov.hmrc.mongo.play.json.formats.MongoFormats.Implicits.*
+  private val allowedCredentials = List("test-cred-1", "test-cred-2", "test-cred-3", "test-cred-4")
 
-  implicit val format: OFormat[AllowedCredentials] = Json.format[AllowedCredentials]
-}
+  def isAllowed(credId: String): Future[Boolean] =
+    Future.successful(allowedCredentials.contains(credId))
