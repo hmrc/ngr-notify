@@ -161,23 +161,6 @@ object PostRatepayer {
   implicit lazy val jobFormat: OFormat[Job] = Json.format[Job]
   implicit lazy val jobRootFormat: OFormat[PostRatepayer] = Json.format[PostRatepayer]
 
-  def testCoding(): Unit = {
-    val source = scala.io.Source.fromResource("uk/gov/hmrc/ngrnotify/model/bridge/post-ratepayer-example.json")
-    val jsonStr = source.mkString
-    source.close()
-
-    val result: JsResult[PostRatepayer] = Json.parse(jsonStr).validate[PostRatepayer]
-
-    result match
-      case JsSuccess(postRatepayer, _) =>
-        println("Parsed successfully!")
-        println(postRatepayer.job.name)
-        println(postRatepayer.`$schema`)
-      case JsError(errors) =>
-        println("Failed to parse JSON:")
-        errors.foreach(println)
-  }
-
 }
 
 
