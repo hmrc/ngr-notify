@@ -30,7 +30,7 @@ final case class RegisterRatepayerRequest(
   name: Option[Name],
   tradingName: Option[TradingName] = None,
   email: Option[Email] = None,
-  nino: Option[String] = None,
+  nino: Option[Nino] = None,
   contactNumber: Option[PhoneNumber] = None,
   secondaryNumber: Option[PhoneNumber] = None,
   address: Option[Address] = None,

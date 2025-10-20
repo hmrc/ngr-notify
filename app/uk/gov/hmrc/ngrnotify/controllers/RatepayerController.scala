@@ -94,7 +94,7 @@ class RatepayerController @Inject() (
                   ),
                   ForeignId(
                     location = Some("NINO"),
-                    value = ratepayer.nino
+                    value = Some(ratepayer.nino.map(_.value).getOrElse(""))
                   ),
                   ForeignId(
                     location = Some("secondary_telephone_number"),
