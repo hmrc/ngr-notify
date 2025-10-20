@@ -134,7 +134,7 @@ class RatepayerController @Inject() (
     )
 
   private def extractNames(ratepayer: RegisterRatepayerRequest): Option[Names] =
-    val (forenamesOpt, surnameOpt) = extractForenamesAndSurname(ratepayer.name)
+    val (forenamesOpt, surnameOpt) = extractForenamesAndSurname(ratepayer.email.map(_.value).getOrElse(""))
 
     Some(
       Names(
@@ -156,7 +156,7 @@ class RatepayerController @Inject() (
       Communications(
         postalAddress = Some(ratepayer.address.singleLine),
         telephoneNumber = Some(ratepayer.contactNumber),
-        email = Some(ratepayer.email)
+        email = Some(ratepayer.email.map(_.value).getOrElse("")) 
       )
     )
 
