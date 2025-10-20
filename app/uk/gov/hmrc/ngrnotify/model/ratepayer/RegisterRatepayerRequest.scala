@@ -17,22 +17,24 @@
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
 import play.api.libs.json.{Json, OFormat}
-import uk.gov.hmrc.ngrnotify.model.Address
+import uk.gov.hmrc.ngrnotify.model.{Address, Name}
+import uk.gov.hmrc.ngrnotify.model.email.Email
 
 /**
   * @author Yuriy Tumakha
   */
-case class RegisterRatepayerRequest(
+final case class RegisterRatepayerRequest(
   ratepayerCredId: String,
-  userType: Option[RatepayerType],
-  agentStatus: Option[AgentStatus],
-  name: String,
-  tradingName: Option[String],
-  email: String,
-  nino: Option[String],
+  userType: Option[RatepayerType] = None,
+  agentStatus: Option[AgentStatus] = None,
+  name: Option[Name],
+  tradingName: Option[String] = None,
+  email: Option[Email] = None,
+  nino: Option[String] = None,
   contactNumber: String,
-  secondaryNumber: Option[String],
-  address: Address
+  secondaryNumber: Option[String] = None,
+  address: Address,
+  trnReferenceNumber: String
 )
 
 object RegisterRatepayerRequest:
