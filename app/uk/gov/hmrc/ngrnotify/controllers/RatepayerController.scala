@@ -111,7 +111,7 @@ class RatepayerController @Inject() (
                   ),
                   ForeignId(
                     location = Some("secondary_telephone_number"),
-                    value = ratepayer.secondaryNumber
+                    value = Some(ratepayer.secondaryNumber.map(_.value).getOrElse(""))
                   )
                 ),
                 foreignLabels = List(
@@ -140,7 +140,7 @@ class RatepayerController @Inject() (
       Names(
         forenames = forenamesOpt,
         surname = surnameOpt,
-        corporateName = ratepayer.tradingName
+        corporateName = Some(ratepayer.tradingName.map(_.value).getOrElse(""))
       )
     )
 
@@ -154,9 +154,9 @@ class RatepayerController @Inject() (
   private def extractCommunications(ratepayer: RegisterRatepayerRequest): Option[Communications] =
     Some(
       Communications(
-        postalAddress = Some(ratepayer.address.singleLine),
-        telephoneNumber = Some(ratepayer.contactNumber),
-        email = Some(ratepayer.email.map(_.value).getOrElse("")) 
+        postalAddress = Some(ratepayer.address.map(_.singleLine).getOrElse("")),
+        telephoneNumber = Some(ratepayer.contactNumber.map(_.value).getOrElse("")),
+        email = Some(ratepayer.email.map(_.value).getOrElse(""))
       )
     )
 
