@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model
+package uk.gov.hmrc.ngrnotify.model.ratepayer
 
 import play.api.data.Form
 import play.api.data.Forms.{mapping, text}
 import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.ngrnotify.model.CommonFormValidators
 
 final case class Name(value: String)
 
 object Name extends CommonFormValidators {
   implicit val format: OFormat[Name] = Json.format[Name]
-  private lazy val contactNameInvalidFormat = "name.invalidFormat.error"
+  private lazy val contactNameInvalidFormat  = "name.invalidFormat.error"
   private lazy val contactNameMaxLengthError = "name.maxlength.error"
-  private lazy val nameEmptyError    = "name.empty.error"
-  val name                   = "name-value"
+  private lazy val nameEmptyError            = "name.empty.error"
+  val name                                   = "name-value"
 
   def unapply(name: Name): Option[String] = Some(name.value)
 
