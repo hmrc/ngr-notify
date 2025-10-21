@@ -16,40 +16,13 @@
 
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
-import play.api.data.Form
-import play.api.data.Forms.{mapping, text}
-import play.api.libs.json.{Reads, Writes}
-import uk.gov.hmrc.domain.{SimpleObjectReads, SimpleObjectWrites, TaxIdentifier}
-import uk.gov.hmrc.ngrnotify.model.CommonFormValidators
+import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.domain.TaxIdentifier
 
 final case class Nino(nino: String) extends TaxIdentifier {
   def value: String = nino
 }
 
-object Nino extends CommonFormValidators {
-
-  implicit val ninoWrite: Writes[Nino] = new SimpleObjectWrites[Nino](_.value)
-  implicit val ninoRead: Reads[Nino] = new SimpleObjectReads[Nino]("nino", Nino.apply)
-
-  private lazy val ninoEmptyError    = "nino.empty.error"
-  private lazy val ninoInvalidFormat = "nino.invalidFormat.error"
-  private lazy val ninoUnmatched     = "nino.unmatched.error"
-  val nino                           = "nino-value"
-
-  def unapply(nino: Nino): Option[String] = Some(nino.value)
-
-  def form(authNino: String): Form[Nino] =
-    Form(
-      mapping(
-        nino -> text()
-          .transform[String](_.toUpperCase, identity)
-          .verifying(
-            firstError(
-              isNotEmpty(nino, ninoEmptyError),
-              regexp(ninoRegexPattern.pattern(), ninoInvalidFormat),
-              isMatchingNino(authNino, nino, ninoUnmatched)
-            )
-          )
-      )(Nino.apply)(Nino.unapply)
-    )
+object Nino  {
+  implicit val format: OFormat[Nino] = Json.format[Nino]
 }

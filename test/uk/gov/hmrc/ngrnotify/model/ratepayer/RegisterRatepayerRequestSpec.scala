@@ -36,7 +36,7 @@ class RegisterRatepayerRequestSpec extends AnyWordSpec with Matchers:
         Some(organization),
         Some(agent),
         Some(Name("Full name")),
-        None,
+        Some(TradingName("Acme Ltd")),
         Some(Email("test@email.com")),
         Some(Nino("QQ123456A")),
         Some(PhoneNumber("1111")),

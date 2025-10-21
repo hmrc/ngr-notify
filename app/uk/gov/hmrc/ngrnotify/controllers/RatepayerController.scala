@@ -156,7 +156,7 @@ class RatepayerController @Inject() (
       Communications(
         postalAddress = Some(ratepayer.address.map(_.singleLine).getOrElse("")),
         telephoneNumber = Some(ratepayer.contactNumber.map(_.value).getOrElse("")),
-        email = Some(ratepayer.email.map(_.value).getOrElse(""))
+        email = Some(ratepayer.email.map(_.toString).getOrElse(""))
       )
     )
 

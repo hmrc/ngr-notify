@@ -16,34 +16,12 @@
 
 package uk.gov.hmrc.ngrnotify.model.email
 
-import play.api.data.Form
-import play.api.data.Forms.{mapping, text}
 import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.ngrnotify.model.CommonFormValidators
 
 final case class Email(value: String) {
   override def toString: String = value
 }
 
-object Email extends CommonFormValidators {
+object Email {
   implicit val format: Format[Email] = Json.format[Email]
-  lazy val emailEmptyError           = "email.empty.error"
-  lazy val emailInvalidFormat        = "email.invalidFormat.error"
-  val email                          = "email-value"
-
-  def unapply(email: Email): Option[String] = Some(email.value)
-
-  def form(): Form[Email] =
-    Form(
-      mapping(
-        email -> text()
-          .verifying(
-            firstError(
-              isNotEmpty(email, emailEmptyError),
-              maxLength(24, emailInvalidFormat),
-              regexp(emailPattern.pattern(), emailInvalidFormat)
-            )
-          )
-      )(Email.apply)(Email.unapply)
-    )
 }
