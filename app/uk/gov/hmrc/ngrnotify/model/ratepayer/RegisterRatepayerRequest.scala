@@ -34,7 +34,8 @@ final case class RegisterRatepayerRequest(
   contactNumber: Option[PhoneNumber] = None,
   secondaryNumber: Option[PhoneNumber] = None,
   address: Option[Address] = None,
-  trnReferenceNumber: Option[TRNReferenceNumber] = None
+  trnReferenceNumber: Option[TRNReferenceNumber] = None,
+  isRegistered: Option[Boolean] = Some(false)
 )
 
 object RegisterRatepayerRequest:
