@@ -20,6 +20,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.model.Address
+import uk.gov.hmrc.ngrnotify.model.email.Email
 import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
 import uk.gov.hmrc.ngrnotify.model.ratepayer.RatepayerType.organization
 
@@ -34,13 +35,14 @@ class RegisterRatepayerRequestSpec extends AnyWordSpec with Matchers:
         "login",
         Some(organization),
         Some(agent),
-        "Full name",
+        Some(Name("Full name")),
+        Some(TradingName("Acme Ltd")),
+        Some(Email("test@email.com")),
+        Some(Nino("QQ123456A")),
+        Some(PhoneNumber("1111")),
         None,
-        "test@email.com",
-        Some("QQ123456A"),
-        "1111",
-        None,
-        Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")
+        Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")),
+        Some(TRNReferenceNumber(ReferenceType.TRN, "TRN123456"))
       )
 
       val json = Json.toJson(registerRatepayerRequest)
