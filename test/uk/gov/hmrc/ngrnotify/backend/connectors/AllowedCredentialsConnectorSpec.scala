@@ -21,11 +21,8 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.concurrent.ScalaFutures
 import uk.gov.hmrc.ngrnotify.connectors.AllowedCredentialsConnector
 
-import scala.concurrent.ExecutionContext
-
 class AllowedCredentialsConnectorSpec extends AnyWordSpec with Matchers with ScalaFutures {
 
-  implicit private val ec: ExecutionContext = ExecutionContext.global
   private val connector                     = new AllowedCredentialsConnector()
 
   "AllowedCredentialsConnector" should {
