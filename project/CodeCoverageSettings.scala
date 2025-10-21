@@ -11,7 +11,8 @@ object CodeCoverageSettings {
     "prod.*",
     ".*Routes.*",
     "testOnly.*",
-    "testOnlyDoNotUseInAppConf.*"
+    "testOnlyDoNotUseInAppConf.*",
+    ".*.json"
   )
 
   private val excludedFiles: Seq[String] = Seq(".*Routes.*")

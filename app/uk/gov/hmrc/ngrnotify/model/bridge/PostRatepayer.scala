@@ -20,7 +20,7 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 case class PostRatepayer(
                     $schema: String,
-                    job: Job
+                    job: PostRatepayer.Job
                   )
 
 object PostRatepayer {
