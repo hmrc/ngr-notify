@@ -33,7 +33,7 @@ import uk.gov.hmrc.ngrnotify.model.Address
 import uk.gov.hmrc.ngrnotify.model.email.Email
 import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
 import uk.gov.hmrc.ngrnotify.model.ratepayer.RatepayerType.organization
-import uk.gov.hmrc.ngrnotify.model.ratepayer.{Name, Nino, PhoneNumber, RegisterRatepayerRequest}
+import uk.gov.hmrc.ngrnotify.model.ratepayer.{Name, Nino, PhoneNumber, ReferenceType, RegisterRatepayerRequest, TRNReferenceNumber}
 
 import java.io.IOException
 
@@ -89,7 +89,8 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
             Some(Nino("QQ123456A")),
             Some(PhoneNumber("1111")),
             None,
-            Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ"))
+            Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")),
+            Some(TRNReferenceNumber(ReferenceType.TRN, "TRN123456"))
           )
         ))
 
