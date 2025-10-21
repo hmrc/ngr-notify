@@ -41,7 +41,8 @@ class RegisterRatepayerRequestSpec extends AnyWordSpec with Matchers:
         Some(Nino("QQ123456A")),
         Some(PhoneNumber("1111")),
         None,
-        Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ"))
+        Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")),
+        Some(TRNReferenceNumber(ReferenceType.TRN, "TRN123456"))
       )
 
       val json = Json.toJson(registerRatepayerRequest)
