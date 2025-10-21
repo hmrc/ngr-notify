@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Json, Format}
 import uk.gov.hmrc.domain.TaxIdentifier
 
 final case class Nino(nino: String) extends TaxIdentifier {
@@ -24,5 +24,5 @@ final case class Nino(nino: String) extends TaxIdentifier {
 }
 
 object Nino  {
-  implicit val format: OFormat[Nino] = Json.format[Nino]
+  implicit val format: Format[Nino] = Json.format[Nino]
 }
