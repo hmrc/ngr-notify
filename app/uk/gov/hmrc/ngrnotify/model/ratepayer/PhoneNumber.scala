@@ -16,34 +16,10 @@
 
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
-import play.api.data.Form
-import play.api.data.Forms.{mapping, text}
 import play.api.libs.json.{Json, OFormat}
-import uk.gov.hmrc.ngrnotify.model.CommonFormValidators
 
 final case class PhoneNumber(value: String)
 
-object PhoneNumber extends CommonFormValidators {
-
+object PhoneNumber  {
   implicit val format: OFormat[PhoneNumber] = Json.format[PhoneNumber]
-
-  private lazy val phoneNumberEmptyError    = "phoneNumber.empty.error"
-  private lazy val phoneNumberInvalidFormat = "phoneNumber.invalidFormat.error"
-  private val phoneNumber                   = "phoneNumber-value"
-
-  def unapply(phoneNumber: PhoneNumber): Option[String] = Some(phoneNumber.value)
-
-  def form(): Form[PhoneNumber] =
-    Form(
-      mapping(
-        phoneNumber -> text().transform[String](_.replaceAll("\\s", ""), identity)
-          .verifying(
-            firstError(
-              isNotEmpty(phoneNumber, phoneNumberEmptyError),
-              regexp(phoneNumberRegexPattern.pattern(), phoneNumberInvalidFormat)
-            )
-          )
-      )(PhoneNumber.apply)(PhoneNumber.unapply)
-    )
-
 }

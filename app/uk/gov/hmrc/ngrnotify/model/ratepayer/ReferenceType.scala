@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.Format
 import uk.gov.hmrc.ngrnotify.model.Scala3EnumJsonFormat
 
 enum ReferenceType {
