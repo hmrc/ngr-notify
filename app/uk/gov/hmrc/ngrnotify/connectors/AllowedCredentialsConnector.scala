@@ -16,16 +16,11 @@
 
 package uk.gov.hmrc.ngrnotify.connectors
 
-import play.api.Logging
-
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 @Singleton
-class AllowedCredentialsConnector @Inject() (
-  implicit
-  ec: ExecutionContext
-):
+class AllowedCredentialsConnector @Inject() ():
 
   private val allowedCredentials = List("test-cred-1", "test-cred-2", "test-cred-3", "test-cred-4")
 
