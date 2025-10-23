@@ -70,7 +70,7 @@ class PhysicalControllerSpec extends AnyWordAppSpec:
           )
         ))
 
-      val result = controller.updatePropertyChanges(fakeRequest)
+      val result = controller.updatePropertyChanges()(fakeRequest)
       status(result)          shouldBe ACCEPTED
     }
 
@@ -81,7 +81,7 @@ class PhysicalControllerSpec extends AnyWordAppSpec:
       val fakeRequest = FakeRequest("POST", "/")
         .withHeaders("Content-type" -> "application/json;charset=UTF-8")
 
-      val result = controller.updatePropertyChanges(fakeRequest)
+      val result = controller.updatePropertyChanges()(fakeRequest)
       status(result) shouldBe BAD_REQUEST
     }
 
@@ -93,7 +93,7 @@ class PhysicalControllerSpec extends AnyWordAppSpec:
         .withHeaders("Content-type" -> "application/json;charset=UTF-8")
         .withBody(Json.obj())
 
-      val result = controller.updatePropertyChanges(fakeRequest)
+      val result = controller.updatePropertyChanges()(fakeRequest)
       status(result) shouldBe BAD_REQUEST
     }
 
@@ -115,7 +115,7 @@ class PhysicalControllerSpec extends AnyWordAppSpec:
           )
         )))
 
-      val result = controller.updatePropertyChanges(fakeRequest)
+      val result = controller.updatePropertyChanges()(fakeRequest)
       status(result) shouldBe BAD_REQUEST
     }
 
@@ -137,7 +137,7 @@ class PhysicalControllerSpec extends AnyWordAppSpec:
           )
         )))
 
-      val result = controller.updatePropertyChanges(fakeRequest)
+      val result = controller.updatePropertyChanges()(fakeRequest)
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }
 
@@ -159,7 +159,7 @@ class PhysicalControllerSpec extends AnyWordAppSpec:
           )
         )))
 
-      val result = controller.updatePropertyChanges(fakeRequest)
+      val result = controller.updatePropertyChanges()(fakeRequest)
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }
 

@@ -137,16 +137,16 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
         .withHeaders("Content-type" -> "application/json;charset=UTF-8")
         .withBody(Json.toJson(
           RegisterRatepayerRequest(
-            "login",
-            Some(organization),
-            Some(agent),
-            "Full name",
-            None,
-            "test@email.com",
-            Some("QQ123456A"),
-            "1111",
-            None,
-            Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")
+            ratepayerCredId = "login",
+            userType = Some(organization),
+            agentStatus = Some(agent),
+            name = Some(Name("Full name")),
+            tradingName = None,
+            email = Some(Email("test@email.com")),
+            nino = Some(Nino("QQ123456A")),
+            contactNumber = Some(PhoneNumber("1111")),
+            secondaryNumber = None,
+            address = Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ"))
           )
         ))
 
@@ -162,16 +162,16 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
         .withHeaders("Content-type" -> "application/json;charset=UTF-8")
         .withBody(Json.toJson(
           RegisterRatepayerRequest(
-            "login",
-            Some(organization),
-            Some(agent),
-            "Full name",
-            None,
-            "test@email.com",
-            Some("QQ123456A"),
-            "1111",
-            None,
-            Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")
+            ratepayerCredId = "login",
+            userType = Some(organization),
+            agentStatus = Some(agent),
+            name = Some(Name("Full name")),
+            tradingName = None,
+            email = Some(Email("test@email.com")),
+            nino = Some(Nino("QQ123456A")),
+            contactNumber = Some(PhoneNumber("1111")),
+            secondaryNumber = None,
+            address = Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ"))
           )
         ))
 
@@ -187,16 +187,16 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
         .withHeaders("Content-type" -> "application/json;charset=UTF-8")
         .withBody(Json.toJson(
           RegisterRatepayerRequest(
-            "login",
-            Some(organization),
-            Some(agent),
-            "Full name",
-            None,
-            "test@email.com",
-            Some("QQ123456A"),
-            "1111",
-            None,
-            Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")
+            ratepayerCredId = "login",
+            userType = Some(organization),
+            agentStatus = Some(agent),
+            name = Some(Name("Full name")),
+            tradingName = None,
+            email = Some(Email("test@email.com")),
+            nino = Some(Nino("QQ123456A")),
+            contactNumber = Some(PhoneNumber("1111")),
+            secondaryNumber = None,
+            address = Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ"))
           )
         ))
 

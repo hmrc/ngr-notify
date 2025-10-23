@@ -38,8 +38,10 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   private val registerRatepayerPath     = servicesConfig.getConfString("hip.registerRatepayerPath", "/job/ratepayer")
   private val getRatepayerPath          = servicesConfig.getConfString("hip.getRatepayerPath", "/job/ratepayer/")
   private val updatePropertyChangesPath = servicesConfig.getConfString("hip.updatePropertyChangesPath", "/job/physical")
+  private val propertyLinkingPath       = servicesConfig.getConfString("hip.propertyLinkingPath", "/job/property")
   val registerRatepayerUrl: URL         = url"${hipBaseUrl + registerRatepayerPath}"
   val updatePropertyChangesUrl: URL     = url"${hipBaseUrl + updatePropertyChangesPath}"
+  val propertyLinkingUrl: URL           = url"${hipBaseUrl + propertyLinkingPath}"
   def getRatepayerUrl(id: String): URL  = url"${hipBaseUrl + getRatepayerPath + id}"
 
   val hipClientId: String     = servicesConfig.getConfString("hip.clientId", "CLIENT_ID")

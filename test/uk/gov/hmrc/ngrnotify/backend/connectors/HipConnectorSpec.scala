@@ -75,6 +75,28 @@ class HipConnectorSpec extends AnyWordAppSpec {
         .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer"))(using any[HeaderCarrier])
     }
   }
+  
+  "submitPropertyLinkingChanges" must {
+    "return a successful response" in {
+      val httpMock              = httpPostMock(ACCEPTED)
+      val connector             = HipConnector(appConfig, httpMock)
+      given Request[AnyContent] = FakeRequest()
+      val bridgeRequest         = BridgeRequest(
+        Job(
+          id = None,
+          idx = "1",
+          name = "Property Linking",
+          compartments = Compartments()
+        )
+      )
+
+      val response = connector.submitPropertyLinkingChanges(bridgeRequest).futureValue
+      response.status shouldBe ACCEPTED
+
+      verify(httpMock)
+        .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/property"))(using any[HeaderCarrier])
+    }
+  }
 
   "getRatepayer" must {
     "return a successful response" in {
