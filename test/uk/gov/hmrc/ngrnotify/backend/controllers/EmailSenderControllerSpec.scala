@@ -25,7 +25,7 @@ import play.api.libs.json.Json
 import play.api.test.Helpers.*
 import play.api.test.{FakeRequest, Helpers, Injecting}
 import uk.gov.hmrc.ngrnotify.controllers.EmailSenderController
-import uk.gov.hmrc.ngrnotify.model.EmailTemplate.ngr_registration_successful
+import uk.gov.hmrc.ngrnotify.model.EmailTemplate.*
 import uk.gov.hmrc.ngrnotify.model.request.SendEmailRequest
 
 import java.util.UUID
@@ -37,7 +37,7 @@ class EmailSenderControllerSpec extends AnyWordSpec with Matchers with GuiceOneA
   given Materializer = NoMaterializer
 
   "EmailSenderController" should {
-    "return 201" in {
+    "return 201 with registration successful" in {
       val fakeRequest = FakeRequest("POST", "/")
         .withHeaders("Content-type" -> "application/json;charset=UTF-8")
         .withBody(Json.toJson(
@@ -59,11 +59,64 @@ class EmailSenderControllerSpec extends AnyWordSpec with Matchers with GuiceOneA
       contentAsJson(result) shouldBe Json.obj("status" -> "Success", "message" -> "Email dispatch task successfully created.")
     }
 
+    "return 201 with add property request successful" in {
+      val fakeRequest = FakeRequest("POST", "/")
+        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
+        .withBody(Json.toJson(
+          SendEmailRequest(
+            UUID.fromString("9d2dee33-7803-485a-a2b1-2c7538e597ee"),
+            Seq("test1@email.com", "test2@email.com"),
+            Json.obj(
+              "firstName" -> "David",
+              "lastName" -> "Jones",
+              "reference" -> "REG12345",
+              "postcodeEndPart" -> "0AA"
+            ),
+            Some("http://localhost:1501/ngr-stub/callback")
+          )
+        ))
+
+      val result = controller.sendEmail(ngr_add_property_request_sent.toString)(fakeRequest)
+      status(result) shouldBe CREATED
+      contentAsJson(result) shouldBe Json.obj("status" -> "Success", "message" -> "Email dispatch task successfully created.")
+    }
+
     "return 400" in {
       val fakeRequest = FakeRequest("POST", "/")
         .withHeaders("Content-type" -> "application/json;charset=UTF-8")
 
       val result = controller.sendEmail(ngr_registration_successful.toString)(fakeRequest)
+      status(result) shouldBe BAD_REQUEST
+    }
+
+    "return 400 when invalid body is provided" in {
+      val fakeRequest = FakeRequest("POST", "/")
+        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
+        .withBody(Json.obj())
+
+      val result = controller.sendEmail(ngr_registration_successful.toString)(fakeRequest)
+      status(result) shouldBe BAD_REQUEST
+    }
+
+    "return 400 when invalid template is provided" in {
+      val fakeRequest = FakeRequest("POST", "/")
+        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
+        .withBody(Json.toJson(
+          SendEmailRequest(
+            UUID.fromString("9d2dee33-7803-485a-a2b1-2c7538e597ee"),
+            Seq("test1@email.com", "test2@email.com"),
+            Json.obj(
+              "firstName" -> "David",
+              "lastName" -> "Jones",
+              "reference" -> "REG12345",
+              "postcodeEndPart" -> "0AA"
+            ),
+            Some("http://localhost:1501/ngr-stub/callback")
+          )
+        ))
+
+
+      val result = controller.sendEmail("template")(fakeRequest)
       status(result) shouldBe BAD_REQUEST
     }
   }
