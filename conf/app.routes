@@ -14,3 +14,7 @@ GET     /allowed-in-private-beta/:credId        uk.gov.hmrc.ngrnotify.controller
 
 # Send email
 POST    /send-email/:emailTemplateId            uk.gov.hmrc.ngrnotify.controllers.EmailSenderController.sendEmail(emailTemplateId)
+
+# update property endpoints
+POST    /physical                               uk.gov.hmrc.ngrnotify.controllers.PhysicalController.updatePropertyChanges()
+
