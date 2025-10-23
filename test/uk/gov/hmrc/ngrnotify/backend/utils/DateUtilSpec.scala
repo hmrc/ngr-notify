@@ -61,4 +61,11 @@ class DateUtilSpec extends PlaySpec {
     }
   }
 
+  "DateUtil.nowInUK" should {
+    "parse lang code string and return corresponding Lang" in {
+      DateUtil.nowInUK.getZone mustBe ZonedDateTime.now(ukTimezone).getZone
+
+    }
+  }
+
 }
