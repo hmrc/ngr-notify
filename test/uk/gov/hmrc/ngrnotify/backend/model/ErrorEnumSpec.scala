@@ -18,8 +18,8 @@ package uk.gov.hmrc.ngrnotify.backend.model
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
-import play.api.libs.json.{Format, JsError, Json}
-import uk.gov.hmrc.ngrnotify.model.{ErrorCode, Scala3EnumJsonFormat}
+import play.api.libs.json.{JsError, Json}
+import uk.gov.hmrc.ngrnotify.model.ErrorCode
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.BAD_REQUEST_BODY
 
 /**

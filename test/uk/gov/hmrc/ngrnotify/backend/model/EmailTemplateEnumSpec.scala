@@ -18,9 +18,9 @@ package uk.gov.hmrc.ngrnotify.backend.model
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
-import play.api.libs.json.{Format, JsError, Json}
-import uk.gov.hmrc.ngrnotify.model.EmailTemplate.{ngr_registration_successful, ngr_add_property_request_sent}
-import uk.gov.hmrc.ngrnotify.model.{EmailTemplate, Scala3EnumJsonFormat}
+import play.api.libs.json.{JsError, Json}
+import uk.gov.hmrc.ngrnotify.model.EmailTemplate
+import uk.gov.hmrc.ngrnotify.model.EmailTemplate.{ngr_add_property_request_sent, ngr_registration_successful}
 
 /**
   * @author Yuriy Tumakha
