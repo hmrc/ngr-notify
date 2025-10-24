@@ -20,31 +20,28 @@ import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.{Action, ControllerComponents}
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
-import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeRequest, Compartments, Job}
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.{PropertyChangesRequest, PropertyChangesResponse}
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
+import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeRequest, Compartments, Job}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{PropertyChangesResponse, PropertyLinkingRequest}
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PhysicalController @Inject() (
+class PropertyController @Inject()(
                                      hipConnector: HipConnector,
                                      cc: ControllerComponents
                                    )(implicit ec: ExecutionContext) extends BackendController(cc) with JsonSupport with Logging {
   
-  def updatePropertyChanges(): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    request.body.validate[PropertyChangesRequest] match {
-      case JsSuccess(propertyChanges, _) =>
-        logger.info(s"Request:\n$propertyChanges")
-
-        val bridgeRequest = toBridgeRequest(propertyChanges)
-        logger.info(s"BridgeRequest:\n$bridgeRequest")
-
-        hipConnector.updatePropertyChanges(bridgeRequest).map { response =>
+  def submit(): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    request.body.validate[PropertyLinkingRequest] match {
+      case JsSuccess(propertyRequest, _) =>
+        val bridgeRequest = toBridgeRequest(propertyRequest)
+        hipConnector.submitPropertyLinkingChanges(bridgeRequest).map { response =>
             response.status match {
-              case 200 | 201 | 202 => Accepted(Json.toJsObject(PropertyChangesResponse()))
-              case 400             => BadRequest(Json.toJsObject(PropertyChangesResponse(Some(response.body))))
+              case status if is2xx(status) => Accepted
+              case 400             => BadRequest
               case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
             }
           }
@@ -56,17 +53,13 @@ class PhysicalController @Inject() (
   
   }
 
-  private def toBridgeRequest(propertyChanges: PropertyChangesRequest): BridgeRequest =
+  private def toBridgeRequest(propertyRequest: PropertyLinkingRequest): BridgeRequest =
     BridgeRequest(
       Job(
         id = None,
         idx = "?",
-        name = "physical",
-        compartments = Compartments(
-          //TODO add actual mappings when spec becomes available
-
-        )
-      )
+        name = "property",
+        compartments = Compartments())
     )
 
 }

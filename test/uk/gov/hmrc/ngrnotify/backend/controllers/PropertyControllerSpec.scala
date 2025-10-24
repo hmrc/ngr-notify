@@ -22,29 +22,26 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.OptionValues.convertOptionToValuable
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.matchers.should.Matchers.shouldBe
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.http.Status.{ACCEPTED, BAD_REQUEST, INTERNAL_SERVER_ERROR, OK}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import play.api.mvc.{Request, Result}
-import play.api.test.Helpers.*
-import play.api.test.{FakeRequest, Helpers}
+import play.api.mvc.{AnyContent, Request, Result}
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{POST, defaultAwaitTimeout, route, status, writeableOf_AnyContentAsJson}
 import play.api.{Application, inject}
 import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.controllers.routes
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeRequest
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AnythingElseData, ChangeToUseOfSpace, CredId, PropertyChangesRequest}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{CredId, PropertyLinkingRequest, VMVProperty}
 
-import java.time.LocalDate
-import scala.collection.immutable.Seq
 import scala.concurrent.Future
 
-class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach:
-
+class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach {
   val mockHipConnector: HipConnector = mock[HipConnector]
-  
+
   override def beforeEach(): Unit = {
     reset(mockHipConnector)
     super.beforeEach()
@@ -57,53 +54,47 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       )
       .build()
 
-  "PhysicalController" - {
-    ".updatePropertyChanges return 202" in {
-      val json = Json.toJson(
-        PropertyChangesRequest(
-          CredId("credId"),
-          LocalDate.of(2023, 1, 1),
-          Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
-          Seq(("airConditioning", "none"), ("securityCamera", "23")),
-          Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
-          Some(AnythingElseData(true, Some("addtional text"))),
-          Seq("uploadId1", "uploadId2")
-        )
-      )
 
-      when(mockHipConnector.updatePropertyChanges(any[BridgeRequest])(using any[Request[?]]))
+  "PropertyController" - {
+    "returns OK for a valid request" in {
+      val vmvProperty = VMVProperty(100L, "property-id", "address", "LA123", List())
+
+      val propertyLinkingRequest = PropertyLinkingRequest(
+        credId = CredId("some-cred-id"),
+        vmvProperty = vmvProperty
+      )
+      val json = Json.toJson(propertyLinkingRequest)
+
+      when(mockHipConnector.submitPropertyLinkingChanges(any[BridgeRequest])(using any[Request[AnyContent]]))
         .thenReturn(
           Future.successful(HttpResponse(OK, ""))
         )
-      
-      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+
+      val request = FakeRequest(POST, routes.PropertyController.submit().url)
         .withJsonBody(json)
 
       val result: Future[Result] = route(app, request).value
 
-      status(result)  shouldBe ACCEPTED
+      status(result) mustEqual ACCEPTED
+
     }
 
     Seq(INTERNAL_SERVER_ERROR, BAD_REQUEST) foreach { statusCode =>
       s"return $statusCode for a valid request but Hip returns $statusCode" in {
-        val json = Json.toJson(
-          PropertyChangesRequest(
-            CredId("credId"),
-            LocalDate.of(2023, 1, 1),
-            Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
-            Seq(("airConditioning", "none"), ("securityCamera", "23")),
-            Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
-            Some(AnythingElseData(true, Some("addtional text"))),
-            Seq("uploadId1", "uploadId2")
-          )
-        )
+        val vmvProperty = VMVProperty(100L, "property-id", "address", "LA123", List())
 
-        when(mockHipConnector.updatePropertyChanges(any[BridgeRequest])(using any[Request[?]]))
+        val propertyLinkingRequest = PropertyLinkingRequest(
+          credId = CredId("some-cred-id"),
+          vmvProperty = vmvProperty
+        )
+        val json = Json.toJson(propertyLinkingRequest)
+
+        when(mockHipConnector.submitPropertyLinkingChanges(any[BridgeRequest])(using any[Request[AnyContent]]))
           .thenReturn(
             Future.successful(HttpResponse(statusCode, ""))
           )
 
-        val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+        val request = FakeRequest(POST, routes.PropertyController.submit().url)
           .withJsonBody(json)
 
         val result: Future[Result] = route(app, request).value
@@ -118,7 +109,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         "invalidField" -> "invalidValue"
       )
 
-      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+      val request = FakeRequest(POST, routes.PropertyController.submit().url)
         .withJsonBody(json)
 
       val result: Future[Result] = route(app, request).value
@@ -127,27 +118,21 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     }
 
     "returns InternalServerError when HipConnector fails" in {
-      val json = Json.toJson(
-        PropertyChangesRequest(
-          CredId("credId"),
-          LocalDate.of(2023, 1, 1),
-          Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
-          Seq(("airConditioning", "none"), ("securityCamera", "23")),
-          Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
-          Some(AnythingElseData(true, Some("addtional text"))),
-          Seq("uploadId1", "uploadId2")
-        ))
-
-      when(mockHipConnector.updatePropertyChanges(any[BridgeRequest])(using any[Request[?]]))
+      val vmvProperty = VMVProperty(100L, "property-id", "address", "LA123", List())
+      val propertyLinkingRequest = PropertyLinkingRequest(
+        credId = CredId("some-cred-id"),
+        vmvProperty = vmvProperty
+      )
+      val json = Json.toJson(propertyLinkingRequest)
+      when(mockHipConnector.submitPropertyLinkingChanges(any[BridgeRequest])(using any[Request[AnyContent]]))
         .thenReturn(
           Future.failed(new Exception("HipConnector failure"))
         )
-
-      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+      val request = FakeRequest(POST, routes.PropertyController.submit().url)
         .withJsonBody(json)
       val result: Future[Result] = route(app, request).value
       status(result) mustEqual INTERNAL_SERVER_ERROR
 
     }
-
   }
+}

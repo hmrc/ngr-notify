@@ -18,3 +18,5 @@ POST    /send-email/:emailTemplateId            uk.gov.hmrc.ngrnotify.controller
 # update property endpoints
 POST    /physical                               uk.gov.hmrc.ngrnotify.controllers.PhysicalController.updatePropertyChanges()
 
+POST    /property                               uk.gov.hmrc.ngrnotify.controllers.PropertyController.submit()
+
