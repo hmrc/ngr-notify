@@ -16,20 +16,24 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
+import uk.gov.hmrc.ngrnotify.model.Address
+import uk.gov.hmrc.ngrnotify.model.ratepayer.RegisterRatepayerRequest
+
 // ---------- Case Classes ----------
 
-case class PostRatepayer(
-                    $schema: String,
-                    job: PostRatepayer.Job
-                  )
+case class BridgeJobModel(
+                          $schema: String,
+                          job: BridgeJobModel.Job
+                        )
 
-object PostRatepayer {
+object BridgeJobModel {
+
   case class Job(
                   id: Option[String],
-                  idx: String,
-                  name: String,
-                  label: String,
-                  description: String,
+                  idx: Option[String],
+                  name: Option[String],
+                  label: Option[String],
+                  description: Option[String],
                   origination: Option[String],
                   termination: Option[String],
                   category: CodeMeaning,
@@ -39,10 +43,13 @@ object PostRatepayer {
                   protodata: Seq[Protodata],
                   metadata: Metadata,
                   compartments: Compartments,
-                  items: Seq[JobItem]
+                  items: Option[Seq[JobItem]]
                 )
 
-  case class CodeMeaning(code: String, meaning: String)
+  case class CodeMeaning(
+                          code: Option[String],
+                          meaning: Option[String]
+                        )
 
   case class Data(
                    foreign_ids: Seq[String],
@@ -85,7 +92,6 @@ object PostRatepayer {
                           )
 
   case class MetadataAction(selecting: Map[String, String] = Map.empty)
-
   case class MetadataTransform(
                                 filtering: Map[String, String] = Map.empty,
                                 supplementing: Map[String, String] = Map.empty,
@@ -93,7 +99,6 @@ object PostRatepayer {
                                 dropping: Map[String, String] = Map.empty,
                                 restoring: Map[String, String] = Map.empty
                               )
-
   case class MetadataLoading(
                               readying: Map[String, String] = Map.empty,
                               assuring: Map[String, String] = Map.empty,
@@ -101,7 +106,6 @@ object PostRatepayer {
                               encrypting: Map[String, String] = Map.empty,
                               sending: Map[String, String] = Map.empty
                             )
-
   case class MetadataUnloading(
                                 receiving: Map[String, String] = Map.empty,
                                 decrypting: Map[String, String] = Map.empty,
@@ -109,7 +113,6 @@ object PostRatepayer {
                                 assuring: Map[String, String] = Map.empty,
                                 readying: Map[String, String] = Map.empty
                               )
-
   case class MetadataStoring(inserting: Map[String, String] = Map.empty)
 
   case class Compartments(
@@ -122,10 +125,10 @@ object PostRatepayer {
 
   case class JobItem(
                       id: Option[String],
-                      idx: String,
-                      name: String,
-                      label: String,
-                      description: String,
+                      idx: Option[String],
+                      name: Option[String],
+                      label: Option[String],
+                      description: Option[String],
                       origination: Option[String],
                       termination: Option[String],
                       category: CodeMeaning,
@@ -135,7 +138,7 @@ object PostRatepayer {
                       protodata: Seq[Protodata],
                       metadata: Metadata,
                       compartments: Compartments,
-                      items: Seq[JobItem]
+                      items: Option[Seq[JobItem]] = Some(Seq.empty)
                     )
 
   // ---------- Play JSON Implicits ----------
@@ -159,7 +162,25 @@ object PostRatepayer {
 
   implicit lazy val jobItemFormat: OFormat[JobItem] = Json.format[JobItem]
   implicit lazy val jobFormat: OFormat[Job] = Json.format[Job]
-  implicit lazy val jobRootFormat: OFormat[PostRatepayer] = Json.format[PostRatepayer]
+  implicit lazy val jobRootFormat: OFormat[BridgeJobModel] = Json.format[BridgeJobModel]
+
+
+  def toRatepayerModel(bridgeJobModel: BridgeJobModel): RegisterRatepayerRequest = {
+    val data = bridgeJobModel.job.compartments.products.head
+    val addressString = data.data.communications.flatMap(_.postal_address).getOrElse("")
+    RegisterRatepayerRequest(
+      ratepayerCredId = "",
+      userType = None,
+      agentStatus = None,
+      name = data.name.getOrElse(""),
+      tradingName = None,
+      email = data.data.communications.flatMap(_.email).getOrElse(""),
+      nino = None,
+      contactNumber = data.data.communications.flatMap(_.telephone_number).getOrElse(""),
+      secondaryNumber = None,
+      address = Address(line1 = addressString, line2 = None, town = "", county = None, postcode = "")
+    )
+  }
 
 }
 
