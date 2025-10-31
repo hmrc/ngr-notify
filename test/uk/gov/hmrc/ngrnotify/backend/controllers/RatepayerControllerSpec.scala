@@ -43,6 +43,18 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
 
   given Materializer = NoMaterializer
 
+  private def appWithResponse(status: Either[Throwable, Int], body: String): Application = {
+    val httpClientV2Mock = mock[HttpClientV2]
+
+    when(
+      httpClientV2Mock.post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer"))(using any[HeaderCarrier])
+    ).thenReturn(RequestBuilderStub(status, body))
+
+    new GuiceApplicationBuilder()
+      .overrides(bind[HttpClientV2].to(httpClientV2Mock))
+      .build()
+  }
+
   override def fakeApplication(): Application =
     val httpClientV2Mock = mock[HttpClientV2]
 
@@ -105,6 +117,91 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
 
       val result = controller.registerRatepayer(fakeRequest)
       status(result) shouldBe BAD_REQUEST
+    }
+
+    ".registerRatepayer returns a buildValidationErrorsResponse" in {
+
+      val fakeRequest = FakeRequest("POST", "/")
+        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
+        .withBody(Json.obj())
+
+      val result = controller.registerRatepayer(fakeRequest)
+      status(result) shouldBe BAD_REQUEST
+    }
+
+    ".registerRatepayer returns a BadRequest due to Receiving a BadRequest from hip" in {
+      val app = appWithResponse(Right(BAD_REQUEST), """"BAD_REQUEST"""")
+      val controller = app.injector.instanceOf[RatepayerController]
+
+      val fakeRequest = FakeRequest("POST", "/")
+        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
+        .withBody(Json.toJson(
+          RegisterRatepayerRequest(
+            ratepayerCredId = "login",
+            userType = Some(organization),
+            agentStatus = Some(agent),
+            name = Some(Name("Full name")),
+            tradingName = None,
+            email = Some(Email("test@email.com")),
+            nino = Some(Nino("QQ123456A")),
+            contactNumber = Some(PhoneNumber("1111")),
+            secondaryNumber = None,
+            address = Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ"))
+          )
+        ))
+
+      val result = controller.registerRatepayer(fakeRequest)
+      status(result) shouldBe BAD_REQUEST
+    }
+
+    ".registerRatepayer returns a InternalServerError due to Receiving a InternalServerError from hip" in {
+      val app = appWithResponse(Right(INTERNAL_SERVER_ERROR), """"INTERNAL_SERVER_ERROR"""")
+      val controller = app.injector.instanceOf[RatepayerController]
+
+      val fakeRequest = FakeRequest("POST", "/")
+        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
+        .withBody(Json.toJson(
+          RegisterRatepayerRequest(
+            ratepayerCredId = "login",
+            userType = Some(organization),
+            agentStatus = Some(agent),
+            name = Some(Name("Full name")),
+            tradingName = None,
+            email = Some(Email("test@email.com")),
+            nino = Some(Nino("QQ123456A")),
+            contactNumber = Some(PhoneNumber("1111")),
+            secondaryNumber = None,
+            address = Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ"))
+          )
+        ))
+
+      val result = controller.registerRatepayer(fakeRequest)
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+    }
+
+    ".registerRatepayer returns a InternalServerError due to Receiving a error from hip" in {
+      val app = appWithResponse(Left(Exception("something went wrong")), """"INTERNAL_SERVER_ERROR"""")
+      val controller = app.injector.instanceOf[RatepayerController]
+
+      val fakeRequest = FakeRequest("POST", "/")
+        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
+        .withBody(Json.toJson(
+          RegisterRatepayerRequest(
+            ratepayerCredId = "login",
+            userType = Some(organization),
+            agentStatus = Some(agent),
+            name = Some(Name("Full name")),
+            tradingName = None,
+            email = Some(Email("test@email.com")),
+            nino = Some(Nino("QQ123456A")),
+            contactNumber = Some(PhoneNumber("1111")),
+            secondaryNumber = None,
+            address = Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ"))
+          )
+        ))
+
+      val result = controller.registerRatepayer(fakeRequest)
+      status(result) shouldBe INTERNAL_SERVER_ERROR
     }
 
     ".getRatepayerPropertyLinks return 200" in {

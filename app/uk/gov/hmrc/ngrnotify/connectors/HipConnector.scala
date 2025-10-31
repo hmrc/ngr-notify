@@ -59,6 +59,17 @@ class HipConnector @Inject() (
   private def hipHeaderCarrier(using request: Request[?]): HeaderCarrier =
     HeaderCarrier(extraHeaders = staticHeaders :+ forwardOrCreateCorrelationId)
 
+  def updatePropertyChanges(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] =
+    httpClient
+      .post(appConfig.updatePropertyChangesUrl)(using hipHeaderCarrier)
+      .withBody(Json.toJson(bridgeRequest))
+      .execute[HttpResponse]
+
+  def submitPropertyLinkingChanges(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] = httpClient
+      .post(appConfig.propertyLinkingUrl)(using hipHeaderCarrier)
+      .withBody(Json.toJson(bridgeRequest))
+      .execute[HttpResponse]
+
   def registerRatepayer(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] =
     httpClient
       .post(appConfig.registerRatepayerUrl)(using hipHeaderCarrier)
