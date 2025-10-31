@@ -18,6 +18,9 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 import uk.gov.hmrc.ngrnotify.model.Address
 import uk.gov.hmrc.ngrnotify.model.ratepayer.RegisterRatepayerRequest
+import uk.gov.hmrc.ngrnotify.model.email.Email
+import uk.gov.hmrc.ngrnotify.model.ratepayer.PhoneNumber
+import uk.gov.hmrc.ngrnotify.model.ratepayer.Name
 
 // ---------- Case Classes ----------
 
@@ -172,13 +175,13 @@ object BridgeJobModel {
       ratepayerCredId = "",
       userType = None,
       agentStatus = None,
-      name = data.name.getOrElse(""),
+      name = data.name.map(Name(_)),
       tradingName = None,
-      email = data.data.communications.flatMap(_.email).getOrElse(""),
+      email = data.data.communications.flatMap(_.email).map(Email(_)),
       nino = None,
-      contactNumber = data.data.communications.flatMap(_.telephone_number).getOrElse(""),
+      contactNumber = data.data.communications.flatMap(_.telephone_number).map(PhoneNumber(_)),
       secondaryNumber = None,
-      address = Address(line1 = addressString, line2 = None, town = "", county = None, postcode = "")
+      address = Some(Address(line1 = addressString, line2 = None, town = "", county = None, postcode = ""))
     )
   }
 
