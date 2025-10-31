@@ -42,6 +42,19 @@ class RatepayerController @Inject() (
   with JsonSupport
   with Logging:
 
+  def getRatepayer(id: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    hipConnector.getRatepayer(id)
+      .map { response =>
+        response.status match {
+          case 200 =>
+            response.json.validate[BridgeJobModel] match {
+              case JsSuccess(value, path) => Ok(Json.toJsObject(BridgeJobModel.toRatepayerModel(value)))
+              case JsError(errors) => BadRequest
+            }
+        }
+      }
+  }
+
   def registerRatepayer: Action[JsValue] = Action.async(parse.json) { implicit request =>
     request.body.validate[RegisterRatepayerRequest] match {
       case JsSuccess(registerRatepayer, _) =>
