@@ -1,0 +1,422 @@
+{
+  "$schema": "./SCHEMA.json",
+  "job": {
+    "id": null,
+    "idx": "1",
+    "name": "Register Ratepayer",
+    "label": "Register LGFA88sch9p4I(a) Ratepayer",
+    "description": "Job for creating and updating information about the personas who, for the time being, are or ought to be the ratepayer of a hereditament.",
+    "origination": "20250827T104242Z",
+    "termination": null,
+    "category": {
+      "code": "LTX-DOM-JOB",
+      "meaning": "Local taxation domain job"
+    },
+    "type": {
+      "code": "INF",
+      "meaning": "Assisting information"
+    },
+    "class": {
+      "code": "RPN",
+      "meaning": "Register ratepayer (LGFA88sch9p4I(a))"
+    },
+    "data": {
+      "foreign_ids": [],
+      "foreign_names": [],
+      "foreign_labels": []
+    },
+    "protodata": [],
+    "metadata": {
+      "sending": {
+        "extracting": {
+          "selecting": {}
+        },
+        "transforming": {
+          "filtering": {},
+          "supplementing": {},
+          "recontextualising": {}
+        },
+        "loading": {
+          "readying": {},
+          "assuring": {},
+          "signing": {},
+          "encrypting": {},
+          "sending": {}
+        }
+      },
+      "receiving": {
+        "unloading": {
+          "receiving": {},
+          "decrypting": {},
+          "verifying": {},
+          "assuring": {},
+          "readying": {}
+        },
+        "transforming": {
+          "recontextualising": {},
+          "dropping": {},
+          "restoring": {}
+        },
+        "storing": {
+          "inserting": {}
+        }
+      }
+    },
+    "compartments": {
+      "properties": [],
+      "persons": [
+        {
+          "id": "5",
+          "idx": "1.2.1",
+          "name": "Person1",
+          "label": "Individual",
+          "description": "Test Person Description",
+          "origination": "20250101T000000Z",
+          "termination": null,
+          "category": {
+            "code": "LTX-DOM-PSN",
+            "meaning": "Local taxation domain person"
+          },
+          "type": {
+            "code": "INF",
+            "meaning": "Assisting information"
+          },
+          "class": {
+            "code": "RPN",
+            "meaning": "Register ratepayer (LGFA88sch9p4I(a))"
+          },
+          "data": {
+            "foreign_ids": [],
+            "foreign_names": [],
+            "foreign_labels": [],
+            "names": {
+              "title_common": "Mr",
+              "title_uncommon": "test",
+              "forenames": "John",
+              "surname": "Doe",
+              "post_nominals": "test nominals",
+              "corporate_name": "test corp name",
+              "crown_name": "test crown",
+              "known_as": "Johnny"
+            },
+            "communications": {
+              "postal_address": "456 abc Street, Manchester",
+              "telephone_number": "0161 1234567",
+              "email": "person1@example.com"
+            }
+          },
+          "protodata": [],
+          "metadata": {
+            "sending": {
+              "extracting": {
+                "selecting": {}
+              },
+              "transforming": {
+                "filtering": {},
+                "supplementing": {},
+                "recontextualising": {}
+              },
+              "loading": {
+                "readying": {},
+                "assuring": {},
+                "signing": {},
+                "encrypting": {},
+                "sending": {}
+              }
+            },
+            "receiving": {
+              "unloading": {
+                "receiving": {},
+                "decrypting": {},
+                "verifying": {},
+                "assuring": {},
+                "readying": {}
+              },
+              "transforming": {
+                "recontextualising": {},
+                "dropping": {},
+                "restoring": {}
+              },
+              "storing": {
+                "inserting": {}
+              }
+            }
+          },
+          "compartments": {
+            "properties": [],
+            "persons": [],
+            "processes": [],
+            "products": [],
+            "relationships": []
+          },
+          "items": [
+            {
+              "id": null,
+              "idx": null,
+              "name": null,
+              "label": null,
+              "description": null,
+              "origination": null,
+              "termination": null,
+              "category": {
+                "code": null,
+                "meaning": null
+              },
+              "type": {
+                "code": null,
+                "meaning": null
+              },
+              "class": {
+                "code": null,
+                "meaning": null
+              },
+              "data": {
+                "foreign_ids": [],
+                "foreign_names": [],
+                "foreign_labels": [],
+                "names": {
+                  "title_common": null,
+                  "title_uncommon": null,
+                  "forenames": null,
+                  "surname": null,
+                  "post_nominals": null,
+                  "corporate_name": null,
+                  "crown_name": null,
+                  "known_as": null
+                },
+                "communications": {
+                  "postal_address": null,
+                  "telephone_number": null,
+                  "email": null
+                }
+              },
+              "protodata": [],
+              "metadata": {
+                "sending": {
+                  "extracting": {
+                    "selecting": {}
+                  },
+                  "transforming": {
+                    "filtering": {},
+                    "supplementing": {},
+                    "recontextualising": {}
+                  },
+                  "loading": {
+                    "readying": {},
+                    "assuring": {},
+                    "signing": {},
+                    "encrypting": {},
+                    "sending": {}
+                  }
+                },
+                "receiving": {
+                  "unloading": {
+                    "receiving": {},
+                    "decrypting": {},
+                    "verifying": {},
+                    "assuring": {},
+                    "readying": {}
+                  },
+                  "transforming": {
+                    "recontextualising": {},
+                    "dropping": {},
+                    "restoring": {}
+                  },
+                  "storing": {
+                    "inserting": {}
+                  }
+                }
+              },
+              "compartments": {
+                "properties": [],
+                "persons": [],
+                "processes": [],
+                "products": [],
+                "relationships": []
+              },
+              "items": []
+            }
+          ]
+        }
+      ],
+      "processes": [],
+      "products": [
+        {
+          "id": "5",
+          "idx": "1.4.1",
+          "name": "Person1",
+          "label": "Individual",
+          "description": "Test Person Description",
+          "origination": "20250101T000000Z",
+          "termination": null,
+          "category": {
+            "code": "LTX-DOM-PSN",
+            "meaning": "Local taxation domain person"
+          },
+          "type": {
+            "code": "INF",
+            "meaning": "Assisting information"
+          },
+          "class": {
+            "code": "RPN",
+            "meaning": "Register ratepayer (LGFA88sch9p4I(a))"
+          },
+          "data": {
+            "foreign_ids": [],
+            "foreign_names": [],
+            "foreign_labels": [],
+            "names": {
+              "title_common": "Mr",
+              "title_uncommon": "test",
+              "forenames": "John",
+              "surname": "Doe",
+              "post_nominals": "test nominals",
+              "corporate_name": "test corp name",
+              "crown_name": "test crown",
+              "known_as": "Johnny"
+            },
+            "communications": {
+              "postal_address": "456 abc Street, Manchester",
+              "telephone_number": "0161 1234567",
+              "email": "person1@example.com"
+            }
+          },
+          "protodata": [],
+          "metadata": {
+            "sending": {
+              "extracting": {
+                "selecting": {}
+              },
+              "transforming": {
+                "filtering": {},
+                "supplementing": {},
+                "recontextualising": {}
+              },
+              "loading": {
+                "readying": {},
+                "assuring": {},
+                "signing": {},
+                "encrypting": {},
+                "sending": {}
+              }
+            },
+            "receiving": {
+              "unloading": {
+                "receiving": {},
+                "decrypting": {},
+                "verifying": {},
+                "assuring": {},
+                "readying": {}
+              },
+              "transforming": {
+                "recontextualising": {},
+                "dropping": {},
+                "restoring": {}
+              },
+              "storing": {
+                "inserting": {}
+              }
+            }
+          },
+          "compartments": {
+            "properties": [],
+            "persons": [],
+            "processes": [],
+            "products": [],
+            "relationships": []
+          },
+          "items": [
+            {
+              "id": null,
+              "idx": "1.4.1.1",
+              "name": "Local Taxation Persona",
+              "label": "Authenticated Local Taxation Persona",
+              "description": "A local taxation domain authenticated persona whose type and class are known or re-confirmed as a LGFA88s43|45 ratepayer, that is assignable to the person.",
+              "origination": "20250827T104242Z",
+              "termination": null,
+              "category": {
+                "code": "LTX-DOM-PSA",
+                "meaning": "Local taxation domain persona"
+              },
+              "type": {
+                "code": "TXP",
+                "meaning": "LGFA taxpayer"
+              },
+              "class": {
+                "code": null,
+                "meaning": null
+              },
+              "data": {
+                "foreign_ids": [],
+                "foreign_names": [],
+                "foreign_labels": [],
+                "names": {
+                  "title_common": null,
+                  "title_uncommon": null,
+                  "forenames": null,
+                  "surname": null,
+                  "post_nominals": null,
+                  "corporate_name": null,
+                  "crown_name": null,
+                  "known_as": null
+                },
+                "communications": {
+                  "postal_address": null,
+                  "telephone_number": null,
+                  "email": null
+                }
+              },
+              "protodata": [],
+              "metadata": {
+                "sending": {
+                  "extracting": {
+                    "selecting": {}
+                  },
+                  "transforming": {
+                    "filtering": {},
+                    "supplementing": {},
+                    "recontextualising": {}
+                  },
+                  "loading": {
+                    "readying": {},
+                    "assuring": {},
+                    "signing": {},
+                    "encrypting": {},
+                    "sending": {}
+                  }
+                },
+                "receiving": {
+                  "unloading": {
+                    "receiving": {},
+                    "decrypting": {},
+                    "verifying": {},
+                    "assuring": {},
+                    "readying": {}
+                  },
+                  "transforming": {
+                    "recontextualising": {},
+                    "dropping": {},
+                    "restoring": {}
+                  },
+                  "storing": {
+                    "inserting": {}
+                  }
+                }
+              },
+              "compartments": {
+                "properties": [],
+                "persons": [],
+                "processes": [],
+                "products": [],
+                "relationships": []
+              },
+              "items": []
+            }
+          ]
+        }
+      ],
+      "relationships": []
+    },
+    "items": null
+  }
+}

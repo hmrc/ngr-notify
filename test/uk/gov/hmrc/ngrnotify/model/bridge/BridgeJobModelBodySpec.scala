@@ -19,62 +19,70 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
 
-class PostRatepayerBodySpec extends AnyWordAppSpec {
+class BridgeJobModelBodySpec extends AnyWordAppSpec {
 
   "Model PostRatepayer" should {
 
     "be serialised from JSON example file" in {
       val postRatepayerJson = Json.parse(testResourceContent("post-ratepayer-example.json"))
-      val postRatepayer = postRatepayerJson.as[PostRatepayer]
+      val postRatepayer = postRatepayerJson.as[BridgeJobModel]
 
       // round-trip should be idempotent
-      Json.toJson(postRatepayer).as[PostRatepayer] shouldBe postRatepayer
+      Json.toJson(postRatepayer).as[BridgeJobModel] shouldBe postRatepayer
+    }
+
+    "be serialised from get-ratepayer JSON example file" in {
+      val postRatepayerJson = Json.parse(testResourceContent("get-ratepayer-response.json"))
+      val postRatepayer = postRatepayerJson.as[BridgeJobModel]
+
+      // round-trip should be idempotent
+      Json.toJson(postRatepayer).as[BridgeJobModel] shouldBe postRatepayer
     }
 
     "serialise and deserialise minimal object with defaults" in {
-      val minimalJob = PostRatepayer.Job(
+      val minimalJob = BridgeJobModel.Job(
         id = None,
-        idx = "IDX-001",
-        name = "Minimal Job",
-        label = "Label",
-        description = "A minimal job description",
+        idx = Some("IDX-001"),
+        name = Some("Minimal Job"),
+        label = Some("Label"),
+        description = Some("A minimal job description"),
         origination = None,
         termination = None,
-        category = PostRatepayer.CodeMeaning("CAT1", "Category"),
-        `type` = PostRatepayer.CodeMeaning("TYPE1", "Type"),
-        `class` = PostRatepayer.CodeMeaning("CLASS1", "Class"),
-        data = PostRatepayer.Data(
+        category = BridgeJobModel.CodeMeaning(Some("CAT1"), Some("Category")),
+        `type` = BridgeJobModel.CodeMeaning(Some("TYPE1"), Some("Type")),
+        `class` = BridgeJobModel.CodeMeaning(Some("CLASS1"), Some("Class")),
+        data = BridgeJobModel.Data(
           foreign_ids = Seq.empty,
           foreign_names = Seq.empty,
           foreign_labels = Seq.empty
         ),
         protodata = Seq.empty,
-        metadata = PostRatepayer.Metadata(
-          sending = PostRatepayer.MetadataStage(),
-          receiving = PostRatepayer.MetadataStage()
+        metadata = BridgeJobModel.Metadata(
+          sending = BridgeJobModel.MetadataStage(),
+          receiving = BridgeJobModel.MetadataStage()
         ),
-        compartments = PostRatepayer.Compartments(),
-        items = Seq.empty
+        compartments = BridgeJobModel.Compartments(),
+        items = Some(Seq.empty)
       )
 
-      val postRatepayer = PostRatepayer(
+      val postRatepayer = BridgeJobModel(
         $schema = "schema-v1",
         job = minimalJob
       )
 
       val json = Json.toJson(postRatepayer)
-      val fromJson = json.as[PostRatepayer]
+      val fromJson = json.as[BridgeJobModel]
 
       fromJson shouldBe postRatepayer
     }
 
     "handle nested optional names and communications correctly" in {
-      val data = PostRatepayer.Data(
+      val data = BridgeJobModel.Data(
         foreign_ids = Seq("fid1"),
         foreign_names = Seq("fName1"),
         foreign_labels = Seq("fLabel1"),
         names = Some(
-          PostRatepayer.Names(
+          BridgeJobModel.Names(
             title_common = Some("Mr"),
             title_uncommon = None,
             forenames = Some("John"),
@@ -86,7 +94,7 @@ class PostRatepayerBodySpec extends AnyWordAppSpec {
           )
         ),
         communications = Some(
-          PostRatepayer.Communications(
+          BridgeJobModel.Communications(
             postal_address = Some("123 Test Street"),
             telephone_number = Some("01234 567890"),
             email = Some("john@example.com")
@@ -95,25 +103,25 @@ class PostRatepayerBodySpec extends AnyWordAppSpec {
       )
 
       val json = Json.toJson(data)
-      val fromJson = json.as[PostRatepayer.Data]
+      val fromJson = json.as[BridgeJobModel.Data]
 
       fromJson shouldBe data
     }
 
     "support metadata with empty maps and nested stages" in {
-      val metadata = PostRatepayer.Metadata(
-        sending = PostRatepayer.MetadataStage(
-          extracting = PostRatepayer.MetadataAction(),
-          transforming = PostRatepayer.MetadataTransform(),
-          loading = Some(PostRatepayer.MetadataLoading()),
-          unloading = Some(PostRatepayer.MetadataUnloading()),
-          storing = Some(PostRatepayer.MetadataStoring())
+      val metadata = BridgeJobModel.Metadata(
+        sending = BridgeJobModel.MetadataStage(
+          extracting = BridgeJobModel.MetadataAction(),
+          transforming = BridgeJobModel.MetadataTransform(),
+          loading = Some(BridgeJobModel.MetadataLoading()),
+          unloading = Some(BridgeJobModel.MetadataUnloading()),
+          storing = Some(BridgeJobModel.MetadataStoring())
         ),
-        receiving = PostRatepayer.MetadataStage()
+        receiving = BridgeJobModel.MetadataStage()
       )
 
       val json = Json.toJson(metadata)
-      val fromJson = json.as[PostRatepayer.Metadata]
+      val fromJson = json.as[BridgeJobModel.Metadata]
 
       fromJson shouldBe metadata
     }
