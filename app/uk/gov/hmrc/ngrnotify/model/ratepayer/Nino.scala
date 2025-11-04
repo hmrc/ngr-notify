@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
-import play.api.libs.json.{Json, Format}
+import play.api.libs.json.{Format, Json}
 import uk.gov.hmrc.domain.TaxIdentifier
 
 final case class Nino(nino: String) extends TaxIdentifier {
   def value: String = nino
 }
 
-object Nino  {
+object Nino {
   implicit val format: Format[Nino] = Json.format[Nino]
 }

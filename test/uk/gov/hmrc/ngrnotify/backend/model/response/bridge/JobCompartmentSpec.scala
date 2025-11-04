@@ -23,46 +23,60 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData.testJobCompar
 import uk.gov.hmrc.ngrnotify.model.response.bridge.JobCompartment
 
 class JobCompartmentSpec extends AnyWordSpec with Matchers {
+
   private val jobCompartmentJson = Json.obj(
-      "id" -> "ID",
-      "idx" -> "IDX",
-      "name" -> "TestJobName",
-      "label" -> "TestJobLabel",
-      "description" -> "TestJobDescription",
-      "origination" -> "TestJobOrigination",
-      "termination" -> "TestJobTermination",
-      "category" -> Json.obj(
-        "code" -> "TestCategoryCode",
-        "meaning" -> "TestCategoryMeaning"
+    "id"           -> "ID",
+    "idx"          -> "IDX",
+    "name"         -> "TestJobName",
+    "label"        -> "TestJobLabel",
+    "description"  -> "TestJobDescription",
+    "origination"  -> "TestJobOrigination",
+    "termination"  -> "TestJobTermination",
+    "category"     -> Json.obj(
+      "code"    -> "TestCategoryCode",
+      "meaning" -> "TestCategoryMeaning"
+    ),
+    "typeX"        -> Json.obj(
+      "code"    -> "TestTypeXCode",
+      "meaning" -> "TestTypeXMeaning"
+    ),
+    "classX"       -> Json.obj(
+      "code"    -> "TestClassXCode",
+      "meaning" -> "TestClassXMeaning"
+    ),
+    "data"         -> Json.obj(
+      "foreign_ids"    -> Json.arr("1", "2", "3"),
+      "foreign_names"  -> Json.arr("Bob", "Brian", "Bill"),
+      "foreign_labels" -> Json.arr("Label1", "Label2", "Label3")
+    ),
+    "protodata"    -> Json.arr("A", "B", "C"),
+    "metadata"     -> Json.obj(
+      "sending"   -> Json.obj(
+        "extracting"   -> Json.obj("selecting" -> Json.obj()),
+        "transforming" -> Json.obj("recontextualising" -> Json.obj(), "filtering" -> Json.obj(), "supplementing" -> Json.obj()),
+        "loading"      -> Json.obj("assuring" -> Json.obj(), "readying" -> Json.obj(), "signing" -> Json.obj(), "encrypting" -> Json.obj(), "sending" -> Json.obj())
       ),
-      "typeX" -> Json.obj(
-        "code" -> "TestTypeXCode",
-        "meaning" -> "TestTypeXMeaning"
-      ),
-      "classX" -> Json.obj(
-        "code" -> "TestClassXCode",
-        "meaning" -> "TestClassXMeaning"
-      ),
-      "data" -> Json.obj(
-        "foreign_ids" -> Json.arr("1", "2", "3"),
-        "foreign_names" -> Json.arr("Bob", "Brian","Bill"),
-        "foreign_labels" -> Json.arr("Label1", "Label2", "Label3")
-      ),
-      "protodata" -> Json.arr("A", "B", "C"),
-      "metadata" -> Json.obj(
-        "sending" -> Json.obj(
-          "extracting" -> Json.obj("selecting" -> Json.obj()),
-          "transforming" -> Json.obj("recontextualising" -> Json.obj(), "filtering" -> Json.obj(), "supplementing" -> Json.obj()),
-          "loading" -> Json.obj("assuring" -> Json.obj(), "readying" -> Json.obj(), "signing" -> Json.obj(), "encrypting" -> Json.obj(), "sending" -> Json.obj())
-        ),
-        "receiving" -> Json.obj(
-          "transforming" -> Json.obj("recontextualising" -> Json.obj(), "dropping" -> Json.obj(), "restoring" -> Json.obj()),
-          "storing" -> Json.obj("inserting" -> Json.obj()),
-          "unloading" -> Json.obj("assuring" -> Json.obj(), "readying" -> Json.obj(), "verifying" -> Json.obj(), "decrypting" -> Json.obj(), "receiving" -> Json.obj())
+      "receiving" -> Json.obj(
+        "transforming" -> Json.obj("recontextualising" -> Json.obj(), "dropping" -> Json.obj(), "restoring" -> Json.obj()),
+        "storing"      -> Json.obj("inserting" -> Json.obj()),
+        "unloading"    -> Json.obj(
+          "assuring"   -> Json.obj(),
+          "readying"   -> Json.obj(),
+          "verifying"  -> Json.obj(),
+          "decrypting" -> Json.obj(),
+          "receiving"  -> Json.obj()
         )
-      ),
-      "compartments" -> Json.obj("properties" -> Json.arr(), "persons" -> Json.arr(), "processes" -> Json.arr(), "relationships" -> Json.arr(), "products" -> Json.arr()),
-      "items" -> Json.arr(Json.obj(), Json.obj(), Json.obj()))
+      )
+    ),
+    "compartments" -> Json.obj(
+      "properties"    -> Json.arr(),
+      "persons"       -> Json.arr(),
+      "processes"     -> Json.arr(),
+      "relationships" -> Json.arr(),
+      "products"      -> Json.arr()
+    ),
+    "items"        -> Json.arr(Json.obj(), Json.obj(), Json.obj())
+  )
 
   "JobCompartment" should {
     "serialize to JSON correctly" in {
@@ -72,16 +86,15 @@ class JobCompartmentSpec extends AnyWordSpec with Matchers {
 
     "deserialize from JSON correctly" in {
       val json = jobCompartmentJson
-      val job = json.as[JobCompartment]
+      val job  = json.as[JobCompartment]
       job shouldBe testJobCompartmentEmpty
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = jobCompartmentJson
-      val json = Json.toJson(original)
-      val parsed = json.as[JobCompartment]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[JobCompartment]
       parsed shouldBe testJobCompartmentEmpty
     }
   }
 }
-

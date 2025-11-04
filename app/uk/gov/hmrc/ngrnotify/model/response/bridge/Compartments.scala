@@ -18,12 +18,14 @@ package uk.gov.hmrc.ngrnotify.model.response.bridge
 
 import play.api.libs.json.{Json, OFormat}
 
-case class Compartments (properties: List[JobCompartment],
-                         persons: List[JobCompartment],
-                         processes: List[JobCompartment],
-                         relationships: List[JobCompartment],
-                         products: List[JobCompartment])
+case class Compartments(
+  properties: List[JobCompartment],
+  persons: List[JobCompartment],
+  processes: List[JobCompartment],
+  relationships: List[JobCompartment],
+  products: List[JobCompartment]
+)
 
 object Compartments {
-    implicit val format: OFormat[Compartments] = Json.format[Compartments]
+  implicit val format: OFormat[Compartments] = Json.format[Compartments]
 }

@@ -18,7 +18,7 @@ package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import play.api.libs.json.*
 
-case class ChangeToUseOfSpace (selectUseOfSpace: Seq[String], hasPlanningPermission: Boolean, permissionReference: Option[String])
+case class ChangeToUseOfSpace(selectUseOfSpace: Seq[String], hasPlanningPermission: Boolean, permissionReference: Option[String])
 
 object ChangeToUseOfSpace {
 

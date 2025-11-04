@@ -130,7 +130,7 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
     }
 
     ".registerRatepayer returns a BadRequest due to Receiving a BadRequest from hip" in {
-      val app = appWithResponse(Right(BAD_REQUEST), """"BAD_REQUEST"""")
+      val app        = appWithResponse(Right(BAD_REQUEST), """"BAD_REQUEST"""")
       val controller = app.injector.instanceOf[RatepayerController]
 
       val fakeRequest = FakeRequest("POST", "/")
@@ -155,7 +155,7 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
     }
 
     ".registerRatepayer returns a InternalServerError due to Receiving a InternalServerError from hip" in {
-      val app = appWithResponse(Right(INTERNAL_SERVER_ERROR), """"INTERNAL_SERVER_ERROR"""")
+      val app        = appWithResponse(Right(INTERNAL_SERVER_ERROR), """"INTERNAL_SERVER_ERROR"""")
       val controller = app.injector.instanceOf[RatepayerController]
 
       val fakeRequest = FakeRequest("POST", "/")
@@ -180,7 +180,7 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
     }
 
     ".registerRatepayer returns a InternalServerError due to Receiving a error from hip" in {
-      val app = appWithResponse(Left(Exception("something went wrong")), """"INTERNAL_SERVER_ERROR"""")
+      val app        = appWithResponse(Left(Exception("something went wrong")), """"INTERNAL_SERVER_ERROR"""")
       val controller = app.injector.instanceOf[RatepayerController]
 
       val fakeRequest = FakeRequest("POST", "/")

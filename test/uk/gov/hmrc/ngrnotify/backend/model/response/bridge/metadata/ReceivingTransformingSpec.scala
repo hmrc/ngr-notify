@@ -23,10 +23,12 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData.testReceiving
 import uk.gov.hmrc.ngrnotify.model.response.bridge.metadata.{Dropping, ReceivingTransforming, Restoring}
 
 class ReceivingTransformingSpec extends AnyWordSpec with Matchers {
+
   private val receivingTransformingJson = Json.obj(
     "recontextualising" -> Json.obj(),
-    "dropping" -> Json.obj(),
-    "restoring" -> Json.obj())
+    "dropping"          -> Json.obj(),
+    "restoring"         -> Json.obj()
+  )
 
   "ReceivingTransforming" should {
     "serialize to JSON correctly" in {
@@ -35,15 +37,15 @@ class ReceivingTransformingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = receivingTransformingJson
+      val json                  = receivingTransformingJson
       val receivingTransforming = json.as[ReceivingTransforming]
       receivingTransforming shouldBe testReceivingTransforming
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = receivingTransformingJson
-      val json = Json.toJson(original)
-      val parsed = json.as[ReceivingTransforming]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[ReceivingTransforming]
       parsed shouldBe testReceivingTransforming
     }
   }
@@ -56,15 +58,15 @@ class ReceivingTransformingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json     = Json.obj()
       val dropping = json.as[Dropping]
       dropping shouldBe Dropping()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Dropping]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Dropping]
       parsed shouldBe Dropping()
     }
   }
@@ -76,18 +78,16 @@ class ReceivingTransformingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json      = Json.obj()
       val restoring = json.as[Restoring]
       restoring shouldBe Restoring()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Restoring]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Restoring]
       parsed shouldBe Restoring()
     }
   }
 }
-
-

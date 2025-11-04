@@ -23,16 +23,17 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData.testMetaData
 import uk.gov.hmrc.ngrnotify.model.response.bridge.MetaData
 
 class MetaDataSpec extends AnyWordSpec with Matchers {
+
   private val metaDataJson = Json.obj(
-    "sending" -> Json.obj(
-      "extracting" -> Json.obj("selecting" -> Json.obj()),
+    "sending"   -> Json.obj(
+      "extracting"   -> Json.obj("selecting" -> Json.obj()),
       "transforming" -> Json.obj("recontextualising" -> Json.obj(), "filtering" -> Json.obj(), "supplementing" -> Json.obj()),
-      "loading" -> Json.obj("assuring" -> Json.obj(), "readying" -> Json.obj(), "signing" -> Json.obj(), "encrypting" -> Json.obj(), "sending" -> Json.obj())
+      "loading"      -> Json.obj("assuring" -> Json.obj(), "readying" -> Json.obj(), "signing" -> Json.obj(), "encrypting" -> Json.obj(), "sending" -> Json.obj())
     ),
     "receiving" -> Json.obj(
       "transforming" -> Json.obj("recontextualising" -> Json.obj(), "dropping" -> Json.obj(), "restoring" -> Json.obj()),
-      "storing" -> Json.obj("inserting" -> Json.obj()),
-      "unloading" -> Json.obj("assuring" -> Json.obj(), "readying" -> Json.obj(), "verifying" -> Json.obj(), "decrypting" -> Json.obj(), "receiving" -> Json.obj())
+      "storing"      -> Json.obj("inserting" -> Json.obj()),
+      "unloading"    -> Json.obj("assuring" -> Json.obj(), "readying" -> Json.obj(), "verifying" -> Json.obj(), "decrypting" -> Json.obj(), "receiving" -> Json.obj())
     )
   )
 
@@ -44,17 +45,16 @@ class MetaDataSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = metaDataJson
+      val json     = metaDataJson
       val metaData = json.as[MetaData]
       metaData shouldBe testMetaData
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = metaDataJson
-      val json = Json.toJson(original)
-      val parsed = json.as[MetaData]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[MetaData]
       parsed shouldBe testMetaData
     }
   }
 }
-

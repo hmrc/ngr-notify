@@ -19,8 +19,10 @@ package uk.gov.hmrc.ngrnotify.model.response.bridge
 import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.ngrnotify.model.response.bridge.metadata.{Receiving, Sending}
 
-case class MetaData (sending: Sending,
-                     receiving: Receiving)
+case class MetaData(
+  sending: Sending,
+  receiving: Receiving
+)
 
 object MetaData {
   implicit val format: OFormat[MetaData] = Json.format[MetaData]

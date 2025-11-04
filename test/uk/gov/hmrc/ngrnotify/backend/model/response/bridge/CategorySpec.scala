@@ -23,8 +23,9 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData.testCategory
 import uk.gov.hmrc.ngrnotify.model.response.bridge.Category
 
 class CategorySpec extends AnyWordSpec with Matchers {
+
   private val categoryJson = Json.obj(
-    "code" -> "TestCategoryCode",
+    "code"    -> "TestCategoryCode",
     "meaning" -> "TestCategoryMeaning"
   )
 
@@ -36,17 +37,16 @@ class CategorySpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = categoryJson
+      val json     = categoryJson
       val category = json.as[Category]
       category shouldBe testCategory
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = categoryJson
-      val json = Json.toJson(original)
-      val parsed = json.as[Category]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Category]
       parsed shouldBe testCategory
     }
   }
 }
-

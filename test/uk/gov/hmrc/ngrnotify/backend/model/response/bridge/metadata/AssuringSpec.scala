@@ -31,17 +31,16 @@ class AssuringSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json     = Json.obj()
       val assuring = json.as[Assuring]
       assuring shouldBe Assuring()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Assuring]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Assuring]
       parsed shouldBe Assuring()
     }
   }
 }
-

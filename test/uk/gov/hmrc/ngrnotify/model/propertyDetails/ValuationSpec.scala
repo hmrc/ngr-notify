@@ -24,53 +24,53 @@ import java.time.LocalDate
 
 class ValuationSpec extends AnyFreeSpec with Matchers {
 
-    "Valuation" - {
+  "Valuation" - {
 
-      "Valuation JSON format" - {
+    "Valuation JSON format" - {
 
-        "serialise and deserialise Valuation correctly" in {
-          val valuation = Valuation(
-            assessmentRef = 123456L,
-            assessmentStatus = "active",
-            rateableValue = Some(BigDecimal(1000)),
-            scatCode = Some("SCAT01"),
-            descriptionText = "Test property",
-            effectiveDate = LocalDate.of(2024, 1, 1),
-            currentFromDate = LocalDate.of(2024, 2, 1),
-            listYear = "2023",
-            primaryDescription = "Office",
-            allowedActions = List("view", "edit"),
-            listType = "typeA",
-            propertyLinkEarliestStartDate = Some(LocalDate.of(2023, 12, 1))
-          )
-
-          val json = Json.toJson(valuation)
-          val fromJson = json.as[Valuation]
-
-          fromJson mustBe valuation
-        }
-      }
-
-      "handle optional fields correctly" in {
+      "serialise and deserialise Valuation correctly" in {
         val valuation = Valuation(
-          assessmentRef = 654321L,
-          assessmentStatus = "inactive",
-          rateableValue = None,
-          scatCode = None,
-          descriptionText = "Another test property",
-          effectiveDate = LocalDate.of(2023, 5, 15),
-          currentFromDate = LocalDate.of(2023, 6, 15),
-          listYear = "2022",
-          primaryDescription = "Retail",
-          allowedActions = List.empty,
-          listType = "typeB",
-          propertyLinkEarliestStartDate = None
+          assessmentRef = 123456L,
+          assessmentStatus = "active",
+          rateableValue = Some(BigDecimal(1000)),
+          scatCode = Some("SCAT01"),
+          descriptionText = "Test property",
+          effectiveDate = LocalDate.of(2024, 1, 1),
+          currentFromDate = LocalDate.of(2024, 2, 1),
+          listYear = "2023",
+          primaryDescription = "Office",
+          allowedActions = List("view", "edit"),
+          listType = "typeA",
+          propertyLinkEarliestStartDate = Some(LocalDate.of(2023, 12, 1))
         )
 
-        val json = Json.toJson(valuation)
+        val json     = Json.toJson(valuation)
         val fromJson = json.as[Valuation]
 
         fromJson mustBe valuation
       }
     }
+
+    "handle optional fields correctly" in {
+      val valuation = Valuation(
+        assessmentRef = 654321L,
+        assessmentStatus = "inactive",
+        rateableValue = None,
+        scatCode = None,
+        descriptionText = "Another test property",
+        effectiveDate = LocalDate.of(2023, 5, 15),
+        currentFromDate = LocalDate.of(2023, 6, 15),
+        listYear = "2022",
+        primaryDescription = "Retail",
+        allowedActions = List.empty,
+        listType = "typeB",
+        propertyLinkEarliestStartDate = None
+      )
+
+      val json     = Json.toJson(valuation)
+      val fromJson = json.as[Valuation]
+
+      fromJson mustBe valuation
+    }
+  }
 }

@@ -20,14 +20,15 @@ import play.api.libs.json.{Json, OFormat}
 
 import java.time.LocalDate
 
-case class PropertyChangesRequest(credId: CredId,
-                                  dateOfChange: LocalDate,
-                                  useOfSpace: Option[ChangeToUseOfSpace] = None,
-                                  internalFeatures: Seq[(String, String)],
-                                  externalFeatures: Seq[(String, String)],
-                                  additionalInfo: Option[AnythingElseData] = None,
-                                  uploadedDocuments: Seq[String]
-                                     )
+case class PropertyChangesRequest(
+  credId: CredId,
+  dateOfChange: LocalDate,
+  useOfSpace: Option[ChangeToUseOfSpace] = None,
+  internalFeatures: Seq[(String, String)],
+  externalFeatures: Seq[(String, String)],
+  additionalInfo: Option[AnythingElseData] = None,
+  uploadedDocuments: Seq[String]
+)
 
 object PropertyChangesRequest {
   implicit val format: OFormat[PropertyChangesRequest] = Json.format

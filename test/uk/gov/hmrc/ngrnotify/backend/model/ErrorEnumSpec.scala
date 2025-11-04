@@ -30,8 +30,8 @@ class ErrorEnumSpec extends AnyFlatSpec with should.Matchers {
   "Scala3EnumFormat.format" should "serialize Scala 3 enum to json" in {
     val obj  = Seq(BAD_REQUEST_BODY)
     val json = Json.toJson(obj)
-    json.as[Seq[ErrorCode]]  shouldBe obj
-    Json.stringify(json) shouldBe """["BAD_REQUEST_BODY"]"""
+    json.as[Seq[ErrorCode]] shouldBe obj
+    Json.stringify(json)    shouldBe """["BAD_REQUEST_BODY"]"""
   }
 
   it should "deserialize Scala 3 enum from json" in {

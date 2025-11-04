@@ -45,9 +45,9 @@ class EmailSenderControllerSpec extends AnyWordSpec with Matchers with GuiceOneA
             UUID.fromString("9d2dee33-7803-485a-a2b1-2c7538e597ee"),
             Seq("test1@email.com", "test2@email.com"),
             Json.obj(
-              "firstName" -> "David",
-              "lastName" -> "Jones",
-              "reference" -> "REG12345",
+              "firstName"       -> "David",
+              "lastName"        -> "Jones",
+              "reference"       -> "REG12345",
               "postcodeEndPart" -> "0AA"
             ),
             Some("http://localhost:1501/ngr-stub/callback")
@@ -55,7 +55,7 @@ class EmailSenderControllerSpec extends AnyWordSpec with Matchers with GuiceOneA
         ))
 
       val result = controller.sendEmail(ngr_registration_successful.toString)(fakeRequest)
-      status(result) shouldBe CREATED
+      status(result)        shouldBe CREATED
       contentAsJson(result) shouldBe Json.obj("status" -> "Success", "message" -> "Email dispatch task successfully created.")
     }
 
@@ -67,9 +67,9 @@ class EmailSenderControllerSpec extends AnyWordSpec with Matchers with GuiceOneA
             UUID.fromString("9d2dee33-7803-485a-a2b1-2c7538e597ee"),
             Seq("test1@email.com", "test2@email.com"),
             Json.obj(
-              "firstName" -> "David",
-              "lastName" -> "Jones",
-              "reference" -> "REG12345",
+              "firstName"       -> "David",
+              "lastName"        -> "Jones",
+              "reference"       -> "REG12345",
               "postcodeEndPart" -> "0AA"
             ),
             Some("http://localhost:1501/ngr-stub/callback")
@@ -77,7 +77,7 @@ class EmailSenderControllerSpec extends AnyWordSpec with Matchers with GuiceOneA
         ))
 
       val result = controller.sendEmail(ngr_add_property_request_sent.toString)(fakeRequest)
-      status(result) shouldBe CREATED
+      status(result)        shouldBe CREATED
       contentAsJson(result) shouldBe Json.obj("status" -> "Success", "message" -> "Email dispatch task successfully created.")
     }
 
@@ -106,15 +106,14 @@ class EmailSenderControllerSpec extends AnyWordSpec with Matchers with GuiceOneA
             trackerId = UUID.fromString("9d2dee33-7803-485a-a2b1-2c7538e597ee"),
             sendToEmails = Seq("test1@email.com", "test2@email.com"),
             templateParams = Json.obj(
-              "firstName" -> "David",
-              "lastName" -> "Jones",
-              "reference" -> "REG12345",
+              "firstName"       -> "David",
+              "lastName"        -> "Jones",
+              "reference"       -> "REG12345",
               "postcodeEndPart" -> "0AA"
             ),
             callbackUrl = Some("http://localhost:1501/ngr-stub/callback")
           )
         ))
-
 
       val result = controller.sendEmail("template")(fakeRequest)
       status(result) shouldBe BAD_REQUEST

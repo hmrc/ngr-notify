@@ -49,7 +49,7 @@ class RatepayerController @Inject() (
           case 200 =>
             response.json.validate[BridgeJobModel] match {
               case JsSuccess(value, path) => Ok(Json.toJsObject(BridgeJobModel.toRatepayerModel(value)))
-              case JsError(errors) => BadRequest
+              case JsError(errors)        => BadRequest
             }
         }
       }
