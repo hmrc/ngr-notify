@@ -16,11 +16,9 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import uk.gov.hmrc.ngrnotify.model.Address
-import uk.gov.hmrc.ngrnotify.model.ratepayer.RegisterRatepayerRequest
 import uk.gov.hmrc.ngrnotify.model.email.Email
-import uk.gov.hmrc.ngrnotify.model.ratepayer.PhoneNumber
-import uk.gov.hmrc.ngrnotify.model.ratepayer.Name
+import uk.gov.hmrc.ngrnotify.model.ratepayer.{Name, PhoneNumber, RegisterRatepayerRequest}
+import uk.gov.hmrc.ngrnotify.model.{Address, Postcode}
 
 // ---------- Case Classes ----------
 
@@ -146,7 +144,7 @@ object BridgeJobModel {
 
   // ---------- Play JSON Implicits ----------
 
-  import play.api.libs.json._
+  import play.api.libs.json.*
 
   implicit val protodataFormat: OFormat[Protodata] = Json.format[Protodata]
   implicit val codeMeaningFormat: OFormat[CodeMeaning] = Json.format[CodeMeaning]
@@ -181,7 +179,7 @@ object BridgeJobModel {
       nino = None,
       contactNumber = data.data.communications.flatMap(_.telephone_number).map(PhoneNumber(_)),
       secondaryNumber = None,
-      address = Some(Address(line1 = addressString, line2 = None, town = "", county = None, postcode = ""))
+      address = Some(Address(line1 = addressString, line2 = None, town = "", county = None, postcode = Postcode(""))),
     )
   }
 
