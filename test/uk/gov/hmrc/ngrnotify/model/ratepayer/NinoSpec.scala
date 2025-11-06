@@ -16,15 +16,23 @@
 
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
-import play.api.libs.json.{Reads, Writes}
-import uk.gov.hmrc.domain.{SimpleObjectReads, SimpleObjectWrites, TaxIdentifier}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import play.api.libs.json.Json
 
-final case class Nino(nino: String) extends TaxIdentifier {
-  def value: String = nino
-}
+class NinoSpec extends AnyWordSpec with Matchers {
 
-object Nino  {
+  "Model Nino" should {
+    "have correct value" in {
+      val nino = Nino("QQ123456A")
+      nino.value shouldBe "QQ123456A"
+    }
 
-  implicit val ninoWrite: Writes[Nino] = new SimpleObjectWrites[Nino](_.value)
-  implicit val ninoRead: Reads[Nino] = new SimpleObjectReads[Nino]("nino", Nino.apply)
+    "be serialized/deserialized from JSON" in {
+      val nino = Nino("QQ123456A")
+      val json = Json.toJson(nino)
+      val deserializedNino = json.as[Nino]
+      deserializedNino shouldBe nino
+    }
+  }
 }

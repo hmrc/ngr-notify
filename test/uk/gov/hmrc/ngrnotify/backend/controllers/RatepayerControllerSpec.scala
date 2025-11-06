@@ -29,7 +29,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
 import uk.gov.hmrc.ngrnotify.backend.testUtils.RequestBuilderStub
 import uk.gov.hmrc.ngrnotify.controllers.RatepayerController
-import uk.gov.hmrc.ngrnotify.model.Address
+import uk.gov.hmrc.ngrnotify.model.{Address, Postcode}
 import uk.gov.hmrc.ngrnotify.model.email.Email
 import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
 import uk.gov.hmrc.ngrnotify.model.ratepayer.RatepayerType.organization
@@ -101,7 +101,7 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
             Some(Nino("QQ123456A")),
             Some(PhoneNumber("1111")),
             None,
-            Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")),
+            Some(Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11 1ZZ"))),
             Some(TRNReferenceNumber(ReferenceType.TRN, "TRN123456"))
           )
         ))
@@ -146,7 +146,7 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
             nino = Some(Nino("QQ123456A")),
             contactNumber = Some(PhoneNumber("1111")),
             secondaryNumber = None,
-            address = Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ"))
+            address = Some(Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11 1ZZ")))
           )
         ))
 
@@ -171,7 +171,7 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
             nino = Some(Nino("QQ123456A")),
             contactNumber = Some(PhoneNumber("1111")),
             secondaryNumber = None,
-            address = Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ"))
+            address = Some(Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11 1ZZ")))
           )
         ))
 
@@ -196,7 +196,7 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
             nino = Some(Nino("QQ123456A")),
             contactNumber = Some(PhoneNumber("1111")),
             secondaryNumber = None,
-            address = Some(Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ"))
+            address = Some(Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11 1ZZ")))
           )
         ))
 
