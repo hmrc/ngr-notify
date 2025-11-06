@@ -29,7 +29,7 @@ class AddressSpec extends AnyWordSpec with Matchers:
 
   "Model Address" should {
     "be serialized/deserialized from JSON" in {
-      val address = Address("Line 1", Some("Line 2"), "City", None, "ZZ11 1ZZ")
+      val address = Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11 1ZZ"))
 
       val convertedAddress = Json.toJson(address).as[Address]
       convertedAddress            shouldBe address
@@ -37,7 +37,7 @@ class AddressSpec extends AnyWordSpec with Matchers:
     }
 
     "be serialized/deserialized from JSON and postcode reformatted in .singleLine" in {
-      val address = Address("Line 1", Some("Line 2"), "City", None, "ZZ11   1ZZ")
+      val address = Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11   1ZZ"))
 
       val convertedAddress = Json.toJson(address).as[Address]
       convertedAddress            shouldBe address

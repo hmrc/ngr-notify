@@ -18,27 +18,10 @@ package uk.gov.hmrc.ngrnotify.model
 
 import play.api.libs.json.{Json, OFormat}
 
-/**
-  * @author Yuriy Tumakha
-  */
-case class Address(
-  line1: String,
-  line2: Option[String],
-  town: String,
-  county: Option[String],
-  postcode: Postcode
-):
+final case class Postcode(value: String) {
+  override def toString: String = value
+}
 
-  private def addressLines: List[String] =
-    List(
-      Some(line1),
-      line2,
-      Some(town),
-      county,
-      Some(postcode.value.replaceAll("^(\\S+?)\\s*?(\\d\\w\\w)$", "$1 $2").trim.split("\\s+").mkString(" "))
-    ).flatten
-
-  def singleLine: String = addressLines.mkString(", ")
-
-object Address:
-  implicit val format: OFormat[Address] = Json.format
+  object Postcode {
+    implicit val format: OFormat[Postcode] = Json.format[Postcode]
+  }
