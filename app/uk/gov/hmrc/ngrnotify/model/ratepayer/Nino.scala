@@ -23,8 +23,8 @@ final case class Nino(nino: String) extends TaxIdentifier {
   def value: String = nino
 }
 
-object Nino  {
+object Nino {
 
   implicit val ninoWrite: Writes[Nino] = new SimpleObjectWrites[Nino](_.value)
-  implicit val ninoRead: Reads[Nino] = new SimpleObjectReads[Nino]("nino", Nino.apply)
+  implicit val ninoRead: Reads[Nino]   = new SimpleObjectReads[Nino]("nino", Nino.apply)
 }

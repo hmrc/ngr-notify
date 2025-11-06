@@ -39,7 +39,7 @@ object BridgeModelTestData {
   val testItems: List[Item]                            = List(Item(), Item(), Item())
   val testCompartmentsEmpty: Compartments              = Compartments(List.empty, List.empty, List.empty, List.empty, List.empty)
 
-  val testSubCompartment1: JobCompartment              = JobCompartment(
+  val testSubCompartment1: JobCompartment     = JobCompartment(
     id = Some("ID1"),
     idx = "IDX1",
     name = "TestJobName1",
@@ -56,9 +56,9 @@ object BridgeModelTestData {
     compartments = testCompartmentsEmpty,
     items = testItems
   )
-  val testCompartmentsPersonJob: Compartments          = Compartments(List.empty, List(testSubCompartment1), List.empty, List.empty, List(testSubCompartment1))
+  val testCompartmentsPersonJob: Compartments = Compartments(List.empty, List(testSubCompartment1), List.empty, List.empty, List(testSubCompartment1))
 
-  val testJobCompartment: JobCompartment               = JobCompartment(
+  val testJobCompartment: JobCompartment = JobCompartment(
     id = Some("ID"),
     idx = "IDX",
     name = "TestJobName",
@@ -76,7 +76,7 @@ object BridgeModelTestData {
     items = testItems
   )
 
-  val testJobCompartmentEmpty: JobCompartment          = JobCompartment(
+  val testJobCompartmentEmpty: JobCompartment = JobCompartment(
     id = Some("ID"),
     idx = "IDX",
     name = "TestJobName",
@@ -93,5 +93,5 @@ object BridgeModelTestData {
     compartments = testCompartmentsEmpty,
     items = testItems
   )
-  val testBridgeResponse: BridgeResponse               = BridgeResponse(testJobCompartment)
+  val testBridgeResponse: BridgeResponse      = BridgeResponse(testJobCompartment)
 }

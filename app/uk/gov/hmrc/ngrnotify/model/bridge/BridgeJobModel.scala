@@ -181,7 +181,7 @@ object BridgeJobModel {
       nino = None,
       contactNumber = data.data.communications.flatMap(_.telephone_number).map(PhoneNumber(_)),
       secondaryNumber = None,
-      address = Some(Address(line1 = addressString, line2 = None, town = "", county = None, postcode = Postcode(""))),
+      address = Some(Address(line1 = addressString, line2 = None, town = "", county = None, postcode = Postcode("")))
     )
   }
 
