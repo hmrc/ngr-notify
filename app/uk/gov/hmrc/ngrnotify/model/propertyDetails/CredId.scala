@@ -27,10 +27,7 @@ case class CredId(value: String) {
 
 object CredId {
 
-  implicit val format: Format[CredId] = Format(
-    __.read[String].map(CredId.apply),
-    Writes[CredId](credId => JsString(credId.value))
-  )
+  implicit val format: Format[CredId] = Json.format[CredId]
 
   implicit lazy val pathBindable: PathBindable[CredId] = new PathBindable[CredId] {
 
