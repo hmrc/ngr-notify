@@ -22,7 +22,7 @@ import play.api.mvc.{Action, ControllerComponents}
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeRequest, Compartments, Job}
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.{PropertyChangesResponse, PropertyLinkingRequest}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.PropertyLinkingRequest
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 

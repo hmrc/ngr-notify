@@ -93,14 +93,11 @@
             ],
             "foreign_names": [],
             "foreign_labels": [],
-            "address": {
+            "addresses": {
               "property_full_address": "88, Anderton Close, Tavistock, Devon, PL22 8DE",
-              "address_line_1": "'88'",
-              "address_line_2": "Anderton Close",
-              "address_line_3": null,
-              "address_town": "Tavistock",
-              "address_county": "Devon",
-              "address_postcode": "PL22 8DE"
+              "address_line_1": "88 Anderton Close",
+              "address_postcode": "PL22 8DE",
+              "address_known_as": "88, Anderton Close, Tavistock, Devon, PL22 8DE"
             },
             "location": {
               "ordanace_survey_coordinates": "SX25432765",

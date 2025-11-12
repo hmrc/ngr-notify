@@ -16,18 +16,19 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.Json
+import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
 
-import scala.collection.immutable.List
+/**
+  * @author Yuriy Tumakha
+  */
+class PropertiesJobFormResponseSpec extends AnyWordAppSpec:
 
-case class PropertyData(
-  foreignIds: List[ForeignId] = List.empty,
-  foreignLabels: List[ForeignId] = List.empty,
-  addresses: PropertyAddresses
-)
+  "Model BridgeResponse" should {
+    "be serialized/deserialized from JSON" in {
+      val propertiesJobFormResponseJson = Json.parse(testResourceContent("propertiesJobFormResponse.json"))
+      val propertiesJobFormResponse        = propertiesJobFormResponseJson.as[PropertiesJobFormResponse]
 
-object PropertyData:
-
-  import uk.gov.hmrc.ngrnotify.model.given
-
-  given Format[PropertyData] = Json.format
+      Json.toJson(propertiesJobFormResponse).as[PropertiesJobFormResponse] shouldBe propertiesJobFormResponse
+    }
+  }

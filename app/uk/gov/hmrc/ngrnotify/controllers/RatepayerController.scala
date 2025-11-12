@@ -167,7 +167,7 @@ class RatepayerController @Inject() (
           logger.info(s"Bridge Response:\n$bridgeResponse")
 
           val addresses: Seq[String] = bridgeResponse.job.compartments.properties
-            .map(_.data.address.propertyFullAddress.getOrElse(""))
+            .map(_.data.addresses.propertyFullAddress.getOrElse(""))
           Ok(Json.toJsObject(RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)))
         case jsError: JsError             => buildValidationErrorsResponse(jsError).copy(header = ResponseHeader(INTERNAL_SERVER_ERROR))
       }

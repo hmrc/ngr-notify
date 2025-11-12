@@ -18,16 +18,13 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.{Format, Json}
 
-import scala.collection.immutable.List
-
-case class PropertyData(
-  foreignIds: List[ForeignId] = List.empty,
-  foreignLabels: List[ForeignId] = List.empty,
-  addresses: PropertyAddresses
+/**
+  * @author Yuriy Tumakha
+  */
+case class PropertiesJobFormResponse(
+  jobForm: JobForm
 )
 
-object PropertyData:
+object PropertiesJobFormResponse:
 
-  import uk.gov.hmrc.ngrnotify.model.given
-
-  given Format[PropertyData] = Json.format
+  given Format[PropertiesJobFormResponse] = Json.format
