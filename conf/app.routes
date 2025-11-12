@@ -6,11 +6,11 @@ GET     /hip-items                              uk.gov.hmrc.ngrnotify.controller
 
 # Status endpoints
 GET     /ratepayer-status/:id                   uk.gov.hmrc.ngrnotify.controllers.StatusController.getRatepayerStatus(id: String)
-GET     /ratepayer/:id                          uk.gov.hmrc.ngrnotify.controllers.RatepayerController.getRatepayer(id: String)
+GET     /ratepayer/:credId                      uk.gov.hmrc.ngrnotify.controllers.RatepayerController.getRatepayer(credId: CredId)
 POST    /register-ratepayer                     uk.gov.hmrc.ngrnotify.controllers.RatepayerController.registerRatepayer
-GET     /ratepayer-has-property/:credId         uk.gov.hmrc.ngrnotify.controllers.RatepayerController.getRatepayerPropertyLinks(credId)
+GET     /ratepayer-has-property/:credId         uk.gov.hmrc.ngrnotify.controllers.RatepayerController.getRatepayerPropertyLinks(credId: CredId)
 
-GET     /allowed-in-private-beta/:credId        uk.gov.hmrc.ngrnotify.controllers.AllowedCredentialsController.isAllowedInPrivateBeta(credId)
+GET     /allowed-in-private-beta/:credId        uk.gov.hmrc.ngrnotify.controllers.AllowedCredentialsController.isAllowedInPrivateBeta(credId: CredId)
 
 # Send email
 POST    /send-email/:emailTemplateId            uk.gov.hmrc.ngrnotify.controllers.EmailSenderController.sendEmail(emailTemplateId)

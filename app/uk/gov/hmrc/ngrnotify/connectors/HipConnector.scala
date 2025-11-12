@@ -25,6 +25,7 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeRequest
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.ngrnotify.services.HipService.buildHipHeaderCarrier
 import uk.gov.hmrc.ngrnotify.utils.AuthHeaderBuilder
 
@@ -76,9 +77,9 @@ class HipConnector @Inject() (
       .withBody(Json.toJson(bridgeRequest))
       .execute[HttpResponse]
 
-  def getRatepayer(id: String)(using request: Request[?]): Future[HttpResponse] =
+  def getRatepayer(credId: CredId)(using request: Request[?]): Future[HttpResponse] =
     httpClient
-      .get(appConfig.getRatepayerUrl(id))(using hipHeaderCarrier)
+      .get(appConfig.getRatepayerUrl(credId))(using hipHeaderCarrier)
       .execute[HttpResponse]
 
   def getRatepayerStatus(id: String)(using request: Request[?]): Future[HttpResponse] =
