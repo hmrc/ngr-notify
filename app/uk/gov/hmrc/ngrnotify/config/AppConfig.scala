@@ -18,6 +18,7 @@ package uk.gov.hmrc.ngrnotify.config
 
 import play.api.Configuration
 import uk.gov.hmrc.http.StringContextOps
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL
@@ -42,7 +43,7 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   val registerRatepayerUrl: URL         = url"${hipBaseUrl + registerRatepayerPath}"
   val updatePropertyChangesUrl: URL     = url"${hipBaseUrl + updatePropertyChangesPath}"
   val propertyLinkingUrl: URL           = url"${hipBaseUrl + propertyLinkingPath}"
-  def getRatepayerUrl(id: String): URL  = url"${hipBaseUrl + getRatepayerPath + id}"
+  def getRatepayerUrl(id: CredId): URL  = url"${hipBaseUrl + getRatepayerPath + id.toString}"
 
   val hipClientId: String     = servicesConfig.getConfString("hip.clientId", "CLIENT_ID")
   val hipClientSecret: String = servicesConfig.getConfString("hip.clientSecret", "CLIENT_SECRET")
