@@ -21,9 +21,11 @@ import play.api.test.Helpers.*
 import play.api.test.FakeRequest
 import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.controllers.AllowedCredentialsController
+
 import scala.concurrent.Future
 import play.api.mvc.ControllerComponents
 import uk.gov.hmrc.ngrnotify.connectors.AllowedCredentialsConnector
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 
 class AllowedCredentialsControllerSpec extends AnyWordAppSpec {
 
@@ -34,18 +36,18 @@ class AllowedCredentialsControllerSpec extends AnyWordAppSpec {
   "AllowedCredentialsController" should {
 
     "return 200 for allowed id with true" in {
-      when(mockConnector.isAllowed("testId-1")).thenReturn(Future.successful(true))
+      when(mockConnector.isAllowed(CredId("testId-1"))).thenReturn(Future.successful(true))
 
-      val result = controller.isAllowedInPrivateBeta("testId-1").apply(FakeRequest())
+      val result = controller.isAllowedInPrivateBeta(CredId("testId-1")).apply(FakeRequest())
 
       status(result)        shouldBe OK
       contentAsJson(result) shouldBe Json.obj("allowed" -> true)
     }
 
     "return 200 for not allowed id with false" in {
-      when(mockConnector.isAllowed("testId-2")).thenReturn(Future.successful(false))
+      when(mockConnector.isAllowed(CredId("testId-2"))).thenReturn(Future.successful(false))
 
-      val result = controller.isAllowedInPrivateBeta("testId-2").apply(FakeRequest())
+      val result = controller.isAllowedInPrivateBeta(CredId("testId-2")).apply(FakeRequest())
 
       status(result)        shouldBe OK
       contentAsJson(result) shouldBe Json.obj("allowed" -> false)
@@ -53,9 +55,9 @@ class AllowedCredentialsControllerSpec extends AnyWordAppSpec {
 
     "return 500" in {
       val exception = new RuntimeException("Service unavailable")
-      when(mockConnector.isAllowed("testId-3")).thenReturn(Future.failed(exception))
+      when(mockConnector.isAllowed(CredId("testId-3"))).thenReturn(Future.failed(exception))
 
-      val result = controller.isAllowedInPrivateBeta("testId-3").apply(FakeRequest())
+      val result = controller.isAllowedInPrivateBeta(CredId("testId-3")).apply(FakeRequest())
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }

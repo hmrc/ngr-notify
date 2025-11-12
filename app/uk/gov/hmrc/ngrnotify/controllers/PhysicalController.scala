@@ -18,10 +18,11 @@ package uk.gov.hmrc.ngrnotify.controllers
 
 import play.api.Logging
 import play.api.libs.json.*
-import play.api.mvc.{Action, ControllerComponents}
+import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
+import play.api.mvc.{Action, ControllerComponents, Request}
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeRequest, Compartments, Job}
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.{PropertyChangesRequest, PropertyChangesResponse}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{CredId, PropertyChangesRequest, PropertyChangesResponse}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 
@@ -36,19 +37,29 @@ class PhysicalController @Inject() (
   with JsonSupport
   with Logging {
 
+  private def getRatepayer(credId: CredId)(implicit request: Request[JsValue]): Future[Option[JsValue]] =
+    hipConnector.getRatepayer(credId) map { response =>
+      response.status match {
+        case status if is2xx(status) => Some(response.json)
+        case status                  =>
+          logger.warn(s"Unexpected response status $status from HIP when getting ratepayer")
+          None
+      }
+    }
+
   def updatePropertyChanges(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     request.body.validate[PropertyChangesRequest] match {
       case JsSuccess(propertyChanges, _) =>
-        logger.info(s"Request:\n$propertyChanges")
 
         val bridgeRequest = toBridgeRequest(propertyChanges)
-        logger.info(s"BridgeRequest:\n$bridgeRequest")
+
+        hipConnector.getRatepayer(propertyChanges.credId)
 
         hipConnector.updatePropertyChanges(bridgeRequest).map { response =>
           response.status match {
-            case 200 | 201 | 202 => Accepted(Json.toJsObject(PropertyChangesResponse()))
-            case 400             => BadRequest(Json.toJsObject(PropertyChangesResponse(Some(response.body))))
-            case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+            case status if is2xx(status) => Accepted(Json.toJsObject(PropertyChangesResponse()))
+            case BAD_REQUEST             => BadRequest(Json.toJsObject(PropertyChangesResponse(Some(response.body))))
+            case status                  => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
           }
         }
           .recover(e =>

@@ -18,6 +18,7 @@ package uk.gov.hmrc.ngrnotify.config
 
 import play.api.Configuration
 import uk.gov.hmrc.http.StringContextOps
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL
@@ -34,15 +35,15 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   val importScheduleHour: Int          = config.getOptional[Int]("validationImport.hourToRunAt").getOrElse(0)
   val importScheduleMinute: Int        = config.getOptional[Int]("validationImport.minuteToRunAt").getOrElse(0)
 
-  private val hipBaseUrl                     = servicesConfig.baseUrl("hip")
-  private val registerRatepayerPath          = servicesConfig.getConfString("hip.registerRatepayerPath", "/job/ratepayer")
-  private val getRatepayerPath               = servicesConfig.getConfString("hip.getRatepayerPath", "/job/ratepayer/")
-  private val updatePropertyChangesPath      = servicesConfig.getConfString("hip.updatePropertyChangesPath", "/job/physical")
-  private val propertyLinkingPath            = servicesConfig.getConfString("hip.propertyLinkingPath", "/job/property")
-  val registerRatepayerUrl: URL              = url"${hipBaseUrl + registerRatepayerPath}"
-  val updatePropertyChangesUrl: URL          = url"${hipBaseUrl + updatePropertyChangesPath}"
-  val propertyLinkingUrl: URL                = url"${hipBaseUrl + propertyLinkingPath}"
-  def getRatepayerUrl(id: String): URL       = url"${hipBaseUrl + getRatepayerPath + id}"
+  private val hipBaseUrl                = servicesConfig.baseUrl("hip")
+  private val registerRatepayerPath     = servicesConfig.getConfString("hip.registerRatepayerPath", "/job/ratepayer")
+  private val getRatepayerPath          = servicesConfig.getConfString("hip.getRatepayerPath", "/job/ratepayer/")
+  private val updatePropertyChangesPath = servicesConfig.getConfString("hip.updatePropertyChangesPath", "/job/physical")
+  private val propertyLinkingPath       = servicesConfig.getConfString("hip.propertyLinkingPath", "/job/property")
+  val registerRatepayerUrl: URL         = url"${hipBaseUrl + registerRatepayerPath}"
+  val updatePropertyChangesUrl: URL     = url"${hipBaseUrl + updatePropertyChangesPath}"
+  val propertyLinkingUrl: URL           = url"${hipBaseUrl + propertyLinkingPath}"
+  def getRatepayerUrl(id: CredId): URL  = url"${hipBaseUrl + getRatepayerPath + id.toString}"
   def getRatepayerStatusUrl(id: String): URL = url"${hipBaseUrl + getRatepayerPath + id}/dashboard"
 
   val hipClientId: String     = servicesConfig.getConfString("hip.clientId", "CLIENT_ID")

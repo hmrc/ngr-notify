@@ -16,13 +16,15 @@
 
 package uk.gov.hmrc.ngrnotify.connectors
 
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
 class AllowedCredentialsConnector @Inject() ():
 
-  private val allowedCredentials = List("test-cred-1", "test-cred-2", "test-cred-3", "test-cred-4")
+  private val allowedCredentials: Seq[CredId] = List(CredId("test-cred-1"), CredId("test-cred-2"), CredId("test-cred-3"), CredId("test-cred-4"))
 
-  def isAllowed(credId: String): Future[Boolean] =
+  def isAllowed(credId: CredId): Future[Boolean] =
     Future.successful(allowedCredentials.contains(credId))

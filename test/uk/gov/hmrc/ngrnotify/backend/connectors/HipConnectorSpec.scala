@@ -29,6 +29,7 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.RequestBuilderStub
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeRequest, Compartments, Job}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL
@@ -126,7 +127,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
       val connector             = HipConnector(appConfig, httpMock)
       given Request[AnyContent] = FakeRequest()
 
-      val response = connector.getRatepayer("ID_123").futureValue
+      val response = connector.getRatepayer(CredId("ID_123")).futureValue
       response.status shouldBe OK
 
       verify(httpMock)

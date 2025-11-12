@@ -19,12 +19,12 @@ package uk.gov.hmrc.ngrnotify.controllers
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.{Action, ControllerComponents}
+import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeRequest, Compartments, Job}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.PropertyLinkingRequest
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -42,12 +42,12 @@ class PropertyController @Inject() (
       case JsSuccess(propertyRequest, _) =>
         val bridgeRequest = toBridgeRequest(propertyRequest)
         hipConnector.submitPropertyLinkingChanges(bridgeRequest).map { response =>
-          response.status match {
-            case status if is2xx(status) => Accepted
-            case 400                     => BadRequest
-            case status                  => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+            response.status match {
+              case status if is2xx(status) => Accepted
+              case BAD_REQUEST             => BadRequest
+              case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+            }
           }
-        }
           .recover(e =>
             InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage))
           )
