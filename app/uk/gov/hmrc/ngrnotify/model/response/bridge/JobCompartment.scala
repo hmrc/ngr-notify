@@ -18,23 +18,25 @@ package uk.gov.hmrc.ngrnotify.model.response.bridge
 
 import play.api.libs.json.{Json, OFormat}
 
-case class JobCompartment(id: Option[String],
-                          idx: String,
-                          name: String,
-                          label: String,
-                          description: String,
-                          origination: String,
-                          termination: Option[String],
-                          category: Category,
-                          //TODO ask them to rename this field as type is a keyword
-                          typeX: TypeX,
-                          //TODO ask them to rename this field as type is a keyword
-                          classX: ClassX,
-                          data: Data,
-                          protodata: List[String],
-                          metadata: MetaData,
-                          compartments: Compartments,
-                          items: List[Item])
+case class JobCompartment(
+  id: Option[String],
+  idx: String,
+  name: String,
+  label: String,
+  description: String,
+  origination: String,
+  termination: Option[String],
+  category: Category,
+  // TODO ask them to rename this field as type is a keyword
+  typeX: TypeX,
+  // TODO ask them to rename this field as type is a keyword
+  classX: ClassX,
+  data: Data,
+  protodata: List[String],
+  metadata: MetaData,
+  compartments: Compartments,
+  items: List[Item]
+)
 
 object JobCompartment {
   implicit val format: OFormat[JobCompartment] = Json.format[JobCompartment]

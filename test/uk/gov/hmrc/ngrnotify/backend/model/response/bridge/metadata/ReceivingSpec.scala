@@ -23,10 +23,11 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData.testReceiving
 import uk.gov.hmrc.ngrnotify.model.response.bridge.metadata.Receiving
 
 class ReceivingSpec extends AnyWordSpec with Matchers {
+
   private val receivingJson = Json.obj(
     "transforming" -> Json.obj("recontextualising" -> Json.obj(), "dropping" -> Json.obj(), "restoring" -> Json.obj()),
-    "storing" -> Json.obj("inserting" -> Json.obj()),
-    "unloading" -> Json.obj("assuring" -> Json.obj(), "readying" -> Json.obj(), "verifying" -> Json.obj(), "decrypting" -> Json.obj(), "receiving" -> Json.obj())
+    "storing"      -> Json.obj("inserting" -> Json.obj()),
+    "unloading"    -> Json.obj("assuring" -> Json.obj(), "readying" -> Json.obj(), "verifying" -> Json.obj(), "decrypting" -> Json.obj(), "receiving" -> Json.obj())
   )
 
   "Receiving" should {
@@ -36,15 +37,15 @@ class ReceivingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = receivingJson
+      val json      = receivingJson
       val receiving = json.as[Receiving]
       receiving shouldBe testReceiving
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = receivingJson
-      val json = Json.toJson(original)
-      val parsed = json.as[Receiving]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Receiving]
       parsed shouldBe testReceiving
     }
   }

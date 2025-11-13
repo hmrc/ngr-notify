@@ -23,8 +23,9 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData.testTypeX
 import uk.gov.hmrc.ngrnotify.model.response.bridge.TypeX
 
 class TypeXSpec extends AnyWordSpec with Matchers {
+
   private val typeXJson = Json.obj(
-    "code" -> "TestTypeXCode",
+    "code"    -> "TestTypeXCode",
     "meaning" -> "TestTypeXMeaning"
   )
 
@@ -32,22 +33,21 @@ class TypeXSpec extends AnyWordSpec with Matchers {
 
     "serialize to JSON correctly" in {
       val typeX = testTypeX
-      val json = Json.toJson(typeX)
+      val json  = Json.toJson(typeX)
       json shouldBe typeXJson
     }
 
     "deserialize from JSON correctly" in {
-      val json = typeXJson
+      val json  = typeXJson
       val typeX = json.as[TypeX]
       typeX shouldBe testTypeX
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = typeXJson
-      val json = Json.toJson(original)
-      val parsed = json.as[TypeX]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[TypeX]
       parsed shouldBe testTypeX
     }
   }
 }
-

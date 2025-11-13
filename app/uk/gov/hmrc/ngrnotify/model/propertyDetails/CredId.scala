@@ -31,7 +31,7 @@ object CredId {
     __.read[String].map(CredId.apply),
     Writes[CredId](credId => JsString(credId.value))
   )
-  
+
   implicit lazy val pathBindable: PathBindable[CredId] = new PathBindable[CredId] {
 
     override def bind(key: String, value: String): Either[String, CredId] =

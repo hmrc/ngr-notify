@@ -44,7 +44,7 @@ class PhysicalController @Inject() (
         response.status match {
           case OK =>
             response.json.validate[BridgeJobModel].asOpt
-          case _ =>
+          case _  =>
             None
         }
       }
@@ -57,12 +57,12 @@ class PhysicalController @Inject() (
           case Some(ratePayerJob) =>
             val bridgeRequest = toBridgeRequest(ratePayerJob, propertyChanges)
             hipConnector.updatePropertyChanges(bridgeRequest).map { response =>
-                response.status match {
-                  case status if is2xx(status) => Accepted(Json.toJsObject(PropertyChangesResponse()))
-                  case BAD_REQUEST => BadRequest(Json.toJsObject(PropertyChangesResponse(Some(response.body))))
-                  case status => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
-                }
+              response.status match {
+                case status if is2xx(status) => Accepted(Json.toJsObject(PropertyChangesResponse()))
+                case BAD_REQUEST             => BadRequest(Json.toJsObject(PropertyChangesResponse(Some(response.body))))
+                case status                  => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
               }
+            }
               .recover(e =>
                 InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage))
               )
@@ -77,12 +77,16 @@ class PhysicalController @Inject() (
   }
 
   private def toBridgeRequest(ratePayerJobModel: BridgeJobModel, propertyChanges: PropertyChangesRequest): BridgeJobModel = {
+    val description: String = buildDescription(propertyChanges)
+
+    println("Description: " + description)
+
     val toBridgeJob = JobItem(
       id = None,
       idx = Some("?"),
       name = Some("physical"),
       label = Some("Physical Job"),
-      description = Some("Default physical job item"),
+      description = Some(description),
       origination = None,
       termination = None,
       category = BridgeJobModel.CodeMeaning(None, None),
@@ -95,9 +99,16 @@ class PhysicalController @Inject() (
       items = None
     )
 
-    val updatedProperties = ratePayerJobModel.job.compartments.properties :+ toBridgeJob
+    val updatedProperties   = ratePayerJobModel.job.compartments.properties :+ toBridgeJob
     val updatedCompartments = ratePayerJobModel.job.compartments.copy(properties = updatedProperties)
-    val updatedJob = ratePayerJobModel.job.copy(compartments = updatedCompartments)
+    val updatedJob          = ratePayerJobModel.job.copy(compartments = updatedCompartments)
     ratePayerJobModel.copy(job = updatedJob)
+  }
+
+   private def buildDescription(propertyChanges: PropertyChangesRequest): String = {
+    propertyChanges.productElementNames
+      .zip(propertyChanges.productIterator)
+      .map { case (key, value) => s"$key - $value" }
+      .mkString(":")
   }
 }

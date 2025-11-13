@@ -23,17 +23,17 @@ import play.api.libs.json.Json
 class BridgeRequestSpec extends AnyFreeSpec with Matchers {
   "BridgeRequest" - {
     "serialization and deserialization" in {
-        val bridgeRequest = BridgeRequest(
-          Job(
-            id = None,
-            idx = "1",
-            name = "Register Ratepayer",
-            compartments = Compartments()
-          )
+      val bridgeRequest = BridgeRequest(
+        Job(
+          id = None,
+          idx = "1",
+          name = "Register Ratepayer",
+          compartments = Compartments()
         )
-        val json = Json.toJson(bridgeRequest)
-        val deserialized = Json.fromJson[BridgeRequest](json).get
-        deserialized mustBe bridgeRequest
+      )
+      val json          = Json.toJson(bridgeRequest)
+      val deserialized  = Json.fromJson[BridgeRequest](json).get
+      deserialized mustBe bridgeRequest
     }
   }
 }

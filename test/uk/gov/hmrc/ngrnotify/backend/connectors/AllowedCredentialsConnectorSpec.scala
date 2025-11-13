@@ -24,7 +24,7 @@ import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 
 class AllowedCredentialsConnectorSpec extends AnyWordSpec with Matchers with ScalaFutures {
 
-  private val connector                     = new AllowedCredentialsConnector()
+  private val connector = new AllowedCredentialsConnector()
 
   "AllowedCredentialsConnector" should {
 

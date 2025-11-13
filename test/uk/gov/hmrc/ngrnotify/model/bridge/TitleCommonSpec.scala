@@ -20,11 +20,11 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 
 class TitleCommonSpec extends AnyFreeSpec with Matchers {
-    "TitleCommon" - {
-        "must have all expected values" in {
-        val titles = TitleCommon.values.toSet
-        titles mustBe Set(TitleCommon.Mr, TitleCommon.Ms, TitleCommon.Mrs, TitleCommon.Miss)
-        }
+  "TitleCommon" - {
+    "must have all expected values" in {
+      val titles = TitleCommon.values.toSet
+      titles mustBe Set(TitleCommon.Mr, TitleCommon.Ms, TitleCommon.Mrs, TitleCommon.Miss)
     }
+  }
 
 }

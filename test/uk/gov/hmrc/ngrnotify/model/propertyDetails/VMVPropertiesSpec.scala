@@ -24,7 +24,7 @@ class VMVPropertiesSpec extends AnyFreeSpec with Matchers {
 
   "VMVProperties JSON format" - {
     "serialize and deserialize correctly" in {
-      val property = VMVProperty(
+      val property      = VMVProperty(
         uarn = 123456789L,
         addressFull = "123 Test Street",
         localAuthorityCode = "LA123",

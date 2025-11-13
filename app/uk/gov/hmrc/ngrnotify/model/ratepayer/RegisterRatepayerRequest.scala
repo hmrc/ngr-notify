@@ -25,18 +25,18 @@ import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
   * @author Yuriy Tumakha
   */
 final case class RegisterRatepayerRequest(
-                                           ratepayerCredId: String,
-                                           userType: Option[RatepayerType] = None,
-                                           agentStatus: Option[AgentStatus] = None,
-                                           name: Option[Name],
-                                           tradingName: Option[TradingName] = None,
-                                           email: Option[Email] = None,
-                                           nino: Option[Nino] = None,
-                                           contactNumber: Option[PhoneNumber] = None,
-                                           secondaryNumber: Option[PhoneNumber] = None,
-                                           address: Option[Address] = None,
-                                           trnReferenceNumber: Option[TRNReferenceNumber] = None,
-                                           isRegistered: Option[Boolean] = Some(false)
+  ratepayerCredId: String,
+  userType: Option[RatepayerType] = None,
+  agentStatus: Option[AgentStatus] = None,
+  name: Option[Name],
+  tradingName: Option[TradingName] = None,
+  email: Option[Email] = None,
+  nino: Option[Nino] = None,
+  contactNumber: Option[PhoneNumber] = None,
+  secondaryNumber: Option[PhoneNumber] = None,
+  address: Option[Address] = None,
+  trnReferenceNumber: Option[TRNReferenceNumber] = None,
+  isRegistered: Option[Boolean] = Some(false)
 )
 
 object RegisterRatepayerRequest:

@@ -18,9 +18,11 @@ package uk.gov.hmrc.ngrnotify.model.response.bridge.metadata
 
 import play.api.libs.json.{Json, OFormat}
 
-case class ReceivingTransforming(recontextualising: Recontextualising,
-                                 dropping: Dropping,
-                                 restoring: Restoring)
+case class ReceivingTransforming(
+  recontextualising: Recontextualising,
+  dropping: Dropping,
+  restoring: Restoring
+)
 
 object ReceivingTransforming {
   implicit val format: OFormat[ReceivingTransforming] = Json.format[ReceivingTransforming]
