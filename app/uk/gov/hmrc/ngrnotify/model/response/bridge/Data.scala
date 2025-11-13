@@ -18,9 +18,11 @@ package uk.gov.hmrc.ngrnotify.model.response.bridge
 
 import play.api.libs.json.{Json, OFormat}
 
-case class Data (foreign_ids: List[String],
-                 foreign_names: List[String],
-                 foreign_labels: List[String])
+case class Data(
+  foreign_ids: List[String],
+  foreign_names: List[String],
+  foreign_labels: List[String]
+)
 
 object Data {
   implicit val format: OFormat[Data] = Json.format[Data]

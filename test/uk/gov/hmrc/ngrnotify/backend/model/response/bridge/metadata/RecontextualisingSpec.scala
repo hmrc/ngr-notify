@@ -31,17 +31,16 @@ class RecontextualisingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json              = Json.obj()
       val recontextualising = json.as[Recontextualising]
       recontextualising shouldBe Recontextualising()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Recontextualising]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Recontextualising]
       parsed shouldBe Recontextualising()
     }
   }
 }
-

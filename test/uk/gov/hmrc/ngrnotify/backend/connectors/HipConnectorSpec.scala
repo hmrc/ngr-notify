@@ -102,7 +102,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
         items = None
       )
 
-      val bridgeRequest         = BridgeJobModel(
+      val bridgeRequest = BridgeJobModel(
         $schema = "http://example.com/schema",
         job = toBridgeJob
       )
@@ -114,7 +114,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
         .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/physical/"))(using any[HeaderCarrier])
     }
   }
-  
+
   "submitPropertyLinkingChanges" must {
     "return a successful response" in {
       val httpMock              = httpPostMock(ACCEPTED)

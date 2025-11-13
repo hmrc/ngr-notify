@@ -51,7 +51,7 @@ class RatepayerController @Inject() (
           case OK =>
             response.json.validate[BridgeJobModel] match {
               case JsSuccess(value, path) => Ok(Json.toJsObject(BridgeJobModel.toRatepayerModel(value)))
-              case JsError(errors) => BadRequest
+              case JsError(errors)        => BadRequest
             }
         }
       }
@@ -70,7 +70,7 @@ class RatepayerController @Inject() (
             response.status match {
               case status if is2xx(status) => Accepted(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
               case BAD_REQUEST             => BadRequest(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.INCOMPLETE, Some(response.body))))
-              case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+              case status                  => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
             }
           }
           .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
@@ -82,7 +82,7 @@ class RatepayerController @Inject() (
     hipConnector.getRatepayer(ratepayerCredId)
       .map { response =>
         response.status match {
-          case OK    => parsePropertyLinks(response.body)
+          case OK     => parsePropertyLinks(response.body)
           case status => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
         }
       }

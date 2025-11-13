@@ -22,13 +22,13 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar.mock
 
-class MetricsHandlerSpec extends AnyFreeSpec with Matchers{
+class MetricsHandlerSpec extends AnyFreeSpec with Matchers {
   "MetricsHandler" - {
     "must initialize all meters with correct names" in {
-      val mockRegistry = mock[MetricRegistry]
-      val failedMeter = mock[Meter]
-      val okMeter = mock[Meter]
-      val refNumMeter = mock[Meter]
+      val mockRegistry  = mock[MetricRegistry]
+      val failedMeter   = mock[Meter]
+      val okMeter       = mock[Meter]
+      val refNumMeter   = mock[Meter]
       val importedMeter = mock[Meter]
 
       when(mockRegistry.meter("failedforsubmissions")).thenReturn(failedMeter)
