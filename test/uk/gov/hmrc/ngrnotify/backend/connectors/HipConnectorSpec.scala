@@ -102,7 +102,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
         items = None
       )
 
-      val bridgeRequest         = BridgeJobModel(
+      val bridgeRequest = BridgeJobModel(
         $schema = "http://example.com/schema",
         job = toBridgeJob
       )

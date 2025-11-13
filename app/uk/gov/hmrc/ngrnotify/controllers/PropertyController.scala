@@ -42,12 +42,12 @@ class PropertyController @Inject() (
       case JsSuccess(propertyRequest, _) =>
         val bridgeRequest = toBridgeRequest(propertyRequest)
         hipConnector.submitPropertyLinkingChanges(bridgeRequest).map { response =>
-            response.status match {
-              case status if is2xx(status) => Accepted
-              case BAD_REQUEST             => BadRequest
-              case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
-            }
+          response.status match {
+            case status if is2xx(status) => Accepted
+            case BAD_REQUEST             => BadRequest
+            case status                  => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
           }
+        }
           .recover(e =>
             InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage))
           )

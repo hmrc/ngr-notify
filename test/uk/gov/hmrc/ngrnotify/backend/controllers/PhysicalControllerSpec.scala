@@ -79,7 +79,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
 
       when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
         .thenReturn(
-            Future.successful(HttpResponse(OK, body = Json.toJson(sampleBridgeModel).toString))
+          Future.successful(HttpResponse(OK, body = Json.toJson(sampleBridgeModel).toString))
         )
 
       val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
@@ -140,8 +140,8 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
 
         when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
           .thenReturn(
-            Future.successful(HttpResponse(statusCode)
-          ))
+            Future.successful(HttpResponse(statusCode))
+          )
 
         val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
           .withJsonBody(json)

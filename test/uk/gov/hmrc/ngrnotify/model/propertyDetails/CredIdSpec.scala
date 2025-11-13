@@ -26,13 +26,13 @@ class CredIdSpec extends AnyFreeSpec {
   "CredId" - {
     "should create an instance with the correct value" in {
       val credIdValue = "test-cred-123"
-      val credId = CredId(credIdValue)
+      val credId      = CredId(credIdValue)
       credId.value mustEqual credIdValue
     }
 
     "toString should return the correct string representation" in {
       val credIdValue = "test-cred-456"
-      val credId = CredId(credIdValue)
+      val credId      = CredId(credIdValue)
       credId.toString mustEqual credIdValue
     }
 
@@ -41,32 +41,32 @@ class CredIdSpec extends AnyFreeSpec {
 
       "should serialize CredId to JSON" in {
         val credId = CredId("json-cred-123")
-        val json = Json.toJson(credId)
+        val json   = Json.toJson(credId)
         json mustEqual JsString("json-cred-123")
       }
 
       "should deserialize JSON to CredId" in {
-        val json = JsString("json-cred-456")
+        val json   = JsString("json-cred-456")
         val credId = json.as[CredId]
         credId mustEqual CredId("json-cred-456")
       }
     }
   }
-  
+
   "pathBindable" - {
     "should bind a valid string to CredId" in {
       val pathBindable = implicitly[PathBindable[CredId]]
-      val credId = CredId("AB123")
+      val credId       = CredId("AB123")
 
       val bind: Either[String, CredId] = pathBindable.bind("credId", "AB123")
       bind.value mustEqual credId
     }
 
     "should unbind a CredId to a string" in {
-      val key = "credId"
-      val credId = CredId("test-cred-789")
+      val key            = "credId"
+      val credId         = CredId("test-cred-789")
       val unbind: String = CredId.pathBindable.unbind(key, credId)
-      unbind mustEqual  "test-cred-789"
+      unbind mustEqual "test-cred-789"
     }
   }
 }
