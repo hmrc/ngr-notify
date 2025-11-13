@@ -24,7 +24,7 @@ import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 import uk.gov.hmrc.ngrnotify.config.AppConfig
-import uk.gov.hmrc.ngrnotify.model.bridge.BridgeRequest
+import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeJobModel, BridgeRequest}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.ngrnotify.services.HipService.buildHipHeaderCarrier
 import uk.gov.hmrc.ngrnotify.utils.AuthHeaderBuilder
@@ -60,7 +60,7 @@ class HipConnector @Inject() (
   private def hipHeaderCarrier(using request: Request[?]): HeaderCarrier =
     HeaderCarrier(extraHeaders = staticHeaders :+ forwardOrCreateCorrelationId)
 
-  def updatePropertyChanges(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] =
+  def updatePropertyChanges(bridgeRequest: BridgeJobModel)(using request: Request[?]): Future[HttpResponse] =
     httpClient
       .post(appConfig.updatePropertyChangesUrl)(using hipHeaderCarrier)
       .withBody(Json.toJson(bridgeRequest))

@@ -32,16 +32,17 @@ import play.api.test.Helpers.*
 import play.api.test.{FakeRequest, Helpers}
 import play.api.{Application, inject}
 import uk.gov.hmrc.http.HttpResponse
+import uk.gov.hmrc.ngrnotify.backend.testUtils.TestData
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.controllers.routes
-import uk.gov.hmrc.ngrnotify.model.bridge.BridgeRequest
+import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AnythingElseData, ChangeToUseOfSpace, CredId, PropertyChangesRequest}
 
 import java.time.LocalDate
 import scala.collection.immutable.Seq
 import scala.concurrent.Future
 
-class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach:
+class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach with TestData:
 
   val mockHipConnector: HipConnector = mock[HipConnector]
 
@@ -71,9 +72,14 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         )
       )
 
-      when(mockHipConnector.updatePropertyChanges(any[BridgeRequest])(using any[Request[?]]))
+      when(mockHipConnector.updatePropertyChanges(any[BridgeJobModel])(using any[Request[?]]))
         .thenReturn(
           Future.successful(HttpResponse(OK, ""))
+        )
+
+      when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
+        .thenReturn(
+            Future.successful(HttpResponse(OK, body = Json.toJson(sampleBridgeModel).toString))
         )
 
       val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
@@ -98,9 +104,14 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
           )
         )
 
-        when(mockHipConnector.updatePropertyChanges(any[BridgeRequest])(using any[Request[?]]))
+        when(mockHipConnector.updatePropertyChanges(any[BridgeJobModel])(using any[Request[?]]))
           .thenReturn(
             Future.successful(HttpResponse(statusCode, ""))
+          )
+
+        when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
+          .thenReturn(
+            Future.successful(HttpResponse(OK, body = Json.toJson(sampleBridgeModel).toString))
           )
 
         val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
@@ -113,6 +124,35 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       }
     }
 
+    Seq(INTERNAL_SERVER_ERROR, BAD_REQUEST) foreach { statusCode =>
+      s"return $statusCode for a valid request but Hip returns $statusCode for gerRatePayer endpoint" in {
+        val json = Json.toJson(
+          PropertyChangesRequest(
+            CredId("credId"),
+            LocalDate.of(2023, 1, 1),
+            Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
+            Seq(("airConditioning", "none"), ("securityCamera", "23")),
+            Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
+            Some(AnythingElseData(true, Some("addtional text"))),
+            Seq("uploadId1", "uploadId2")
+          )
+        )
+
+        when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
+          .thenReturn(
+            Future.successful(HttpResponse(statusCode)
+          ))
+
+        val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+          .withJsonBody(json)
+
+        val result: Future[Result] = route(app, request).value
+
+        status(result) mustEqual NOT_FOUND
+
+      }
+    }
+
     "returns BadRequest for an invalid request" in {
       val json = Json.obj(
         "invalidField" -> "invalidValue"
@@ -120,6 +160,11 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
 
       val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
         .withJsonBody(json)
+
+      when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
+        .thenReturn(
+          Future.successful(HttpResponse(OK, body = Json.toJson(sampleBridgeModel).toString))
+        )
 
       val result: Future[Result] = route(app, request).value
 
@@ -139,7 +184,12 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         )
       )
 
-      when(mockHipConnector.updatePropertyChanges(any[BridgeRequest])(using any[Request[?]]))
+      when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
+        .thenReturn(
+          Future.successful(HttpResponse(OK, body = Json.toJson(sampleBridgeModel).toString))
+        )
+
+      when(mockHipConnector.updatePropertyChanges(any[BridgeJobModel])(using any[Request[?]]))
         .thenReturn(
           Future.failed(new Exception("HipConnector failure"))
         )
