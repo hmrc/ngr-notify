@@ -48,14 +48,14 @@ object BridgeJobModel {
   )
 
   case class CodeMeaning(
-    code: Option[String],
-    meaning: Option[String]
+    code: Option[String] = None,
+    meaning: Option[String] = None
   )
 
   case class Data(
-    foreign_ids: Seq[String],
-    foreign_names: Seq[String],
-    foreign_labels: Seq[String],
+    foreign_ids: Seq[String] = Seq.empty,
+    foreign_names: Seq[String] = Seq.empty,
+    foreign_labels: Seq[String] = Seq.empty,
     names: Option[Names] = None,
     communications: Option[Communications] = None
   )
@@ -80,8 +80,8 @@ object BridgeJobModel {
   case class Protodata() // empty placeholder
 
   case class Metadata(
-    sending: MetadataStage,
-    receiving: MetadataStage
+    sending: MetadataStage = MetadataStage(),
+    receiving: MetadataStage = MetadataStage()
   )
 
   case class MetadataStage(
@@ -128,21 +128,21 @@ object BridgeJobModel {
   )
 
   case class JobItem(
-    id: Option[String],
-    idx: Option[String],
-    name: Option[String],
-    label: Option[String],
-    description: Option[String],
-    origination: Option[String],
-    termination: Option[String],
-    category: CodeMeaning,
-    `type`: CodeMeaning,
-    `class`: CodeMeaning,
-    data: Data,
-    protodata: Seq[Protodata],
-    metadata: Metadata,
-    compartments: Compartments,
-    items: Option[Seq[JobItem]] = Some(Seq.empty)
+    id: Option[String] = None,
+    idx: Option[String] = None,
+    name: Option[String] = None,
+    label: Option[String] = None,
+    description: Option[String] = None,
+    origination: Option[String] = None,
+    termination: Option[String] = None,
+    category: CodeMeaning = CodeMeaning(),
+    `type`: CodeMeaning = CodeMeaning(),
+    `class`: CodeMeaning = CodeMeaning(),
+    data: Data = Data(),
+    protodata: Seq[Protodata] = Seq.empty,
+    metadata: Metadata = Metadata(),
+    compartments: Compartments = Compartments(),
+    items: Option[Seq[JobItem]] = None
   )
 
   // ---------- Play JSON Implicits ----------

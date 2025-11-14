@@ -151,6 +151,33 @@ class HipConnectorSpec extends AnyWordAppSpec {
     }
   }
 
+  "getProperties" must {
+    "return a successful response" in {
+      val httpMock              = httpGetMock(OK)
+      val connector             = HipConnector(appConfig, httpMock)
+      given Request[AnyContent] = FakeRequest()
+
+      val response = connector.getProperties(CredId("ID_123"), "ASSESSMENT_456").futureValue
+      response.status shouldBe OK
+
+      verify(httpMock)
+        .get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/properties?id=ID_123&assessmentId=ASSESSMENT_456"))(using any[HeaderCarrier])
+    }
+
+    for ((status, expected) <- Seq(404 -> "not found", 400 -> "bad request", 401 -> "unauthorized", 500 -> "internal server error"))
+      s"return a $expected response" in {
+        val httpMock              = httpGetMock(status)
+        val connector             = HipConnector(appConfig, httpMock)
+        given Request[AnyContent] = FakeRequest()
+
+        val response = connector.getProperties(CredId("ID_123"), "ASSESSMENT_456").futureValue
+        response.status shouldBe status
+
+        verify(httpMock)
+          .get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/properties?id=ID_123&assessmentId=ASSESSMENT_456"))(using any[HeaderCarrier])
+      }
+  }
+
   "callHelloWorld()" must {
     "return a successful JsValue response" in {
       val httpMock  = httpGetMock(OK)

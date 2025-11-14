@@ -38,22 +38,14 @@ class PhysicalController @Inject() (
   with JsonSupport
   with Logging {
 
-  private def getRatepayer(credId: CredId)(implicit request: Request[JsValue]): Future[Option[BridgeJobModel]] =
-    hipConnector.getRatepayer(credId)
-      .map { response =>
-        response.status match {
-          case OK =>
-            response.json.validate[BridgeJobModel].asOpt
-          case _  =>
-            None
-        }
-      }
+  private def getProperties(credId: CredId, assessmentId: String)(implicit request: Request[JsValue]): Future[Option[BridgeJobModel]] =
+    hipConnector.getProperties(credId, assessmentId)
+      .map(response => if (response.status == OK) response.json.validate[BridgeJobModel].asOpt else None)
 
-  def updatePropertyChanges(): Action[JsValue] = Action.async(parse.json) { implicit request =>
+  def updatePropertyChanges(assessmentId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     request.body.validate[PropertyChangesRequest] match {
       case JsSuccess(propertyChanges, _) =>
-
-        getRatepayer(propertyChanges.credId) flatMap {
+        getProperties(propertyChanges.credId, assessmentId) flatMap {
           case Some(ratePayerJob) =>
             val bridgeRequest = toBridgeRequest(ratePayerJob, propertyChanges)
             hipConnector.updatePropertyChanges(bridgeRequest).map { response =>
@@ -77,38 +69,18 @@ class PhysicalController @Inject() (
   }
 
   private def toBridgeRequest(ratePayerJobModel: BridgeJobModel, propertyChanges: PropertyChangesRequest): BridgeJobModel = {
-    val description: String = buildDescription(propertyChanges)
+    val jobItem = ratePayerJobModel.job.compartments.products.headOption
+      .map(_.copy(description = Some(propertyChanges.toString)))
+      .getOrElse(JobItem(description = Some(propertyChanges.toString)))
 
-    println("Description: " + description)
-
-    val toBridgeJob = JobItem(
-      id = None,
-      idx = Some("?"),
-      name = Some("physical"),
-      label = Some("Physical Job"),
-      description = Some(description),
-      origination = None,
-      termination = None,
-      category = BridgeJobModel.CodeMeaning(None, None),
-      `type` = BridgeJobModel.CodeMeaning(None, None),
-      `class` = BridgeJobModel.CodeMeaning(None, None),
-      data = BridgeJobModel.Data(Nil, Nil, Nil),
-      protodata = Seq.empty,
-      metadata = BridgeJobModel.Metadata(MetadataStage(), MetadataStage()),
-      compartments = BridgeJobModel.Compartments(),
-      items = None
+    ratePayerJobModel.copy(
+      job = ratePayerJobModel.job.copy(
+        compartments = ratePayerJobModel.job.compartments.copy(
+          products = Seq(jobItem)
+        )
+      )
     )
 
-    val updatedProperties   = ratePayerJobModel.job.compartments.properties :+ toBridgeJob
-    val updatedCompartments = ratePayerJobModel.job.compartments.copy(properties = updatedProperties)
-    val updatedJob          = ratePayerJobModel.job.copy(compartments = updatedCompartments)
-    ratePayerJobModel.copy(job = updatedJob)
   }
 
-   private def buildDescription(propertyChanges: PropertyChangesRequest): String = {
-    propertyChanges.productElementNames
-      .zip(propertyChanges.productIterator)
-      .map { case (key, value) => s"$key - $value" }
-      .mkString(":")
-  }
 }
