@@ -23,9 +23,10 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData.testData
 import uk.gov.hmrc.ngrnotify.model.response.bridge.Data
 
 class DataSpec extends AnyWordSpec with Matchers {
+
   private val dataJson = Json.obj(
-    "foreign_ids" -> Json.arr("1", "2", "3"),
-    "foreign_names" -> Json.arr("Bob", "Brian","Bill"),
+    "foreign_ids"    -> Json.arr("1", "2", "3"),
+    "foreign_names"  -> Json.arr("Bob", "Brian", "Bill"),
     "foreign_labels" -> Json.arr("Label1", "Label2", "Label3")
   )
 
@@ -43,10 +44,9 @@ class DataSpec extends AnyWordSpec with Matchers {
 
     "round-trip JSON serialization and deserialization" in {
       val original = dataJson
-      val json = Json.toJson(original)
-      val parsed = json.as[Data]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Data]
       parsed shouldBe testData
     }
   }
 }
-

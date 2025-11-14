@@ -25,7 +25,7 @@ class BridgeJobModelBodySpec extends AnyWordAppSpec {
 
     "be serialised from JSON example file" in {
       val postRatepayerJson = Json.parse(testResourceContent("post-ratepayer-example.json"))
-      val postRatepayer = postRatepayerJson.as[BridgeJobModel]
+      val postRatepayer     = postRatepayerJson.as[BridgeJobModel]
 
       // round-trip should be idempotent
       Json.toJson(postRatepayer).as[BridgeJobModel] shouldBe postRatepayer
@@ -33,7 +33,7 @@ class BridgeJobModelBodySpec extends AnyWordAppSpec {
 
     "be serialised from get-ratepayer JSON example file" in {
       val postRatepayerJson = Json.parse(testResourceContent("get-ratepayer-response.json"))
-      val postRatepayer = postRatepayerJson.as[BridgeJobModel]
+      val postRatepayer     = postRatepayerJson.as[BridgeJobModel]
 
       // round-trip should be idempotent
       Json.toJson(postRatepayer).as[BridgeJobModel] shouldBe postRatepayer
@@ -70,7 +70,7 @@ class BridgeJobModelBodySpec extends AnyWordAppSpec {
         job = minimalJob
       )
 
-      val json = Json.toJson(postRatepayer)
+      val json     = Json.toJson(postRatepayer)
       val fromJson = json.as[BridgeJobModel]
 
       fromJson shouldBe postRatepayer
@@ -102,7 +102,7 @@ class BridgeJobModelBodySpec extends AnyWordAppSpec {
         )
       )
 
-      val json = Json.toJson(data)
+      val json     = Json.toJson(data)
       val fromJson = json.as[BridgeJobModel.Data]
 
       fromJson shouldBe data
@@ -120,7 +120,7 @@ class BridgeJobModelBodySpec extends AnyWordAppSpec {
         receiving = BridgeJobModel.MetadataStage()
       )
 
-      val json = Json.toJson(metadata)
+      val json     = Json.toJson(metadata)
       val fromJson = json.as[BridgeJobModel.Metadata]
 
       fromJson shouldBe metadata

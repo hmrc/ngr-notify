@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
-import play.api.libs.json.{Json, Format}
+import play.api.libs.json.{Format, Json}
 
 final case class Name(value: String)
 

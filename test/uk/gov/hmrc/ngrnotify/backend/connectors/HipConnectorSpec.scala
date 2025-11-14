@@ -28,7 +28,9 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.HipTestData.testHipHeaders
 import uk.gov.hmrc.ngrnotify.backend.testUtils.RequestBuilderStub
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
-import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeRequest, Compartments, Job}
+import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel.MetadataStage
+import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeJobModel, BridgeRequest, Compartments, Job}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL
@@ -81,13 +83,28 @@ class HipConnectorSpec extends AnyWordAppSpec {
       val httpMock              = httpPostMock(ACCEPTED)
       val connector             = HipConnector(appConfig, httpMock)
       given Request[AnyContent] = FakeRequest()
-      val bridgeRequest         = BridgeRequest(
-        Job(
-          id = None,
-          idx = "1",
-          name = "Update Property Changes",
-          compartments = Compartments()
-        )
+
+      val toBridgeJob = BridgeJobModel.Job(
+        id = None,
+        idx = Some("?"),
+        name = Some("physical"),
+        label = Some("Physical Job"),
+        description = Some("Default physical job item"),
+        origination = None,
+        termination = None,
+        category = BridgeJobModel.CodeMeaning(None, None),
+        `type` = BridgeJobModel.CodeMeaning(None, None),
+        `class` = BridgeJobModel.CodeMeaning(None, None),
+        data = BridgeJobModel.Data(Nil, Nil, Nil),
+        protodata = Seq.empty,
+        metadata = BridgeJobModel.Metadata(MetadataStage(), MetadataStage()),
+        compartments = BridgeJobModel.Compartments(),
+        items = None
+      )
+
+      val bridgeRequest = BridgeJobModel(
+        $schema = "http://example.com/schema",
+        job = toBridgeJob
       )
 
       val response = connector.updatePropertyChanges(bridgeRequest).futureValue
@@ -97,7 +114,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
         .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/physical/"))(using any[HeaderCarrier])
     }
   }
-  
+
   "submitPropertyLinkingChanges" must {
     "return a successful response" in {
       val httpMock              = httpPostMock(ACCEPTED)
@@ -126,12 +143,39 @@ class HipConnectorSpec extends AnyWordAppSpec {
       val connector             = HipConnector(appConfig, httpMock)
       given Request[AnyContent] = FakeRequest()
 
-      val response = connector.getRatepayer("ID_123").futureValue
+      val response = connector.getRatepayer(CredId("ID_123")).futureValue
       response.status shouldBe OK
 
       verify(httpMock)
         .get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer/ID_123"))(using any[HeaderCarrier])
     }
+  }
+
+  "getProperties" must {
+    "return a successful response" in {
+      val httpMock              = httpGetMock(OK)
+      val connector             = HipConnector(appConfig, httpMock)
+      given Request[AnyContent] = FakeRequest()
+
+      val response = connector.getProperties(CredId("ID_123"), "ASSESSMENT_456").futureValue
+      response.status shouldBe OK
+
+      verify(httpMock)
+        .get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/properties?id=ID_123&assessmentId=ASSESSMENT_456"))(using any[HeaderCarrier])
+    }
+
+    for ((status, expected) <- Seq(404 -> "not found", 400 -> "bad request", 401 -> "unauthorized", 500 -> "internal server error"))
+      s"return a $expected response" in {
+        val httpMock              = httpGetMock(status)
+        val connector             = HipConnector(appConfig, httpMock)
+        given Request[AnyContent] = FakeRequest()
+
+        val response = connector.getProperties(CredId("ID_123"), "ASSESSMENT_456").futureValue
+        response.status shouldBe status
+
+        verify(httpMock)
+          .get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/properties?id=ID_123&assessmentId=ASSESSMENT_456"))(using any[HeaderCarrier])
+      }
   }
 
   "callHelloWorld()" must {

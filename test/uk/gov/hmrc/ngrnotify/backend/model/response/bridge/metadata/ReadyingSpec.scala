@@ -31,17 +31,16 @@ class ReadyingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json     = Json.obj()
       val readying = json.as[Readying]
       readying shouldBe Readying()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Readying]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Readying]
       parsed shouldBe Readying()
     }
   }
 }
-

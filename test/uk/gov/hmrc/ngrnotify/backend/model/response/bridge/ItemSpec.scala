@@ -38,10 +38,9 @@ class ItemSpec extends AnyWordSpec with Matchers {
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Item]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Item]
       parsed shouldBe Item()
     }
   }
 }
-
