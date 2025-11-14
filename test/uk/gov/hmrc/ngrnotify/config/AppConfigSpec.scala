@@ -19,6 +19,7 @@ package uk.gov.hmrc.ngrnotify.config
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 
 class AppConfigSpec extends AnyFreeSpec with GuiceOneServerPerSuite {
   val config: AppConfig = app.injector.instanceOf[AppConfig]
@@ -28,6 +29,11 @@ class AppConfigSpec extends AnyFreeSpec with GuiceOneServerPerSuite {
       config.retryWindowHours mustBe 1
       config.propertyLinkingUrl.getPath mustBe "/ngr-stub/hip/job/property"
       config.registerRatepayerUrl.getPath mustBe "/ngr-stub/hip/job/ratepayer"
+      config.updatePropertyChangesUrl.getPath mustBe "/ngr-stub/hip/job/physical/"
+      config.getPropertiesUrl(CredId("Id"), "assessmentId").toString mustBe
+        s"http://localhost:1501/ngr-stub/hip/job/properties?id=Id&assessmentId=assessmentId"
+      config.hipClientId mustBe "CLIENT_ID"
+      config.hipClientSecret mustBe "CLIENT_SECRET"
       config.updatePropertyChangesUrl.getPath mustBe "/ngr-stub/hip/job/physical"
       config.submissionExportEnabled mustBe true
     }
