@@ -38,12 +38,21 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   private val hipBaseUrl                = servicesConfig.baseUrl("hip")
   private val registerRatepayerPath     = servicesConfig.getConfString("hip.registerRatepayerPath", "/job/ratepayer")
   private val getRatepayerPath          = servicesConfig.getConfString("hip.getRatepayerPath", "/job/ratepayer/")
+  private val propertiesPath            = servicesConfig.getConfString("hip.propertiesPath", "/job/properties")
   private val updatePropertyChangesPath = servicesConfig.getConfString("hip.updatePropertyChangesPath", "/job/physical")
   private val propertyLinkingPath       = servicesConfig.getConfString("hip.propertyLinkingPath", "/job/property")
   val registerRatepayerUrl: URL         = url"${hipBaseUrl + registerRatepayerPath}"
   val updatePropertyChangesUrl: URL     = url"${hipBaseUrl + updatePropertyChangesPath}"
   val propertyLinkingUrl: URL           = url"${hipBaseUrl + propertyLinkingPath}"
   def getRatepayerUrl(id: CredId): URL  = url"${hipBaseUrl + getRatepayerPath + id.toString}"
+
+  def getPropertiesUrl(
+    id: CredId,
+    assessmentId: String
+  ): URL = {
+    val url = s"$hipBaseUrl$propertiesPath?id=${id.toString}&assessmentId=$assessmentId"
+    url"$url"
+  }
 
   val hipClientId: String     = servicesConfig.getConfString("hip.clientId", "CLIENT_ID")
   val hipClientSecret: String = servicesConfig.getConfString("hip.clientSecret", "CLIENT_SECRET")

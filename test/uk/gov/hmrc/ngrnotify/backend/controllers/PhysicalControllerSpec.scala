@@ -44,7 +44,8 @@ import scala.concurrent.Future
 
 class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach with TestData:
 
-  val mockHipConnector: HipConnector = mock[HipConnector]
+  private val mockHipConnector: HipConnector = mock[HipConnector]
+  private val assessmentId                   = "assessmentId123"
 
   override def beforeEach(): Unit = {
     reset(mockHipConnector)
@@ -77,12 +78,12 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
           Future.successful(HttpResponse(OK, ""))
         )
 
-      when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
+      when(mockHipConnector.getProperties(any[CredId], any[String])(using any[Request[?]]))
         .thenReturn(
           Future.successful(HttpResponse(OK, body = Json.toJson(sampleBridgeModel).toString))
         )
 
-      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId).url)
         .withJsonBody(json)
 
       val result: Future[Result] = route(app, request).value
@@ -109,12 +110,12 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
             Future.successful(HttpResponse(statusCode, ""))
           )
 
-        when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
+        when(mockHipConnector.getProperties(any[CredId], any[String])(using any[Request[?]]))
           .thenReturn(
             Future.successful(HttpResponse(OK, body = Json.toJson(sampleBridgeModel).toString))
           )
 
-        val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+        val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId).url)
           .withJsonBody(json)
 
         val result: Future[Result] = route(app, request).value
@@ -138,12 +139,12 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
           )
         )
 
-        when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
+        when(mockHipConnector.getProperties(any[CredId], any[String])(using any[Request[?]]))
           .thenReturn(
             Future.successful(HttpResponse(statusCode))
           )
 
-        val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+        val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId).url)
           .withJsonBody(json)
 
         val result: Future[Result] = route(app, request).value
@@ -158,10 +159,10 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         "invalidField" -> "invalidValue"
       )
 
-      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId).url)
         .withJsonBody(json)
 
-      when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
+      when(mockHipConnector.getProperties(any[CredId], any[String])(using any[Request[?]]))
         .thenReturn(
           Future.successful(HttpResponse(OK, body = Json.toJson(sampleBridgeModel).toString))
         )
@@ -184,7 +185,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         )
       )
 
-      when(mockHipConnector.getRatepayer(any[CredId])(using any[Request[?]]))
+      when(mockHipConnector.getProperties(any[CredId], any[String])(using any[Request[?]]))
         .thenReturn(
           Future.successful(HttpResponse(OK, body = Json.toJson(sampleBridgeModel).toString))
         )
@@ -194,7 +195,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
           Future.failed(new Exception("HipConnector failure"))
         )
 
-      val request                = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+      val request                = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId).url)
         .withJsonBody(json)
       val result: Future[Result] = route(app, request).value
       status(result) mustEqual INTERNAL_SERVER_ERROR
