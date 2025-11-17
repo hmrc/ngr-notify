@@ -57,26 +57,16 @@ class RALDControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSu
       )
       .build()
 
-  "PhysicalController" - {
-    ".updatePropertyChanges return 202" in {
-      val json = Json.toJson(
-        PropertyChangesRequest(
-          CredId("credId"),
-          LocalDate.of(2023, 1, 1),
-          Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
-          Seq(("airConditioning", "none"), ("securityCamera", "23")),
-          Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
-          Some(AnythingElseData(true, Some("addtional text"))),
-          Seq("uploadId1", "uploadId2")
-        )
-      )
+  "RALDController" - {
+    ".submitRALDChanges return 202" in {
+      val json = Json.toJson()
 
-      when(mockHipConnector.updatePropertyChanges(any[BridgeRequest])(using any[Request[?]]))
+      when(mockHipConnector.submitRALDChanges(any[BridgeRequest])(using any[Request[?]]))
         .thenReturn(
           Future.successful(HttpResponse(OK, ""))
         )
       
-      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+      val request = FakeRequest(POST, routes.RALDController.submitRALDChanges().url)
         .withJsonBody(json)
 
       val result: Future[Result] = route(app, request).value
@@ -86,24 +76,14 @@ class RALDControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSu
 
     Seq(INTERNAL_SERVER_ERROR, BAD_REQUEST) foreach { statusCode =>
       s"return $statusCode for a valid request but Hip returns $statusCode" in {
-        val json = Json.toJson(
-          PropertyChangesRequest(
-            CredId("credId"),
-            LocalDate.of(2023, 1, 1),
-            Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
-            Seq(("airConditioning", "none"), ("securityCamera", "23")),
-            Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
-            Some(AnythingElseData(true, Some("addtional text"))),
-            Seq("uploadId1", "uploadId2")
-          )
-        )
+        val json = Json.toJson()
 
-        when(mockHipConnector.updatePropertyChanges(any[BridgeRequest])(using any[Request[?]]))
+        when(mockHipConnector.submitRALDChanges(any[BridgeRequest])(using any[Request[?]]))
           .thenReturn(
             Future.successful(HttpResponse(statusCode, ""))
           )
 
-        val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+        val request = FakeRequest(POST, routes.RALDController.submitRALDChanges().url)
           .withJsonBody(json)
 
         val result: Future[Result] = route(app, request).value
@@ -118,7 +98,7 @@ class RALDControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSu
         "invalidField" -> "invalidValue"
       )
 
-      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+      val request = FakeRequest(POST, routes.RALDController.submitRALDChanges().url)
         .withJsonBody(json)
 
       val result: Future[Result] = route(app, request).value
@@ -127,23 +107,14 @@ class RALDControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSu
     }
 
     "returns InternalServerError when HipConnector fails" in {
-      val json = Json.toJson(
-        PropertyChangesRequest(
-          CredId("credId"),
-          LocalDate.of(2023, 1, 1),
-          Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
-          Seq(("airConditioning", "none"), ("securityCamera", "23")),
-          Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
-          Some(AnythingElseData(true, Some("addtional text"))),
-          Seq("uploadId1", "uploadId2")
-        ))
+      val json = Json.toJson()
 
-      when(mockHipConnector.updatePropertyChanges(any[BridgeRequest])(using any[Request[?]]))
+      when(mockHipConnector.submitRALDChanges(any[BridgeRequest])(using any[Request[?]]))
         .thenReturn(
           Future.failed(new Exception("HipConnector failure"))
         )
 
-      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+      val request = FakeRequest(POST, routes.RALDController.submitRALDChanges().url)
         .withJsonBody(json)
       val result: Future[Result] = route(app, request).value
       status(result) mustEqual INTERNAL_SERVER_ERROR

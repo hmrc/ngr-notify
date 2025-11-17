@@ -33,15 +33,15 @@ class RALDController @Inject()(
                                      cc: ControllerComponents
                                    )(implicit ec: ExecutionContext) extends BackendController(cc) with JsonSupport with Logging {
   
-  def updatePropertyChanges(): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    request.body.validate[PropertyChangesRequest] match {
-      case JsSuccess(propertyChanges, _) =>
-        logger.info(s"Request:\n$propertyChanges")
+  def submitRALDChanges(): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    request.body.validate[RALDChangesRequest] match {
+      case JsSuccess(raldChanges, _) =>
+        logger.info(s"Request:\n$raldChanges")
 
-        val bridgeRequest = toBridgeRequest(propertyChanges)
+        val bridgeRequest = toBridgeRequest(raldChanges)
         logger.info(s"BridgeRequest:\n$bridgeRequest")
 
-        hipConnector.updatePropertyChanges(bridgeRequest).map { response =>
+        hipConnector.submitRALDChanges(bridgeRequest).map { response =>
             response.status match {
               case 200 | 201 | 202 => Accepted(Json.toJsObject(PropertyChangesResponse()))
               case 400             => BadRequest(Json.toJsObject(PropertyChangesResponse(Some(response.body))))
@@ -56,12 +56,12 @@ class RALDController @Inject()(
   
   }
 
-  private def toBridgeRequest(propertyChanges: PropertyChangesRequest): BridgeRequest =
+  private def toBridgeRequest(propertyChanges: RALDChangesRequest): BridgeRequest =
     BridgeRequest(
       Job(
         id = None,
         idx = "?",
-        name = "physical",
+        name = "rald",
         compartments = Compartments(
           //TODO add actual mappings when spec becomes available
 

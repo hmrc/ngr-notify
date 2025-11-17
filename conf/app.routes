@@ -19,4 +19,4 @@ POST    /send-email/:emailTemplateId            uk.gov.hmrc.ngrnotify.controller
 POST    /physical                               uk.gov.hmrc.ngrnotify.controllers.PhysicalController.updatePropertyChanges()
 
 POST    /property                               uk.gov.hmrc.ngrnotify.controllers.PropertyController.submit()
-
+POST    /rald                                   uk.gov.hmrc.ngrnotify.controllers.RALDController.submitRALDChanges()

@@ -70,6 +70,11 @@ class HipConnector @Inject() (
       .withBody(Json.toJson(bridgeRequest))
       .execute[HttpResponse]
 
+  def submitRALDChanges(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] = httpClient
+    .post(appConfig.raldUrl)(using hipHeaderCarrier)
+    .withBody(Json.toJson(bridgeRequest))
+    .execute[HttpResponse]
+
   def registerRatepayer(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] =
     httpClient
       .post(appConfig.registerRatepayerUrl)(using hipHeaderCarrier)
