@@ -20,6 +20,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.ngrnotify.connectors.AllowedCredentialsConnector
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
@@ -34,7 +35,7 @@ class AllowedCredentialsController @Inject() (
   with Logging
   with JsonSupport:
 
-  def isAllowedInPrivateBeta(credId: String): Action[AnyContent] = Action.async { implicit request =>
+  def isAllowedInPrivateBeta(credId: CredId): Action[AnyContent] = Action.async { implicit request =>
     connector.isAllowed(credId)
       .map { allowed =>
         logger.info(s"Private beta check for credId: $credId - allowed: $allowed")

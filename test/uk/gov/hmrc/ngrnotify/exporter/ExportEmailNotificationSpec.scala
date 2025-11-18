@@ -51,7 +51,6 @@ class ExportEmailNotificationSpec extends FixtureAsyncFlatSpec with MockitoExten
 
     // Exercise the method under test
     subjectUnderTest.exportNow(size = 100).map { _ =>
-
       // Verify that the notification was simply deleted (and never sent)
       verify(notificationRepo).getNotificationsBatch(100)
       verify(notificationRepo).delete(notification._id)
@@ -80,7 +79,6 @@ class ExportEmailNotificationSpec extends FixtureAsyncFlatSpec with MockitoExten
 
     // Exercise the method under test
     subjectUnderTest.exportNow(size = 100).map { _ =>
-
       // Verify that the notification was actually sent (and thereafter deleted from the queue)
       verify(emailConnector).sendEmailNotification(notification)
       verify(notificationRepo).delete(notification._id)
@@ -107,7 +105,6 @@ class ExportEmailNotificationSpec extends FixtureAsyncFlatSpec with MockitoExten
 
     // Exercise the method under test
     subjectUnderTest.exportNow(size = 100).map { _ =>
-
       // Verify that the notification was actually sent (but never deleted from the queue)
       verify(callbackConnector).callbackOnFailure(
         notification,
@@ -139,7 +136,6 @@ class ExportEmailNotificationSpec extends FixtureAsyncFlatSpec with MockitoExten
 
     // Exercise the method under test
     subjectUnderTest.exportNow(size = 100).map { _ =>
-
       // Verify that the notification was actually sent (but never deleted from the queue)
       verify(callbackConnector).callbackOnFailure(
         notification,

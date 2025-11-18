@@ -32,15 +32,15 @@ class StoringSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = storingJson
+      val json    = storingJson
       val storing = json.as[Storing]
       storing shouldBe testStoring
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = storingJson
-      val json = Json.toJson(original)
-      val parsed = json.as[Storing]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Storing]
       parsed shouldBe testStoring
     }
   }
@@ -53,17 +53,16 @@ class StoringSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json      = Json.obj()
       val inserting = json.as[Inserting]
       inserting shouldBe Inserting()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Inserting]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Inserting]
       parsed shouldBe Inserting()
     }
   }
 }
-

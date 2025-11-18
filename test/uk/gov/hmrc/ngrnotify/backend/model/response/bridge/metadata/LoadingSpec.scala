@@ -23,12 +23,14 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData.testLoading
 import uk.gov.hmrc.ngrnotify.model.response.bridge.metadata.{Encrypting, Loading, LoadingSending, Signing}
 
 class LoadingSpec extends AnyWordSpec with Matchers {
+
   private val loadingJson: JsObject = Json.obj(
-    "assuring" -> Json.obj(),
-    "readying" -> Json.obj(),
-    "signing" -> Json.obj(),
+    "assuring"   -> Json.obj(),
+    "readying"   -> Json.obj(),
+    "signing"    -> Json.obj(),
     "encrypting" -> Json.obj(),
-    "sending" -> Json.obj())
+    "sending"    -> Json.obj()
+  )
 
   "Loading" should {
 
@@ -38,15 +40,15 @@ class LoadingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = loadingJson
+      val json    = loadingJson
       val loading = json.as[Loading]
       loading shouldBe testLoading
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = loadingJson
-      val json = Json.toJson(original)
-      val parsed = json.as[Loading]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Loading]
       parsed shouldBe testLoading
     }
   }
@@ -59,15 +61,15 @@ class LoadingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json    = Json.obj()
       val signing = json.as[Signing]
       signing shouldBe Signing()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Signing]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Signing]
       parsed shouldBe Signing()
     }
   }
@@ -79,15 +81,15 @@ class LoadingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json       = Json.obj()
       val encrypting = json.as[Encrypting]
       encrypting shouldBe Encrypting()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Encrypting]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Encrypting]
       parsed shouldBe Encrypting()
     }
   }
@@ -99,15 +101,15 @@ class LoadingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json           = Json.obj()
       val loadingSending = json.as[LoadingSending]
       loadingSending shouldBe LoadingSending()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[LoadingSending]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[LoadingSending]
       parsed shouldBe LoadingSending()
     }
   }

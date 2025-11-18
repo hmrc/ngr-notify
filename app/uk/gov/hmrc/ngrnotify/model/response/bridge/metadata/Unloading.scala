@@ -18,12 +18,13 @@ package uk.gov.hmrc.ngrnotify.model.response.bridge.metadata
 
 import play.api.libs.json.{Json, OFormat}
 
-case class Unloading(assuring: Assuring,
-                     readying: Readying,
-                     verifying: Verifying,
-                     decrypting: Decrypting,
-                     receiving: UnloadingReceiving
-                    )
+case class Unloading(
+  assuring: Assuring,
+  readying: Readying,
+  verifying: Verifying,
+  decrypting: Decrypting,
+  receiving: UnloadingReceiving
+)
 
 object Unloading {
   implicit val format: OFormat[Unloading] = Json.format[Unloading]

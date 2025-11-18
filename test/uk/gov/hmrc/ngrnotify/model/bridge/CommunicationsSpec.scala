@@ -22,15 +22,15 @@ import play.api.libs.json.Json
 
 class CommunicationsSpec extends AnyFreeSpec with Matchers {
   "Communications" - {
-   "serialization and deserialization" in {
-     val communications = Communications(
-       postalAddress = Some("123 Main St, Anytown, AT 12345"),
-       telephoneNumber = Some("123-456-7890"),
-       email = Some("test@test.com")
-     )
-     val json = Json.toJson(communications)
-     val deserialized = Json.fromJson[Communications](json).get
-     deserialized mustBe communications
-   }
+    "serialization and deserialization" in {
+      val communications = Communications(
+        postalAddress = Some("123 Main St, Anytown, AT 12345"),
+        telephoneNumber = Some("123-456-7890"),
+        email = Some("test@test.com")
+      )
+      val json           = Json.toJson(communications)
+      val deserialized   = Json.fromJson[Communications](json).get
+      deserialized mustBe communications
+    }
   }
 }

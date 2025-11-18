@@ -24,7 +24,8 @@ import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 import uk.gov.hmrc.ngrnotify.config.AppConfig
-import uk.gov.hmrc.ngrnotify.model.bridge.BridgeRequest
+import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeJobModel, BridgeRequest}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.ngrnotify.services.HipService.buildHipHeaderCarrier
 import uk.gov.hmrc.ngrnotify.utils.AuthHeaderBuilder
 
@@ -59,16 +60,16 @@ class HipConnector @Inject() (
   private def hipHeaderCarrier(using request: Request[?]): HeaderCarrier =
     HeaderCarrier(extraHeaders = staticHeaders :+ forwardOrCreateCorrelationId)
 
-  def updatePropertyChanges(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] =
+  def updatePropertyChanges(bridgeRequest: BridgeJobModel)(using request: Request[?]): Future[HttpResponse] =
     httpClient
       .post(appConfig.updatePropertyChangesUrl)(using hipHeaderCarrier)
       .withBody(Json.toJson(bridgeRequest))
       .execute[HttpResponse]
 
   def submitPropertyLinkingChanges(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] = httpClient
-      .post(appConfig.propertyLinkingUrl)(using hipHeaderCarrier)
-      .withBody(Json.toJson(bridgeRequest))
-      .execute[HttpResponse]
+    .post(appConfig.propertyLinkingUrl)(using hipHeaderCarrier)
+    .withBody(Json.toJson(bridgeRequest))
+    .execute[HttpResponse]
 
   def registerRatepayer(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] =
     httpClient
@@ -76,14 +77,19 @@ class HipConnector @Inject() (
       .withBody(Json.toJson(bridgeRequest))
       .execute[HttpResponse]
 
-  def getRatepayer(id: String)(using request: Request[?]): Future[HttpResponse] =
+  def getRatepayer(credId: CredId)(using request: Request[?]): Future[HttpResponse] =
     httpClient
-      .get(appConfig.getRatepayerUrl(id))(using hipHeaderCarrier)
+      .get(appConfig.getRatepayerUrl(credId))(using hipHeaderCarrier)
       .execute[HttpResponse]
 
   def getRatepayerStatus(id: String)(using request: Request[?]): Future[HttpResponse] =
     httpClient
       .get(appConfig.getRatepayerStatusUrl(id))(using hipHeaderCarrier)
+      .execute[HttpResponse]
+
+  def getProperties(credId: CredId, assessmentId: String)(using request: Request[?]): Future[HttpResponse] =
+    httpClient
+      .get(appConfig.getPropertiesUrl(credId, assessmentId))(using hipHeaderCarrier)
       .execute[HttpResponse]
 
   def callHelloWorld(headers: Headers): Future[HttpResponse] = {

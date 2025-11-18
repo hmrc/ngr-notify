@@ -17,24 +17,28 @@
 package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers
-import play.api.libs.json.Json
+import org.scalatest.matchers.must.Matchers.mustBe
 
-class VMVPropertiesSpec extends AnyFreeSpec with Matchers {
-
-  "VMVProperties JSON format" - {
-    "serialize and deserialize correctly" in {
-      val property      = VMVProperty(
-        uarn = 123456789L,
-        addressFull = "123 Test Street",
-        localAuthorityCode = "LA123",
-        localAuthorityReference = "REF456",
-        valuations = List()
+class AnythingElseDataSpec extends AnyFreeSpec {
+  "AnythingElseData" - {
+    "toString should format correctly" in {
+      val anythingElseData = AnythingElseData(
+        value = true,
+        text = Some("additional text")
       )
-      val vmvProperties = VMVProperties(total = 1, properties = List(property))
 
-      val json = Json.toJson(vmvProperties)
-      json.as[VMVProperties] mustBe vmvProperties
+      val toStringOutput = anythingElseData.toString
+      toStringOutput mustBe "value: true - text: additional text"
+    }
+
+    "toString should handle None additionalInfo" in {
+      val anythingElseData = AnythingElseData(
+        value = false,
+        text = None
+      )
+
+      val toStringOutput = anythingElseData.toString
+      toStringOutput mustBe "value: false - text: No additional information provided"
     }
   }
 }
