@@ -16,23 +16,43 @@
 
 package uk.gov.hmrc.ngrnotify.controllers
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.ngrnotify.model.RatepayerStatus
-import uk.gov.hmrc.ngrnotify.model.response.RatepayerStatusResponse
-import uk.gov.hmrc.ngrnotify.services.StatusService
+import uk.gov.hmrc.ngrnotify.model.{ErrorCode, RatepayerStatus}
+import uk.gov.hmrc.ngrnotify.model.response.{ApiFailure, RatepayerStatusResponse}
+import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 
 @Singleton()
-class StatusController @Inject() (cc: ControllerComponents)() extends BackendController(cc) {
+class StatusController @Inject() (cc: ControllerComponents,
+                                  hipConnector: HipConnector)(implicit ec: ExecutionContext) extends BackendController(cc) {
 
-  def ratepayerStatus(id: String): Action[AnyContent] = Action.async { implicit request =>
-    val ratepayerStatus: RatepayerStatus                 = StatusService.checkRatepayerStatus(id)
-    val ratepayerStatusResponse: RatepayerStatusResponse = StatusService.buildRatepayerStatusResponse(ratepayerStatus)
+  def buildFailureResponse(code: ErrorCode, reason: String): JsValue =
+    Json.toJson(Seq(ApiFailure(code, reason)))
 
-    Future.successful(Ok(Json.toJson(ratepayerStatusResponse)))
+  def getRatepayerStatus(id: String): Action[AnyContent] = Action.async { implicit request =>
+    hipConnector.getRatepayerStatus(id)
+      .map {
+        response => response.status match {
+          case 200 =>  response.json.validate[RatepayerStatusResponse] match {
+            case JsSuccess(value, path) => Ok(
+              Json.toJsObject(
+                RatepayerStatusResponse(
+                  value.activeRatepayerPersonaExists,
+                  value.activeRatepayerPersonaExists,
+                  value.activePropertyLinkCount
+                )
+              )
+            )
+            case JsError(errors) => BadRequest
+          }
+          case status => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+        }
+      }
+      .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
   }
 }

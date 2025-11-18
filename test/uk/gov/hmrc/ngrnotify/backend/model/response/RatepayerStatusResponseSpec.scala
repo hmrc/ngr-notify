@@ -26,13 +26,14 @@ import uk.gov.hmrc.ngrnotify.model.response.RatepayerStatusResponse
 class RatepayerStatusResponseSpec extends AnyFlatSpec with Matchers {
 
   val ratepayerStatusResponse: RatepayerStatusResponse =
-    RatepayerStatusResponse(RatepayerStatus.UNKNOWN, Some("random string"))
+    RatepayerStatusResponse(false, false, 0)
 
   val ratepayerStatusResponseJson: JsValue = Json.parse(
     """
       |{
-      |  "ratepayerStatus": "UNKNOWN",
-      |  "error": "random string"
+      | "activeRatepayerPersonExists" : false,
+      | "activeRatepayerPersonaExists" : false,
+      | "activePropertyLinkCount" : 0
       |}
       |""".stripMargin
   )
