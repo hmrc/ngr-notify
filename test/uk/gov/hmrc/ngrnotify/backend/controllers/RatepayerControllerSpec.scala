@@ -102,7 +102,9 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
             Some(PhoneNumber("1111")),
             None,
             Some(Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11 1ZZ"))),
-            Some(TRNReferenceNumber(ReferenceType.TRN, "TRN123456"))
+            Some(TRNReferenceNumber(ReferenceType.TRN, "TRN123456")),
+            Some(false),
+            Some("AAH4-KKSW-7LX9")
           )
         ))
 
