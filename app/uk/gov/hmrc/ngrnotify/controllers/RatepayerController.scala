@@ -122,6 +122,10 @@ class RatepayerController @Inject() (
                   ForeignId(
                     location = Some("AgentStatus"),
                     value = ratepayer.agentStatus.map(_.toString)
+                  ),
+                  ForeignId(
+                    location = Some("RecoveryId"),
+                    value = ratepayer.recoveryId
                   )
                 ),
                 names = extractNames(ratepayer),
