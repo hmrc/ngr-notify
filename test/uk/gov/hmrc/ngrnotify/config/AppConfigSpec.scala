@@ -28,7 +28,7 @@ class AppConfigSpec extends AnyFreeSpec with GuiceOneServerPerSuite {
       config.retryWindowHours mustBe 1
       config.propertyLinkingUrl.getPath mustBe "/ngr-stub/hip/job/property"
       config.registerRatepayerUrl.getPath mustBe "/ngr-stub/hip/job/ratepayer"
-      config.updatePropertyChangesUrl.getPath mustBe "/ngr-stub/hip/job/physical/"
+      config.updatePropertyChangesUrl.getPath mustBe "/ngr-stub/hip/job/physical"
       config.submissionExportEnabled mustBe true
     }
   }

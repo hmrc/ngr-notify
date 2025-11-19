@@ -94,7 +94,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
       response.status shouldBe ACCEPTED
 
       verify(httpMock)
-        .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/physical/"))(using any[HeaderCarrier])
+        .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/physical"))(using any[HeaderCarrier])
     }
   }
   
