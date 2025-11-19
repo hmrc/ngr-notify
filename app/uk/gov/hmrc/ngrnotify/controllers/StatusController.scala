@@ -28,8 +28,11 @@ import uk.gov.hmrc.ngrnotify.model.response.{ApiFailure, RatepayerStatusResponse
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 
 @Singleton()
-class StatusController @Inject() (cc: ControllerComponents,
-                                  hipConnector: HipConnector)(implicit ec: ExecutionContext) extends BackendController(cc) {
+class StatusController @Inject() (
+  cc: ControllerComponents,
+  hipConnector: HipConnector
+)(implicit ec: ExecutionContext
+) extends BackendController(cc) {
 
   def buildFailureResponse(code: ErrorCode, reason: String): JsValue =
     Json.toJson(Seq(ApiFailure(code, reason)))
@@ -37,21 +40,22 @@ class StatusController @Inject() (cc: ControllerComponents,
   def getRatepayerStatus(id: String): Action[AnyContent] = Action.async { implicit request =>
     hipConnector.getRatepayerStatus(id)
       .map {
-        response => response.status match {
-          case 200 =>  response.json.validate[RatepayerStatusResponse] match {
-            case JsSuccess(value, path) => Ok(
-              Json.toJsObject(
-                RatepayerStatusResponse(
-                  value.activeRatepayerPersonaExists,
-                  value.activeRatepayerPersonaExists,
-                  value.activePropertyLinkCount
-                )
-              )
-            )
-            case JsError(errors) => BadRequest
+        response =>
+          response.status match {
+            case 200    => response.json.validate[RatepayerStatusResponse] match {
+                case JsSuccess(value, path) => Ok(
+                    Json.toJsObject(
+                      RatepayerStatusResponse(
+                        value.activeRatepayerPersonaExists,
+                        value.activeRatepayerPersonaExists,
+                        value.activePropertyLinkCount
+                      )
+                    )
+                  )
+                case JsError(errors)        => BadRequest
+              }
+            case status => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
           }
-          case status => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
-        }
       }
       .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
   }

@@ -27,7 +27,7 @@ class PropertiesJobFormResponseSpec extends AnyWordAppSpec:
   "Model BridgeResponse" should {
     "be serialized/deserialized from JSON" in {
       val propertiesJobFormResponseJson = Json.parse(testResourceContent("propertiesJobFormResponse.json"))
-      val propertiesJobFormResponse        = propertiesJobFormResponseJson.as[PropertiesJobFormResponse]
+      val propertiesJobFormResponse     = propertiesJobFormResponseJson.as[PropertiesJobFormResponse]
 
       Json.toJson(propertiesJobFormResponse).as[PropertiesJobFormResponse] shouldBe propertiesJobFormResponse
     }
