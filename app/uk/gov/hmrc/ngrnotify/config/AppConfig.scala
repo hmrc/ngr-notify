@@ -43,6 +43,7 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   val updatePropertyChangesUrl: URL     = url"${hipBaseUrl + updatePropertyChangesPath}"
   val propertyLinkingUrl: URL           = url"${hipBaseUrl + propertyLinkingPath}"
   def getRatepayerUrl(id: String): URL  = url"${hipBaseUrl + getRatepayerPath + id}"
+  def getRatepayerStatusUrl(id: String): URL = url"${hipBaseUrl + getRatepayerPath + id}/dashboard"
 
   val hipClientId: String     = servicesConfig.getConfString("hip.clientId", "CLIENT_ID")
   val hipClientSecret: String = servicesConfig.getConfString("hip.clientSecret", "CLIENT_SECRET")
