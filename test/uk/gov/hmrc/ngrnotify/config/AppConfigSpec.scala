@@ -29,7 +29,7 @@ class AppConfigSpec extends AnyFreeSpec with GuiceOneServerPerSuite {
       config.retryWindowHours mustBe 1
       config.propertyLinkingUrl.getPath mustBe "/ngr-stub/hip/job/property"
       config.registerRatepayerUrl.getPath mustBe "/ngr-stub/hip/job/ratepayer"
-      config.updatePropertyChangesUrl.getPath mustBe "/ngr-stub/hip/job/physical/"
+      config.updatePropertyChangesUrl.getPath mustBe "/ngr-stub/hip/job/physical"
       config.getPropertiesUrl(CredId("Id"), "assessmentId").toString mustBe
         s"http://localhost:1501/ngr-stub/hip/job/properties?id=Id&assessmentId=assessmentId"
       config.hipClientId mustBe "CLIENT_ID"
