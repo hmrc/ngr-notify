@@ -23,10 +23,11 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData.testSending
 import uk.gov.hmrc.ngrnotify.model.response.bridge.metadata.Sending
 
 class SendingSpec extends AnyWordSpec with Matchers {
+
   private val sendingJson = Json.obj(
-    "extracting" -> Json.obj("selecting" -> Json.obj()),
+    "extracting"   -> Json.obj("selecting" -> Json.obj()),
     "transforming" -> Json.obj("recontextualising" -> Json.obj(), "filtering" -> Json.obj(), "supplementing" -> Json.obj()),
-    "loading" -> Json.obj("assuring" -> Json.obj(), "readying" -> Json.obj(), "signing" -> Json.obj(), "encrypting" -> Json.obj(), "sending" -> Json.obj())
+    "loading"      -> Json.obj("assuring" -> Json.obj(), "readying" -> Json.obj(), "signing" -> Json.obj(), "encrypting" -> Json.obj(), "sending" -> Json.obj())
   )
 
   "Sending" should {
@@ -36,15 +37,15 @@ class SendingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = sendingJson
+      val json    = sendingJson
       val sending = json.as[Sending]
       sending shouldBe testSending
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = sendingJson
-      val json = Json.toJson(original)
-      val parsed = json.as[Sending]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Sending]
       parsed shouldBe testSending
     }
   }

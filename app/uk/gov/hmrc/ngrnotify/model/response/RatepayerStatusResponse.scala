@@ -19,10 +19,11 @@ package uk.gov.hmrc.ngrnotify.model.response
 import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.ngrnotify.model.RatepayerStatus
 
-case class RatepayerStatusResponse( activeRatepayerPersonExists: Boolean,
-                                    activeRatepayerPersonaExists: Boolean,
-                                    activePropertyLinkCount: Int
-                                  )
+case class RatepayerStatusResponse(
+  activeRatepayerPersonExists: Boolean,
+  activeRatepayerPersonaExists: Boolean,
+  activePropertyLinkCount: Int
+)
 
 object RatepayerStatusResponse:
   implicit val format: OFormat[RatepayerStatusResponse] = Json.format

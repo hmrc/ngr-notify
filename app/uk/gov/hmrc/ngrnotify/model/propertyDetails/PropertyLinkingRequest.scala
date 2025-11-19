@@ -18,17 +18,19 @@ package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import play.api.libs.json.{Format, Json}
 
-case class PropertyLinkingRequest(credId: CredId,
-                                  vmvProperty: VMVProperty,
-                                  currentRatepayer: Option[CurrentRatepayer] = None,
-                                  businessRatesBill: Option[String] = None,
-                                  connectionToProperty: Option[String] = None,
-                                  requestSentReference: Option[String] = None,
-                                  evidenceDocument: Option[String] = None,
-                                  evidenceDocumentUrl: Option[String] = None,
-                                  evidenceDocumentUploadId: Option[String] = None,
-                                  uploadEvidence: Option[String] = None)
+case class PropertyLinkingRequest(
+  credId: CredId,
+  vmvProperty: VMVProperty,
+  currentRatepayer: Option[CurrentRatepayer] = None,
+  businessRatesBill: Option[String] = None,
+  connectionToProperty: Option[String] = None,
+  requestSentReference: Option[String] = None,
+  evidenceDocument: Option[String] = None,
+  evidenceDocumentUrl: Option[String] = None,
+  evidenceDocumentUploadId: Option[String] = None,
+  uploadEvidence: Option[String] = None
+)
 
 object PropertyLinkingRequest {
-  implicit val format:Format[PropertyLinkingRequest] = Json.format[PropertyLinkingRequest]
+  implicit val format: Format[PropertyLinkingRequest] = Json.format[PropertyLinkingRequest]
 }

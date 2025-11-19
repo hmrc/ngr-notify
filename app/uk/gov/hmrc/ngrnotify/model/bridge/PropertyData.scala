@@ -23,7 +23,7 @@ import scala.collection.immutable.List
 case class PropertyData(
   foreignIds: List[ForeignId] = List.empty,
   foreignLabels: List[ForeignId] = List.empty,
-  address: PropertyAddress
+  addresses: PropertyAddresses
 )
 
 object PropertyData:

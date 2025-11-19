@@ -97,7 +97,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
         .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/physical"))(using any[HeaderCarrier])
     }
   }
-  
+
   "submitPropertyLinkingChanges" must {
     "return a successful response" in {
       val httpMock              = httpPostMock(ACCEPTED)

@@ -30,8 +30,8 @@ class EmailTemplateEnumSpec extends AnyFlatSpec with should.Matchers {
   "Scala3EnumFormat.format" should "serialize Scala 3 enum to json" in {
     val obj  = Seq(ngr_registration_successful, ngr_add_property_request_sent)
     val json = Json.toJson(obj)
-    json.as[Seq[EmailTemplate]]  shouldBe obj
-    Json.stringify(json) shouldBe """["ngr_registration_successful","ngr_add_property_request_sent"]"""
+    json.as[Seq[EmailTemplate]] shouldBe obj
+    Json.stringify(json)        shouldBe """["ngr_registration_successful","ngr_add_property_request_sent"]"""
   }
 
   it should "deserialize Scala 3 enum from json" in {

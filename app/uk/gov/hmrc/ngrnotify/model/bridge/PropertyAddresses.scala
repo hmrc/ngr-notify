@@ -18,18 +18,15 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.{Format, Json}
 
-case class PropertyAddress(
+case class PropertyAddresses(
   propertyFullAddress: Option[String] = None,
   addressLine1: Option[String] = None,
-  addressLine2: Option[String] = None,
-  addressLine3: Option[String] = None,
-  addressTown: Option[String] = None,
-  addressCounty: Option[String] = None,
-  addressPostcode: Option[String] = None
+  addressPostcode: Option[String] = None,
+  addressKnownAs: Option[String] = None
 )
 
-object PropertyAddress:
+object PropertyAddresses:
 
   import uk.gov.hmrc.ngrnotify.model.given
 
-  given Format[PropertyAddress] = Json.format
+  given Format[PropertyAddresses] = Json.format

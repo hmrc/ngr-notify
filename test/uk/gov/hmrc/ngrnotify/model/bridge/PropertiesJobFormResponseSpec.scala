@@ -16,24 +16,19 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers
 import play.api.libs.json.Json
+import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
 
-class BridgeRequestSpec extends AnyFreeSpec with Matchers {
-  "BridgeRequest" - {
-    "serialization and deserialization" in {
-      val bridgeRequest = BridgeRequest(
-        Job(
-          id = None,
-          idx = "1",
-          name = "Register Ratepayer",
-          compartments = Compartments()
-        )
-      )
-      val json          = Json.toJson(bridgeRequest)
-      val deserialized  = Json.fromJson[BridgeRequest](json).get
-      deserialized mustBe bridgeRequest
+/**
+  * @author Yuriy Tumakha
+  */
+class PropertiesJobFormResponseSpec extends AnyWordAppSpec:
+
+  "Model BridgeResponse" should {
+    "be serialized/deserialized from JSON" in {
+      val propertiesJobFormResponseJson = Json.parse(testResourceContent("propertiesJobFormResponse.json"))
+      val propertiesJobFormResponse     = propertiesJobFormResponseJson.as[PropertiesJobFormResponse]
+
+      Json.toJson(propertiesJobFormResponse).as[PropertiesJobFormResponse] shouldBe propertiesJobFormResponse
     }
   }
-}

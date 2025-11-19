@@ -25,9 +25,9 @@ class PropertyLinkingRequestSpec extends AnyFreeSpec {
       "should work correctly" in {
         import play.api.libs.json.Json
 
-        val credId = CredId("test-cred-id")
-        val vmvProperty = VMVProperty(100L, "property-id", "address", "LA123", List())
-        val currentRatepayer = Some(CurrentRatepayer(true, Some("John Doe")))
+        val credId                 = CredId("test-cred-id")
+        val vmvProperty            = VMVProperty(100L, "property-id", "address", "LA123", List())
+        val currentRatepayer       = Some(CurrentRatepayer(true, Some("John Doe")))
         val propertyLinkingRequest = PropertyLinkingRequest(
           credId = credId,
           vmvProperty = vmvProperty,
@@ -41,7 +41,7 @@ class PropertyLinkingRequestSpec extends AnyFreeSpec {
           uploadEvidence = Some("yes")
         )
 
-        val json = Json.toJson(propertyLinkingRequest)
+        val json     = Json.toJson(propertyLinkingRequest)
         val fromJson = json.as[PropertyLinkingRequest]
 
         fromJson mustBe propertyLinkingRequest

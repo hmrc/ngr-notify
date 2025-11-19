@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
-import play.api.libs.json.{Json, Format}
+import play.api.libs.json.{Format, Json}
 
 final case class PhoneNumber(value: String)
 
-object PhoneNumber  {
+object PhoneNumber {
   implicit val format: Format[PhoneNumber] = Json.format[PhoneNumber]
 }

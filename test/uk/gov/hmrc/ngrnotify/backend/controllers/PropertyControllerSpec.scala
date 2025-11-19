@@ -54,7 +54,6 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       )
       .build()
 
-
   "PropertyController" - {
     "returns OK for a valid request" in {
       val vmvProperty = VMVProperty(100L, "property-id", "address", "LA123", List())
@@ -63,7 +62,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         credId = CredId("some-cred-id"),
         vmvProperty = vmvProperty
       )
-      val json = Json.toJson(propertyLinkingRequest)
+      val json                   = Json.toJson(propertyLinkingRequest)
 
       when(mockHipConnector.submitPropertyLinkingChanges(any[BridgeRequest])(using any[Request[AnyContent]]))
         .thenReturn(
@@ -87,7 +86,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
           credId = CredId("some-cred-id"),
           vmvProperty = vmvProperty
         )
-        val json = Json.toJson(propertyLinkingRequest)
+        val json                   = Json.toJson(propertyLinkingRequest)
 
         when(mockHipConnector.submitPropertyLinkingChanges(any[BridgeRequest])(using any[Request[AnyContent]]))
           .thenReturn(
@@ -118,17 +117,17 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     }
 
     "returns InternalServerError when HipConnector fails" in {
-      val vmvProperty = VMVProperty(100L, "property-id", "address", "LA123", List())
+      val vmvProperty            = VMVProperty(100L, "property-id", "address", "LA123", List())
       val propertyLinkingRequest = PropertyLinkingRequest(
         credId = CredId("some-cred-id"),
         vmvProperty = vmvProperty
       )
-      val json = Json.toJson(propertyLinkingRequest)
+      val json                   = Json.toJson(propertyLinkingRequest)
       when(mockHipConnector.submitPropertyLinkingChanges(any[BridgeRequest])(using any[Request[AnyContent]]))
         .thenReturn(
           Future.failed(new Exception("HipConnector failure"))
         )
-      val request = FakeRequest(POST, routes.PropertyController.submit().url)
+      val request                = FakeRequest(POST, routes.PropertyController.submit().url)
         .withJsonBody(json)
       val result: Future[Result] = route(app, request).value
       status(result) mustEqual INTERNAL_SERVER_ERROR

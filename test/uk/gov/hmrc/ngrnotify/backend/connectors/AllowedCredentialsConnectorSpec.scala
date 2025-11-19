@@ -23,7 +23,7 @@ import uk.gov.hmrc.ngrnotify.connectors.AllowedCredentialsConnector
 
 class AllowedCredentialsConnectorSpec extends AnyWordSpec with Matchers with ScalaFutures {
 
-  private val connector                     = new AllowedCredentialsConnector()
+  private val connector = new AllowedCredentialsConnector()
 
   "AllowedCredentialsConnector" should {
 

@@ -23,151 +23,153 @@ import uk.gov.hmrc.ngrnotify.model.{Address, Postcode}
 // ---------- Case Classes ----------
 
 case class BridgeJobModel(
-                          $schema: String,
-                          job: BridgeJobModel.Job
-                        )
+  $schema: String,
+  job: BridgeJobModel.Job
+)
 
 object BridgeJobModel {
 
   case class Job(
-                  id: Option[String],
-                  idx: Option[String],
-                  name: Option[String],
-                  label: Option[String],
-                  description: Option[String],
-                  origination: Option[String],
-                  termination: Option[String],
-                  category: CodeMeaning,
-                  `type`: CodeMeaning,
-                  `class`: CodeMeaning,
-                  data: Data,
-                  protodata: Seq[Protodata],
-                  metadata: Metadata,
-                  compartments: Compartments,
-                  items: Option[Seq[JobItem]]
-                )
+    id: Option[String],
+    idx: Option[String],
+    name: Option[String],
+    label: Option[String],
+    description: Option[String],
+    origination: Option[String],
+    termination: Option[String],
+    category: CodeMeaning,
+    `type`: CodeMeaning,
+    `class`: CodeMeaning,
+    data: Data,
+    protodata: Seq[Protodata],
+    metadata: Metadata,
+    compartments: Compartments,
+    items: Option[Seq[JobItem]]
+  )
 
   case class CodeMeaning(
-                          code: Option[String],
-                          meaning: Option[String]
-                        )
+    code: Option[String],
+    meaning: Option[String]
+  )
 
   case class Data(
-                   foreign_ids: Seq[String],
-                   foreign_names: Seq[String],
-                   foreign_labels: Seq[String],
-                   names: Option[Names] = None,
-                   communications: Option[Communications] = None
-                 )
+    foreign_ids: Seq[String],
+    foreign_names: Seq[String],
+    foreign_labels: Seq[String],
+    names: Option[Names] = None,
+    communications: Option[Communications] = None
+  )
 
   case class Names(
-                    title_common: Option[String],
-                    title_uncommon: Option[String],
-                    forenames: Option[String],
-                    surname: Option[String],
-                    post_nominals: Option[String],
-                    corporate_name: Option[String],
-                    crown_name: Option[String],
-                    known_as: Option[String]
-                  )
+    title_common: Option[String],
+    title_uncommon: Option[String],
+    forenames: Option[String],
+    surname: Option[String],
+    post_nominals: Option[String],
+    corporate_name: Option[String],
+    crown_name: Option[String],
+    known_as: Option[String]
+  )
 
   case class Communications(
-                             postal_address: Option[String],
-                             telephone_number: Option[String],
-                             email: Option[String]
-                           )
+    postal_address: Option[String],
+    telephone_number: Option[String],
+    email: Option[String]
+  )
 
   case class Protodata() // empty placeholder
 
   case class Metadata(
-                       sending: MetadataStage,
-                       receiving: MetadataStage
-                     )
+    sending: MetadataStage,
+    receiving: MetadataStage
+  )
 
   case class MetadataStage(
-                            extracting: MetadataAction = MetadataAction(),
-                            transforming: MetadataTransform = MetadataTransform(),
-                            loading: Option[MetadataLoading] = None,
-                            unloading: Option[MetadataUnloading] = None,
-                            storing: Option[MetadataStoring] = None
-                          )
+    extracting: MetadataAction = MetadataAction(),
+    transforming: MetadataTransform = MetadataTransform(),
+    loading: Option[MetadataLoading] = None,
+    unloading: Option[MetadataUnloading] = None,
+    storing: Option[MetadataStoring] = None
+  )
 
   case class MetadataAction(selecting: Map[String, String] = Map.empty)
+
   case class MetadataTransform(
-                                filtering: Map[String, String] = Map.empty,
-                                supplementing: Map[String, String] = Map.empty,
-                                recontextualising: Map[String, String] = Map.empty,
-                                dropping: Map[String, String] = Map.empty,
-                                restoring: Map[String, String] = Map.empty
-                              )
+    filtering: Map[String, String] = Map.empty,
+    supplementing: Map[String, String] = Map.empty,
+    recontextualising: Map[String, String] = Map.empty,
+    dropping: Map[String, String] = Map.empty,
+    restoring: Map[String, String] = Map.empty
+  )
+
   case class MetadataLoading(
-                              readying: Map[String, String] = Map.empty,
-                              assuring: Map[String, String] = Map.empty,
-                              signing: Map[String, String] = Map.empty,
-                              encrypting: Map[String, String] = Map.empty,
-                              sending: Map[String, String] = Map.empty
-                            )
+    readying: Map[String, String] = Map.empty,
+    assuring: Map[String, String] = Map.empty,
+    signing: Map[String, String] = Map.empty,
+    encrypting: Map[String, String] = Map.empty,
+    sending: Map[String, String] = Map.empty
+  )
+
   case class MetadataUnloading(
-                                receiving: Map[String, String] = Map.empty,
-                                decrypting: Map[String, String] = Map.empty,
-                                verifying: Map[String, String] = Map.empty,
-                                assuring: Map[String, String] = Map.empty,
-                                readying: Map[String, String] = Map.empty
-                              )
+    receiving: Map[String, String] = Map.empty,
+    decrypting: Map[String, String] = Map.empty,
+    verifying: Map[String, String] = Map.empty,
+    assuring: Map[String, String] = Map.empty,
+    readying: Map[String, String] = Map.empty
+  )
   case class MetadataStoring(inserting: Map[String, String] = Map.empty)
 
   case class Compartments(
-                           properties: Seq[JobItem] = Seq.empty,
-                           persons: Seq[JobItem] = Seq.empty,
-                           processes: Seq[JobItem] = Seq.empty,
-                           products: Seq[JobItem] = Seq.empty,
-                           relationships: Seq[JobItem] = Seq.empty
-                         )
+    properties: Seq[JobItem] = Seq.empty,
+    persons: Seq[JobItem] = Seq.empty,
+    processes: Seq[JobItem] = Seq.empty,
+    products: Seq[JobItem] = Seq.empty,
+    relationships: Seq[JobItem] = Seq.empty
+  )
 
   case class JobItem(
-                      id: Option[String],
-                      idx: Option[String],
-                      name: Option[String],
-                      label: Option[String],
-                      description: Option[String],
-                      origination: Option[String],
-                      termination: Option[String],
-                      category: CodeMeaning,
-                      `type`: CodeMeaning,
-                      `class`: CodeMeaning,
-                      data: Data,
-                      protodata: Seq[Protodata],
-                      metadata: Metadata,
-                      compartments: Compartments,
-                      items: Option[Seq[JobItem]] = Some(Seq.empty)
-                    )
+    id: Option[String],
+    idx: Option[String],
+    name: Option[String],
+    label: Option[String],
+    description: Option[String],
+    origination: Option[String],
+    termination: Option[String],
+    category: CodeMeaning,
+    `type`: CodeMeaning,
+    `class`: CodeMeaning,
+    data: Data,
+    protodata: Seq[Protodata],
+    metadata: Metadata,
+    compartments: Compartments,
+    items: Option[Seq[JobItem]] = Some(Seq.empty)
+  )
 
   // ---------- Play JSON Implicits ----------
 
   import play.api.libs.json.*
 
-  implicit val protodataFormat: OFormat[Protodata] = Json.format[Protodata]
-  implicit val codeMeaningFormat: OFormat[CodeMeaning] = Json.format[CodeMeaning]
-  implicit val namesFormat: OFormat[Names] = Json.format[Names]
-  implicit val communicationsFormat: OFormat[Communications] = Json.format[Communications]
-  implicit val dataFormat: OFormat[Data] = Json.format[Data]
-  implicit val metadataActionFormat: OFormat[MetadataAction] = Json.format[MetadataAction]
+  implicit val protodataFormat: OFormat[Protodata]                 = Json.format[Protodata]
+  implicit val codeMeaningFormat: OFormat[CodeMeaning]             = Json.format[CodeMeaning]
+  implicit val namesFormat: OFormat[Names]                         = Json.format[Names]
+  implicit val communicationsFormat: OFormat[Communications]       = Json.format[Communications]
+  implicit val dataFormat: OFormat[Data]                           = Json.format[Data]
+  implicit val metadataActionFormat: OFormat[MetadataAction]       = Json.format[MetadataAction]
   implicit val metadataTransformFormat: OFormat[MetadataTransform] = Json.format[MetadataTransform]
-  implicit val metadataLoadingFormat: OFormat[MetadataLoading] = Json.format[MetadataLoading]
+  implicit val metadataLoadingFormat: OFormat[MetadataLoading]     = Json.format[MetadataLoading]
   implicit val metadataUnloadingFormat: OFormat[MetadataUnloading] = Json.format[MetadataUnloading]
-  implicit val metadataStoringFormat: OFormat[MetadataStoring] = Json.format[MetadataStoring]
+  implicit val metadataStoringFormat: OFormat[MetadataStoring]     = Json.format[MetadataStoring]
 
   implicit lazy val metadataStageFormat: OFormat[MetadataStage] = Json.format[MetadataStage]
-  implicit lazy val metadataFormat: OFormat[Metadata] = Json.format[Metadata]
-  implicit lazy val compartmentsFormat: OFormat[Compartments] = Json.format[Compartments]
+  implicit lazy val metadataFormat: OFormat[Metadata]           = Json.format[Metadata]
+  implicit lazy val compartmentsFormat: OFormat[Compartments]   = Json.format[Compartments]
 
-  implicit lazy val jobItemFormat: OFormat[JobItem] = Json.format[JobItem]
-  implicit lazy val jobFormat: OFormat[Job] = Json.format[Job]
+  implicit lazy val jobItemFormat: OFormat[JobItem]        = Json.format[JobItem]
+  implicit lazy val jobFormat: OFormat[Job]                = Json.format[Job]
   implicit lazy val jobRootFormat: OFormat[BridgeJobModel] = Json.format[BridgeJobModel]
 
-
   def toRatepayerModel(bridgeJobModel: BridgeJobModel): RegisterRatepayerRequest = {
-    val data = bridgeJobModel.job.compartments.products.head
+    val data          = bridgeJobModel.job.compartments.products.head
     val addressString = data.data.communications.flatMap(_.postal_address).getOrElse("")
     RegisterRatepayerRequest(
       ratepayerCredId = "",
@@ -179,11 +181,8 @@ object BridgeJobModel {
       nino = None,
       contactNumber = data.data.communications.flatMap(_.telephone_number).map(PhoneNumber(_)),
       secondaryNumber = None,
-      address = Some(Address(line1 = addressString, line2 = None, town = "", county = None, postcode = Postcode(""))),
+      address = Some(Address(line1 = addressString, line2 = None, town = "", county = None, postcode = Postcode("")))
     )
   }
 
 }
-
-
-

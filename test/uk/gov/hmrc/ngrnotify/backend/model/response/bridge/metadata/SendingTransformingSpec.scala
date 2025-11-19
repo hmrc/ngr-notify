@@ -23,10 +23,12 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData.testSendingTr
 import uk.gov.hmrc.ngrnotify.model.response.bridge.metadata.{Filtering, SendingTransforming, Supplementing}
 
 class SendingTransformingSpec extends AnyWordSpec with Matchers {
+
   private val sendingTransformingJson = Json.obj(
     "recontextualising" -> Json.obj(),
-    "filtering" -> Json.obj(),
-    "supplementing" -> Json.obj())
+    "filtering"         -> Json.obj(),
+    "supplementing"     -> Json.obj()
+  )
 
   "SendingTransforming" should {
     "serialize to JSON correctly" in {
@@ -35,15 +37,15 @@ class SendingTransformingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = sendingTransformingJson
+      val json                = sendingTransformingJson
       val sendingTransforming = json.as[SendingTransforming]
       sendingTransforming shouldBe testSendingTransforming
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = sendingTransformingJson
-      val json = Json.toJson(original)
-      val parsed = json.as[SendingTransforming]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[SendingTransforming]
       parsed shouldBe testSendingTransforming
     }
   }
@@ -56,15 +58,15 @@ class SendingTransformingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json     = Json.obj()
       val assuring = json.as[Filtering]
       assuring shouldBe Filtering()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Filtering]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Filtering]
       parsed shouldBe Filtering()
     }
   }
@@ -76,17 +78,16 @@ class SendingTransformingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json     = Json.obj()
       val assuring = json.as[Supplementing]
       assuring shouldBe Supplementing()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Supplementing]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Supplementing]
       parsed shouldBe Supplementing()
     }
   }
 }
-

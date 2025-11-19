@@ -31,15 +31,15 @@ class ExtractingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj("selecting" -> Json.obj())
+      val json       = Json.obj("selecting" -> Json.obj())
       val extracting = json.as[Extracting]
       extracting shouldBe Extracting(Selecting())
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj("selecting" -> Json.obj())
-      val json = Json.toJson(original)
-      val parsed = json.as[Extracting]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Extracting]
       parsed shouldBe Extracting(Selecting())
     }
   }
@@ -52,17 +52,16 @@ class ExtractingSpec extends AnyWordSpec with Matchers {
     }
 
     "deserialize from JSON correctly" in {
-      val json = Json.obj()
+      val json      = Json.obj()
       val selecting = json.as[Selecting]
       selecting shouldBe Selecting()
     }
 
     "round-trip JSON serialization and deserialization" in {
       val original = Json.obj()
-      val json = Json.toJson(original)
-      val parsed = json.as[Selecting]
+      val json     = Json.toJson(original)
+      val parsed   = json.as[Selecting]
       parsed shouldBe Selecting()
     }
   }
 }
-

@@ -1,0 +1,2644 @@
+{
+  "jobForm": {
+    "job": {
+      "id": null,
+      "idx": "1",
+      "name": "string",
+      "label": "string",
+      "description": "string",
+      "origination": "21151130T220439Z",
+      "termination": "05541206T032321Z",
+      "category": {
+        "code": "LTX-DOM-JOB",
+        "meaning": "string"
+      },
+      "type": {
+        "code": "string",
+        "meaning": "string"
+      },
+      "class": {
+        "code": "string",
+        "meaning": "string"
+      },
+      "data": {
+        "foreign_ids": [
+          {
+            "system": "Government_Gateway",
+            "location": "string",
+            "value": "string"
+          }
+        ],
+        "foreign_names": [
+          {
+            "system": "Government_Gateway",
+            "location": "string",
+            "value": "string"
+          }
+        ],
+        "foreign_labels": [
+          {
+            "system": "Government_Gateway",
+            "location": "string",
+            "value": "string"
+          }
+        ]
+      },
+      "protodata": [
+        {
+          "node": "string",
+          "mime_type": "image/jpeg",
+          "label": "string",
+          "is_pointer": true,
+          "pointer": "string",
+          "data": ""
+        },
+        {
+          "node": "string",
+          "mime_type": "image/jpeg",
+          "label": "string",
+          "is_pointer": false,
+          "pointer": "",
+          "data": "string"
+        }
+      ],
+      "metadata": {
+        "sending": {
+          "extracting": {
+            "selecting": "string"
+          },
+          "transforming": {
+            "filtering": "string",
+            "supplementing": "string",
+            "recontextualising": "string"
+          },
+          "loading": {
+            "readying": "string",
+            "assuring": "string",
+            "signing": {
+              "inputs": {
+                "hash": "stringstringstringstringstringstringstringst",
+                "signature": "stringstringstringstringstringstringstringst"
+              }
+            },
+            "encrypting": "string",
+            "sending": "string"
+          }
+        },
+        "receiving": {
+          "unloading": {
+            "receiving": "string",
+            "decrypting": "string",
+            "verifying": "string",
+            "assuring": "string",
+            "readying": "string"
+          },
+          "transforming": {
+            "recontextualising": "string",
+            "dropping": "string",
+            "restoring": "string"
+          },
+          "storing": {
+            "inserting": "string"
+          }
+        }
+      },
+      "compartments": {
+        "properties": [
+          {
+            "id": null,
+            "idx": "1",
+            "name": "string",
+            "label": "string",
+            "description": "string",
+            "origination": "12130931T144020Z",
+            "termination": "14211231T042516Z",
+            "category": {
+              "code": "LTX-DOM-PRP",
+              "meaning": "string"
+            },
+            "type": {
+              "code": "OCC",
+              "meaning": "string"
+            },
+            "class": {
+              "code": "HDT",
+              "meaning": "string"
+            },
+            "data": {
+              "foreign_ids": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_names": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_labels": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "addresses": {
+                "property_full_address": "string",
+                "address_line_1": "string",
+                "address_postcode": "string",
+                "address_known_as": "string"
+              },
+              "location": {
+                "local_authority_pseudo_area_code": "stri",
+                "ordnance_survey_coordinates": "string",
+                "google_maps_coordinates": "string"
+              },
+              "assessments": [
+                {
+                  "id": null,
+                  "idx": "1",
+                  "name": "string",
+                  "label": "string",
+                  "description": "string",
+                  "origination": "34301119T234944Z",
+                  "termination": "05901131T153909Z",
+                  "category": {
+                    "code": "LTX-DOM-AST",
+                    "meaning": "string"
+                  },
+                  "type": {
+                    "code": "CHG",
+                    "meaning": "string"
+                  },
+                  "class": {
+                    "code": "RLE",
+                    "meaning": "string"
+                  },
+                  "data": {
+                    "foreign_ids": [
+                      {
+                        "system": "Government_Gateway",
+                        "location": "string",
+                        "value": "string"
+                      }
+                    ],
+                    "foreign_names": [
+                      {
+                        "system": "Government_Gateway",
+                        "location": "string",
+                        "value": "string"
+                      }
+                    ],
+                    "foreign_labels": [
+                      {
+                        "system": "Government_Gateway",
+                        "location": "string",
+                        "value": "string"
+                      }
+                    ],
+                    "property": {
+                      "id": 9999999999,
+                      "cdb_id": 10000000000000000000
+                    },
+                    "use": {
+                      "is_composite": "Y",
+                      "is_part_exempt": "Y",
+                      "description": "string"
+                    },
+                    "valuation_survey": [
+                      {
+                        "id": "11111",
+                        "idx": "1",
+                        "name": "tom:sql/cdb:ndr",
+                        "label": "Site",
+                        "description": "",
+                        "category": {
+                          "code": "LTX-DOM-PRP",
+                          "meaning": "Local Taxation Domain Property"
+                        },
+                        "type": {
+                          "code": "UOU",
+                          "meaning": "Unit of Use"
+                        },
+                        "class": {
+                          "code": "UOU",
+                          "meaning": "Site (HC)"
+                        },
+                        "origination": "1950-01-01T00:00:00Z",
+                        "termination": "",
+                        "data": {
+                          "foreign_ids": {
+                            "system": "string",
+                            "location": "string",
+                            "value": "string"
+                          },
+                          "foreign_names": {
+                            "system": "string",
+                            "location": "string",
+                            "value": "string"
+                          },
+                          "foreign_labels": {
+                            "system": "string",
+                            "location": "string",
+                            "value": "string"
+                          },
+                          "uses": [],
+                          "constructions": [],
+                          "facilities": [],
+                          "artifacts": [
+                            {
+                              "activity": {
+                                "source": "",
+                                "value": ""
+                              },
+                              "code": {
+                                "source": "",
+                                "value": ""
+                              },
+                              "description": {
+                                "source": "tom:sql/cdb:ndr/plant_machinery/os_refno:123456789/description",
+                                "value": "Plant and Machinery (Goods Lift)"
+                              },
+                              "quantity": {
+                                "source": "tom:sql/cdb:ndr/plant_machinery/os_refno:123456789/value",
+                                "value": 10000
+                              },
+                              "units": {
+                                "source": "",
+                                "value": "GDP"
+                              }
+                            }
+                          ],
+                          "uninheretances": [],
+                          "attributions": []
+                        },
+                        "metadata": {
+                          "sending": {
+                            "extracting": {
+                              "selecting": "string"
+                            },
+                            "transforming": {
+                              "filtering": "string",
+                              "supplementing": "string",
+                              "recontextualising": "string"
+                            },
+                            "loading": {
+                              "readying": "string",
+                              "assuring": "string",
+                              "signing": {
+                                "inputs": {
+                                  "hash": "string",
+                                  "signature": "string"
+                                }
+                              },
+                              "encrypting": "string",
+                              "sending": "string"
+                            }
+                          },
+                          "receiving": {
+                            "unloading": {
+                              "receiving": "string",
+                              "decrypting": "string",
+                              "verifying": "string",
+                              "assuring": "string",
+                              "readying": "string"
+                            },
+                            "transforming": {
+                              "recontextualising": "string",
+                              "dropping": "string",
+                              "restoring": "string"
+                            },
+                            "storing": {
+                              "inserting": "string"
+                            }
+                          }
+                        },
+                        "protodata": [
+                          {
+                            "node": "string",
+                            "mime_type": "image/jpeg",
+                            "label": "string",
+                            "is_pointer": true,
+                            "pointer": "string",
+                            "data": ""
+                          },
+                          {
+                            "node": "string",
+                            "mime_type": "image/jpeg",
+                            "label": "string",
+                            "is_pointer": false,
+                            "pointer": "",
+                            "data": "string"
+                          }
+                        ],
+                        "compartments": [],
+                        "items": [
+                          {
+                            "id": "22222",
+                            "idx": "1.1",
+                            "name": "tom:sql/cdb:ndr",
+                            "label": "Site Level 0 to 0",
+                            "description": "",
+                            "category": {
+                              "code": "LTX-DOM-PRP",
+                              "meaning": "Local Taxation Domain Property"
+                            },
+                            "type": {
+                              "code": "UOU",
+                              "meaning": "Unit of Use"
+                            },
+                            "class": {
+                              "code": "UOU",
+                              "meaning": "Site (VC)"
+                            },
+                            "origination": "1950-01-01T00:00:00Z",
+                            "termination": "",
+                            "data": {
+                              "foreign_ids": {
+                                "system": "string",
+                                "location": "string",
+                                "value": "string"
+                              },
+                              "foreign_names": {
+                                "system": "string",
+                                "location": "string",
+                                "value": "string"
+                              },
+                              "foreign_labels": {
+                                "system": "string",
+                                "location": "string",
+                                "value": "string"
+                              },
+                              "uses": [],
+                              "constructions": [],
+                              "facilities": [],
+                              "artifacts": [],
+                              "uninheretances": [],
+                              "attributions": []
+                            },
+                            "metadata": {
+                              "sending": {
+                                "extracting": {
+                                  "selecting": "string"
+                                },
+                                "transforming": {
+                                  "filtering": "string",
+                                  "supplementing": "string",
+                                  "recontextualising": "string"
+                                },
+                                "loading": {
+                                  "readying": "string",
+                                  "assuring": "string",
+                                  "signing": {
+                                    "inputs": {
+                                      "hash": "string",
+                                      "signature": "string"
+                                    }
+                                  },
+                                  "encrypting": "string",
+                                  "sending": "string"
+                                }
+                              },
+                              "receiving": {
+                                "unloading": {
+                                  "receiving": "string",
+                                  "decrypting": "string",
+                                  "verifying": "string",
+                                  "assuring": "string",
+                                  "readying": "string"
+                                },
+                                "transforming": {
+                                  "recontextualising": "string",
+                                  "dropping": "string",
+                                  "restoring": "string"
+                                },
+                                "storing": {
+                                  "inserting": "string"
+                                }
+                              }
+                            },
+                            "protodata": [
+                              {
+                                "node": "string",
+                                "mime_type": "image/jpeg",
+                                "label": "string",
+                                "is_pointer": true,
+                                "pointer": "string",
+                                "data": ""
+                              },
+                              {
+                                "node": "string",
+                                "mime_type": "image/jpeg",
+                                "label": "string",
+                                "is_pointer": false,
+                                "pointer": "",
+                                "data": "string"
+                              }
+                            ],
+                            "compartments": [],
+                            "items": [
+                              {
+                                "id": "33333",
+                                "idx": "1.1.1",
+                                "name": "tom:sql/cdb:ndr",
+                                "label": "Separate Survey Unit 1",
+                                "description": "",
+                                "category": {
+                                  "code": "LTX-DOM-PRP",
+                                  "meaning": "Local Taxation Domain Property"
+                                },
+                                "type": {
+                                  "code": "UOU",
+                                  "meaning": "Unit of Use"
+                                },
+                                "class": {
+                                  "code": "UOU",
+                                  "meaning": "Building-Structure (HC)"
+                                },
+                                "origination": "1950-01-01T00:00:00Z",
+                                "termination": "",
+                                "data": {
+                                  "foreign_ids": {
+                                    "system": "string",
+                                    "location": "string",
+                                    "value": "string"
+                                  },
+                                  "foreign_names": {
+                                    "system": "string",
+                                    "location": "string",
+                                    "value": "string"
+                                  },
+                                  "foreign_labels": {
+                                    "system": "string",
+                                    "location": "string",
+                                    "value": "string"
+                                  },
+                                  "uses": [],
+                                  "constructions": [],
+                                  "facilities": [],
+                                  "artifacts": [],
+                                  "uninheretances": [],
+                                  "attributions": []
+                                },
+                                "metadata": {
+                                  "sending": {
+                                    "extracting": {
+                                      "selecting": "string"
+                                    },
+                                    "transforming": {
+                                      "filtering": "string",
+                                      "supplementing": "string",
+                                      "recontextualising": "string"
+                                    },
+                                    "loading": {
+                                      "readying": "string",
+                                      "assuring": "string",
+                                      "signing": {
+                                        "inputs": {
+                                          "hash": "string",
+                                          "signature": "string"
+                                        }
+                                      },
+                                      "encrypting": "string",
+                                      "sending": "string"
+                                    }
+                                  },
+                                  "receiving": {
+                                    "unloading": {
+                                      "receiving": "string",
+                                      "decrypting": "string",
+                                      "verifying": "string",
+                                      "assuring": "string",
+                                      "readying": "string"
+                                    },
+                                    "transforming": {
+                                      "recontextualising": "string",
+                                      "dropping": "string",
+                                      "restoring": "string"
+                                    },
+                                    "storing": {
+                                      "inserting": "string"
+                                    }
+                                  }
+                                },
+                                "protodata": [
+                                  {
+                                    "node": "string",
+                                    "mime_type": "image/jpeg",
+                                    "label": "string",
+                                    "is_pointer": true,
+                                    "pointer": "string",
+                                    "data": ""
+                                  },
+                                  {
+                                    "node": "string",
+                                    "mime_type": "image/jpeg",
+                                    "label": "string",
+                                    "is_pointer": false,
+                                    "pointer": "",
+                                    "data": "string"
+                                  }
+                                ],
+                                "compartments": [],
+                                "items": [
+                                  {
+                                    "id": "44444",
+                                    "idx": "1.1.1.1",
+                                    "name": "tom:sql/cdb:ndr",
+                                    "label": "Floor Level GF to GF",
+                                    "description": "",
+                                    "category": {
+                                      "code": "LTX-DOM-PRP",
+                                      "meaning": "Local Taxation Domain Property"
+                                    },
+                                    "type": {
+                                      "code": "UOU",
+                                      "meaning": "Unit of Use"
+                                    },
+                                    "class": {
+                                      "code": "UOU",
+                                      "meaning": "Building-Structure Level (VC)"
+                                    },
+                                    "origination": "1950-01-01T00:00:00Z",
+                                    "termination": "",
+                                    "data": {
+                                      "foreign_ids": {
+                                        "system": "string",
+                                        "location": "string",
+                                        "value": "string"
+                                      },
+                                      "foreign_names": {
+                                        "system": "string",
+                                        "location": "string",
+                                        "value": "string"
+                                      },
+                                      "foreign_labels": {
+                                        "system": "string",
+                                        "location": "string",
+                                        "value": "string"
+                                      },
+                                      "uses": [],
+                                      "constructions": [],
+                                      "facilities": [],
+                                      "artifacts": [],
+                                      "uninheretances": [],
+                                      "attributions": []
+                                    },
+                                    "metadata": {
+                                      "sending": {
+                                        "extracting": {
+                                          "selecting": "string"
+                                        },
+                                        "transforming": {
+                                          "filtering": "string",
+                                          "supplementing": "string",
+                                          "recontextualising": "string"
+                                        },
+                                        "loading": {
+                                          "readying": "string",
+                                          "assuring": "string",
+                                          "signing": {
+                                            "inputs": {
+                                              "hash": "string",
+                                              "signature": "string"
+                                            }
+                                          },
+                                          "encrypting": "string",
+                                          "sending": "string"
+                                        }
+                                      },
+                                      "receiving": {
+                                        "unloading": {
+                                          "receiving": "string",
+                                          "decrypting": "string",
+                                          "verifying": "string",
+                                          "assuring": "string",
+                                          "readying": "string"
+                                        },
+                                        "transforming": {
+                                          "recontextualising": "string",
+                                          "dropping": "string",
+                                          "restoring": "string"
+                                        },
+                                        "storing": {
+                                          "inserting": "string"
+                                        }
+                                      }
+                                    },
+                                    "protodata": [
+                                      {
+                                        "node": "string",
+                                        "mime_type": "image/jpeg",
+                                        "label": "string",
+                                        "is_pointer": true,
+                                        "pointer": "string",
+                                        "data": ""
+                                      },
+                                      {
+                                        "node": "string",
+                                        "mime_type": "image/jpeg",
+                                        "label": "string",
+                                        "is_pointer": false,
+                                        "pointer": "",
+                                        "data": "string"
+                                      }
+                                    ],
+                                    "compartments": [],
+                                    "items": [
+                                      {
+                                        "id": "55555",
+                                        "idx": "1.1.1.1.1",
+                                        "name": "tom:sql/cdb:ndr",
+                                        "label": "Unit of Valuation 1",
+                                        "description": "",
+                                        "category": {
+                                          "code": "LTX-DOM-PRP",
+                                          "meaning": "Local Taxation Domain Property"
+                                        },
+                                        "type": {
+                                          "code": "UOU",
+                                          "meaning": "Unit of Use"
+                                        },
+                                        "class": {
+                                          "code": "UOU",
+                                          "meaning": "Room-Zone (HC)"
+                                        },
+                                        "origination": "1950-01-01T00:00:00Z",
+                                        "termination": "",
+                                        "data": {
+                                          "foreign_ids": {
+                                            "system": "string",
+                                            "location": "string",
+                                            "value": "string"
+                                          },
+                                          "foreign_names": {
+                                            "system": "string",
+                                            "location": "string",
+                                            "value": "string"
+                                          },
+                                          "foreign_labels": {
+                                            "system": "string",
+                                            "location": "string",
+                                            "value": "string"
+                                          },
+                                          "uses": [
+                                            {
+                                              "activity": {
+                                                "source": "",
+                                                "value": ""
+                                              },
+                                              "code": {
+                                                "source": "aucode",
+                                                "value": "SZA"
+                                              },
+                                              "description": {
+                                                "source": "ns_au_desc",
+                                                "value": "retail zone a"
+                                              },
+                                              "quantity": {
+                                                "source": "accomarea",
+                                                "value": 55.88
+                                              },
+                                              "units": {
+                                                "source": "",
+                                                "value": "m2"
+                                              }
+                                            }
+                                          ],
+                                          "constructions": [],
+                                          "facilities": [],
+                                          "artifacts": [],
+                                          "uninheretances": [],
+                                          "attributions": []
+                                        },
+                                        "metadata": {
+                                          "sending": {
+                                            "extracting": {
+                                              "selecting": "string"
+                                            },
+                                            "transforming": {
+                                              "filtering": "string",
+                                              "supplementing": "string",
+                                              "recontextualising": "string"
+                                            },
+                                            "loading": {
+                                              "readying": "string",
+                                              "assuring": "string",
+                                              "signing": {
+                                                "inputs": {
+                                                  "hash": "string",
+                                                  "signature": "string"
+                                                }
+                                              },
+                                              "encrypting": "string",
+                                              "sending": "string"
+                                            }
+                                          },
+                                          "receiving": {
+                                            "unloading": {
+                                              "receiving": "string",
+                                              "decrypting": "string",
+                                              "verifying": "string",
+                                              "assuring": "string",
+                                              "readying": "string"
+                                            },
+                                            "transforming": {
+                                              "recontextualising": "string",
+                                              "dropping": "string",
+                                              "restoring": "string"
+                                            },
+                                            "storing": {
+                                              "inserting": "string"
+                                            }
+                                          }
+                                        },
+                                        "protodata": [
+                                          {
+                                            "node": "string",
+                                            "mime_type": "image/jpeg",
+                                            "label": "string",
+                                            "is_pointer": true,
+                                            "pointer": "string",
+                                            "data": ""
+                                          },
+                                          {
+                                            "node": "string",
+                                            "mime_type": "image/jpeg",
+                                            "label": "string",
+                                            "is_pointer": false,
+                                            "pointer": "",
+                                            "data": "string"
+                                          }
+                                        ],
+                                        "compartments": [],
+                                        "items": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ],
+                    "valuation": {
+                      "system": "string",
+                      "id": 10000000000000000000,
+                      "method_code": "str",
+                      "rateable_value": 10000000000000000000,
+                      "effective_date": "33920425T223018Z"
+                    },
+                    "list": {
+                      "category": "LTX-DOM-LST",
+                      "function": "string",
+                      "year": "stri",
+                      "authority_code": "stri"
+                    },
+                    "workflow": {
+                      "cdb_job_id": 10000000000000000000
+                    }
+                  },
+                  "protodata": [
+                    {
+                      "node": "string",
+                      "mime_type": "image/jpeg",
+                      "label": "string",
+                      "is_pointer": true,
+                      "pointer": "string",
+                      "data": ""
+                    },
+                    {
+                      "node": "string",
+                      "mime_type": "image/jpeg",
+                      "label": "string",
+                      "is_pointer": false,
+                      "pointer": "",
+                      "data": "string"
+                    }
+                  ],
+                  "metadata": {
+                    "sending": {
+                      "extracting": {
+                        "selecting": "string"
+                      },
+                      "transforming": {
+                        "filtering": "string",
+                        "supplementing": "string",
+                        "recontextualising": "string"
+                      },
+                      "loading": {
+                        "readying": "string",
+                        "assuring": "string",
+                        "signing": {
+                          "inputs": {
+                            "hash": "stringstringstringstringstringstringstringst",
+                            "signature": "stringstringstringstringstringstringstringst"
+                          }
+                        },
+                        "encrypting": "string",
+                        "sending": "string"
+                      }
+                    },
+                    "receiving": {
+                      "unloading": {
+                        "receiving": "string",
+                        "decrypting": "string",
+                        "verifying": "string",
+                        "assuring": "string",
+                        "readying": "string"
+                      },
+                      "transforming": {
+                        "recontextualising": "string",
+                        "dropping": "string",
+                        "restoring": "string"
+                      },
+                      "storing": {
+                        "inserting": "string"
+                      }
+                    }
+                  },
+                  "compartments": "string",
+                  "items": [
+                    "string"
+                  ]
+                }
+              ]
+            },
+            "protodata": [
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": true,
+                "pointer": "string",
+                "data": ""
+              },
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": false,
+                "pointer": "",
+                "data": "string"
+              }
+            ],
+            "metadata": {
+              "sending": {
+                "extracting": {
+                  "selecting": "string"
+                },
+                "transforming": {
+                  "filtering": "string",
+                  "supplementing": "string",
+                  "recontextualising": "string"
+                },
+                "loading": {
+                  "readying": "string",
+                  "assuring": "string",
+                  "signing": {
+                    "inputs": {
+                      "hash": "stringstringstringstringstringstringstringst",
+                      "signature": "stringstringstringstringstringstringstringst"
+                    }
+                  },
+                  "encrypting": "string",
+                  "sending": "string"
+                }
+              },
+              "receiving": {
+                "unloading": {
+                  "receiving": "string",
+                  "decrypting": "string",
+                  "verifying": "string",
+                  "assuring": "string",
+                  "readying": "string"
+                },
+                "transforming": {
+                  "recontextualising": "string",
+                  "dropping": "string",
+                  "restoring": "string"
+                },
+                "storing": {
+                  "inserting": "string"
+                }
+              }
+            },
+            "compartments": "string",
+            "items": []
+          }
+        ],
+        "persons": [
+          {
+            "id": null,
+            "idx": "1",
+            "name": "string",
+            "label": "string",
+            "description": "string",
+            "origination": "27581030T212146Z",
+            "termination": "94621231T142502Z",
+            "category": {
+              "code": "LTX-DOM-PSN",
+              "meaning": "string"
+            },
+            "type": {
+              "code": "string",
+              "meaning": "string"
+            },
+            "class": {
+              "code": "string",
+              "meaning": "string"
+            },
+            "data": {
+              "foreign_ids": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_names": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_labels": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "names": {
+                "title_common": "Miss",
+                "title_uncommon": "Dr",
+                "forenames": "Oliver James",
+                "surname": "Harrison",
+                "post_nominals": "BSc",
+                "corporate_name": "Royal Society of Arts (RSC)",
+                "crown_name": "Lord Chancellor",
+                "known_as": "Ollie"
+              },
+              "communications": {
+                "postal_address": "",
+                "telephone_number": "",
+                "email": ""
+              }
+            },
+            "protodata": [
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": true,
+                "pointer": "string",
+                "data": ""
+              },
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": false,
+                "pointer": "",
+                "data": "string"
+              }
+            ],
+            "metadata": {
+              "sending": {
+                "extracting": {
+                  "selecting": "string"
+                },
+                "transforming": {
+                  "filtering": "string",
+                  "supplementing": "string",
+                  "recontextualising": "string"
+                },
+                "loading": {
+                  "readying": "string",
+                  "assuring": "string",
+                  "signing": {
+                    "inputs": {
+                      "hash": "stringstringstringstringstringstringstringst",
+                      "signature": "stringstringstringstringstringstringstringst"
+                    }
+                  },
+                  "encrypting": "string",
+                  "sending": "string"
+                }
+              },
+              "receiving": {
+                "unloading": {
+                  "receiving": "string",
+                  "decrypting": "string",
+                  "verifying": "string",
+                  "assuring": "string",
+                  "readying": "string"
+                },
+                "transforming": {
+                  "recontextualising": "string",
+                  "dropping": "string",
+                  "restoring": "string"
+                },
+                "storing": {
+                  "inserting": "string"
+                }
+              }
+            },
+            "compartments": "string",
+            "items": [
+              {
+                "id": null,
+                "idx": "1",
+                "name": "string",
+                "label": "string",
+                "description": "string",
+                "origination": "98650830T210525Z",
+                "termination": "82230531T203008Z",
+                "category": {
+                  "code": "LTX-DOM-PSA",
+                  "meaning": "string"
+                },
+                "type": {
+                  "code": "string",
+                  "meaning": "string"
+                },
+                "class": {
+                  "code": "string",
+                  "meaning": "string"
+                },
+                "data": {
+                  "foreign_ids": [
+                    {
+                      "system": "Government_Gateway",
+                      "location": "string",
+                      "value": "string"
+                    }
+                  ],
+                  "foreign_names": [
+                    {
+                      "system": "Government_Gateway",
+                      "location": "string",
+                      "value": "string"
+                    }
+                  ],
+                  "foreign_labels": [
+                    {
+                      "system": "Government_Gateway",
+                      "location": "string",
+                      "value": "string"
+                    }
+                  ],
+                  "names": {
+                    "title_common": "Miss",
+                    "title_uncommon": "Dr",
+                    "forenames": "Oliver James",
+                    "surname": "Harrison",
+                    "post_nominals": "BSc",
+                    "corporate_name": "Royal Society of Arts (RSC)",
+                    "crown_name": "Lord Chancellor",
+                    "known_as": "Ollie"
+                  },
+                  "communications": {
+                    "postal_address": "",
+                    "telephone_number": "",
+                    "email": ""
+                  }
+                },
+                "protodata": [
+                  {
+                    "node": "string",
+                    "mime_type": "image/jpeg",
+                    "label": "string",
+                    "is_pointer": true,
+                    "pointer": "string",
+                    "data": ""
+                  },
+                  {
+                    "node": "string",
+                    "mime_type": "image/jpeg",
+                    "label": "string",
+                    "is_pointer": false,
+                    "pointer": "",
+                    "data": "string"
+                  }
+                ],
+                "metadata": {
+                  "sending": {
+                    "extracting": {
+                      "selecting": "string"
+                    },
+                    "transforming": {
+                      "filtering": "string",
+                      "supplementing": "string",
+                      "recontextualising": "string"
+                    },
+                    "loading": {
+                      "readying": "string",
+                      "assuring": "string",
+                      "signing": {
+                        "inputs": {
+                          "hash": "stringstringstringstringstringstringstringst",
+                          "signature": "stringstringstringstringstringstringstringst"
+                        }
+                      },
+                      "encrypting": "string",
+                      "sending": "string"
+                    }
+                  },
+                  "receiving": {
+                    "unloading": {
+                      "receiving": "string",
+                      "decrypting": "string",
+                      "verifying": "string",
+                      "assuring": "string",
+                      "readying": "string"
+                    },
+                    "transforming": {
+                      "recontextualising": "string",
+                      "dropping": "string",
+                      "restoring": "string"
+                    },
+                    "storing": {
+                      "inserting": "string"
+                    }
+                  }
+                },
+                "compartments": "string",
+                "items": []
+              }
+            ]
+          }
+        ],
+        "processes": [
+          {
+            "id": null,
+            "idx": "1",
+            "name": "string",
+            "label": "string",
+            "description": "string",
+            "origination": "04680130T201604Z",
+            "termination": "68170217T165426Z",
+            "category": {
+              "code": "LTX-DOM-PRS",
+              "meaning": "string"
+            },
+            "type": {
+              "code": "LRL",
+              "meaning": "string"
+            },
+            "class": {
+              "code": "SLL",
+              "meaning": "string"
+            },
+            "data": {
+              "foreign_ids": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_names": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_labels": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "documentation": {
+                "webpage": "string"
+              }
+            },
+            "protodata": [
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": true,
+                "pointer": "string",
+                "data": ""
+              },
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": false,
+                "pointer": "",
+                "data": "string"
+              }
+            ],
+            "metadata": {
+              "sending": {
+                "extracting": {
+                  "selecting": "string"
+                },
+                "transforming": {
+                  "filtering": "string",
+                  "supplementing": "string",
+                  "recontextualising": "string"
+                },
+                "loading": {
+                  "readying": "string",
+                  "assuring": "string",
+                  "signing": {
+                    "inputs": {
+                      "hash": "stringstringstringstringstringstringstringst",
+                      "signature": "stringstringstringstringstringstringstringst"
+                    }
+                  },
+                  "encrypting": "string",
+                  "sending": "string"
+                }
+              },
+              "receiving": {
+                "unloading": {
+                  "receiving": "string",
+                  "decrypting": "string",
+                  "verifying": "string",
+                  "assuring": "string",
+                  "readying": "string"
+                },
+                "transforming": {
+                  "recontextualising": "string",
+                  "dropping": "string",
+                  "restoring": "string"
+                },
+                "storing": {
+                  "inserting": "string"
+                }
+              }
+            },
+            "compartments": "string",
+            "items": []
+          }
+        ],
+        "products": [
+          {
+            "id": null,
+            "idx": "1",
+            "name": "string",
+            "label": "string",
+            "description": "string",
+            "origination": "32201023T225214Z",
+            "termination": "67971202T131021Z",
+            "category": {
+              "code": "LTX-DOM-PSN",
+              "meaning": "string"
+            },
+            "type": {
+              "code": "string",
+              "meaning": "string"
+            },
+            "class": {
+              "code": "string",
+              "meaning": "string"
+            },
+            "data": {
+              "foreign_ids": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_names": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_labels": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "names": {
+                "title_common": "Miss",
+                "title_uncommon": "Dr",
+                "forenames": "Oliver James",
+                "surname": "Harrison",
+                "post_nominals": "BSc",
+                "corporate_name": "Royal Society of Arts (RSC)",
+                "crown_name": "Lord Chancellor",
+                "known_as": "Ollie"
+              },
+              "communications": {
+                "postal_address": "",
+                "telephone_number": "",
+                "email": ""
+              }
+            },
+            "protodata": [
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": true,
+                "pointer": "string",
+                "data": ""
+              },
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": false,
+                "pointer": "",
+                "data": "string"
+              }
+            ],
+            "metadata": {
+              "sending": {
+                "extracting": {
+                  "selecting": "string"
+                },
+                "transforming": {
+                  "filtering": "string",
+                  "supplementing": "string",
+                  "recontextualising": "string"
+                },
+                "loading": {
+                  "readying": "string",
+                  "assuring": "string",
+                  "signing": {
+                    "inputs": {
+                      "hash": "stringstringstringstringstringstringstringst",
+                      "signature": "stringstringstringstringstringstringstringst"
+                    }
+                  },
+                  "encrypting": "string",
+                  "sending": "string"
+                }
+              },
+              "receiving": {
+                "unloading": {
+                  "receiving": "string",
+                  "decrypting": "string",
+                  "verifying": "string",
+                  "assuring": "string",
+                  "readying": "string"
+                },
+                "transforming": {
+                  "recontextualising": "string",
+                  "dropping": "string",
+                  "restoring": "string"
+                },
+                "storing": {
+                  "inserting": "string"
+                }
+              }
+            },
+            "compartments": "string",
+            "items": [
+              {
+                "id": null,
+                "idx": "1",
+                "name": "string",
+                "label": "string",
+                "description": "string",
+                "origination": "28010730T005130Z",
+                "termination": "69431023T204935Z",
+                "category": {
+                  "code": "LTX-DOM-PSA",
+                  "meaning": "string"
+                },
+                "type": {
+                  "code": "string",
+                  "meaning": "string"
+                },
+                "class": {
+                  "code": "string",
+                  "meaning": "string"
+                },
+                "data": {
+                  "foreign_ids": [
+                    {
+                      "system": "Government_Gateway",
+                      "location": "string",
+                      "value": "string"
+                    }
+                  ],
+                  "foreign_names": [
+                    {
+                      "system": "Government_Gateway",
+                      "location": "string",
+                      "value": "string"
+                    }
+                  ],
+                  "foreign_labels": [
+                    {
+                      "system": "Government_Gateway",
+                      "location": "string",
+                      "value": "string"
+                    }
+                  ],
+                  "names": {
+                    "title_common": "Miss",
+                    "title_uncommon": "Dr",
+                    "forenames": "Oliver James",
+                    "surname": "Harrison",
+                    "post_nominals": "BSc",
+                    "corporate_name": "Royal Society of Arts (RSC)",
+                    "crown_name": "Lord Chancellor",
+                    "known_as": "Ollie"
+                  },
+                  "communications": {
+                    "postal_address": "",
+                    "telephone_number": "",
+                    "email": ""
+                  }
+                },
+                "protodata": [
+                  {
+                    "node": "string",
+                    "mime_type": "image/jpeg",
+                    "label": "string",
+                    "is_pointer": true,
+                    "pointer": "string",
+                    "data": ""
+                  },
+                  {
+                    "node": "string",
+                    "mime_type": "image/jpeg",
+                    "label": "string",
+                    "is_pointer": false,
+                    "pointer": "",
+                    "data": "string"
+                  }
+                ],
+                "metadata": {
+                  "sending": {
+                    "extracting": {
+                      "selecting": "string"
+                    },
+                    "transforming": {
+                      "filtering": "string",
+                      "supplementing": "string",
+                      "recontextualising": "string"
+                    },
+                    "loading": {
+                      "readying": "string",
+                      "assuring": "string",
+                      "signing": {
+                        "inputs": {
+                          "hash": "stringstringstringstringstringstringstringst",
+                          "signature": "stringstringstringstringstringstringstringst"
+                        }
+                      },
+                      "encrypting": "string",
+                      "sending": "string"
+                    }
+                  },
+                  "receiving": {
+                    "unloading": {
+                      "receiving": "string",
+                      "decrypting": "string",
+                      "verifying": "string",
+                      "assuring": "string",
+                      "readying": "string"
+                    },
+                    "transforming": {
+                      "recontextualising": "string",
+                      "dropping": "string",
+                      "restoring": "string"
+                    },
+                    "storing": {
+                      "inserting": "string"
+                    }
+                  }
+                },
+                "compartments": "string",
+                "items": []
+              }
+            ]
+          },
+          {
+            "id": null,
+            "idx": "1",
+            "name": "string",
+            "label": "string",
+            "description": "string",
+            "origination": "09551205T120330Z",
+            "termination": "67440231T082239Z",
+            "category": {
+              "code": "LTX-DOM-REL",
+              "meaning": "string"
+            },
+            "type": {
+              "code": "LIB",
+              "meaning": "string"
+            },
+            "class": {
+              "code": "OHC",
+              "meaning": "string"
+            },
+            "data": {
+              "foreign_ids": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_names": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_labels": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "manifestations": [
+                {
+                  "artifact_reference": "string",
+                  "artifact_code": "str",
+                  "artifact_description": "string",
+                  "issued_date": "33931016T212927Z",
+                  "withdrawn_date": "13741219T174545Z",
+                  "effective_from_date": "19801230T211530Z",
+                  "effective_to_date": "49391202T225956Z",
+                  "observed_date": "43520904T202528Z",
+                  "operative_area_code": "stri",
+                  "operative_area_name": "string",
+                  "protodata_ptr": "string",
+                  "notes": "string"
+                }
+              ]
+            },
+            "protodata": [
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": true,
+                "pointer": "string",
+                "data": ""
+              },
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": false,
+                "pointer": "",
+                "data": "string"
+              }
+            ],
+            "metadata": {
+              "sending": {
+                "extracting": {
+                  "selecting": "string"
+                },
+                "transforming": {
+                  "filtering": "string",
+                  "supplementing": "string",
+                  "recontextualising": "string"
+                },
+                "loading": {
+                  "readying": "string",
+                  "assuring": "string",
+                  "signing": {
+                    "inputs": {
+                      "hash": "stringstringstringstringstringstringstringst",
+                      "signature": "stringstringstringstringstringstringstringst"
+                    }
+                  },
+                  "encrypting": "string",
+                  "sending": "string"
+                }
+              },
+              "receiving": {
+                "unloading": {
+                  "receiving": "string",
+                  "decrypting": "string",
+                  "verifying": "string",
+                  "assuring": "string",
+                  "readying": "string"
+                },
+                "transforming": {
+                  "recontextualising": "string",
+                  "dropping": "string",
+                  "restoring": "string"
+                },
+                "storing": {
+                  "inserting": "string"
+                }
+              }
+            },
+            "compartments": "string",
+            "items": [
+              {
+                "transportation": {
+                  "path": "string"
+                },
+                "persistence": {
+                  "place": "LTX-DOM-PSA",
+                  "identifier": 0
+                }
+              },
+              {
+                "transportation": {
+                  "path": "string"
+                },
+                "persistence": {
+                  "place": "LTX-DOM-AST",
+                  "identifier": 0
+                }
+              }
+            ]
+          },
+          {
+            "id": null,
+            "idx": "1",
+            "name": "string",
+            "label": "string",
+            "description": "string",
+            "origination": "09610914T165821Z",
+            "termination": "42181230T032138Z",
+            "category": {
+              "code": "LTX-DOM-PRP",
+              "meaning": "string"
+            },
+            "type": {
+              "code": "OCC",
+              "meaning": "string"
+            },
+            "class": {
+              "code": "HDT",
+              "meaning": "string"
+            },
+            "data": {
+              "foreign_ids": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_names": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_labels": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "addresses": {
+                "property_full_address": "string",
+                "address_line_1": "string",
+                "address_postcode": "string",
+                "address_known_as": "string"
+              },
+              "location": {
+                "local_authority_pseudo_area_code": "stri",
+                "ordnance_survey_coordinates": "string",
+                "google_maps_coordinates": "string"
+              },
+              "assessments": [
+                {
+                  "id": null,
+                  "idx": "1",
+                  "name": "string",
+                  "label": "string",
+                  "description": "string",
+                  "origination": "59201019T175552Z",
+                  "termination": "17030831T225406Z",
+                  "category": {
+                    "code": "LTX-DOM-AST",
+                    "meaning": "string"
+                  },
+                  "type": {
+                    "code": "CHG",
+                    "meaning": "string"
+                  },
+                  "class": {
+                    "code": "RLE",
+                    "meaning": "string"
+                  },
+                  "data": {
+                    "foreign_ids": [
+                      {
+                        "system": "Government_Gateway",
+                        "location": "string",
+                        "value": "string"
+                      }
+                    ],
+                    "foreign_names": [
+                      {
+                        "system": "Government_Gateway",
+                        "location": "string",
+                        "value": "string"
+                      }
+                    ],
+                    "foreign_labels": [
+                      {
+                        "system": "Government_Gateway",
+                        "location": "string",
+                        "value": "string"
+                      }
+                    ],
+                    "property": {
+                      "id": 9999999999,
+                      "cdb_id": 10000000000000000000
+                    },
+                    "use": {
+                      "is_composite": "Y",
+                      "is_part_exempt": "Y",
+                      "description": "string"
+                    },
+                    "valuation_survey": [
+                      {
+                        "id": "11111",
+                        "idx": "1",
+                        "name": "tom:sql/cdb:ndr",
+                        "label": "Site",
+                        "description": "",
+                        "category": {
+                          "code": "LTX-DOM-PRP",
+                          "meaning": "Local Taxation Domain Property"
+                        },
+                        "type": {
+                          "code": "UOU",
+                          "meaning": "Unit of Use"
+                        },
+                        "class": {
+                          "code": "UOU",
+                          "meaning": "Site (HC)"
+                        },
+                        "origination": "1950-01-01T00:00:00Z",
+                        "termination": "",
+                        "data": {
+                          "foreign_ids": {
+                            "system": "string",
+                            "location": "string",
+                            "value": "string"
+                          },
+                          "foreign_names": {
+                            "system": "string",
+                            "location": "string",
+                            "value": "string"
+                          },
+                          "foreign_labels": {
+                            "system": "string",
+                            "location": "string",
+                            "value": "string"
+                          },
+                          "uses": [],
+                          "constructions": [],
+                          "facilities": [],
+                          "artifacts": [
+                            {
+                              "activity": {
+                                "source": "",
+                                "value": ""
+                              },
+                              "code": {
+                                "source": "",
+                                "value": ""
+                              },
+                              "description": {
+                                "source": "tom:sql/cdb:ndr/plant_machinery/os_refno:123456789/description",
+                                "value": "Plant and Machinery (Goods Lift)"
+                              },
+                              "quantity": {
+                                "source": "tom:sql/cdb:ndr/plant_machinery/os_refno:123456789/value",
+                                "value": 10000
+                              },
+                              "units": {
+                                "source": "",
+                                "value": "GDP"
+                              }
+                            }
+                          ],
+                          "uninheretances": [],
+                          "attributions": []
+                        },
+                        "metadata": {
+                          "sending": {
+                            "extracting": {
+                              "selecting": "string"
+                            },
+                            "transforming": {
+                              "filtering": "string",
+                              "supplementing": "string",
+                              "recontextualising": "string"
+                            },
+                            "loading": {
+                              "readying": "string",
+                              "assuring": "string",
+                              "signing": {
+                                "inputs": {
+                                  "hash": "string",
+                                  "signature": "string"
+                                }
+                              },
+                              "encrypting": "string",
+                              "sending": "string"
+                            }
+                          },
+                          "receiving": {
+                            "unloading": {
+                              "receiving": "string",
+                              "decrypting": "string",
+                              "verifying": "string",
+                              "assuring": "string",
+                              "readying": "string"
+                            },
+                            "transforming": {
+                              "recontextualising": "string",
+                              "dropping": "string",
+                              "restoring": "string"
+                            },
+                            "storing": {
+                              "inserting": "string"
+                            }
+                          }
+                        },
+                        "protodata": [
+                          {
+                            "node": "string",
+                            "mime_type": "image/jpeg",
+                            "label": "string",
+                            "is_pointer": true,
+                            "pointer": "string",
+                            "data": ""
+                          },
+                          {
+                            "node": "string",
+                            "mime_type": "image/jpeg",
+                            "label": "string",
+                            "is_pointer": false,
+                            "pointer": "",
+                            "data": "string"
+                          }
+                        ],
+                        "compartments": [],
+                        "items": [
+                          {
+                            "id": "22222",
+                            "idx": "1.1",
+                            "name": "tom:sql/cdb:ndr",
+                            "label": "Site Level 0 to 0",
+                            "description": "",
+                            "category": {
+                              "code": "LTX-DOM-PRP",
+                              "meaning": "Local Taxation Domain Property"
+                            },
+                            "type": {
+                              "code": "UOU",
+                              "meaning": "Unit of Use"
+                            },
+                            "class": {
+                              "code": "UOU",
+                              "meaning": "Site (VC)"
+                            },
+                            "origination": "1950-01-01T00:00:00Z",
+                            "termination": "",
+                            "data": {
+                              "foreign_ids": {
+                                "system": "string",
+                                "location": "string",
+                                "value": "string"
+                              },
+                              "foreign_names": {
+                                "system": "string",
+                                "location": "string",
+                                "value": "string"
+                              },
+                              "foreign_labels": {
+                                "system": "string",
+                                "location": "string",
+                                "value": "string"
+                              },
+                              "uses": [],
+                              "constructions": [],
+                              "facilities": [],
+                              "artifacts": [],
+                              "uninheretances": [],
+                              "attributions": []
+                            },
+                            "metadata": {
+                              "sending": {
+                                "extracting": {
+                                  "selecting": "string"
+                                },
+                                "transforming": {
+                                  "filtering": "string",
+                                  "supplementing": "string",
+                                  "recontextualising": "string"
+                                },
+                                "loading": {
+                                  "readying": "string",
+                                  "assuring": "string",
+                                  "signing": {
+                                    "inputs": {
+                                      "hash": "string",
+                                      "signature": "string"
+                                    }
+                                  },
+                                  "encrypting": "string",
+                                  "sending": "string"
+                                }
+                              },
+                              "receiving": {
+                                "unloading": {
+                                  "receiving": "string",
+                                  "decrypting": "string",
+                                  "verifying": "string",
+                                  "assuring": "string",
+                                  "readying": "string"
+                                },
+                                "transforming": {
+                                  "recontextualising": "string",
+                                  "dropping": "string",
+                                  "restoring": "string"
+                                },
+                                "storing": {
+                                  "inserting": "string"
+                                }
+                              }
+                            },
+                            "protodata": [
+                              {
+                                "node": "string",
+                                "mime_type": "image/jpeg",
+                                "label": "string",
+                                "is_pointer": true,
+                                "pointer": "string",
+                                "data": ""
+                              },
+                              {
+                                "node": "string",
+                                "mime_type": "image/jpeg",
+                                "label": "string",
+                                "is_pointer": false,
+                                "pointer": "",
+                                "data": "string"
+                              }
+                            ],
+                            "compartments": [],
+                            "items": [
+                              {
+                                "id": "33333",
+                                "idx": "1.1.1",
+                                "name": "tom:sql/cdb:ndr",
+                                "label": "Separate Survey Unit 1",
+                                "description": "",
+                                "category": {
+                                  "code": "LTX-DOM-PRP",
+                                  "meaning": "Local Taxation Domain Property"
+                                },
+                                "type": {
+                                  "code": "UOU",
+                                  "meaning": "Unit of Use"
+                                },
+                                "class": {
+                                  "code": "UOU",
+                                  "meaning": "Building-Structure (HC)"
+                                },
+                                "origination": "1950-01-01T00:00:00Z",
+                                "termination": "",
+                                "data": {
+                                  "foreign_ids": {
+                                    "system": "string",
+                                    "location": "string",
+                                    "value": "string"
+                                  },
+                                  "foreign_names": {
+                                    "system": "string",
+                                    "location": "string",
+                                    "value": "string"
+                                  },
+                                  "foreign_labels": {
+                                    "system": "string",
+                                    "location": "string",
+                                    "value": "string"
+                                  },
+                                  "uses": [],
+                                  "constructions": [],
+                                  "facilities": [],
+                                  "artifacts": [],
+                                  "uninheretances": [],
+                                  "attributions": []
+                                },
+                                "metadata": {
+                                  "sending": {
+                                    "extracting": {
+                                      "selecting": "string"
+                                    },
+                                    "transforming": {
+                                      "filtering": "string",
+                                      "supplementing": "string",
+                                      "recontextualising": "string"
+                                    },
+                                    "loading": {
+                                      "readying": "string",
+                                      "assuring": "string",
+                                      "signing": {
+                                        "inputs": {
+                                          "hash": "string",
+                                          "signature": "string"
+                                        }
+                                      },
+                                      "encrypting": "string",
+                                      "sending": "string"
+                                    }
+                                  },
+                                  "receiving": {
+                                    "unloading": {
+                                      "receiving": "string",
+                                      "decrypting": "string",
+                                      "verifying": "string",
+                                      "assuring": "string",
+                                      "readying": "string"
+                                    },
+                                    "transforming": {
+                                      "recontextualising": "string",
+                                      "dropping": "string",
+                                      "restoring": "string"
+                                    },
+                                    "storing": {
+                                      "inserting": "string"
+                                    }
+                                  }
+                                },
+                                "protodata": [
+                                  {
+                                    "node": "string",
+                                    "mime_type": "image/jpeg",
+                                    "label": "string",
+                                    "is_pointer": true,
+                                    "pointer": "string",
+                                    "data": ""
+                                  },
+                                  {
+                                    "node": "string",
+                                    "mime_type": "image/jpeg",
+                                    "label": "string",
+                                    "is_pointer": false,
+                                    "pointer": "",
+                                    "data": "string"
+                                  }
+                                ],
+                                "compartments": [],
+                                "items": [
+                                  {
+                                    "id": "44444",
+                                    "idx": "1.1.1.1",
+                                    "name": "tom:sql/cdb:ndr",
+                                    "label": "Floor Level GF to GF",
+                                    "description": "",
+                                    "category": {
+                                      "code": "LTX-DOM-PRP",
+                                      "meaning": "Local Taxation Domain Property"
+                                    },
+                                    "type": {
+                                      "code": "UOU",
+                                      "meaning": "Unit of Use"
+                                    },
+                                    "class": {
+                                      "code": "UOU",
+                                      "meaning": "Building-Structure Level (VC)"
+                                    },
+                                    "origination": "1950-01-01T00:00:00Z",
+                                    "termination": "",
+                                    "data": {
+                                      "foreign_ids": {
+                                        "system": "string",
+                                        "location": "string",
+                                        "value": "string"
+                                      },
+                                      "foreign_names": {
+                                        "system": "string",
+                                        "location": "string",
+                                        "value": "string"
+                                      },
+                                      "foreign_labels": {
+                                        "system": "string",
+                                        "location": "string",
+                                        "value": "string"
+                                      },
+                                      "uses": [],
+                                      "constructions": [],
+                                      "facilities": [],
+                                      "artifacts": [],
+                                      "uninheretances": [],
+                                      "attributions": []
+                                    },
+                                    "metadata": {
+                                      "sending": {
+                                        "extracting": {
+                                          "selecting": "string"
+                                        },
+                                        "transforming": {
+                                          "filtering": "string",
+                                          "supplementing": "string",
+                                          "recontextualising": "string"
+                                        },
+                                        "loading": {
+                                          "readying": "string",
+                                          "assuring": "string",
+                                          "signing": {
+                                            "inputs": {
+                                              "hash": "string",
+                                              "signature": "string"
+                                            }
+                                          },
+                                          "encrypting": "string",
+                                          "sending": "string"
+                                        }
+                                      },
+                                      "receiving": {
+                                        "unloading": {
+                                          "receiving": "string",
+                                          "decrypting": "string",
+                                          "verifying": "string",
+                                          "assuring": "string",
+                                          "readying": "string"
+                                        },
+                                        "transforming": {
+                                          "recontextualising": "string",
+                                          "dropping": "string",
+                                          "restoring": "string"
+                                        },
+                                        "storing": {
+                                          "inserting": "string"
+                                        }
+                                      }
+                                    },
+                                    "protodata": [
+                                      {
+                                        "node": "string",
+                                        "mime_type": "image/jpeg",
+                                        "label": "string",
+                                        "is_pointer": true,
+                                        "pointer": "string",
+                                        "data": ""
+                                      },
+                                      {
+                                        "node": "string",
+                                        "mime_type": "image/jpeg",
+                                        "label": "string",
+                                        "is_pointer": false,
+                                        "pointer": "",
+                                        "data": "string"
+                                      }
+                                    ],
+                                    "compartments": [],
+                                    "items": [
+                                      {
+                                        "id": "55555",
+                                        "idx": "1.1.1.1.1",
+                                        "name": "tom:sql/cdb:ndr",
+                                        "label": "Unit of Valuation 1",
+                                        "description": "",
+                                        "category": {
+                                          "code": "LTX-DOM-PRP",
+                                          "meaning": "Local Taxation Domain Property"
+                                        },
+                                        "type": {
+                                          "code": "UOU",
+                                          "meaning": "Unit of Use"
+                                        },
+                                        "class": {
+                                          "code": "UOU",
+                                          "meaning": "Room-Zone (HC)"
+                                        },
+                                        "origination": "1950-01-01T00:00:00Z",
+                                        "termination": "",
+                                        "data": {
+                                          "foreign_ids": {
+                                            "system": "string",
+                                            "location": "string",
+                                            "value": "string"
+                                          },
+                                          "foreign_names": {
+                                            "system": "string",
+                                            "location": "string",
+                                            "value": "string"
+                                          },
+                                          "foreign_labels": {
+                                            "system": "string",
+                                            "location": "string",
+                                            "value": "string"
+                                          },
+                                          "uses": [
+                                            {
+                                              "activity": {
+                                                "source": "",
+                                                "value": ""
+                                              },
+                                              "code": {
+                                                "source": "aucode",
+                                                "value": "SZA"
+                                              },
+                                              "description": {
+                                                "source": "ns_au_desc",
+                                                "value": "retail zone a"
+                                              },
+                                              "quantity": {
+                                                "source": "accomarea",
+                                                "value": 55.88
+                                              },
+                                              "units": {
+                                                "source": "",
+                                                "value": "m2"
+                                              }
+                                            }
+                                          ],
+                                          "constructions": [],
+                                          "facilities": [],
+                                          "artifacts": [],
+                                          "uninheretances": [],
+                                          "attributions": []
+                                        },
+                                        "metadata": {
+                                          "sending": {
+                                            "extracting": {
+                                              "selecting": "string"
+                                            },
+                                            "transforming": {
+                                              "filtering": "string",
+                                              "supplementing": "string",
+                                              "recontextualising": "string"
+                                            },
+                                            "loading": {
+                                              "readying": "string",
+                                              "assuring": "string",
+                                              "signing": {
+                                                "inputs": {
+                                                  "hash": "string",
+                                                  "signature": "string"
+                                                }
+                                              },
+                                              "encrypting": "string",
+                                              "sending": "string"
+                                            }
+                                          },
+                                          "receiving": {
+                                            "unloading": {
+                                              "receiving": "string",
+                                              "decrypting": "string",
+                                              "verifying": "string",
+                                              "assuring": "string",
+                                              "readying": "string"
+                                            },
+                                            "transforming": {
+                                              "recontextualising": "string",
+                                              "dropping": "string",
+                                              "restoring": "string"
+                                            },
+                                            "storing": {
+                                              "inserting": "string"
+                                            }
+                                          }
+                                        },
+                                        "protodata": [
+                                          {
+                                            "node": "string",
+                                            "mime_type": "image/jpeg",
+                                            "label": "string",
+                                            "is_pointer": true,
+                                            "pointer": "string",
+                                            "data": ""
+                                          },
+                                          {
+                                            "node": "string",
+                                            "mime_type": "image/jpeg",
+                                            "label": "string",
+                                            "is_pointer": false,
+                                            "pointer": "",
+                                            "data": "string"
+                                          }
+                                        ],
+                                        "compartments": [],
+                                        "items": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ],
+                    "valuation": {
+                      "system": "string",
+                      "id": 10000000000000000000,
+                      "method_code": "str",
+                      "rateable_value": 10000000000000000000,
+                      "effective_date": "79841230T221109Z"
+                    },
+                    "list": {
+                      "category": "LTX-DOM-LST",
+                      "function": "string",
+                      "year": "stri",
+                      "authority_code": "stri"
+                    },
+                    "workflow": {
+                      "cdb_job_id": 10000000000000000000
+                    }
+                  },
+                  "protodata": [
+                    {
+                      "node": "string",
+                      "mime_type": "image/jpeg",
+                      "label": "string",
+                      "is_pointer": true,
+                      "pointer": "string",
+                      "data": ""
+                    },
+                    {
+                      "node": "string",
+                      "mime_type": "image/jpeg",
+                      "label": "string",
+                      "is_pointer": false,
+                      "pointer": "",
+                      "data": "string"
+                    }
+                  ],
+                  "metadata": {
+                    "sending": {
+                      "extracting": {
+                        "selecting": "string"
+                      },
+                      "transforming": {
+                        "filtering": "string",
+                        "supplementing": "string",
+                        "recontextualising": "string"
+                      },
+                      "loading": {
+                        "readying": "string",
+                        "assuring": "string",
+                        "signing": {
+                          "inputs": {
+                            "hash": "stringstringstringstringstringstringstringst",
+                            "signature": "stringstringstringstringstringstringstringst"
+                          }
+                        },
+                        "encrypting": "string",
+                        "sending": "string"
+                      }
+                    },
+                    "receiving": {
+                      "unloading": {
+                        "receiving": "string",
+                        "decrypting": "string",
+                        "verifying": "string",
+                        "assuring": "string",
+                        "readying": "string"
+                      },
+                      "transforming": {
+                        "recontextualising": "string",
+                        "dropping": "string",
+                        "restoring": "string"
+                      },
+                      "storing": {
+                        "inserting": "string"
+                      }
+                    }
+                  },
+                  "compartments": "string",
+                  "items": [
+                    "string"
+                  ]
+                }
+              ]
+            },
+            "protodata": [
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": true,
+                "pointer": "string",
+                "data": ""
+              },
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": false,
+                "pointer": "",
+                "data": "string"
+              }
+            ],
+            "metadata": {
+              "sending": {
+                "extracting": {
+                  "selecting": "string"
+                },
+                "transforming": {
+                  "filtering": "string",
+                  "supplementing": "string",
+                  "recontextualising": "string"
+                },
+                "loading": {
+                  "readying": "string",
+                  "assuring": "string",
+                  "signing": {
+                    "inputs": {
+                      "hash": "stringstringstringstringstringstringstringst",
+                      "signature": "stringstringstringstringstringstringstringst"
+                    }
+                  },
+                  "encrypting": "string",
+                  "sending": "string"
+                }
+              },
+              "receiving": {
+                "unloading": {
+                  "receiving": "string",
+                  "decrypting": "string",
+                  "verifying": "string",
+                  "assuring": "string",
+                  "readying": "string"
+                },
+                "transforming": {
+                  "recontextualising": "string",
+                  "dropping": "string",
+                  "restoring": "string"
+                },
+                "storing": {
+                  "inserting": "string"
+                }
+              }
+            },
+            "compartments": "string",
+            "items": []
+          }
+        ],
+        "relationships": [
+          {
+            "id": null,
+            "idx": "1",
+            "name": "string",
+            "label": "string",
+            "description": "string",
+            "origination": "59460207T024622Z",
+            "termination": "64960308T173020Z",
+            "category": {
+              "code": "LTX-DOM-REL",
+              "meaning": "string"
+            },
+            "type": {
+              "code": "LIB",
+              "meaning": "string"
+            },
+            "class": {
+              "code": "OHC",
+              "meaning": "string"
+            },
+            "data": {
+              "foreign_ids": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_names": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "foreign_labels": [
+                {
+                  "system": "Government_Gateway",
+                  "location": "string",
+                  "value": "string"
+                }
+              ],
+              "manifestations": [
+                {
+                  "artifact_reference": "string",
+                  "artifact_code": "str",
+                  "artifact_description": "string",
+                  "issued_date": "73850314T172014Z",
+                  "withdrawn_date": "60261028T110040Z",
+                  "effective_from_date": "95911215T192545Z",
+                  "effective_to_date": "81061003T233031Z",
+                  "observed_date": "70320925T205411Z",
+                  "operative_area_code": "stri",
+                  "operative_area_name": "string",
+                  "protodata_ptr": "string",
+                  "notes": "string"
+                }
+              ]
+            },
+            "protodata": [
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": true,
+                "pointer": "string",
+                "data": ""
+              },
+              {
+                "node": "string",
+                "mime_type": "image/jpeg",
+                "label": "string",
+                "is_pointer": false,
+                "pointer": "",
+                "data": "string"
+              }
+            ],
+            "metadata": {
+              "sending": {
+                "extracting": {
+                  "selecting": "string"
+                },
+                "transforming": {
+                  "filtering": "string",
+                  "supplementing": "string",
+                  "recontextualising": "string"
+                },
+                "loading": {
+                  "readying": "string",
+                  "assuring": "string",
+                  "signing": {
+                    "inputs": {
+                      "hash": "stringstringstringstringstringstringstringst",
+                      "signature": "stringstringstringstringstringstringstringst"
+                    }
+                  },
+                  "encrypting": "string",
+                  "sending": "string"
+                }
+              },
+              "receiving": {
+                "unloading": {
+                  "receiving": "string",
+                  "decrypting": "string",
+                  "verifying": "string",
+                  "assuring": "string",
+                  "readying": "string"
+                },
+                "transforming": {
+                  "recontextualising": "string",
+                  "dropping": "string",
+                  "restoring": "string"
+                },
+                "storing": {
+                  "inserting": "string"
+                }
+              }
+            },
+            "compartments": "string",
+            "items": [
+              {
+                "transportation": {
+                  "path": "string"
+                },
+                "persistence": {
+                  "place": "LTX-DOM-PSA",
+                  "identifier": 0
+                }
+              },
+              {
+                "transportation": {
+                  "path": "string"
+                },
+                "persistence": {
+                  "place": "LTX-DOM-AST",
+                  "identifier": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "items": []
+    }
+  }
+}

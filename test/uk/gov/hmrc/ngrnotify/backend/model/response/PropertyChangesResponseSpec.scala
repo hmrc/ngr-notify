@@ -21,7 +21,8 @@ import org.scalatest.matchers.must.Matchers
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.PropertyChangesResponse
 
-class PropertyChangesResponseSpec extends AnyFlatSpec with Matchers  {
+class PropertyChangesResponseSpec extends AnyFlatSpec with Matchers {
+
   val propertyChangesResponse: PropertyChangesResponse =
     PropertyChangesResponse(Some("random string"))
 

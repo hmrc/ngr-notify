@@ -86,8 +86,10 @@ class StatusControllerSpec extends AnyWordAppSpec:
 
     ".getRatepayerStatus return 500 if HIP response body is not a JSON" in {
       val result = controller.getRatepayerStatus("test_no_json")(FakeRequest())
-      status(result)          shouldBe INTERNAL_SERVER_ERROR
-      contentAsString(result) shouldBe """[{"code":"ACTION_FAILED","reason":"No content to map due to end-of-input\n at [Source: (String)\"\"; line: 1, column: 0]"}]"""
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+      contentAsString(
+        result
+      )              shouldBe """[{"code":"ACTION_FAILED","reason":"No content to map due to end-of-input\n at [Source: (String)\"\"; line: 1, column: 0]"}]"""
     }
 
     ".getRatepayerStatus return 500 on HIP connection exception" in {

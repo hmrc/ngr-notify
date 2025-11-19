@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model.ratepayer
+package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.Format
-import uk.gov.hmrc.ngrnotify.model.Scala3EnumJsonFormat
+import play.api.libs.json.{Format, Json}
 
-enum ReferenceType {
-  case TRN, NINO, SAUTR
-}
+/**
+  * @author Yuriy Tumakha
+  */
+case class JobForm(
+  job: Job
+)
 
-object ReferenceType {
-  implicit val format: Format[ReferenceType] = Scala3EnumJsonFormat.format[ReferenceType]
-}
+object JobForm:
+
+  given Format[JobForm] = Json.format

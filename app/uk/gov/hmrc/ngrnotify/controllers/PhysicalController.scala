@@ -29,10 +29,13 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PhysicalController @Inject() (
-                                     hipConnector: HipConnector,
-                                     cc: ControllerComponents
-                                   )(implicit ec: ExecutionContext) extends BackendController(cc) with JsonSupport with Logging {
-  
+  hipConnector: HipConnector,
+  cc: ControllerComponents
+)(implicit ec: ExecutionContext
+) extends BackendController(cc)
+  with JsonSupport
+  with Logging {
+
   def updatePropertyChanges(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     request.body.validate[PropertyChangesRequest] match {
       case JsSuccess(propertyChanges, _) =>
@@ -42,18 +45,19 @@ class PhysicalController @Inject() (
         logger.info(s"BridgeRequest:\n$bridgeRequest")
 
         hipConnector.updatePropertyChanges(bridgeRequest).map { response =>
-            response.status match {
-              case 200 | 201 | 202 => Accepted(Json.toJsObject(PropertyChangesResponse()))
-              case 400             => BadRequest(Json.toJsObject(PropertyChangesResponse(Some(response.body))))
-              case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
-            }
+          response.status match {
+            case 200 | 201 | 202 => Accepted(Json.toJsObject(PropertyChangesResponse()))
+            case 400             => BadRequest(Json.toJsObject(PropertyChangesResponse(Some(response.body))))
+            case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
           }
+        }
           .recover(e =>
-            InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
-        
-      case jsError: JsError                => Future.successful(buildValidationErrorsResponse(jsError))
+            InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage))
+          )
+
+      case jsError: JsError => Future.successful(buildValidationErrorsResponse(jsError))
     }
-  
+
   }
 
   private def toBridgeRequest(propertyChanges: PropertyChangesRequest): BridgeRequest =
@@ -63,7 +67,7 @@ class PhysicalController @Inject() (
         idx = "?",
         name = "physical",
         compartments = Compartments(
-          //TODO add actual mappings when spec becomes available
+          // TODO add actual mappings when spec becomes available
 
         )
       )

@@ -18,8 +18,10 @@ package uk.gov.hmrc.ngrnotify.model.response.bridge
 
 import play.api.libs.json.{Json, OFormat}
 
-case class ClassX (code: String,
-                   meaning: String)
+case class ClassX(
+  code: String,
+  meaning: String
+)
 
 object ClassX {
   implicit val format: OFormat[ClassX] = Json.format[ClassX]

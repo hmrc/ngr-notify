@@ -29,8 +29,8 @@ class NinoSpec extends AnyWordSpec with Matchers {
     }
 
     "be serialized/deserialized from JSON" in {
-      val nino = Nino("QQ123456A")
-      val json = Json.toJson(nino)
+      val nino             = Nino("QQ123456A")
+      val json             = Json.toJson(nino)
       val deserializedNino = json.as[Nino]
       deserializedNino shouldBe nino
     }

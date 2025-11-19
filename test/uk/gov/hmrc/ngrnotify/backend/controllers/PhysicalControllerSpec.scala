@@ -44,7 +44,7 @@ import scala.concurrent.Future
 class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach:
 
   val mockHipConnector: HipConnector = mock[HipConnector]
-  
+
   override def beforeEach(): Unit = {
     reset(mockHipConnector)
     super.beforeEach()
@@ -75,13 +75,13 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         .thenReturn(
           Future.successful(HttpResponse(OK, ""))
         )
-      
+
       val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
         .withJsonBody(json)
 
       val result: Future[Result] = route(app, request).value
 
-      status(result)  shouldBe ACCEPTED
+      status(result) shouldBe ACCEPTED
     }
 
     Seq(INTERNAL_SERVER_ERROR, BAD_REQUEST) foreach { statusCode =>
@@ -136,14 +136,15 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
           Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
           Some(AnythingElseData(true, Some("addtional text"))),
           Seq("uploadId1", "uploadId2")
-        ))
+        )
+      )
 
       when(mockHipConnector.updatePropertyChanges(any[BridgeRequest])(using any[Request[?]]))
         .thenReturn(
           Future.failed(new Exception("HipConnector failure"))
         )
 
-      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
+      val request                = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges().url)
         .withJsonBody(json)
       val result: Future[Result] = route(app, request).value
       status(result) mustEqual INTERNAL_SERVER_ERROR

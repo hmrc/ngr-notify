@@ -20,25 +20,26 @@ import uk.gov.hmrc.ngrnotify.model.response.bridge.*
 import uk.gov.hmrc.ngrnotify.model.response.bridge.metadata.*
 
 object BridgeModelTestData {
-  val testCategory: Category = Category("TestCategoryCode", "TestCategoryMeaning")
-  val testTypeX: TypeX = TypeX("TestTypeXCode", "TestTypeXMeaning")
-  val testClassX: ClassX = ClassX("TestClassXCode", "TestClassXMeaning")
-  val testData: Data = Data(List("1", "2", "3"), List("Bob", "Brian", "Bill"), List("Label1", "Label2", "Label3"))
-  val testSelecting: Selecting = Selecting()
-  val testExtracting: Extracting = Extracting(testSelecting)
-  val testRecontextualising: Recontextualising = Recontextualising()
-  val testSendingTransforming: SendingTransforming = SendingTransforming(testRecontextualising, Filtering(), Supplementing())
-  val testLoading: Loading = Loading(Assuring(), Readying(), Signing(), Encrypting(), LoadingSending())
-  val testSending: Sending = Sending(testExtracting, testSendingTransforming, testLoading)
+  val testCategory: Category                           = Category("TestCategoryCode", "TestCategoryMeaning")
+  val testTypeX: TypeX                                 = TypeX("TestTypeXCode", "TestTypeXMeaning")
+  val testClassX: ClassX                               = ClassX("TestClassXCode", "TestClassXMeaning")
+  val testData: Data                                   = Data(List("1", "2", "3"), List("Bob", "Brian", "Bill"), List("Label1", "Label2", "Label3"))
+  val testSelecting: Selecting                         = Selecting()
+  val testExtracting: Extracting                       = Extracting(testSelecting)
+  val testRecontextualising: Recontextualising         = Recontextualising()
+  val testSendingTransforming: SendingTransforming     = SendingTransforming(testRecontextualising, Filtering(), Supplementing())
+  val testLoading: Loading                             = Loading(Assuring(), Readying(), Signing(), Encrypting(), LoadingSending())
+  val testSending: Sending                             = Sending(testExtracting, testSendingTransforming, testLoading)
   val testReceivingTransforming: ReceivingTransforming = ReceivingTransforming(testRecontextualising, Dropping(), Restoring())
-  val testInserting: Inserting = Inserting()
-  val testStoring: Storing = Storing(testInserting)
-  val testUnloading: Unloading = Unloading(Assuring(), Readying(), Verifying(), Decrypting(), UnloadingReceiving())
-  val testReceiving: Receiving = Receiving(testReceivingTransforming, testStoring, testUnloading)
-  val testMetaData: MetaData = MetaData(testSending, testReceiving)
-  val testItems: List[Item] = List(Item(), Item(), Item())
-  val testCompartmentsEmpty: Compartments = Compartments(List.empty, List.empty, List.empty, List.empty, List.empty)
-  val testSubCompartment1: JobCompartment = JobCompartment(
+  val testInserting: Inserting                         = Inserting()
+  val testStoring: Storing                             = Storing(testInserting)
+  val testUnloading: Unloading                         = Unloading(Assuring(), Readying(), Verifying(), Decrypting(), UnloadingReceiving())
+  val testReceiving: Receiving                         = Receiving(testReceivingTransforming, testStoring, testUnloading)
+  val testMetaData: MetaData                           = MetaData(testSending, testReceiving)
+  val testItems: List[Item]                            = List(Item(), Item(), Item())
+  val testCompartmentsEmpty: Compartments              = Compartments(List.empty, List.empty, List.empty, List.empty, List.empty)
+
+  val testSubCompartment1: JobCompartment     = JobCompartment(
     id = Some("ID1"),
     idx = "IDX1",
     name = "TestJobName1",
@@ -56,6 +57,7 @@ object BridgeModelTestData {
     items = testItems
   )
   val testCompartmentsPersonJob: Compartments = Compartments(List.empty, List(testSubCompartment1), List.empty, List.empty, List(testSubCompartment1))
+
   val testJobCompartment: JobCompartment = JobCompartment(
     id = Some("ID"),
     idx = "IDX",
@@ -73,6 +75,7 @@ object BridgeModelTestData {
     compartments = testCompartmentsPersonJob,
     items = testItems
   )
+
   val testJobCompartmentEmpty: JobCompartment = JobCompartment(
     id = Some("ID"),
     idx = "IDX",
@@ -90,5 +93,5 @@ object BridgeModelTestData {
     compartments = testCompartmentsEmpty,
     items = testItems
   )
-  val testBridgeResponse: BridgeResponse = BridgeResponse(testJobCompartment)
+  val testBridgeResponse: BridgeResponse      = BridgeResponse(testJobCompartment)
 }
