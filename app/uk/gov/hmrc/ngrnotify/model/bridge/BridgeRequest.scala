@@ -18,11 +18,12 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.{Format, Json}
 
-/**
-  * @author Yuriy Tumakha
-  */
+@deprecated(
+  message = "This class is going to be dropped. Use the JobMessage class instead",
+  since = "2025-11-21"
+)
 case class BridgeRequest(
-  job: Job
+  job: JobEntity
 )
 
 object BridgeRequest:

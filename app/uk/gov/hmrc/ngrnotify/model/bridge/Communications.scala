@@ -25,7 +25,5 @@ case class Communications(
 )
 
 object Communications:
-
   import uk.gov.hmrc.ngrnotify.model.given
-
   given Format[Communications] = Json.format

@@ -30,13 +30,17 @@ import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 @Singleton()
 class StatusController @Inject() (
   cc: ControllerComponents,
-  hipConnector: HipConnector
+  @deprecated hipConnector: HipConnector
 )(implicit ec: ExecutionContext
 ) extends BackendController(cc) {
 
   def buildFailureResponse(code: ErrorCode, reason: String): JsValue =
     Json.toJson(Seq(ApiFailure(code, reason)))
 
+  @deprecated(
+    message = "This needs to be re-implemented using the new BridgeConnector",
+    since = "2025-11-25"
+  )
   def getRatepayerStatus(id: String): Action[AnyContent] = Action.async { implicit request =>
     hipConnector.getRatepayerStatus(id)
       .map {

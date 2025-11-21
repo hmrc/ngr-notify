@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+import uk.gov.hmrc.auth.core.Relationship
 
 case class Compartments(
-  properties: List[Property] = List.empty,
-  persons: List[Person] = List.empty,
-  // processes: List.empty
-  products: List[Person] = List.empty
-  // relationships: List.empty
+  properties: List[PropertyEntity] = List.empty,
+  persons: List[PersonEntity] = List.empty,
+  // TODO processes: List[ProcessEntity] = List.empty,
+  relationships: List[RelationshipEntity] = List.empty,
+  products: List[ProductEntity] = List.empty
 )
 
 object Compartments:
-
+  import play.api.libs.json.{Format, Json}
   given Format[Compartments] = Json.format

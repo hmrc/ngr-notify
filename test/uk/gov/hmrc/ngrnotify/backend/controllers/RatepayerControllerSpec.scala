@@ -16,224 +16,164 @@
 
 package uk.gov.hmrc.ngrnotify.backend.controllers
 
-import org.apache.pekko.stream.Materializer
-import org.apache.pekko.stream.testkit.NoMaterializer
 import play.api.Application
+import play.api.http.Status.*
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import play.api.test.Helpers.*
-import play.api.test.{FakeRequest, Helpers}
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{contentAsString, defaultAwaitTimeout, status}
 import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
-import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
-import uk.gov.hmrc.ngrnotify.backend.testUtils.RequestBuilderStub
+import uk.gov.hmrc.ngrnotify.backend.base.AnyWordControllerSpec
 import uk.gov.hmrc.ngrnotify.controllers.RatepayerController
-import uk.gov.hmrc.ngrnotify.model.{Address, Postcode}
 import uk.gov.hmrc.ngrnotify.model.email.Email
+import uk.gov.hmrc.ngrnotify.model.ratepayer.*
 import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
 import uk.gov.hmrc.ngrnotify.model.ratepayer.RatepayerType.organization
-import uk.gov.hmrc.ngrnotify.model.ratepayer.{Name, Nino, PhoneNumber, ReferenceType, RegisterRatepayerRequest, TRNReferenceNumber}
+import uk.gov.hmrc.ngrnotify.model.ratepayer.RegisterRatepayerRequest.format
+import uk.gov.hmrc.ngrnotify.model.{Address, Postcode}
 
 import java.io.IOException
 
-class RatepayerControllerSpec extends AnyWordAppSpec:
+class RatepayerControllerSpec extends AnyWordControllerSpec:
 
-  private val controller = inject[RatepayerController]
-
-  given Materializer = NoMaterializer
-
-  private def appWithResponse(status: Either[Throwable, Int], body: String): Application = {
-    val httpClientV2Mock = mock[HttpClientV2]
-
-    when(
-      httpClientV2Mock.post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer"))(using any[HeaderCarrier])
-    ).thenReturn(RequestBuilderStub(status, body))
+  override def fakeApplication(): Application = {
+    /*
+     * The subject of this test is the controller, which depends on the connector,
+     * which in turn depends on the HTTP client, which finally talks to the Bridge API service.
+     *
+     *
+     *      <<subject>>         <<dependency>>       <<dependency>>
+     *    +-------------+     +---------------+     +--------------+     +--------------------+
+     *    | Controller  | --> |   Connector   | --> |  HttpClient  | --> | Bridge API service |
+     *    +-------------+     +---------------+     +--------------+     +--------------------+
+     *         REAL                 REAL                FAKE
+     *
+     */
+    val httpClient = mock[HttpClientV2]
+    // DO NOT instruct the mock here, rather instruct it for each of the test cases below.
 
     new GuiceApplicationBuilder()
-      .overrides(bind[HttpClientV2].to(httpClientV2Mock))
+      .overrides(bind[HttpClientV2].to(httpClient))
       .build()
   }
 
-  override def fakeApplication(): Application =
-    val httpClientV2Mock = mock[HttpClientV2]
+  "the RatepayerController" when {
 
-    when(
-      httpClientV2Mock.post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer"))(using any[HeaderCarrier])
-    ).thenReturn(RequestBuilderStub(Right(OK), """"OK""""))
+    "registering a ratepayer" should {
 
-    when(
-      httpClientV2Mock.get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer/GGID123345"))(using any[HeaderCarrier])
-    ).thenReturn(RequestBuilderStub(Right(OK), testResourceContent("ratepayerHasPropertyLink.json")))
+      "deal with invalid identifiers" in {
+        val ratepayerId = "1234567891255" // too many digits!
 
-    when(
-      httpClientV2Mock.get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer/1234567891255"))(using any[HeaderCarrier])
-    ).thenReturn(RequestBuilderStub(Right(BAD_REQUEST), testResourceContent("ratepayerWrongID.json")))
+        // The mock HTTP client is instructed here to return a response with status 400 (Bad Request)
+        // when the controller tries to register a ratepayer with an invalid identifier.
+        val httpClient = inject[HttpClientV2]
+        httpClient
+          .whenGetting(s"/job/ratepayers/$ratepayerId")
+          .thenReturn(rightResponseWith(BAD_REQUEST, Some("bridge/ratepayer-invalid.json")))
 
-    when(
-      httpClientV2Mock.get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer/test_invalid_json"))(using any[HeaderCarrier])
-    ).thenReturn(RequestBuilderStub(Right(OK), "{}"))
-
-    when(
-      httpClientV2Mock.get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer/test_no_json"))(using any[HeaderCarrier])
-    ).thenReturn(RequestBuilderStub(Right(OK)))
-
-    when(
-      httpClientV2Mock.get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer/test_hip_connection_error"))(using any[HeaderCarrier])
-    ).thenReturn(RequestBuilderStub(Left(IOException("HIP connection error details"))))
-
-    new GuiceApplicationBuilder()
-      .overrides(bind[HttpClientV2].to(httpClientV2Mock))
-      .build()
-
-  "RatepayerController" should {
-    ".registerRatepayer return 202" in {
-      val fakeRequest = FakeRequest("POST", "/")
-        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
-        .withBody(Json.toJson(
-          RegisterRatepayerRequest(
-            "login",
-            Some(organization),
-            Some(agent),
-            Some(Name("Full name")),
-            None,
-            Some(Email("test@email.com")),
-            Some(Nino("QQ123456A")),
-            Some(PhoneNumber("1111")),
-            None,
-            Some(Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11 1ZZ"))),
-            Some(TRNReferenceNumber(ReferenceType.TRN, "TRN123456")),
-            Some(false),
-            Some("AAH4-KKSW-7LX9")
-          )
+        val controller = inject[RatepayerController]
+        val request    = FakeRequest("POST", "/").withBody(Json.toJson(
+          RegisterRatepayerRequest(ratepayerId)
         ))
 
-      val result = controller.registerRatepayer(fakeRequest)
-      status(result)          shouldBe ACCEPTED
-      contentAsString(result) shouldBe """{"status":"OK"}"""
-    }
+        val result = controller.registerRatepayer(request)
+        status(result) shouldBe INTERNAL_SERVER_ERROR
+        contentAsString(
+          result
+        )              shouldBe """[{"code":"ACTION_FAILED","reason":"Invalid format for Id – provided identifier does not match the expected pattern."}]"""
+      }
 
-    ".registerRatepayer return 400" in {
-      val fakeRequest = FakeRequest("POST", "/")
-        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
+      "deal with existing person" in {
+        // This is the UPDATE ratepayer scenario
+        val ratepayerId = "123456789123"
 
-      val result = controller.registerRatepayer(fakeRequest)
-      status(result) shouldBe BAD_REQUEST
-    }
+        //
+        // This scenario requires additional instructions to be given to the mock HTTP client
+        // as the interaction with the Bridge API service is more complex than a simple request/response pass.
+        //
+        val httpClient = inject[HttpClientV2]
+        httpClient
+          .whenGetting(s"/job/ratepayers/$ratepayerId")
+          .thenReturn(rightResponseWith(OK, Some("bridge/ratepayer-found.json")))
+        httpClient
+          .whenPosting("/job")
+          .thenReturn(rightResponseWith(NO_CONTENT, None))
 
-    ".registerRatepayer returns a buildValidationErrorsResponse" in {
-
-      val fakeRequest = FakeRequest("POST", "/")
-        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
-        .withBody(Json.obj())
-
-      val result = controller.registerRatepayer(fakeRequest)
-      status(result) shouldBe BAD_REQUEST
-    }
-
-    ".registerRatepayer returns a BadRequest due to Receiving a BadRequest from hip" in {
-      val app        = appWithResponse(Right(BAD_REQUEST), """"BAD_REQUEST"""")
-      val controller = app.injector.instanceOf[RatepayerController]
-
-      val fakeRequest = FakeRequest("POST", "/")
-        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
-        .withBody(Json.toJson(
+        val controller = inject[RatepayerController]
+        val request    = FakeRequest("POST", "/").withBody(Json.toJson(
           RegisterRatepayerRequest(
-            ratepayerCredId = "login",
+            ratepayerId,
             userType = Some(organization),
             agentStatus = Some(agent),
-            name = Some(Name("Full name")),
+            name = Some(Name("David Smith")),
             tradingName = None,
-            email = Some(Email("test@email.com")),
+            email = Some(Email("david.smith@some.com")),
             nino = Some(Nino("QQ123456A")),
             contactNumber = Some(PhoneNumber("1111")),
             secondaryNumber = None,
-            address = Some(Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11 1ZZ")))
+            address = Some(Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11 1ZZ"))),
+            trnReferenceNumber = Some(TRNReferenceNumber(ReferenceType.TRN, "TRN123456")),
+            isRegistered = Some(false),
+            recoveryId = Some("AAH4-KKSW-7LX9")
           )
         ))
 
-      val result = controller.registerRatepayer(fakeRequest)
-      status(result) shouldBe BAD_REQUEST
+        val result = controller.registerRatepayer(request)
+        contentAsString(result) shouldBe empty
+        status(result)          shouldBe ACCEPTED
+      }
     }
 
-    ".registerRatepayer returns a InternalServerError due to Receiving a InternalServerError from hip" in {
-      val app        = appWithResponse(Right(INTERNAL_SERVER_ERROR), """"INTERNAL_SERVER_ERROR"""")
-      val controller = app.injector.instanceOf[RatepayerController]
+    "dealing with property links" should {
 
-      val fakeRequest = FakeRequest("POST", "/")
-        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
-        .withBody(Json.toJson(
-          RegisterRatepayerRequest(
-            ratepayerCredId = "login",
-            userType = Some(organization),
-            agentStatus = Some(agent),
-            name = Some(Name("Full name")),
-            tradingName = None,
-            email = Some(Email("test@email.com")),
-            nino = Some(Nino("QQ123456A")),
-            contactNumber = Some(PhoneNumber("1111")),
-            secondaryNumber = None,
-            address = Some(Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11 1ZZ")))
-          )
-        ))
+      ".getRatepayerPropertyLinks return 500 for wrong ID" in {
+        val httpClient = inject[HttpClientV2]
+        httpClient
+          .whenGetting("/job/ratepayers/1234567891255")
+          .thenReturn(rightResponseWith(BAD_REQUEST, Some("ratepayerWrongID.json")))
 
-      val result = controller.registerRatepayer(fakeRequest)
-      status(result) shouldBe INTERNAL_SERVER_ERROR
+        val controller = inject[RatepayerController]
+        val result     = controller.getRatepayerPropertyLinks("1234567891255")(FakeRequest())
+        status(result)        shouldBe INTERNAL_SERVER_ERROR
+        contentAsString(result) should include("Invalid format for Id")
+      }
+
+      ".getRatepayerPropertyLinks return 500 for invalid json in HIP response" in {
+        val id         = "1234567890123456780"
+        val httpClient = inject[HttpClientV2]
+        httpClient
+          .whenGetting(s"/job/ratepayers/$id")
+          .thenReturn(rightResponseWith(OK, Some("empty-object.json")))
+
+        val controller = inject[RatepayerController]
+        val result     = controller.getRatepayerPropertyLinks(id)(FakeRequest())
+        status(result)          shouldBe INTERNAL_SERVER_ERROR
+        contentAsString(result) shouldBe """[{"code":"JSON_VALIDATION_ERROR","reason":"/job <- error.path.missing"}]"""
+      }
+
+      ".getRatepayerPropertyLinks return 500 if HIP response body is not a JSON" in {
+        val httpClient = inject[HttpClientV2]
+        httpClient
+          .whenGetting("/job/ratepayers/test_no_json")
+          .thenReturn(rightResponseWith(OK))
+
+        val controller = inject[RatepayerController]
+        val result     = controller.getRatepayerPropertyLinks("test_no_json")(FakeRequest())
+        status(result)          shouldBe INTERNAL_SERVER_ERROR
+        contentAsString(result) shouldBe """[{"code":"WRONG_RESPONSE_BODY","reason":"HIP response could not be parsed into JSON format."}]"""
+      }
+
+      ".getRatepayerPropertyLinks return 500 on HIP connection exception" in {
+        val httpClient = inject[HttpClientV2]
+        httpClient
+          .whenGetting("/job/ratepayers/test_hip_connection_error")
+          .thenReturn(leftResponseWith(IOException("HIP connection error details")))
+
+        val controller = inject[RatepayerController]
+        val result     = controller.getRatepayerPropertyLinks("test_hip_connection_error")(FakeRequest())
+        status(result)          shouldBe INTERNAL_SERVER_ERROR
+        contentAsString(result) shouldBe """[{"code":"ACTION_FAILED","reason":"HIP connection error details"}]"""
+      }
     }
-
-    ".registerRatepayer returns a InternalServerError due to Receiving a error from hip" in {
-      val app        = appWithResponse(Left(Exception("something went wrong")), """"INTERNAL_SERVER_ERROR"""")
-      val controller = app.injector.instanceOf[RatepayerController]
-
-      val fakeRequest = FakeRequest("POST", "/")
-        .withHeaders("Content-type" -> "application/json;charset=UTF-8")
-        .withBody(Json.toJson(
-          RegisterRatepayerRequest(
-            ratepayerCredId = "login",
-            userType = Some(organization),
-            agentStatus = Some(agent),
-            name = Some(Name("Full name")),
-            tradingName = None,
-            email = Some(Email("test@email.com")),
-            nino = Some(Nino("QQ123456A")),
-            contactNumber = Some(PhoneNumber("1111")),
-            secondaryNumber = None,
-            address = Some(Address("Line 1", Some("Line 2"), "City", None, Postcode("ZZ11 1ZZ")))
-          )
-        ))
-
-      val result = controller.registerRatepayer(fakeRequest)
-      status(result) shouldBe INTERNAL_SERVER_ERROR
-    }
-
-    ".getRatepayerPropertyLinks return 200" in {
-      val result = controller.getRatepayerPropertyLinks("GGID123345")(FakeRequest())
-      status(result)          shouldBe OK
-      contentAsString(result) shouldBe """{"linked":true,"properties":["88, Anderton Close, Tavistock, Devon, PL22 8DE"]}"""
-    }
-
-    ".getRatepayerPropertyLinks return 500 for wrong ID" in {
-      val result = controller.getRatepayerPropertyLinks("1234567891255")(FakeRequest())
-      status(result)        shouldBe INTERNAL_SERVER_ERROR
-      contentAsString(result) should include("Invalid format for Id")
-    }
-
-    ".getRatepayerPropertyLinks return 500 for invalid json in HIP response" in {
-      val result = controller.getRatepayerPropertyLinks("test_invalid_json")(FakeRequest())
-      status(result)          shouldBe INTERNAL_SERVER_ERROR
-      contentAsString(result) shouldBe """[{"code":"JSON_VALIDATION_ERROR","reason":"/job <- error.path.missing"}]"""
-    }
-
-    ".getRatepayerPropertyLinks return 500 if HIP response body is not a JSON" in {
-      val result = controller.getRatepayerPropertyLinks("test_no_json")(FakeRequest())
-      status(result)          shouldBe INTERNAL_SERVER_ERROR
-      contentAsString(result) shouldBe """[{"code":"WRONG_RESPONSE_BODY","reason":"HIP response could not be parsed into JSON format."}]"""
-    }
-
-    ".getRatepayerPropertyLinks return 500 on HIP connection exception" in {
-      val result = controller.getRatepayerPropertyLinks("test_hip_connection_error")(FakeRequest())
-      status(result)          shouldBe INTERNAL_SERVER_ERROR
-      contentAsString(result) shouldBe """[{"code":"ACTION_FAILED","reason":"HIP connection error details"}]"""
-    }
-
   }

@@ -20,9 +20,9 @@ import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.*
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
+import uk.gov.hmrc.ngrnotify.connectors.bridge.BridgeConnector
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.bridge.*
-import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -30,52 +30,45 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
-/**
-  * @author Yuriy Tumakha
-  */
 @Singleton
 class RatepayerController @Inject() (
-  hipConnector: HipConnector,
+  @deprecated hipConnector: HipConnector,
+  bridgeConnector: BridgeConnector,
   cc: ControllerComponents
 )(implicit ec: ExecutionContext
 ) extends BackendController(cc)
   with JsonSupport
   with Logging:
 
-  def getRatepayer(id: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    hipConnector.getRatepayer(id)
-      .map { response =>
-        response.status match {
-          case 200 =>
-            response.json.validate[BridgeJobModel] match {
-              case JsSuccess(value, path) => Ok(Json.toJsObject(BridgeJobModel.toRatepayerModel(value)))
-              case JsError(errors)        => BadRequest
-            }
-        }
-      }
-  }
-
+  /*
+   *  DESIGN NOTES
+   *  ------------
+   *
+   *    1. This controller leverages the JsonSupport trait as that provides utilities for
+   *       handling Bridge failure messages and converting them to propert HTTP responses.
+   *
+   *    2. This controller's actions (such as the registerPayer() action) attempt to JSON validate
+   *       the incoming request body against one of our NgrMessage models (such as the RegisterRatepayerRequest)
+   *
+   *       2.1 If the request body is valid, the action delegates to the new BridgeConnector
+   *            (for example, invoking the registerRatepayer() method) and the
+   *            converts the BridgeResult (either a successful result or a failure result)
+   *            into a propert HTTP response.
+   *
+   *       2.2 If the request body is invalid, the action builds and returns a 400 Bad Request response
+   *           with a validation error message
+   */
   def registerRatepayer: Action[JsValue] = Action.async(parse.json) { implicit request =>
     request.body.validate[RegisterRatepayerRequest] match {
-      case JsSuccess(registerRatepayer, _) =>
-        logger.info(s"Request:\n$registerRatepayer")
-
-        val bridgeRequest = toBridgeRequest(registerRatepayer)
-        logger.info(s"BridgeRequest:\n$bridgeRequest")
-
-        hipConnector.registerRatepayer(bridgeRequest)
-          .map { response =>
-            response.status match {
-              case 200 | 201 | 202 => Accepted(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
-              case 400             => BadRequest(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.INCOMPLETE, Some(response.body))))
-              case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
-            }
-          }
-          .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
-      case jsError: JsError                => Future.successful(buildValidationErrorsResponse(jsError))
+      case JsSuccess(ngrRequest, _) => bridgeConnector.registerRatepayer(ngrRequest).toHttpResult()
+      case jsError: JsError         => Future.successful(buildValidationErrorsResponse(jsError))
     }
   }
 
+  @deprecated(
+    message = "This has to be re-implemented using the new BridgeConnector",
+    since = "2025-11-25"
+  )
   def getRatepayerPropertyLinks(ratepayerCredId: String): Action[AnyContent] = Action.async { implicit request =>
     hipConnector.getRatepayer(ratepayerCredId)
       .map { response =>
@@ -87,83 +80,10 @@ class RatepayerController @Inject() (
       .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
   }
 
-  private def toBridgeRequest(ratepayer: RegisterRatepayerRequest): BridgeRequest =
-    BridgeRequest(
-      Job(
-        id = None,
-        idx = "1",
-        name = "Register Ratepayer",
-        compartments = Compartments(
-          products = List(
-            Person(
-              id = None,
-              idx = "1.4.1",
-              name = "Government Gateway User",
-              data = PersonData(
-                foreignIds = List(
-                  ForeignId(
-                    system = Some(Government_Gateway),
-                    value = Some(ratepayer.ratepayerCredId)
-                  ),
-                  ForeignId(
-                    location = Some("NINO"),
-                    value = Some(ratepayer.nino.map(_.value).getOrElse(""))
-                  ),
-                  ForeignId(
-                    location = Some("secondary_telephone_number"),
-                    value = Some(ratepayer.secondaryNumber.map(_.value).getOrElse(""))
-                  )
-                ),
-                foreignLabels = List(
-                  ForeignId(
-                    location = Some("RatepayerType"),
-                    value = ratepayer.userType.map(_.toString)
-                  ),
-                  ForeignId(
-                    location = Some("AgentStatus"),
-                    value = ratepayer.agentStatus.map(_.toString)
-                  ),
-                  ForeignId(
-                    location = Some("RecoveryId"),
-                    value = ratepayer.recoveryId
-                  )
-                ),
-                names = extractNames(ratepayer),
-                communications = extractCommunications(ratepayer)
-              )
-            )
-          )
-        )
-      )
-    )
-
-  private def extractNames(ratepayer: RegisterRatepayerRequest): Option[Names] =
-    val (forenamesOpt, surnameOpt) = extractForenamesAndSurname(ratepayer.name.map(_.value).getOrElse(""))
-
-    Some(
-      Names(
-        forenames = forenamesOpt,
-        surname = surnameOpt,
-        corporateName = Some(ratepayer.tradingName.map(_.value).getOrElse(""))
-      )
-    )
-
-  private def extractForenamesAndSurname(fullName: String): (Option[String], Option[String]) =
-    val trimmedFullName      = fullName.trim
-    val index                = trimmedFullName.lastIndexOf(" ")
-    val (forenames, surname) =
-      if index == -1 then ("", trimmedFullName) else trimmedFullName.splitAt(index)
-    (Option.when(forenames.trim.nonEmpty)(forenames.trim), Some(surname.trim))
-
-  private def extractCommunications(ratepayer: RegisterRatepayerRequest): Option[Communications] =
-    Some(
-      Communications(
-        postalAddress = Some(ratepayer.address.map(_.singleLine).getOrElse("")),
-        telephoneNumber = Some(ratepayer.contactNumber.map(_.value).getOrElse("")),
-        email = Some(ratepayer.email.map(_.toString).getOrElse(""))
-      )
-    )
-
+  @deprecated(
+    message = "This may No longer needed as the  BridgeConnector si taking over the HipConnector",
+    since = "2025-11-25"
+  )
   private def parsePropertyLinks(response: String): Result =
     Try(Json.parse(response)).map {
       _.validate[BridgeResponse] match {

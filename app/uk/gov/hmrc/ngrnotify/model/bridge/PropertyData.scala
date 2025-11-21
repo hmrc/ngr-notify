@@ -20,14 +20,15 @@ import play.api.libs.json.{Format, Json}
 
 import scala.collection.immutable.List
 
+// #/$defs/ENTITIES/PROPERTIES/PROPERTY/DATA
 case class PropertyData(
-  foreignIds: List[ForeignId] = List.empty,
-  foreignLabels: List[ForeignId] = List.empty,
+  foreignIds: List[ForeignDatum] = List.empty,
+  foreignLabels: List[ForeignDatum] = List.empty,
   addresses: PropertyAddresses
+  // TODO location:
+  // TODO assessments:
 )
 
 object PropertyData:
-
   import uk.gov.hmrc.ngrnotify.model.given
-
   given Format[PropertyData] = Json.format

@@ -19,15 +19,12 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 import play.api.libs.json.Format
 import uk.gov.hmrc.ngrnotify.model.Scala3EnumJsonFormat
 
-/**
-  * @author Yuriy Tumakha
-  */
 enum ForeignIdSystem:
 
   case Government_Gateway,
     Billing_Authority,
-    Companies_House
+    Companies_House,
+    SystemX
 
 object ForeignIdSystem:
-
   given Format[ForeignIdSystem] = Scala3EnumJsonFormat.format

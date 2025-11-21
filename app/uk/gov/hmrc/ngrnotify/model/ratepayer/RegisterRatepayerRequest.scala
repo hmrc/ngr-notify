@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
 import play.api.libs.json.{Json, OFormat}
-import uk.gov.hmrc.ngrnotify.model.Address
+import uk.gov.hmrc.ngrnotify.model.{Address, NgrNotifyMessage}
 import uk.gov.hmrc.ngrnotify.model.email.Email
 
 /**
@@ -27,7 +27,7 @@ final case class RegisterRatepayerRequest(
   ratepayerCredId: String,
   userType: Option[RatepayerType] = None,
   agentStatus: Option[AgentStatus] = None,
-  name: Option[Name],
+  name: Option[Name] = None,
   tradingName: Option[TradingName] = None,
   email: Option[Email] = None,
   nino: Option[Nino] = None,
@@ -37,7 +37,22 @@ final case class RegisterRatepayerRequest(
   trnReferenceNumber: Option[TRNReferenceNumber] = None,
   isRegistered: Option[Boolean] = Some(false),
   recoveryId: Option[String] = None
-)
+) extends NgrNotifyMessage {
+
+  // TODO Review this method as it's not clear how it would work for the following values
+  //      "Mr. Sadiq Khan",
+  //      "Elizabeth Harbor Fajid"
+  //      Extracting the first and last name from the name field seems brittle and prone to errors
+
+  val forenameAndSurname: (Option[String], Option[String]) =
+    name.map {
+      _.value.trim.split(" ").toList match
+        case forename :: surname :: _ => (Some(forename), Some(surname))
+        case forename :: Nil          => (Some(forename), None)
+        case Nil                      => (None, None)
+    }
+      .getOrElse((None, None))
+}
 
 object RegisterRatepayerRequest:
   implicit val format: OFormat[RegisterRatepayerRequest] = Json.format

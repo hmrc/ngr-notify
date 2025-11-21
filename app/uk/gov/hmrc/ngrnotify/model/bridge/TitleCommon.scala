@@ -22,5 +22,4 @@ enum TitleCommon:
 object TitleCommon:
   import play.api.libs.json.*
   import uk.gov.hmrc.ngrnotify.model.Scala3EnumJsonFormat
-
   given Format[TitleCommon] = Scala3EnumJsonFormat.format

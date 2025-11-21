@@ -16,87 +16,51 @@
 
 package uk.gov.hmrc.ngrnotify.connectors
 
-import play.api.http.HeaderNames.{ACCEPT, AUTHORIZATION, CONTENT_TYPE}
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
-import play.api.mvc.{Headers, Request}
+import play.api.mvc.Request
 import uk.gov.hmrc.http.HttpReads.Implicits.*
+import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 import uk.gov.hmrc.ngrnotify.config.AppConfig
+import uk.gov.hmrc.ngrnotify.connectors.bridge.HipHeaderCarrier
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeRequest
-import uk.gov.hmrc.ngrnotify.services.HipService.buildHipHeaderCarrier
-import uk.gov.hmrc.ngrnotify.utils.AuthHeaderBuilder
 
-import java.net.URL
-import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@deprecated(
+  message = "This connector is going to be displaced by the new BridgeConnector",
+  since = "2025-11-21"
+)
 @Singleton
 class HipConnector @Inject() (
   appConfig: AppConfig,
   httpClient: HttpClientV2
 )(implicit ec: ExecutionContext
-):
+) extends HipHeaderCarrier(appConfig):
 
-  private val ORIGINATOR_ID  = "OriginatorId"
-  private val CORRELATION_ID = "CorrelationId"
-
-  private val staticHeaders: Seq[(String, String)] = Seq(
-    AUTHORIZATION -> AuthHeaderBuilder.buildAuthHeader(appConfig.hipClientId, appConfig.hipClientSecret),
-    CONTENT_TYPE  -> "application/json;charset=UTF-8",
-    ACCEPT        -> "application/json;charset=UTF-8",
-    ORIGINATOR_ID -> "NGR"
-  )
-
-  private def newCorrelationId: (String, String) =
-    CORRELATION_ID -> UUID.randomUUID.toString
-
-  private def forwardOrCreateCorrelationId(using request: Request[?]): (String, String) =
-    request.headers.headers.find(_._1.equalsIgnoreCase(CORRELATION_ID)).getOrElse(newCorrelationId)
-
-  private def hipHeaderCarrier(using request: Request[?]): HeaderCarrier =
-    HeaderCarrier(extraHeaders = staticHeaders :+ forwardOrCreateCorrelationId)
-
+  @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
   def updatePropertyChanges(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] =
     httpClient
       .post(appConfig.updatePropertyChangesUrl)(using hipHeaderCarrier)
       .withBody(Json.toJson(bridgeRequest))
       .execute[HttpResponse]
 
+  @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
   def submitPropertyLinkingChanges(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] = httpClient
     .post(appConfig.propertyLinkingUrl)(using hipHeaderCarrier)
     .withBody(Json.toJson(bridgeRequest))
     .execute[HttpResponse]
 
-  def registerRatepayer(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] =
-    httpClient
-      .post(appConfig.registerRatepayerUrl)(using hipHeaderCarrier)
-      .withBody(Json.toJson(bridgeRequest))
-      .execute[HttpResponse]
-
+  @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
   def getRatepayer(id: String)(using request: Request[?]): Future[HttpResponse] =
     httpClient
       .get(appConfig.getRatepayerUrl(id))(using hipHeaderCarrier)
       .execute[HttpResponse]
 
+  @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
   def getRatepayerStatus(id: String)(using request: Request[?]): Future[HttpResponse] =
     httpClient
       .get(appConfig.getRatepayerStatusUrl(id))(using hipHeaderCarrier)
       .execute[HttpResponse]
-
-  def callHelloWorld(headers: Headers): Future[HttpResponse] = {
-    val url: URL = url"https://hip.ws.ibt.hmrc.gov.uk/demo/hello-world"
-    httpClient
-      .get(url)(using buildHipHeaderCarrier(headers))
-      .execute[HttpResponse]
-  }
-
-  def callItems(headers: Headers): Future[HttpResponse] = {
-    val url: URL                                   = url"https://hip.ws.ibt.hmrc.gov.uk/voa-prototype/api/item"
-    val additionalHeader: Option[(String, String)] = Some("ItemNumber" -> "0")
-    httpClient
-      .get(url)(using buildHipHeaderCarrier(headers, additionalHeader))
-      .execute[HttpResponse]
-  }

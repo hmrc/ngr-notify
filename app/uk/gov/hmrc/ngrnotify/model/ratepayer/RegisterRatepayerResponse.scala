@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
 import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.ngrnotify.model.NgrNotifyMessage
 
 /**
   * @author Yuriy Tumakha
@@ -24,7 +25,7 @@ import play.api.libs.json.{Json, OFormat}
 case class RegisterRatepayerResponse(
   status: RegistrationStatus,
   error: Option[String] = None
-)
+) extends NgrNotifyMessage
 
 object RegisterRatepayerResponse:
   implicit val format: OFormat[RegisterRatepayerResponse] = Json.format

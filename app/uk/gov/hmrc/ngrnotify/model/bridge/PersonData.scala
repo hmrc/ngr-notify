@@ -22,17 +22,13 @@ import scala.collection.immutable.List
 
 // #/$defs/ENTITIES/PERSONS/PERSON/DATA
 case class PersonData(
-  foreignIds: List[ForeignId] = List.empty,
-  foreignLabels: List[ForeignId] = List.empty,
+  foreignIds: List[ForeignDatum] = List.empty,
+  foreignNames: List[ForeignDatum] = List.empty,
+  foreignLabels: List[ForeignDatum] = List.empty,
   names: Option[Names] = None,
   communications: Option[Communications] = None
-  // foreign_ids
-  // foreign_names
-  // foreign_labels
-)
+) extends ForeignData
 
 object PersonData:
-
   import uk.gov.hmrc.ngrnotify.model.given
-
   given Format[PersonData] = Json.format

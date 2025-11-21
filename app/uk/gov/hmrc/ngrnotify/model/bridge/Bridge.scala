@@ -17,8 +17,15 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.*
+import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.ProductData
 
 object Bridge:
+
+  import play.api.libs.json.JsError
+  import play.api.libs.json.JsResult
+  import play.api.libs.json.JsSuccess
+  import play.api.libs.json.JsValue
+  import play.api.libs.json.Reads
 
   type Id = String
 
@@ -64,3 +71,54 @@ object Bridge:
   //      └──────────────────────────────────────────────────────────────────
   //
   //
+
+  // ========================================
+
+  // TODO Improve the way we're defining EmptyItems (as it should be something better than List[String])
+  type ItemEntity = String
+  type EmptyItems = List[ItemEntity]
+
+  // ========================================
+
+  type ProductItem = PersonEntity | PropertyEntity // TODO | RelationshipEntity
+
+  given Reads[ProductItem] = new Reads[ProductItem] {
+    def reads(jsValue: JsValue): JsResult[ProductItem] =
+      jsValue.validate[PersonEntity]
+        .orElse(jsValue.validate[PropertyEntity])
+      // TODO .orElse(jsValue.validate[RelationshipEntity])
+  }
+
+  given Writes[ProductItem] = new Writes[ProductItem] {
+    def writes(productItem: ProductItem): JsValue = productItem match {
+      case personEntity: PersonEntity     => Json.toJson(personEntity)
+      case propertyEntity: PropertyEntity => Json.toJson(propertyEntity)
+    }
+  }
+
+  // ========================================
+
+  type ProductData = PersonData | PropertyData | RelationshipData
+
+  given Reads[ProductData] = new Reads[ProductData] {
+    def reads(jsValue: JsValue): JsResult[ProductData] =
+      //
+      // The best solution could have been reading the ..\category\code (by traversing up to the parent node)
+      // and then reading the curren data node as either Person, or Property, or Relationship depending on
+      // the category code, which can be either TX-DOM-PSN, TX-DOM-PRP or TX-DOM-REL.
+      //
+      // However, since the PlayFramework JSON library does not support such a "traversing up" access strategy,
+      // we have to resort on chaining multiple attempts until one succeeds.
+      //
+      jsValue.validate[PersonData]
+        .orElse(jsValue.validate[PropertyData])
+        .orElse(jsValue.validate[RelationshipData])
+  }
+
+  given Writes[ProductData] = new Writes[ProductData] {
+    def writes(productData: ProductData): JsValue = productData match {
+      case personData: PersonData             => Json.toJson(personData)
+      case propertyData: PropertyData         => Json.toJson(propertyData)
+      case relationshipData: RelationshipData => Json.toJson(relationshipData)
+    }
+  }

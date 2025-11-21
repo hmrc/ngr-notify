@@ -22,7 +22,7 @@ import play.api.libs.json.{Format, Json}
   * @author Yuriy Tumakha
   */
 case class JobForm(
-  job: Job
+  job: JobEntity
 )
 
 object JobForm:

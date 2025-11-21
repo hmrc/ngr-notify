@@ -1,0 +1,63 @@
+/*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package uk.gov.hmrc.ngrnotify.model.bridge
+
+import play.api.libs.json.{Format, Json}
+
+// TODO Review all the models' definitions in this Scala file as they've been written in a rush
+
+case class Sending(
+  extracting: Extracting,
+  transforming: Transforming,
+  loading: Loading
+)
+
+object Sending:
+  given Format[Sending] = Json.format
+
+// ------------------
+
+case class Extracting(
+  selecting: Map[String, String] = Map.empty
+)
+
+object Extracting:
+  given Format[Extracting] = Json.format
+
+// ------------------
+
+case class Transforming(
+  filtering: Map[String, String] = Map.empty,
+  supplementing: Map[String, String] = Map.empty,
+  recontextualising: Map[String, String] = Map.empty
+)
+
+object Transforming:
+  given Format[Transforming] = Json.format
+
+// ------------------
+
+case class Loading(
+  readying: Map[String, String] = Map.empty,
+  assuring: Map[String, String] = Map.empty,
+  signing: Map[String, String] = Map.empty,
+  encrypting: Map[String, String] = Map.empty,
+  sending: Map[String, String] = Map.empty
+)
+
+object Loading:
+  given Format[Loading] = Json.format
