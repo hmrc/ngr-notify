@@ -19,9 +19,10 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
 
-/**
-  * @author Yuriy Tumakha
-  */
+@deprecated(
+  message = "The BridgeResponse class is going to be dropped. Use the BridgeMessage class instead",
+  since="2025-11-21"
+)
 class BridgeResponseSpec extends AnyWordAppSpec:
 
   "Model BridgeResponse" should {

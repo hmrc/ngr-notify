@@ -22,6 +22,10 @@ import uk.gov.hmrc.ngrnotify.model.{Address, Postcode}
 
 // ---------- Case Classes ----------
 
+@deprecated(
+  message = "This class is going to be dropped. Use the BridgeMessage class instead",
+  since="2025-11-21"
+)
 case class BridgeJobModel(
   $schema: String,
   job: BridgeJobModel.Job

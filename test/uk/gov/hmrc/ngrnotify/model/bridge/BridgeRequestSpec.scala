@@ -20,6 +20,10 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import play.api.libs.json.Json
 
+@deprecated(
+  message = "The BridgeRequest class is going to be dropped. Use the BridgeMessage class instead",
+  since="2025-11-21"
+)
 class BridgeRequestSpec extends AnyFreeSpec with Matchers {
   "BridgeRequest" - {
     "serialization and deserialization" in {

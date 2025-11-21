@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ngrnotify.model.ratepayer
 
 import play.api.libs.json.{Json, OFormat}
-import uk.gov.hmrc.ngrnotify.model.Address
+import uk.gov.hmrc.ngrnotify.model.{Address, NgrNotifyMessage}
 import uk.gov.hmrc.ngrnotify.model.email.Email
 
 /**
@@ -37,7 +37,8 @@ final case class RegisterRatepayerRequest(
   trnReferenceNumber: Option[TRNReferenceNumber] = None,
   isRegistered: Option[Boolean] = Some(false),
   recoveryId: Option[String] = None
-)
+
+) extends NgrNotifyMessage
 
 object RegisterRatepayerRequest:
   implicit val format: OFormat[RegisterRatepayerRequest] = Json.format

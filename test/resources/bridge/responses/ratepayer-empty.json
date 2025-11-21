@@ -1,0 +1,11 @@
+{
+  "origin": "HIP",
+  "response": {
+    "failures": [
+      {
+        "type": "Id",
+        "reason": "User is not authorised for beta access"
+      }
+    ]
+  }
+}

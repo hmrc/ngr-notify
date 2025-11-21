@@ -26,7 +26,8 @@ enum ForeignIdSystem:
 
   case Government_Gateway,
     Billing_Authority,
-    Companies_House
+    Companies_House,
+    SystemX
 
 object ForeignIdSystem:
 

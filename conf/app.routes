@@ -1,12 +1,7 @@
 # microservice specific routes
 
-# HIP test endpoints
-GET     /hip-hello-world                        uk.gov.hmrc.ngrnotify.controllers.HipController.hipHelloWorld()
-GET     /hip-items                              uk.gov.hmrc.ngrnotify.controllers.HipController.hipItems()
-
-# Status endpoints
+# Ratepayer endpoints
 GET     /ratepayer-status/:id                   uk.gov.hmrc.ngrnotify.controllers.StatusController.getRatepayerStatus(id: String)
-GET     /ratepayer/:id                          uk.gov.hmrc.ngrnotify.controllers.RatepayerController.getRatepayer(id: String)
 POST    /register-ratepayer                     uk.gov.hmrc.ngrnotify.controllers.RatepayerController.registerRatepayer
 GET     /ratepayer-has-property/:credId         uk.gov.hmrc.ngrnotify.controllers.RatepayerController.getRatepayerPropertyLinks(credId)
 

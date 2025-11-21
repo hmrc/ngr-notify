@@ -1,0 +1,14 @@
+{
+  "origin": "HoD",
+  "response": {
+    "origin": "HIP",
+    "response": {
+      "failures": [
+        {
+          "type": "Id",
+          "reason": "Invalid format for Id – provided identifier does not match the expected pattern."
+        }
+      ]
+    }
+  }
+}

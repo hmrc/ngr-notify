@@ -33,6 +33,10 @@ import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@deprecated(
+  message = "This connector is going to be displaced by the new BridgeConnector",
+  since = "2025-11-21"
+)
 @Singleton
 class HipConnector @Inject() (
   appConfig: AppConfig,
@@ -69,12 +73,6 @@ class HipConnector @Inject() (
     .post(appConfig.propertyLinkingUrl)(using hipHeaderCarrier)
     .withBody(Json.toJson(bridgeRequest))
     .execute[HttpResponse]
-
-  def registerRatepayer(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] =
-    httpClient
-      .post(appConfig.registerRatepayerUrl)(using hipHeaderCarrier)
-      .withBody(Json.toJson(bridgeRequest))
-      .execute[HttpResponse]
 
   def getRatepayer(id: String)(using request: Request[?]): Future[HttpResponse] =
     httpClient

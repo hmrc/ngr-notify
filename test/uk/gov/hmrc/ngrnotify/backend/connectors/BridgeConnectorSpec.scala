@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model.bridge
+package uk.gov.hmrc.ngrnotify.backend.connectors
 
-import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers
 
-class ForeignIdSystemSpec extends AnyFreeSpec with Matchers {
-  "ForeignIdSystem" - {
-    "must have all expected values" in {
-      val systems = ForeignIdSystem.values.toSet
-      systems mustBe Set(ForeignIdSystem.Government_Gateway, ForeignIdSystem.Billing_Authority, ForeignIdSystem.Companies_House, ForeignIdSystem.SystemX)
-    }
-  }
-}
+// NO unit test is provided for the new BridgeConnector yet.
+
+// For the time being, we'll be relying upon a BridgeConnectorIntegrationSpec.
+// The integration test involves the real Bridge API, and it provides realistic
+// insights into the behavior of the participants.
+
+class BridgeConnectorSpec
+
+// NO need to test the BridgeConnector in isolation

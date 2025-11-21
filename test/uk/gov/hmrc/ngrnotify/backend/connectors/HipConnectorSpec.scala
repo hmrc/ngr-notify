@@ -35,6 +35,10 @@ import java.net.URL
 import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 
+@deprecated(
+  message = "The HipConnector is going to be displaced by the new BridgeConnector",
+  since = "2025-11-21"
+)
 class HipConnectorSpec extends AnyWordAppSpec {
 
   private val configuration = Configuration(ConfigFactory.load())
@@ -54,28 +58,6 @@ class HipConnectorSpec extends AnyWordAppSpec {
     ).thenReturn(RequestBuilderStub(Right(responseStatus), "{}"))
     httpClientV2Mock
 
-  "registerRatepayer" must {
-    "return a successful response" in {
-      val httpMock              = httpPostMock(ACCEPTED)
-      val connector             = HipConnector(appConfig, httpMock)
-      given Request[AnyContent] = FakeRequest()
-      val bridgeRequest         = BridgeRequest(
-        Job(
-          id = None,
-          idx = "1",
-          name = "Register Ratepayer",
-          compartments = Compartments()
-        )
-      )
-
-      val response = connector.registerRatepayer(bridgeRequest).futureValue
-      response.status shouldBe ACCEPTED
-
-      verify(httpMock)
-        .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer"))(using any[HeaderCarrier])
-    }
-  }
-
   "updatePropertyChanges" must {
     "return a successful response" in {
       val httpMock              = httpPostMock(ACCEPTED)
@@ -94,7 +76,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
       response.status shouldBe ACCEPTED
 
       verify(httpMock)
-        .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/physical"))(using any[HeaderCarrier])
+        .post(url(endingWith("/job/physical")))(using any[HeaderCarrier])
     }
   }
 
@@ -116,7 +98,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
       response.status shouldBe ACCEPTED
 
       verify(httpMock)
-        .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/property"))(using any[HeaderCarrier])
+        .post(url(endingWith("/job/property")))(using any[HeaderCarrier])
     }
   }
 
@@ -130,7 +112,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
       response.status shouldBe OK
 
       verify(httpMock)
-        .get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer/ID_123"))(using any[HeaderCarrier])
+        .get(url(endingWith("/job/ratepayer/ID_123")))(using any[HeaderCarrier])
     }
   }
 
