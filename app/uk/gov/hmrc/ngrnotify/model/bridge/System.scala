@@ -32,7 +32,7 @@ object System {
   case object NationalAddressGazetteer extends System
   case object NDRRPublicInterface extends System
 
-  val values: Set[System] = Set(GovernmentGateway, BillingAuthority, CompaniesHouse, HmrcVoaCdb, NationalAddressGazetteer)
+  val values: Set[System] = Set(OneLogin, GovernmentGateway, BillingAuthority, CompaniesHouse, HmrcVoaCdb, NationalAddressGazetteer, NDRRPublicInterface)
 
   implicit val formatForeignIdSystem: Format[System] = Format(
     Reads {

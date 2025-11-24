@@ -21,6 +21,7 @@ import play.api.libs.json.{JsObject, Json, OFormat}
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate
 
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.UUID
 
 /**
@@ -34,7 +35,7 @@ case class EmailNotification(
   callbackUrl: Option[String],
   client: Option[String] = None,
   _id: ObjectId = new ObjectId,
-  createdAt: Instant = Instant.now
+  createdAt: Instant = Instant.now.truncatedTo(ChronoUnit.MILLIS)
 )
 
 object EmailNotification:

@@ -19,7 +19,7 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import play.api.libs.json.Json
-import uk.gov.hmrc.ngrnotify.model.bridge.System.{BillingAuthority, CompaniesHouse, GovernmentGateway, HmrcVoaCdb, NationalAddressGazetteer}
+import uk.gov.hmrc.ngrnotify.model.bridge.System.{BillingAuthority, CompaniesHouse, GovernmentGateway, HmrcVoaCdb, NDRRPublicInterface, NationalAddressGazetteer, OneLogin}
 
 class ForeignIdSystemSpec extends AnyFreeSpec with Matchers {
   "ForeignIdSystem" - {
@@ -30,7 +30,9 @@ class ForeignIdSystemSpec extends AnyFreeSpec with Matchers {
         NationalAddressGazetteer,
         System.GovernmentGateway,
         System.BillingAuthority,
-        System.CompaniesHouse
+        System.CompaniesHouse,
+        System.OneLogin,
+        System.NDRRPublicInterface
       )
     }
 
@@ -41,6 +43,8 @@ class ForeignIdSystemSpec extends AnyFreeSpec with Matchers {
         Json.toJson[System](System.HmrcVoaCdb) mustBe JsString("HMRC-VOA_CDB")
         Json.toJson[System](System.BillingAuthority) mustBe JsString("Billing_Authority")
         Json.toJson[System](System.NationalAddressGazetteer) mustBe JsString("National_Address_Gazetteer")
+        Json.toJson[System](System.OneLogin) mustBe JsString("One_Login")
+        Json.toJson[System](System.NDRRPublicInterface) mustBe JsString("NDRR_Public_Interface")
       }
 
     "must deserialize from JSON string" in {
@@ -49,6 +53,8 @@ class ForeignIdSystemSpec extends AnyFreeSpec with Matchers {
       Json.parse("\"National_Address_Gazetteer\"").as[System] mustBe NationalAddressGazetteer
       Json.parse("\"Companies_House\"").as[System] mustBe CompaniesHouse
       Json.parse("\"Billing_Authority\"").as[System] mustBe BillingAuthority
+      Json.parse("\"One_Login\"").as[System] mustBe OneLogin
+      Json.parse("\"NDRR_Public_Interface\"").as[System] mustBe NDRRPublicInterface
     }
   }
 }
