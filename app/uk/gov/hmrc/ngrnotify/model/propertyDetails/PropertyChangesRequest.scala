@@ -27,7 +27,8 @@ case class PropertyChangesRequest(
   internalFeatures: Seq[(String, String)],
   externalFeatures: Seq[(String, String)],
   additionalInfo: Option[AnythingElseData] = None,
-  uploadedDocuments: Seq[String]
+  uploadedDocuments: Seq[String],
+  declarationRef: Option[String] = None
 ) {
   private val useOfSpaceData: String     = useOfSpace.map(_.toString).getOrElse("No change to use of space")
   private val additionalInfoData: String = additionalInfo.map(_.toString).getOrElse("No additional information provided")

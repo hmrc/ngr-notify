@@ -38,7 +38,7 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   private val hipBaseUrl                = servicesConfig.baseUrl("hip")
   private val registerRatepayerPath     = servicesConfig.getConfString("hip.registerRatepayerPath", "/job/ratepayer")
   private val getRatepayerPath          = servicesConfig.getConfString("hip.getRatepayerPath", "/job/ratepayer/")
-  private val propertiesPath            = servicesConfig.getConfString("hip.propertiesPath", "/voa/v1/properties")
+  private val propertiesPath            = servicesConfig.getConfString("hip.propertiesPath", "/voa/v1/job/properties")
   private val updatePropertyChangesPath = servicesConfig.getConfString("hip.updatePropertyChangesPath", "/voa/v1/job")
   private val propertyLinkingPath       = servicesConfig.getConfString("hip.propertyLinkingPath", "/job/property")
   val registerRatepayerUrl: URL         = url"${hipBaseUrl + registerRatepayerPath}"
@@ -51,7 +51,7 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
     id: CredId,
     assessmentId: String
   ): URL = {
-    val url = s"$hipBaseUrl$propertiesPath?id=${id.toString}&assessmentId=$assessmentId"
+    val url = s"$hipBaseUrl$propertiesPath?assessmentId=$assessmentId&personForeignId=${id.toString}"
     url"$url"
   }
 

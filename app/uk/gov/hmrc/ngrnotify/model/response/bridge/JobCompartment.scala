@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ngrnotify.model.response.bridge
 
 import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.ngrnotify.model.response.bridge.Data
 
 case class JobCompartment(
   id: Option[String],

@@ -28,8 +28,8 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.HipTestData.testHipHeaders
 import uk.gov.hmrc.ngrnotify.backend.testUtils.RequestBuilderStub
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
-import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel.MetadataStage
-import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeJobModel, BridgeRequest, Compartments, Job}
+import uk.gov.hmrc.ngrnotify.model.bridge.*
+import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel.{Extracting, Loading, Receiving, Sending, Storing, TransformingReceiving, TransformingSending, Unloading}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
@@ -95,9 +95,9 @@ class HipConnectorSpec extends AnyWordAppSpec {
         category = BridgeJobModel.CodeMeaning(None, None),
         `type` = BridgeJobModel.CodeMeaning(None, None),
         `class` = BridgeJobModel.CodeMeaning(None, None),
-        data = BridgeJobModel.Data(Nil, Nil, Nil),
+        data = PropertyEntityData(),
         protodata = Seq.empty,
-        metadata = BridgeJobModel.Metadata(MetadataStage(), MetadataStage()),
+        metadata = Metadata(Sending(Extracting(),TransformingSending(), Loading()), Receiving(Unloading(), TransformingReceiving(), Storing())),
         compartments = BridgeJobModel.Compartments(),
         items = None
       )
@@ -111,7 +111,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
       response.status shouldBe ACCEPTED
 
       verify(httpMock)
-        .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/physical"))(using any[HeaderCarrier])
+        .post(eqTo(url"http://localhost:1501/ngr-stub/voa/v1/job"))(using any[HeaderCarrier])
     }
   }
 
@@ -161,7 +161,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
       response.status shouldBe OK
 
       verify(httpMock)
-        .get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/properties?id=ID_123&assessmentId=ASSESSMENT_456"))(using any[HeaderCarrier])
+        .get(eqTo(url"http://localhost:1501/ngr-stub/voa/v1/job/properties?assessmentId=ASSESSMENT_456&personForeignId=ID_123"))(using any[HeaderCarrier])
     }
 
     for ((status, expected) <- Seq(404 -> "not found", 400 -> "bad request", 401 -> "unauthorized", 500 -> "internal server error"))
@@ -174,7 +174,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
         response.status shouldBe status
 
         verify(httpMock)
-          .get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/properties?id=ID_123&assessmentId=ASSESSMENT_456"))(using any[HeaderCarrier])
+          .get(eqTo(url"http://localhost:1501/ngr-stub/voa/v1/job/properties?assessmentId=ASSESSMENT_456&personForeignId=ID_123"))(using any[HeaderCarrier])
       }
   }
 

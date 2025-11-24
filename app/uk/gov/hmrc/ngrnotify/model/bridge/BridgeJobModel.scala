@@ -16,9 +16,11 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
+import play.api.libs.json.*
+import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel.{CodeMeaning, Extracting, Protodata}
 import uk.gov.hmrc.ngrnotify.model.email.Email
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{Name, PhoneNumber, RegisterRatepayerRequest}
-import uk.gov.hmrc.ngrnotify.model.{Address, Postcode}
+import uk.gov.hmrc.ngrnotify.model.{Address, Postcode, bridge}
 
 // ---------- Case Classes ----------
 
@@ -30,7 +32,7 @@ case class BridgeJobModel(
 object BridgeJobModel {
 
   case class Job(
-    id: Option[String],
+    id: Option[Id],
     idx: Option[String],
     name: Option[String],
     label: Option[String],
@@ -52,14 +54,6 @@ object BridgeJobModel {
     meaning: Option[String] = None
   )
 
-  case class Data(
-    foreign_ids: Seq[String] = Seq.empty,
-    foreign_names: Seq[String] = Seq.empty,
-    foreign_labels: Seq[String] = Seq.empty,
-    names: Option[Names] = None,
-    communications: Option[Communications] = None
-  )
-
   case class Names(
     title_common: Option[String],
     title_uncommon: Option[String],
@@ -71,26 +65,96 @@ object BridgeJobModel {
     known_as: Option[String]
   )
 
-  case class Communications(
-    postal_address: Option[String],
-    telephone_number: Option[String],
-    email: Option[String]
-  )
-
   case class Protodata() // empty placeholder
 
-  case class Metadata(
-    sending: MetadataStage = MetadataStage(),
-    receiving: MetadataStage = MetadataStage()
-  )
+  case class Extracting(
+                         selecting: Map[String, String] = Map.empty
+                       )
+  object Extracting {
+    implicit val extractingFormat: OFormat[Extracting] = Json.format[Extracting]
+  }
+
+  case class TransformingSending(
+                                  filtering: Map[String, String] = Map.empty,
+                                  supplementing: Map[String, String] = Map.empty,
+                                  recontextualising: Map[String, String] = Map.empty,
+                                )
+  object TransformingSending {
+    implicit val transformingSendingFormat: OFormat[TransformingSending] = Json.format[TransformingSending]
+  }
+
+  case class Sending(
+                      extracting: Extracting,
+                      transforming: TransformingSending,
+                      loading: Loading
+                    )
+
+  object Sending {
+    implicit val sendingFormat: OFormat[Sending] = Json.format[Sending]
+  }
+
+  case class Receiving(
+                        unloading: Unloading,
+                        transforming: TransformingReceiving,
+                        storing: Storing
+                      )
+
+  object Receiving {
+    implicit val receivingFormat: OFormat[Receiving] = Json.format[Receiving]
+  }
+
+  case class Unloading(
+                        receiving: Map[String, String] = Map.empty,
+                        decrypting: Map[String, String] = Map.empty,
+                        verifying: Map[String, String] = Map.empty,
+                        assuring: Map[String, String] = Map.empty,
+                        readying: Map[String, String] = Map.empty
+                      )
+  object Unloading {
+    implicit val unloadingFormat: OFormat[Unloading] = Json.format[Unloading]
+  }
+
+  case class TransformingReceiving(
+                                    recontextualising: Map[String, String] = Map.empty,
+                                    dropping: Map[String, String] = Map.empty,
+                                    restoring: Map[String, String] = Map.empty
+                                  )
+
+  object TransformingReceiving {
+    implicit val transformingReceivingFormat: OFormat[TransformingReceiving] = Json.format[TransformingReceiving]
+  }
+
+  case class Storing(
+                      inserting: Map[String, String] = Map.empty
+                    )
+  object Storing {
+    implicit val storingFormat: OFormat[Storing] = Json.format[Storing]
+  }
+
+
+
+
+  case class Loading(
+                      readying: Option[Map[String, String]] = None,
+                      assuring: Option[Map[String, String]] = None,
+                      signing: Option[Signing] = None,
+                      encrypting: Option[Map[String, String]] = None,
+                      sending: Option[Map[String, String]] = None
+                    )
+
+  object Loading {
+    implicit val loadingFormat: OFormat[Loading] = Json.format[Loading]
+  }
 
   case class MetadataStage(
     extracting: MetadataAction = MetadataAction(),
     transforming: MetadataTransform = MetadataTransform(),
-    loading: Option[MetadataLoading] = None,
-    unloading: Option[MetadataUnloading] = None,
-    storing: Option[MetadataStoring] = None
+    loading: Loading
   )
+
+  object MetadataStage {
+    implicit val metadataStageFormat: OFormat[MetadataStage] = Json.format[MetadataStage]
+  }
 
   case class MetadataAction(selecting: Map[String, String] = Map.empty)
 
@@ -124,11 +188,11 @@ object BridgeJobModel {
     persons: Seq[JobItem] = Seq.empty,
     processes: Seq[JobItem] = Seq.empty,
     products: Seq[JobItem] = Seq.empty,
-    relationships: Seq[JobItem] = Seq.empty
+    relationships: Seq[RelationShipJobItem] = Seq.empty
   )
 
   case class JobItem(
-    id: Option[String] = None,
+    id: Option[Int] = None,
     idx: Option[String] = None,
     name: Option[String] = None,
     label: Option[String] = None,
@@ -138,12 +202,35 @@ object BridgeJobModel {
     category: CodeMeaning = CodeMeaning(),
     `type`: CodeMeaning = CodeMeaning(),
     `class`: CodeMeaning = CodeMeaning(),
-    data: Data = Data(),
+    data: Data,
     protodata: Seq[Protodata] = Seq.empty,
-    metadata: Metadata = Metadata(),
+    metadata: Metadata,
     compartments: Compartments = Compartments(),
     items: Option[Seq[JobItem]] = None
   )
+
+  case class RelationShipJobItem(
+    id: Option[Int] = None,
+    idx: Option[String] = None,
+    name: Option[String] = None,
+    label: Option[String] = None,
+    description: Option[String] = None,
+    origination: Option[String] = None,
+    termination: Option[String] = None,
+    category: CodeMeaning = CodeMeaning(),
+    `type`: CodeMeaning = CodeMeaning(),
+    `class`: CodeMeaning = CodeMeaning(),
+    data: Data,
+    protodata: Seq[Protodata] = Seq.empty,
+    metadata: Metadata,
+    compartments: Compartments = Compartments(),
+    items: Option[Seq[Pointer]] = None
+  )
+
+  object RelationShipJobItem {
+    implicit val relationShipJobItemFormat: OFormat[RelationShipJobItem] = Json.format[RelationShipJobItem]
+  }
+
 
   // ---------- Play JSON Implicits ----------
 
@@ -152,8 +239,6 @@ object BridgeJobModel {
   implicit val protodataFormat: OFormat[Protodata]                 = Json.format[Protodata]
   implicit val codeMeaningFormat: OFormat[CodeMeaning]             = Json.format[CodeMeaning]
   implicit val namesFormat: OFormat[Names]                         = Json.format[Names]
-  implicit val communicationsFormat: OFormat[Communications]       = Json.format[Communications]
-  implicit val dataFormat: OFormat[Data]                           = Json.format[Data]
   implicit val metadataActionFormat: OFormat[MetadataAction]       = Json.format[MetadataAction]
   implicit val metadataTransformFormat: OFormat[MetadataTransform] = Json.format[MetadataTransform]
   implicit val metadataLoadingFormat: OFormat[MetadataLoading]     = Json.format[MetadataLoading]
@@ -161,7 +246,6 @@ object BridgeJobModel {
   implicit val metadataStoringFormat: OFormat[MetadataStoring]     = Json.format[MetadataStoring]
 
   implicit lazy val metadataStageFormat: OFormat[MetadataStage] = Json.format[MetadataStage]
-  implicit lazy val metadataFormat: OFormat[Metadata]           = Json.format[Metadata]
   implicit lazy val compartmentsFormat: OFormat[Compartments]   = Json.format[Compartments]
 
   implicit lazy val jobItemFormat: OFormat[JobItem]        = Json.format[JobItem]
@@ -169,17 +253,22 @@ object BridgeJobModel {
   implicit lazy val jobRootFormat: OFormat[BridgeJobModel] = Json.format[BridgeJobModel]
 
   def toRatepayerModel(bridgeJobModel: BridgeJobModel): RegisterRatepayerRequest = {
-    val data          = bridgeJobModel.job.compartments.products.head
-    val addressString = data.data.communications.flatMap(_.postal_address).getOrElse("")
+    val data = bridgeJobModel.job.compartments.products.head
+    val communications: Option[Communications] = data.data match {
+      case personData: PersonEntityData => personData.communications
+      case _ => None
+    }
+ 
+    val addressString = communications.flatMap(_.postalAddress).getOrElse("")
     RegisterRatepayerRequest(
       ratepayerCredId = "",
       userType = None,
       agentStatus = None,
       name = data.name.map(Name(_)),
       tradingName = None,
-      email = data.data.communications.flatMap(_.email).map(Email(_)),
+      email = communications.flatMap(_.email).map(Email(_)),
       nino = None,
-      contactNumber = data.data.communications.flatMap(_.telephone_number).map(PhoneNumber(_)),
+      contactNumber = communications.flatMap(_.telephoneNumber).map(PhoneNumber(_)),
       secondaryNumber = None,
       address = Some(Address(line1 = addressString, line2 = None, town = "", county = None, postcode = Postcode("")))
     )

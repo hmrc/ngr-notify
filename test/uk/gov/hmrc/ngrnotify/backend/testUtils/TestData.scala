@@ -20,13 +20,14 @@ import org.bson.types.ObjectId
 import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.{ngr_add_property_request_sent, ngr_registration_successful}
-import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel
-import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel.MetadataStage
+import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel.{Extracting, JobItem, Loading, Receiving, Sending, Storing, TransformingReceiving, TransformingSending, Unloading}
+import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.ngrnotify.model.email.{AddPropertyRequestSent, RegistrationSuccessful}
+import uk.gov.hmrc.ngrnotify.model.response.bridge.Data
 
-import java.util.UUID
 import java.time.{Instant, LocalDate}
+import java.util.UUID
 
 trait TestData {
   val token: String = "Basic OTk5OTYwMTAwMDQ6U2Vuc2l0aXZlKC4uLik="
@@ -115,6 +116,8 @@ trait TestData {
     createdAt = Instant.now()
   )
 
+  val metadata: Metadata = Metadata(Sending(Extracting(), TransformingSending(), Loading(signing = Some(Signing(SigningInputs("hash", None))))), Receiving(Unloading(), TransformingReceiving(), Storing()))
+
   private val sampleJob = BridgeJobModel.Job(
     id = None,
     idx = Some("?"),
@@ -126,10 +129,26 @@ trait TestData {
     category = BridgeJobModel.CodeMeaning(None, None),
     `type` = BridgeJobModel.CodeMeaning(None, None),
     `class` = BridgeJobModel.CodeMeaning(None, None),
-    data = BridgeJobModel.Data(Nil, Nil, Nil),
+    data = PropertyEntityData(),
     protodata = Seq.empty,
-    metadata = BridgeJobModel.Metadata(MetadataStage(), MetadataStage()),
-    compartments = BridgeJobModel.Compartments(),
+    metadata = metadata,
+    compartments = BridgeJobModel.Compartments(products = Seq(JobItem(
+        id = None,
+        idx = Some("1"),
+        name = Some("physical-product-1"),
+        label = Some("Physical Product 1"),
+        description = Some("Default physical product item"),
+        origination = None,
+        termination = None,
+        category = BridgeJobModel.CodeMeaning(None, None),
+        `type` = BridgeJobModel.CodeMeaning(None, None),
+        `class` = BridgeJobModel.CodeMeaning(None, None),
+        data = PropertyEntityData(),
+        protodata = Seq.empty,
+        metadata = metadata,
+        compartments = BridgeJobModel.Compartments(),
+        items = None
+      ))),
     items = None
   )
 

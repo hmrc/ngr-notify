@@ -23,7 +23,7 @@ import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.bridge.*
-import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
+import uk.gov.hmrc.ngrnotify.model.bridge.System.GovernmentGateway
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
@@ -104,7 +104,7 @@ class RatepayerController @Inject() (
               data = PersonData(
                 foreignIds = List(
                   ForeignId(
-                    system = Some(Government_Gateway),
+                    system = Some(GovernmentGateway),
                     value = Some(ratepayer.ratepayerCredId)
                   ),
                   ForeignId(
@@ -171,7 +171,6 @@ class RatepayerController @Inject() (
       _.validate[BridgeResponse] match {
         case JsSuccess(bridgeResponse, _) =>
           logger.info(s"Bridge Response:\n$bridgeResponse")
-
           val addresses: Seq[String] = bridgeResponse.job.compartments.properties
             .map(_.data.addresses.propertyFullAddress.getOrElse(""))
           Ok(Json.toJsObject(RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)))

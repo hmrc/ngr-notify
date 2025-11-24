@@ -30,4 +30,4 @@ enum ForeignIdSystem:
 
 object ForeignIdSystem:
 
-  given Format[ForeignIdSystem] = Scala3EnumJsonFormat.format
+  given Format[System] = Scala3EnumJsonFormat.format

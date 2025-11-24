@@ -16,26 +16,15 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
-
-/**
-  * @author Yuriy Tumakha
-  */
-case class ForeignId(
-                      system: Option[System] = None,
-                      location: Option[String] = None,
-                      value: Option[String] = None
+case class Location(
+  localAuthorityPseudoAreaCode: Option[String] = None,
+  ordnanceSurveyCoordinates: Option[String] = None,
+  googleMapsCoordinates: Option[String] = None
 )
 
-object ForeignId:
-
+object Location:
+  
+  import play.api.libs.json.{Format, Json}
   import uk.gov.hmrc.ngrnotify.model.given
 
-  given Format[ForeignId] = Json.format
-
-  def apply(submissionId: Option[String], foreignIdSystem: System): ForeignId =
-    ForeignId(
-      system = Some(foreignIdSystem),
-      location = None,
-      value = submissionId
-    )
+  given Format[Location] = Json.format
