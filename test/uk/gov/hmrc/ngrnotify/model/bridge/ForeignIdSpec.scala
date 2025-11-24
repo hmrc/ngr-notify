@@ -16,26 +16,23 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers.mustBe
 
-/**
-  * @author Yuriy Tumakha
-  */
-case class ForeignId(
-                      system: Option[System] = None,
-                      location: Option[String] = None,
-                      value: Option[String] = None
-)
+class ForeignIdSpec extends AnyFreeSpec {
+  "ForeignId" - {
+    "serialize and deserialize correctly" in {
+      import play.api.libs.json.Json
 
-object ForeignId:
+      val foreignId = ForeignId(
+        system = Some(System.GovernmentGateway),
+        location = Some(".path"),
+        value = Some("SomeValue")
+      )
 
-  import uk.gov.hmrc.ngrnotify.model.given
-
-  given Format[ForeignId] = Json.format
-
-  def apply(submissionId: Option[String], foreignIdSystem: System): ForeignId =
-    ForeignId(
-      system = Some(foreignIdSystem),
-      location = None,
-      value = submissionId
-    )
+      val json                = Json.toJson(foreignId)
+      val deserializedForeignId = json.as[ForeignId]
+      deserializedForeignId mustBe foreignId
+    }
+  }
+}

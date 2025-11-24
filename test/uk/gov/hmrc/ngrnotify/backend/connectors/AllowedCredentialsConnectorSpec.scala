@@ -20,6 +20,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.concurrent.ScalaFutures
 import uk.gov.hmrc.ngrnotify.connectors.AllowedCredentialsConnector
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 
 class AllowedCredentialsConnectorSpec extends AnyWordSpec with Matchers with ScalaFutures {
 
@@ -29,12 +30,12 @@ class AllowedCredentialsConnectorSpec extends AnyWordSpec with Matchers with Sca
 
     "return true for credentials from the list" in
       Seq("test-cred-1", "test-cred-2", "test-cred-3", "test-cred-4").foreach { credId =>
-        connector.isAllowed(credId).futureValue shouldBe true
+        connector.isAllowed(CredId(credId)).futureValue shouldBe true
       }
 
     "return false for credentials not from the list" in {
       val notAllowedID: String = "test-cred-5"
-      connector.isAllowed(notAllowedID).futureValue shouldBe false
+      connector.isAllowed(CredId(notAllowedID)).futureValue shouldBe false
     }
   }
 }

@@ -20,11 +20,13 @@ import org.bson.types.ObjectId
 import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.{ngr_add_property_request_sent, ngr_registration_successful}
+import uk.gov.hmrc.ngrnotify.model.bridge.*
+import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel.{Extracting, JobItem, Loading, Receiving, Sending, Storing, TransformingReceiving, TransformingSending, Unloading}
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.ngrnotify.model.email.{AddPropertyRequestSent, RegistrationSuccessful}
 
-import java.util.UUID
 import java.time.{Instant, LocalDate}
+import java.util.UUID
 
 trait TestData {
   val token: String = "Basic OTk5OTYwMTAwMDQ6U2Vuc2l0aXZlKC4uLik="
@@ -111,6 +113,47 @@ trait TestData {
     client = Some("xyz"),
     _id = ObjectId("666f6f2d6261722d71757578"),
     createdAt = Instant.now()
+  )
+
+  val metadata: Metadata = Metadata(Sending(Extracting(), TransformingSending(), Loading(signing = Some(Signing(SigningInputs("hash", None))))), Receiving(Unloading(), TransformingReceiving(), Storing()))
+
+  val sampleJob = BridgeJobModel.Job(
+    id = None,
+    idx = Some("?"),
+    name = Some("physical"),
+    label = Some("Physical Job"),
+    description = Some("Default physical job item"),
+    origination = None,
+    termination = None,
+    category = BridgeJobModel.CodeMeaning(None, None),
+    `type` = BridgeJobModel.CodeMeaning(None, None),
+    `class` = BridgeJobModel.CodeMeaning(None, None),
+    data = PropertyEntityData(),
+    protodata = Seq.empty,
+    metadata = metadata,
+    compartments = BridgeJobModel.Compartments(products = Seq(JobItem(
+        id = None,
+        idx = Some("1"),
+        name = Some("physical-product-1"),
+        label = Some("Physical Product 1"),
+        description = Some("Default physical product item"),
+        origination = None,
+        termination = None,
+        category = BridgeJobModel.CodeMeaning(None, None),
+        `type` = BridgeJobModel.CodeMeaning(None, None),
+        `class` = BridgeJobModel.CodeMeaning(None, None),
+        data = PropertyEntityData(),
+        protodata = Seq.empty,
+        metadata = metadata,
+        compartments = BridgeJobModel.Compartments(),
+        items = None
+      ))),
+    items = None
+  )
+
+  val sampleBridgeModel = BridgeJobModel(
+    $schema = "http://example.com/schema",
+    job = sampleJob
   )
 
 //  val prefilledMonthYearInput: MonthsYearDuration = MonthsYearDuration(6, 2000)

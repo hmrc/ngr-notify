@@ -1,3 +1,4 @@
+import play.sbt.routes.RoutesKeys
 import uk.gov.hmrc.DefaultBuildSettings
 
 val appName     = "ngr-notify"
@@ -9,6 +10,8 @@ ThisBuild / scalaVersion := "3.7.4"
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin) // Required to prevent https://github.com/scalatest/scalatest/issues/1427
+  .settings(RoutesKeys.routesImport ++= Seq("uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId"))
+  .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     scalacOptions += "-Wconf:src=routes/:s",

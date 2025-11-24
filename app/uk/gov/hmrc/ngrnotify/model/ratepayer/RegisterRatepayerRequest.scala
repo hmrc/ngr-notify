@@ -19,6 +19,7 @@ package uk.gov.hmrc.ngrnotify.model.ratepayer
 import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.ngrnotify.model.Address
 import uk.gov.hmrc.ngrnotify.model.email.Email
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 
 /**
   * @author Yuriy Tumakha

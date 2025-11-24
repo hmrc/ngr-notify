@@ -16,9 +16,11 @@
 
 package uk.gov.hmrc.ngrnotify.backend.model.response.bridge
 
+import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.*
+import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData
 import uk.gov.hmrc.ngrnotify.backend.testUtils.BridgeModelTestData.testData
 import uk.gov.hmrc.ngrnotify.model.response.bridge.Data
 

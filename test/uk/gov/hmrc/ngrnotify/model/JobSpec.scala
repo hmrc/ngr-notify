@@ -20,7 +20,7 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.*
 import uk.gov.hmrc.ngrnotify.model.bridge.*
-import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
+import uk.gov.hmrc.ngrnotify.model.bridge.System.GovernmentGateway
 import uk.gov.hmrc.ngrnotify.model.bridge.TitleCommon.*
 
 class JobSpec extends AnyWordSpec with Matchers:
@@ -51,7 +51,7 @@ class JobSpec extends AnyWordSpec with Matchers:
               data = PersonData(
                 foreignIds = List(
                   ForeignId(
-                    system = Some(Government_Gateway),
+                    system = Some(GovernmentGateway),
                     value = Some("GGID123345")
                   )
                 ),
@@ -93,7 +93,7 @@ class JobSpec extends AnyWordSpec with Matchers:
               data = PersonData(
                 foreignIds = List(
                   ForeignId(
-                    system = Some(Government_Gateway),
+                    system = Some(GovernmentGateway),
                     value = Some("GGID123456")
                   )
                 ),

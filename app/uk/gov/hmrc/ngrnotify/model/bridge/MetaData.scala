@@ -16,26 +16,31 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel.{Receiving, Sending}
 
-/**
-  * @author Yuriy Tumakha
-  */
-case class ForeignId(
-                      system: Option[System] = None,
-                      location: Option[String] = None,
-                      value: Option[String] = None
+case class Metadata(
+  sending: Sending,
+  receiving: Receiving
 )
 
-object ForeignId:
+object Metadata {
+  implicit val metadataFormat: OFormat[Metadata] = Json.format[Metadata]
+}
 
-  import uk.gov.hmrc.ngrnotify.model.given
+case class Signing(
+  inputs: Option[SigningInputs] = None
+)
 
-  given Format[ForeignId] = Json.format
+object Signing {
+  implicit val signingFormat: OFormat[Signing] = Json.format[Signing]
+}
 
-  def apply(submissionId: Option[String], foreignIdSystem: System): ForeignId =
-    ForeignId(
-      system = Some(foreignIdSystem),
-      location = None,
-      value = submissionId
-    )
+case class SigningInputs(
+  hash: String,
+  signature: Option[String]
+)
+
+object SigningInputs {
+  implicit val signingInputsFormat: OFormat[SigningInputs] = Json.format[SigningInputs]
+}

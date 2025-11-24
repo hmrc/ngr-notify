@@ -19,10 +19,12 @@ package uk.gov.hmrc.ngrnotify.controllers
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.*
+import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.bridge.*
-import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
+import uk.gov.hmrc.ngrnotify.model.bridge.System.GovernmentGateway
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -42,11 +44,11 @@ class RatepayerController @Inject() (
   with JsonSupport
   with Logging:
 
-  def getRatepayer(id: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    hipConnector.getRatepayer(id)
+  def getRatepayer(credId: CredId): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    hipConnector.getRatepayer(credId)
       .map { response =>
         response.status match {
-          case 200 =>
+          case OK =>
             response.json.validate[BridgeJobModel] match {
               case JsSuccess(value, path) => Ok(Json.toJsObject(BridgeJobModel.toRatepayerModel(value)))
               case JsError(errors)        => BadRequest
@@ -66,9 +68,9 @@ class RatepayerController @Inject() (
         hipConnector.registerRatepayer(bridgeRequest)
           .map { response =>
             response.status match {
-              case 200 | 201 | 202 => Accepted(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
-              case 400             => BadRequest(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.INCOMPLETE, Some(response.body))))
-              case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+              case status if is2xx(status) => Accepted(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.OK)))
+              case BAD_REQUEST             => BadRequest(Json.toJsObject(RegisterRatepayerResponse(RegistrationStatus.INCOMPLETE, Some(response.body))))
+              case status                  => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
             }
           }
           .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
@@ -76,11 +78,11 @@ class RatepayerController @Inject() (
     }
   }
 
-  def getRatepayerPropertyLinks(ratepayerCredId: String): Action[AnyContent] = Action.async { implicit request =>
+  def getRatepayerPropertyLinks(ratepayerCredId: CredId): Action[AnyContent] = Action.async { implicit request =>
     hipConnector.getRatepayer(ratepayerCredId)
       .map { response =>
         response.status match {
-          case 200    => parsePropertyLinks(response.body)
+          case OK     => parsePropertyLinks(response.body)
           case status => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
         }
       }
@@ -102,7 +104,7 @@ class RatepayerController @Inject() (
               data = PersonData(
                 foreignIds = List(
                   ForeignId(
-                    system = Some(Government_Gateway),
+                    system = Some(GovernmentGateway),
                     value = Some(ratepayer.ratepayerCredId)
                   ),
                   ForeignId(
@@ -169,7 +171,6 @@ class RatepayerController @Inject() (
       _.validate[BridgeResponse] match {
         case JsSuccess(bridgeResponse, _) =>
           logger.info(s"Bridge Response:\n$bridgeResponse")
-
           val addresses: Seq[String] = bridgeResponse.job.compartments.properties
             .map(_.data.addresses.propertyFullAddress.getOrElse(""))
           Ok(Json.toJsObject(RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)))

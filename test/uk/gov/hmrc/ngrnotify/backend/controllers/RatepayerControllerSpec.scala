@@ -31,6 +31,7 @@ import uk.gov.hmrc.ngrnotify.backend.testUtils.RequestBuilderStub
 import uk.gov.hmrc.ngrnotify.controllers.RatepayerController
 import uk.gov.hmrc.ngrnotify.model.{Address, Postcode}
 import uk.gov.hmrc.ngrnotify.model.email.Email
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
 import uk.gov.hmrc.ngrnotify.model.ratepayer.RatepayerType.organization
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{Name, Nino, PhoneNumber, ReferenceType, RegisterRatepayerRequest, TRNReferenceNumber}
@@ -207,31 +208,31 @@ class RatepayerControllerSpec extends AnyWordAppSpec:
     }
 
     ".getRatepayerPropertyLinks return 200" in {
-      val result = controller.getRatepayerPropertyLinks("GGID123345")(FakeRequest())
+      val result = controller.getRatepayerPropertyLinks(CredId("GGID123345"))(FakeRequest())
       status(result)          shouldBe OK
       contentAsString(result) shouldBe """{"linked":true,"properties":["88, Anderton Close, Tavistock, Devon, PL22 8DE"]}"""
     }
 
     ".getRatepayerPropertyLinks return 500 for wrong ID" in {
-      val result = controller.getRatepayerPropertyLinks("1234567891255")(FakeRequest())
+      val result = controller.getRatepayerPropertyLinks(CredId("1234567891255"))(FakeRequest())
       status(result)        shouldBe INTERNAL_SERVER_ERROR
       contentAsString(result) should include("Invalid format for Id")
     }
 
     ".getRatepayerPropertyLinks return 500 for invalid json in HIP response" in {
-      val result = controller.getRatepayerPropertyLinks("test_invalid_json")(FakeRequest())
+      val result = controller.getRatepayerPropertyLinks(CredId("test_invalid_json"))(FakeRequest())
       status(result)          shouldBe INTERNAL_SERVER_ERROR
       contentAsString(result) shouldBe """[{"code":"JSON_VALIDATION_ERROR","reason":"/job <- error.path.missing"}]"""
     }
 
     ".getRatepayerPropertyLinks return 500 if HIP response body is not a JSON" in {
-      val result = controller.getRatepayerPropertyLinks("test_no_json")(FakeRequest())
+      val result = controller.getRatepayerPropertyLinks(CredId("test_no_json"))(FakeRequest())
       status(result)          shouldBe INTERNAL_SERVER_ERROR
       contentAsString(result) shouldBe """[{"code":"WRONG_RESPONSE_BODY","reason":"HIP response could not be parsed into JSON format."}]"""
     }
 
     ".getRatepayerPropertyLinks return 500 on HIP connection exception" in {
-      val result = controller.getRatepayerPropertyLinks("test_hip_connection_error")(FakeRequest())
+      val result = controller.getRatepayerPropertyLinks(CredId("test_hip_connection_error"))(FakeRequest())
       status(result)          shouldBe INTERNAL_SERVER_ERROR
       contentAsString(result) shouldBe """[{"code":"ACTION_FAILED","reason":"HIP connection error details"}]"""
     }
