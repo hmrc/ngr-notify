@@ -30,6 +30,7 @@ object System {
   case object CompaniesHouse extends System
   case object HmrcVoaCdb extends System
   case object NationalAddressGazetteer extends System
+  case object NDRRPublicInterface extends System
 
   val values: Set[System] = Set(GovernmentGateway, BillingAuthority, CompaniesHouse, HmrcVoaCdb, NationalAddressGazetteer)
 
@@ -41,6 +42,7 @@ object System {
       case JsString("Companies_House")            => JsSuccess(CompaniesHouse)
       case JsString("HMRC-VOA_CDB")               => JsSuccess(HmrcVoaCdb)
       case JsString("National_Address_Gazetteer") => JsSuccess(NationalAddressGazetteer)
+      case JsString("NDRR_Public_Interface")      => JsSuccess(NDRRPublicInterface)
       case _                                      => JsError("Unknown ForeignIdSystem")
     },
     Writes {
@@ -50,6 +52,7 @@ object System {
       case CompaniesHouse           => JsString("Companies_House")
       case HmrcVoaCdb               => JsString("HMRC-VOA_CDB")
       case NationalAddressGazetteer => JsString("National_Address_Gazetteer")
+      case NDRRPublicInterface      => JsString("NDRR_Public_Interface")
     }
   )
 }

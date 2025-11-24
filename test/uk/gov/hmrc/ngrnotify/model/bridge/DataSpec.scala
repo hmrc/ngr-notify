@@ -30,7 +30,7 @@ class DataSpec extends AnyFreeSpec {
         addresses = Some(PropertyAddresses(Some("line1"), Some("line2"), Some("line3"), Some("line4"))),
         location = Some(Location(
           localAuthorityPseudoAreaCode = Some("51.5074"),
-          ordnanceSurveyCoordinates = Some("0.1278"),
+          ordanaceSurveyCoordinates = Some("0.1278"),
           googleMapsCoordinates = Some("15.0")
         )),
         assessments = Some(Seq(

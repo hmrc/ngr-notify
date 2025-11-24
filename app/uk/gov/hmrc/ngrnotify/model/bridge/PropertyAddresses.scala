@@ -20,7 +20,7 @@ import play.api.libs.json.{Format, Json}
 
 case class PropertyAddresses(
   propertyFullAddress: Option[String] = None,
-  addressLine1: Option[String] = None,
+  addressLine_1: Option[String] = None,
   addressPostcode: Option[String] = None,
   addressKnownAs: Option[String] = None
 )

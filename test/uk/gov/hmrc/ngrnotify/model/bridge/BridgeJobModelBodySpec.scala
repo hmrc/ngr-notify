@@ -118,7 +118,7 @@ class BridgeJobModelBodySpec extends AnyWordAppSpec {
   }
 
   "deserialize example with multiple job items" in {
-    val postRatepayerJson = Json.parse(testResourceContent("Test.json"))
+    val postRatepayerJson = Json.parse(testResourceContent("05_GET_NotifiableInformation.json"))
     val postRatepayer = postRatepayerJson.as[BridgeJobModel]
 
     Json.toJson(postRatepayer).as[BridgeJobModel] shouldBe postRatepayer

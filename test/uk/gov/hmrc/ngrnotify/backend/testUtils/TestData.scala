@@ -20,11 +20,10 @@ import org.bson.types.ObjectId
 import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.{ngr_add_property_request_sent, ngr_registration_successful}
-import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel.{Extracting, JobItem, Loading, Receiving, Sending, Storing, TransformingReceiving, TransformingSending, Unloading}
 import uk.gov.hmrc.ngrnotify.model.bridge.*
+import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel.{Extracting, JobItem, Loading, Receiving, Sending, Storing, TransformingReceiving, TransformingSending, Unloading}
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
 import uk.gov.hmrc.ngrnotify.model.email.{AddPropertyRequestSent, RegistrationSuccessful}
-import uk.gov.hmrc.ngrnotify.model.response.bridge.Data
 
 import java.time.{Instant, LocalDate}
 import java.util.UUID
@@ -118,7 +117,7 @@ trait TestData {
 
   val metadata: Metadata = Metadata(Sending(Extracting(), TransformingSending(), Loading(signing = Some(Signing(SigningInputs("hash", None))))), Receiving(Unloading(), TransformingReceiving(), Storing()))
 
-  private val sampleJob = BridgeJobModel.Job(
+  val sampleJob = BridgeJobModel.Job(
     id = None,
     idx = Some("?"),
     name = Some("physical"),

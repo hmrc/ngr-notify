@@ -17,6 +17,8 @@
 package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.ngrnotify.model.bridge.System.NDRRPublicInterface
+import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeJobModel, ForeignId, PropertyEntityData}
 
 import java.time.LocalDate
 
@@ -41,4 +43,28 @@ case class PropertyChangesRequest(
 
 object PropertyChangesRequest {
   implicit val format: OFormat[PropertyChangesRequest] = Json.format
+
+  def toBridgeRequest(ratePayerJobModel: BridgeJobModel, propertyChanges: PropertyChangesRequest): Option[BridgeJobModel] = {
+    val foreignIds = Seq(ForeignId.apply(propertyChanges.declarationRef, NDRRPublicInterface))
+
+    val updatedData: PropertyEntityData = (ratePayerJobModel.job.data match {
+      case data: PropertyEntityData => Some(data.copy(foreign_ids = foreignIds))
+      case _ => None
+    }).getOrElse(PropertyEntityData(foreign_ids = foreignIds))
+
+    val jobItemOpt = ratePayerJobModel.job.compartments.products.headOption
+      .map(_.copy(description = Some(propertyChanges.toString)))
+
+    jobItemOpt map { jobItem =>
+      ratePayerJobModel.copy(
+        job = ratePayerJobModel.job.copy(
+          data = updatedData,
+          compartments = ratePayerJobModel.job.compartments.copy(
+            products = Seq(jobItem)
+          )
+        )
+      )
+    }
+  }
+  
 }

@@ -22,7 +22,7 @@ import play.api.mvc.{Action, ControllerComponents, Request}
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
-import uk.gov.hmrc.ngrnotify.model.bridge.System.GovernmentGateway
+import uk.gov.hmrc.ngrnotify.model.bridge.System.NDRRPublicInterface
 import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeJobModel, ForeignId, PropertyEntityData}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.{CredId, PropertyChangesRequest, PropertyChangesResponse}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
@@ -44,9 +44,9 @@ class PhysicalController @Inject() (
       if (response.status == OK) {
         response.json.validate[BridgeJobModel].asOpt match {
           case Some(model) =>
-            toBridgeRequest(model, propertyChanges)
+            PropertyChangesRequest.toBridgeRequest(model, propertyChanges)
           case None        =>
-            logger.warn(s"Failed to parse BridgeJobModel from HIP response for CredId: $credId, assessmentId: $assessmentId. JSON: ${response.json}")
+            logger.warn(s"Failed to parse BridgeJobModel from HIP response for CredId: $credId, assessmentId: $assessmentId")
             None
         }
       } else {
@@ -64,7 +64,7 @@ class PhysicalController @Inject() (
               response.status match {
                 case status if is2xx(status) => Accepted(Json.toJsObject(PropertyChangesResponse()))
                 case BAD_REQUEST             => BadRequest(Json.toJsObject(PropertyChangesResponse(Some(response.body))))
-                case status                  => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+                case status                  => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status"))
               }
             }
               .recover(e =>
@@ -79,28 +79,4 @@ class PhysicalController @Inject() (
       case jsError: JsError => Future.successful(buildValidationErrorsResponse(jsError))
     }
   }
-
-  private def toBridgeRequest(ratePayerJobModel: BridgeJobModel, propertyChanges: PropertyChangesRequest): Option[BridgeJobModel] = {
-    val foreignIds = Seq(ForeignId.apply(propertyChanges.declarationRef, GovernmentGateway)) // TODO confirm system code
-    val data: PropertyEntityData = ratePayerJobModel.job.compartments.products.headOption
-     .flatMap(_.data match {
-        case data:PropertyEntityData => Some(data.copy(foreign_ids = foreignIds))
-        case _   => None
-      }).getOrElse(PropertyEntityData(foreign_ids = foreignIds))
-
-
-    val jobItemOpt = ratePayerJobModel.job.compartments.products.headOption
-      .map(_.copy(description = Some(propertyChanges.toString), data = data))
-
-    jobItemOpt map { jobItem =>
-      ratePayerJobModel.copy(
-        job = ratePayerJobModel.job.copy(
-          compartments = ratePayerJobModel.job.compartments.copy(
-            products = Seq(jobItem)
-          )
-        )
-      )
-    }
-  }
-
 }

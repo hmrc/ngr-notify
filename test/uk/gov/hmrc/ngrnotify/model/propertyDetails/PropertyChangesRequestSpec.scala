@@ -17,9 +17,13 @@
 package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers.mustBe
+import org.scalatest.matchers.must.Matchers.{defined, mustBe}
+import uk.gov.hmrc.ngrnotify.backend.testUtils.TestData
+import uk.gov.hmrc.ngrnotify.model.bridge.BridgeJobModel.{Compartments, JobItem}
+import uk.gov.hmrc.ngrnotify.model.bridge.System.NDRRPublicInterface
+import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeJobModel, ForeignId, PropertyEntityData}
 
-class PropertyChangesRequestSpec extends AnyFreeSpec {
+class PropertyChangesRequestSpec extends AnyFreeSpec with TestData {
   "PropertyChangesRequest" - {
     "toString should redact uploadedDocuments" in {
       val request        = PropertyChangesRequest(
@@ -47,6 +51,51 @@ class PropertyChangesRequestSpec extends AnyFreeSpec {
       )
       val toStringOutput = request.toString
       toStringOutput mustBe "credId: credId - dateOfChange: 2023-01-01 - useOfSpace: No change to use of space - internalFeatures: [], externalFeatures: [], additionalInfo: No additional information provided - uploadedDocuments: []"
+    }
+
+    "toBridgeRequest should update BridgeJobModel correctly" in {
+
+      val propertyChanges = PropertyChangesRequest(
+        credId = CredId("credId"),
+        dateOfChange = java.time.LocalDate.of(2023, 1, 1),
+        useOfSpace = None,
+        internalFeatures = Seq.empty,
+        externalFeatures = Seq.empty,
+        additionalInfo = None,
+        uploadedDocuments = Seq.empty,
+        declarationRef = Some("declRef123")
+      )
+
+      val updatedJobModelOpt = PropertyChangesRequest.toBridgeRequest(sampleBridgeModel, propertyChanges)
+
+      updatedJobModelOpt mustBe defined
+      val updatedJobModel = updatedJobModelOpt.get
+
+      updatedJobModel.job.data.asInstanceOf[PropertyEntityData].foreign_ids.head mustBe ForeignId(Some(NDRRPublicInterface), None, Some("declRef123"))
+      updatedJobModel.job.compartments.products.head.description mustBe Some(propertyChanges.toString)
+    }
+
+    "toBridgeRequest should return None if job data has no Compartments" in {
+      val invalidBridgeModel = sampleBridgeModel.copy(
+        job = sampleBridgeModel.job.copy(
+          compartments = Compartments()
+        )
+      )
+
+      val propertyChanges = PropertyChangesRequest(
+        credId = CredId("credId"),
+        dateOfChange = java.time.LocalDate.of(2023, 1, 1),
+        useOfSpace = None,
+        internalFeatures = Seq.empty,
+        externalFeatures = Seq.empty,
+        additionalInfo = None,
+        uploadedDocuments = Seq.empty,
+        declarationRef = Some("declRef123")
+      )
+
+      val updatedJobModelOpt = PropertyChangesRequest.toBridgeRequest(invalidBridgeModel, propertyChanges)
+
+      updatedJobModelOpt mustBe None
     }
   }
 }
