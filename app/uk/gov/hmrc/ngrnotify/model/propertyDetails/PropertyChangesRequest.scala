@@ -27,7 +27,8 @@ case class PropertyChangesRequest(
   internalFeatures: Seq[(String, String)],
   externalFeatures: Seq[(String, String)],
   additionalInfo: Option[AnythingElseData] = None,
-  uploadedDocuments: Seq[String]
+  uploadedDocuments: Seq[String],
+  declarationRef: Option[String] = None
 )
 
 object PropertyChangesRequest {
