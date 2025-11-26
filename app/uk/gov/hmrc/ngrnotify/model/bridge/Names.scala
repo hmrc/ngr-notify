@@ -20,14 +20,15 @@ import play.api.libs.json.{Format, Json}
 
 case class Names(
   titleCommon: Option[TitleCommon] = None,
+  titleUncommon: Option[String] = None,
   forenames: Option[String] = None,
   surname: Option[String] = None,
   postNominals: Option[String] = None,
-  corporateName: Option[String] = None
+  corporateName: Option[String] = None,
+  crownName: Option[String] = None,
+  knownAs: Option[String] = None
 )
 
 object Names:
-
   import uk.gov.hmrc.ngrnotify.model.given
-
   given Format[Names] = Json.format

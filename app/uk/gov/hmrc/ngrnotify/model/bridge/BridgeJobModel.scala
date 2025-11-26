@@ -22,13 +22,25 @@ import uk.gov.hmrc.ngrnotify.model.{Address, Postcode}
 
 // ---------- Case Classes ----------
 
+@deprecated(
+  message = "This class is going to be dropped. Use the JobMessage class instead",
+  since = "2025-11-21"
+)
 case class BridgeJobModel(
   $schema: String,
   job: BridgeJobModel.Job
 )
 
+@deprecated(
+  message = "This class is going to be dropped. Use the JobMessage class instead",
+  since = "2025-11-21"
+)
 object BridgeJobModel {
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class Job(
     id: Option[String],
     idx: Option[String],
@@ -47,11 +59,19 @@ object BridgeJobModel {
     items: Option[Seq[JobItem]]
   )
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class CodeMeaning(
     code: Option[String],
     meaning: Option[String]
   )
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class Data(
     foreign_ids: Seq[String],
     foreign_names: Seq[String],
@@ -60,6 +80,10 @@ object BridgeJobModel {
     communications: Option[Communications] = None
   )
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class Names(
     title_common: Option[String],
     title_uncommon: Option[String],
@@ -71,19 +95,35 @@ object BridgeJobModel {
     known_as: Option[String]
   )
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class Communications(
     postal_address: Option[String],
     telephone_number: Option[String],
     email: Option[String]
   )
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class Protodata() // empty placeholder
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class Metadata(
     sending: MetadataStage,
     receiving: MetadataStage
   )
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class MetadataStage(
     extracting: MetadataAction = MetadataAction(),
     transforming: MetadataTransform = MetadataTransform(),
@@ -92,8 +132,16 @@ object BridgeJobModel {
     storing: Option[MetadataStoring] = None
   )
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class MetadataAction(selecting: Map[String, String] = Map.empty)
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class MetadataTransform(
     filtering: Map[String, String] = Map.empty,
     supplementing: Map[String, String] = Map.empty,
@@ -102,6 +150,10 @@ object BridgeJobModel {
     restoring: Map[String, String] = Map.empty
   )
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class MetadataLoading(
     readying: Map[String, String] = Map.empty,
     assuring: Map[String, String] = Map.empty,
@@ -110,6 +162,10 @@ object BridgeJobModel {
     sending: Map[String, String] = Map.empty
   )
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class MetadataUnloading(
     receiving: Map[String, String] = Map.empty,
     decrypting: Map[String, String] = Map.empty,
@@ -117,8 +173,17 @@ object BridgeJobModel {
     assuring: Map[String, String] = Map.empty,
     readying: Map[String, String] = Map.empty
   )
+
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class MetadataStoring(inserting: Map[String, String] = Map.empty)
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class Compartments(
     properties: Seq[JobItem] = Seq.empty,
     persons: Seq[JobItem] = Seq.empty,
@@ -127,6 +192,10 @@ object BridgeJobModel {
     relationships: Seq[JobItem] = Seq.empty
   )
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   case class JobItem(
     id: Option[String],
     idx: Option[String],
@@ -168,6 +237,10 @@ object BridgeJobModel {
   implicit lazy val jobFormat: OFormat[Job]                = Json.format[Job]
   implicit lazy val jobRootFormat: OFormat[BridgeJobModel] = Json.format[BridgeJobModel]
 
+  @deprecated(
+    message = "This class is going to be dropped. Use the JobMessage class instead",
+    since = "2025-11-21"
+  )
   def toRatepayerModel(bridgeJobModel: BridgeJobModel): RegisterRatepayerRequest = {
     val data          = bridgeJobModel.job.compartments.products.head
     val addressString = data.data.communications.flatMap(_.postal_address).getOrElse("")

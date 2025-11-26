@@ -23,7 +23,7 @@ class ForeignIdSystemSpec extends AnyFreeSpec with Matchers {
   "ForeignIdSystem" - {
     "must have all expected values" in {
       val systems = ForeignIdSystem.values.toSet
-      systems mustBe Set(ForeignIdSystem.Government_Gateway, ForeignIdSystem.Billing_Authority, ForeignIdSystem.Companies_House)
+      systems mustBe Set(ForeignIdSystem.Government_Gateway, ForeignIdSystem.Billing_Authority, ForeignIdSystem.Companies_House, ForeignIdSystem.SystemX)
     }
   }
 }

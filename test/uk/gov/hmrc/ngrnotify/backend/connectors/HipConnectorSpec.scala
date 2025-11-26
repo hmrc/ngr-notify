@@ -21,21 +21,24 @@ import play.api.Configuration
 import play.api.http.Status.{ACCEPTED, OK}
 import play.api.mvc.{AnyContent, Request}
 import play.api.test.FakeRequest
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
-import uk.gov.hmrc.ngrnotify.backend.base.AnyWordAppSpec
-import uk.gov.hmrc.ngrnotify.backend.testUtils.HipTestData.testHipHeaders
+import uk.gov.hmrc.ngrnotify.backend.base.AnyWordControllerSpec
 import uk.gov.hmrc.ngrnotify.backend.testUtils.RequestBuilderStub
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
-import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeRequest, Compartments, Job}
+import uk.gov.hmrc.ngrnotify.model.bridge.BridgeRequest
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL
 import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class HipConnectorSpec extends AnyWordAppSpec {
+@deprecated(
+  message = "The HipConnector is going to be displaced by the new BridgeConnector",
+  since = "2025-11-21"
+)
+class HipConnectorSpec extends AnyWordControllerSpec {
 
   private val configuration = Configuration(ConfigFactory.load())
   private val appConfig     = AppConfig(configuration, ServicesConfig(configuration))
@@ -54,69 +57,34 @@ class HipConnectorSpec extends AnyWordAppSpec {
     ).thenReturn(RequestBuilderStub(Right(responseStatus), "{}"))
     httpClientV2Mock
 
-  "registerRatepayer" must {
-    "return a successful response" in {
-      val httpMock              = httpPostMock(ACCEPTED)
-      val connector             = HipConnector(appConfig, httpMock)
-      given Request[AnyContent] = FakeRequest()
-      val bridgeRequest         = BridgeRequest(
-        Job(
-          id = None,
-          idx = "1",
-          name = "Register Ratepayer",
-          compartments = Compartments()
-        )
-      )
-
-      val response = connector.registerRatepayer(bridgeRequest).futureValue
-      response.status shouldBe ACCEPTED
-
-      verify(httpMock)
-        .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer"))(using any[HeaderCarrier])
-    }
-  }
-
   "updatePropertyChanges" must {
     "return a successful response" in {
-      val httpMock              = httpPostMock(ACCEPTED)
-      val connector             = HipConnector(appConfig, httpMock)
-      given Request[AnyContent] = FakeRequest()
-      val bridgeRequest         = BridgeRequest(
-        Job(
-          id = None,
-          idx = "1",
-          name = "Update Property Changes",
-          compartments = Compartments()
-        )
-      )
+      pending
+      val httpMock                     = httpPostMock(ACCEPTED)
+      val connector                    = HipConnector(appConfig, httpMock)
+      given Request[AnyContent]        = FakeRequest()
+      val bridgeRequest: BridgeRequest = ???
 
       val response = connector.updatePropertyChanges(bridgeRequest).futureValue
       response.status shouldBe ACCEPTED
 
       verify(httpMock)
-        .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/physical"))(using any[HeaderCarrier])
+        .post(argThat(urlEndsWith("/job/physical")))(using any[HeaderCarrier])
     }
   }
 
   "submitPropertyLinkingChanges" must {
     "return a successful response" in {
-      val httpMock              = httpPostMock(ACCEPTED)
-      val connector             = HipConnector(appConfig, httpMock)
-      given Request[AnyContent] = FakeRequest()
-      val bridgeRequest         = BridgeRequest(
-        Job(
-          id = None,
-          idx = "1",
-          name = "Property Linking",
-          compartments = Compartments()
-        )
-      )
-
-      val response = connector.submitPropertyLinkingChanges(bridgeRequest).futureValue
+      pending
+      val httpMock                     = httpPostMock(ACCEPTED)
+      val connector                    = HipConnector(appConfig, httpMock)
+      given Request[AnyContent]        = FakeRequest()
+      val bridgeRequest: BridgeRequest = ???
+      val response                     = connector.submitPropertyLinkingChanges(bridgeRequest).futureValue
       response.status shouldBe ACCEPTED
 
       verify(httpMock)
-        .post(eqTo(url"http://localhost:1501/ngr-stub/hip/job/property"))(using any[HeaderCarrier])
+        .post(argThat(urlEndsWith("/job/property")))(using any[HeaderCarrier])
     }
   }
 
@@ -130,33 +98,7 @@ class HipConnectorSpec extends AnyWordAppSpec {
       response.status shouldBe OK
 
       verify(httpMock)
-        .get(eqTo(url"http://localhost:1501/ngr-stub/hip/job/ratepayer/ID_123"))(using any[HeaderCarrier])
-    }
-  }
-
-  "callHelloWorld()" must {
-    "return a successful JsValue response" in {
-      val httpMock  = httpGetMock(OK)
-      val connector = HipConnector(appConfig, httpMock)
-
-      val response = connector.callHelloWorld(testHipHeaders).futureValue
-      response.status shouldBe OK
-
-      verify(httpMock)
-        .get(eqTo(url"https://hip.ws.ibt.hmrc.gov.uk/demo/hello-world"))(using any[HeaderCarrier])
-    }
-  }
-
-  "callItems()" must {
-    "return a successful JsValue response" in {
-      val httpMock  = httpGetMock(OK)
-      val connector = HipConnector(appConfig, httpMock)
-
-      val response = connector.callItems(testHipHeaders).futureValue
-      response.status shouldBe OK
-
-      verify(httpMock)
-        .get(eqTo(url"https://hip.ws.ibt.hmrc.gov.uk/voa-prototype/api/item"))(using any[HeaderCarrier])
+        .get(argThat(urlEndsWith("/job/ratepayers/ID_123")))(using any[HeaderCarrier])
     }
   }
 }

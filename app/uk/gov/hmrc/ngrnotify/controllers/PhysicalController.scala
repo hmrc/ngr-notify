@@ -20,7 +20,7 @@ import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.{Action, ControllerComponents}
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
-import uk.gov.hmrc.ngrnotify.model.bridge.{BridgeRequest, Compartments, Job}
+import uk.gov.hmrc.ngrnotify.model.bridge.{Bridge, BridgeRequest, Compartments}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.{PropertyChangesRequest, PropertyChangesResponse}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
@@ -29,7 +29,7 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PhysicalController @Inject() (
-  hipConnector: HipConnector,
+  @deprecated hipConnector: HipConnector,
   cc: ControllerComponents
 )(implicit ec: ExecutionContext
 ) extends BackendController(cc)
@@ -61,16 +61,7 @@ class PhysicalController @Inject() (
   }
 
   private def toBridgeRequest(propertyChanges: PropertyChangesRequest): BridgeRequest =
-    BridgeRequest(
-      Job(
-        id = None,
-        idx = "?",
-        name = "physical",
-        compartments = Compartments(
-          // TODO add actual mappings when spec becomes available
-
-        )
-      )
-    )
+    // Conversions of messages is going to be moved to the new BridgeConnector
+    ???
 
 }

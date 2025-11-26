@@ -34,16 +34,16 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   val importScheduleHour: Int          = config.getOptional[Int]("validationImport.hourToRunAt").getOrElse(0)
   val importScheduleMinute: Int        = config.getOptional[Int]("validationImport.minuteToRunAt").getOrElse(0)
 
-  private val hipBaseUrl                     = servicesConfig.baseUrl("hip")
-  private val registerRatepayerPath          = servicesConfig.getConfString("hip.registerRatepayerPath", "/job/ratepayer")
-  private val getRatepayerPath               = servicesConfig.getConfString("hip.getRatepayerPath", "/job/ratepayer/")
-  private val updatePropertyChangesPath      = servicesConfig.getConfString("hip.updatePropertyChangesPath", "/job/physical")
-  private val propertyLinkingPath            = servicesConfig.getConfString("hip.propertyLinkingPath", "/job/property")
-  val registerRatepayerUrl: URL              = url"${hipBaseUrl + registerRatepayerPath}"
-  val updatePropertyChangesUrl: URL          = url"${hipBaseUrl + updatePropertyChangesPath}"
-  val propertyLinkingUrl: URL                = url"${hipBaseUrl + propertyLinkingPath}"
-  def getRatepayerUrl(id: String): URL       = url"${hipBaseUrl + getRatepayerPath + id}"
-  def getRatepayerStatusUrl(id: String): URL = url"${hipBaseUrl + getRatepayerPath + id}/dashboard"
+  private val hipBaseUrl                        = servicesConfig.baseUrl("hip")
+  private val jobsPath                          = servicesConfig.getConfString("hip.jobsPath", "/job")
+  private val ratepayersPath                    = servicesConfig.getConfString("hip.ratepayersPath", "/job/ratepayers")
+  private val updatePropertyChangesPath         = servicesConfig.getConfString("hip.updatePropertyChangesPath", "/job/physical")
+  private val propertyLinkingPath               = servicesConfig.getConfString("hip.propertyLinkingPath", "/job/property")
+  @deprecated val updatePropertyChangesUrl: URL = url"${hipBaseUrl + updatePropertyChangesPath}"
+  @deprecated val propertyLinkingUrl: URL       = url"${hipBaseUrl + propertyLinkingPath}"
+  def postJobUrl(): URL                         = url"${hipBaseUrl + jobsPath}"
+  def getRatepayerUrl(id: String): URL          = url"${hipBaseUrl + ratepayersPath + "/" + id}"
+  def getRatepayerStatusUrl(id: String): URL    = url"${hipBaseUrl + ratepayersPath + "/" + id}/dashboard"
 
   val hipClientId: String     = servicesConfig.getConfString("hip.clientId", "CLIENT_ID")
   val hipClientSecret: String = servicesConfig.getConfString("hip.clientSecret", "CLIENT_SECRET")
