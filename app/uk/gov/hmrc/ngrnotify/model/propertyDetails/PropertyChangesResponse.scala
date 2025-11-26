@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.ngrnotify.model.NgrNotifyMessage
 
 /**
   * @author Yuriy Tumakha
@@ -24,6 +25,7 @@ import play.api.libs.json.{Json, OFormat}
 case class PropertyChangesResponse(
   error: Option[String] = None
 )
+extends NgrNotifyMessage
 
 object PropertyChangesResponse:
   implicit val format: OFormat[PropertyChangesResponse] = Json.format

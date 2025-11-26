@@ -26,6 +26,7 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeFailure.unknown
 import uk.gov.hmrc.ngrnotify.model.bridge.{HodMessage, JobMessage}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.PropertyChangesRequest
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest}
 
 import java.net.URL
@@ -36,7 +37,8 @@ import scala.concurrent.ExecutionContext
 class BridgeConnector @Inject() (
   appConfig: AppConfig,
   httpClient: HttpClientV2,
-  val aboutRatepayers: AboutRatepayers
+  val aboutRatepayers: AboutRatepayers,
+  val aboutProperties: AboutProperties,
   // ... inject more conversation utilities here if needed ...
 )(using ec: ExecutionContext
 ) extends HipHeaderCarrier(appConfig):
@@ -92,6 +94,36 @@ class BridgeConnector @Inject() (
       val addresses = response.job.compartments.properties.map(_.data.addresses.propertyFullAddress.getOrElse(""))
       RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)
     }
+
+  /*
+   *
+   * DESIGN NOTES
+   * ------------
+   *    1. These connector methods take the NGR request as input and return the NGR responses
+   *       as output (properly wrapped in the BridgeResult monadic type).
+   *
+   *    2. They encapsulate the conversions to (or from) the BridgeMessage requests (or responses)
+   *       and do not leak those conversion details out to the controller layer.
+   *
+   *    3. They adopt a "conversation pattern" taking the following steps:
+   *
+   *                 - GET the job template
+
+   *                 - process the job template
+   *                   (by replacing values in the relevant parts of it)
+   *
+   *                 - POST the processed job template
+   *
+   */
+  def updatePropertyChanges(ngrRequest: PropertyChangesRequest, assessmentId: String)(using request: Request[?]): BridgeResult[NoContent] = {
+    for {
+      template    <- getJobTemplate(appConfig.getPropertiesUrl(ngrRequest.credId, assessmentId))
+      processed   <- aboutProperties.process(template, ngrRequest)
+      ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
+    }
+    yield ngrResponse
+  }
+
 
   /**
     * Get the Bridge API job template for the given URL.

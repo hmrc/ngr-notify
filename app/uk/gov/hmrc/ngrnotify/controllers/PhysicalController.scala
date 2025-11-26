@@ -19,49 +19,46 @@ package uk.gov.hmrc.ngrnotify.controllers
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.{Action, ControllerComponents}
-import uk.gov.hmrc.ngrnotify.connectors.HipConnector
-import uk.gov.hmrc.ngrnotify.model.bridge.{Bridge, BridgeRequest, Compartments}
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.{PropertyChangesRequest, PropertyChangesResponse}
+import uk.gov.hmrc.ngrnotify.connectors.bridge.BridgeConnector
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.PropertyChangesRequest
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PhysicalController @Inject() (
-  @deprecated hipConnector: HipConnector,
+  bridgeConnector: BridgeConnector,
   cc: ControllerComponents
 )(implicit ec: ExecutionContext
 ) extends BackendController(cc)
   with JsonSupport
   with Logging {
 
-  def updatePropertyChanges(): Action[JsValue] = Action.async(parse.json) { implicit request =>
+  /*
+   *  DESIGN NOTES
+   *  ------------
+   *
+   *    1. Inject the new BridgeConnector into this class (in place of the old HipConnector)
+   *
+   *    2. Attempt to validate the incoming request body against one of our NgrMessage models
+   *       (such as the PropertyChangesRequest)
+   *
+   *       2.1 If the request body is valid, then delegate to the new BridgeConnector
+   *           (by invoking its updatePropertyChanges() method) and then
+   *           convert the BridgeResult into a proper HTTP response.
+   *
+   *       2.2 If the request body is invalid, the action builds and returns a
+   *           400 Bad Request response with a validation error message
+   *
+   */
+  def updatePropertyChanges(assessmentId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     request.body.validate[PropertyChangesRequest] match {
-      case JsSuccess(propertyChanges, _) =>
-        logger.info(s"Request:\n$propertyChanges")
+      case JsSuccess(ngrRequest, _) =>
+        bridgeConnector.updatePropertyChanges(ngrRequest, assessmentId).toHttpResult()
 
-        val bridgeRequest = toBridgeRequest(propertyChanges)
-        logger.info(s"BridgeRequest:\n$bridgeRequest")
-
-        hipConnector.updatePropertyChanges(bridgeRequest).map { response =>
-          response.status match {
-            case 200 | 201 | 202 => Accepted(Json.toJsObject(PropertyChangesResponse()))
-            case 400             => BadRequest(Json.toJsObject(PropertyChangesResponse(Some(response.body))))
-            case status          => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
-          }
-        }
-          .recover(e =>
-            InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage))
-          )
-
-      case jsError: JsError => Future.successful(buildValidationErrorsResponse(jsError))
+      case jsError: JsError =>
+        Future.successful(buildValidationErrorsResponse(jsError))
     }
-
   }
-
-  private def toBridgeRequest(propertyChanges: PropertyChangesRequest): BridgeRequest =
-    // Conversions of messages is going to be moved to the new BridgeConnector
-    ???
 
 }
