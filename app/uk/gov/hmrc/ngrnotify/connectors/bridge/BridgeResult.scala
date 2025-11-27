@@ -32,7 +32,7 @@ implicit class FutureEither[L, R](val wrapped: Future[Either[L, R]])(using ec: E
     case other                        => other
   }
 
-  def toFuture = wrapped
+  def toFuture: Future[R] = wrapped
     .flatMap {
       case Left(l)  => Future.failed(new Exception(l.toString))
       case Right(r) => Future.successful(r)

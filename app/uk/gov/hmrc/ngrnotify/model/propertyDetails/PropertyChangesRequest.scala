@@ -51,13 +51,11 @@ object PropertyChangesRequest {
       val productsCompartment = bridgeTemplate.job.compartments.products
 
       if (productsCompartment.isEmpty) {
-        Left("job.compartments.products[] is empty")
-      } else if (productsCompartment.size > 1) {
-        Left("job.compartments.products[] has more than one product in it")
+        Left("job.compartments.products is empty")
       } else {
         val foreignIds: List[ForeignDatum] = bridgeTemplate.job.data.foreignIds :+ ForeignDatum(Some(NDRRPublicInterface), None, propertyChanges.declarationRef)
         val updatedData: JobData = bridgeTemplate.job.data.copy(foreignIds = foreignIds)
-        val jobItemOpt = bridgeTemplate.job.compartments.products.headOption
+        val jobItemOpt = bridgeTemplate.job.compartments.products.find(_.category.code == "LTX-DOM-PRP") //CODE :LTX-DOM-PRP
           .map(_.copy(description = Some(propertyChanges.toString)))
 
         jobItemOpt match {

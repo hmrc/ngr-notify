@@ -36,7 +36,10 @@ object Bridge:
         case JsString(str) => JsSuccess(str)
         case _             => JsError("Expected a JSON number or string")
   }
-
+  
+  given Writes[Id] = new Writes[Id] {
+    override def writes(id: Id): JsValue = JsString(id)
+  }
   //
   //   NOTE
   //   -----
