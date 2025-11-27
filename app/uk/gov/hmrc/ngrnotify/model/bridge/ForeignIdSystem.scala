@@ -24,7 +24,8 @@ enum ForeignIdSystem:
   case Government_Gateway,
     Billing_Authority,
     Companies_House,
-    SystemX
+    SystemX,
+    NDRRPublicInterface
 
 object ForeignIdSystem:
   given Format[ForeignIdSystem] = Scala3EnumJsonFormat.format

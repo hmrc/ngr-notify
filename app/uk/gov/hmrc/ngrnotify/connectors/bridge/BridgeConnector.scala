@@ -26,6 +26,7 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeFailure.unknown
 import uk.gov.hmrc.ngrnotify.model.bridge.{HodMessage, JobMessage}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, PropertyChangesRequest}
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest}
 
 import java.net.URL
@@ -92,6 +93,18 @@ class BridgeConnector @Inject() (
       val addresses = response.job.compartments.properties.map(_.data.addresses.propertyFullAddress.getOrElse(""))
       RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)
     }
+
+  def submitPropertyChanges(credId: CredId, assessmentId: AssessmentId, propertyChangesRequest: PropertyChangesRequest)(using request: Request[?]): BridgeResult[NoContent] = {
+    for {
+      template <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
+      processed <- PropertyChangesRequest.process(template, propertyChangesRequest)
+      ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
+    } yield {
+      println("NGR Response: " + ngrResponse)
+      ngrResponse
+    }
+  }
+
 
   /**
     * Get the Bridge API job template for the given URL.

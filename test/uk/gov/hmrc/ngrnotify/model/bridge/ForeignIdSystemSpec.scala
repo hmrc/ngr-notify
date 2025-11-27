@@ -18,12 +18,23 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import play.api.libs.json.Json
 
 class ForeignIdSystemSpec extends AnyFreeSpec with Matchers {
   "ForeignIdSystem" - {
     "must have all expected values" in {
       val systems = ForeignIdSystem.values.toSet
-      systems mustBe Set(ForeignIdSystem.Government_Gateway, ForeignIdSystem.Billing_Authority, ForeignIdSystem.Companies_House, ForeignIdSystem.SystemX)
+      systems mustBe Set(ForeignIdSystem.Government_Gateway, ForeignIdSystem.Billing_Authority, ForeignIdSystem.Companies_House, ForeignIdSystem.SystemX, ForeignIdSystem.NDRRPublicInterface)
+    }
+
+    "serialization" - {
+      ForeignIdSystem.values foreach { system =>
+        s"must serialize and deserialize ${system.toString} correctly" in {
+          val serialized = Json.toJson(system)
+          val deserialized = serialized.as[ForeignIdSystem]
+          deserialized mustBe system
+        }
+      }
     }
   }
 }

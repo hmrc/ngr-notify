@@ -18,7 +18,11 @@ package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import play.api.libs.json.*
 
-case class ChangeToUseOfSpace(selectUseOfSpace: Seq[String], hasPlanningPermission: Boolean, permissionReference: Option[String])
+case class ChangeToUseOfSpace(selectUseOfSpace: Seq[String], hasPlanningPermission: Boolean, permissionReference: Option[String]) {
+
+  override def toString: String =
+    s"selectUseOfSpace: [${selectUseOfSpace.mkString(", ")}] - hasPlanningPermission: $hasPlanningPermission - permissionReference: ${permissionReference.getOrElse("No permission reference provided")}"
+}
 
 object ChangeToUseOfSpace {
 

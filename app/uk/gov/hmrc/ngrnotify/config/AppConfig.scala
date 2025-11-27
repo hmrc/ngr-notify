@@ -18,6 +18,7 @@ package uk.gov.hmrc.ngrnotify.config
 
 import play.api.Configuration
 import uk.gov.hmrc.http.StringContextOps
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId}
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL
@@ -39,11 +40,20 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   private val ratepayersPath                    = servicesConfig.getConfString("hip.ratepayersPath", "/job/ratepayers")
   private val updatePropertyChangesPath         = servicesConfig.getConfString("hip.updatePropertyChangesPath", "/job/physical")
   private val propertyLinkingPath               = servicesConfig.getConfString("hip.propertyLinkingPath", "/job/property")
+  private val propertiesPath = servicesConfig.getConfString("hip.propertiesPath", "/voa/v1/job/properties")
   @deprecated val updatePropertyChangesUrl: URL = url"${hipBaseUrl + updatePropertyChangesPath}"
   @deprecated val propertyLinkingUrl: URL       = url"${hipBaseUrl + propertyLinkingPath}"
   def postJobUrl(): URL                         = url"${hipBaseUrl + jobsPath}"
   def getRatepayerUrl(id: String): URL          = url"${hipBaseUrl + ratepayersPath + "/" + id}"
   def getRatepayerStatusUrl(id: String): URL    = url"${hipBaseUrl + ratepayersPath + "/" + id}/dashboard"
+
+  def getPropertiesUrl(
+                        id: CredId,
+                        assessmentId: AssessmentId
+                      ): URL = {
+    val url = s"$hipBaseUrl$propertiesPath?assessmentId=${assessmentId.value}&personForeignId=${id.value}"
+    url"$url"
+  }
 
   val hipClientId: String     = servicesConfig.getConfString("hip.clientId", "CLIENT_ID")
   val hipClientSecret: String = servicesConfig.getConfString("hip.clientSecret", "CLIENT_SECRET")

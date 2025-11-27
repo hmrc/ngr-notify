@@ -18,7 +18,9 @@ package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import play.api.libs.json.{Json, OFormat}
 
-case class AnythingElseData(value: Boolean, text: Option[String])
+case class AnythingElseData(value: Boolean, text: Option[String]) {
+  override def toString: String = s"value: $value - text: ${text.getOrElse("No additional information provided")}"
+}
 
 object AnythingElseData {
   implicit val format: OFormat[AnythingElseData] = Json.format
