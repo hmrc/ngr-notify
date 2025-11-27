@@ -26,7 +26,6 @@ class JobFormMessageSpec extends AnyWordAppSpec:
 
   "Model BridgeResponse" should {
     "be serialized/deserialized from JSON" in {
-      pending
       // TODO - It seems we've been given a wrong JSON example as it contains `"compartments": "string"`
       //        whereas the "compartments" field should be a JSON object
       val propertiesJobFormResponseJson = Json.parse(testResourceContent("bridge/properties-job-form.json"))
