@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ngrnotify.backend.controllers
 
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{doReturn, reset, when}
+import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.OptionValues.convertOptionToValuable
 import org.scalatest.freespec.AnyFreeSpec
@@ -38,6 +38,7 @@ import uk.gov.hmrc.ngrnotify.model.propertyDetails.*
 
 import java.time.LocalDate
 import scala.collection.immutable.Seq
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
 class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach:
@@ -141,11 +142,8 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         )
       )
 
-      implicit val ec: ExecutionContext             = scala.concurrent.ExecutionContext.global
-      val defaultBridgeResult: BridgeResult[String] = FutureEither(Future.successful(Left("Default bridge failure")))
-
       when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
-        .thenReturn(Future.successful(defaultBridgeResult))
+        .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
 
       val request                = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId = assessmentId).url)
         .withJsonBody(json)
@@ -167,7 +165,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       )
 
       when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
-        .thenReturn(Future.successful(Left("An exception occurred")))
+        .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
 
       val request                = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId = assessmentId).url)
         .withJsonBody(json)
