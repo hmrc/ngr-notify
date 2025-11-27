@@ -100,7 +100,6 @@ class BridgeConnector @Inject() (
       processed <- PropertyChangesRequest.process(template, propertyChangesRequest)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield {
-      println("NGR Response: " + ngrResponse)
       ngrResponse
     }
   }

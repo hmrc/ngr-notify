@@ -36,11 +36,9 @@ class PhysicalController @Inject() (
 
   def updatePropertyChanges(assessmentId: AssessmentId): Action[JsValue] = Action.async(parse.json) { implicit request =>
     request.body.validate[PropertyChangesRequest] match {
-      case JsSuccess(propertyChanges, _) => {
-        println("bridgeConnector.updatePropertyChanges(propertyChanges.credId, assessmentId, propertyChanges)")
+      case JsSuccess(propertyChanges, _) =>
         println(bridgeConnector.submitPropertyChanges(propertyChanges.credId, assessmentId, propertyChanges))
         bridgeConnector.submitPropertyChanges(propertyChanges.credId, assessmentId, propertyChanges).toHttpResult()
-      }
       case jsError: JsError => Future.successful(buildValidationErrorsResponse(jsError))
     }
   }
