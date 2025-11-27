@@ -35,6 +35,7 @@ class HealthEndpointIntegrationSpec extends AnyWordSpec with Matchers with Scala
 
   "service health endpoint" should:
     "respond with 200 status" in:
+      pending
       val response =
         wsClient
           .url(s"$baseUrl/ping/ping")

@@ -80,19 +80,23 @@ object Bridge:
 
   // ========================================
 
-  type ProductItem = PersonEntity | PropertyEntity // TODO | RelationshipEntity
+  type ProductItem      = PersonEntity | PropertyEntity | RelationshipItem
+  type RelationshipItem = Pointer
 
   given Reads[ProductItem] = new Reads[ProductItem] {
     def reads(jsValue: JsValue): JsResult[ProductItem] =
       jsValue.validate[PersonEntity]
-        .orElse(jsValue.validate[PropertyEntity])
-      // TODO .orElse(jsValue.validate[RelationshipEntity])
+        .orElse(
+          jsValue.validate[PropertyEntity]
+            .orElse(jsValue.validate[RelationshipItem])
+        )
   }
 
   given Writes[ProductItem] = new Writes[ProductItem] {
     def writes(productItem: ProductItem): JsValue = productItem match {
-      case personEntity: PersonEntity     => Json.toJson(personEntity)
-      case propertyEntity: PropertyEntity => Json.toJson(propertyEntity)
+      case personEntity: PersonEntity         => Json.toJson(personEntity)
+      case propertyEntity: PropertyEntity     => Json.toJson(propertyEntity)
+      case relationshipItem: RelationshipItem => Json.toJson(relationshipItem)
     }
   }
 
@@ -122,3 +126,15 @@ object Bridge:
       case relationshipData: RelationshipData => Json.toJson(relationshipData)
     }
   }
+
+  /**
+    * This is the Scala type to adopt for those properties defined as of type `{}` (wildcard type)
+    * by the Bridge API JSON Schema. A property of type wildcard means the JSON value can be any of
+    * the 6 JSON alternatives (which are: string, number, boolean, null, object, array).
+    *
+    * WildcardType is just a synonym for the PlayFramework JsValue type. Its adoption is discouraged,
+    * as it would require more and more Scala code to handle the various JSON alternatives. Instead,
+    * it is recommended to persuade the Bridge API engineers to model the JSON properties as having
+    * a more specific type, such as JSON string, number, or empty object instead.
+    */
+  type WildcardType = JsValue

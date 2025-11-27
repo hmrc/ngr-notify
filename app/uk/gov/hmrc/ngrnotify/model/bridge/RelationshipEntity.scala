@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.{EmptyItems, Id}
+import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.{Id, RelationshipItem, WildcardType}
 
 // #/$defs/ENTITIES/RELATIONSHIPS/RELATIONSHIP/ENTITY
 case class RelationshipEntity(
@@ -35,10 +35,9 @@ case class RelationshipEntity(
 
   // #/$defs/ENTITIES/RELATIONSHIPS/RELATIONSHIP/DATA
   data: RelationshipData,
-  compartments: EmptyCompartments,
-  // TODO Reconsider these items as the Json Schema defines them of type #/$defs/ENTITIES/RELATIONSHIPS/ASSOCIATES/ENTITY instead
-  items: EmptyItems
-) extends Entity[RelationshipData, EmptyCompartments, EmptyItems]
+  compartments: WildcardType,
+  items: List[RelationshipItem]
+) extends Entity[RelationshipData, WildcardType, List[RelationshipItem]]
   with StandardProperties
 
 object RelationshipEntity:
