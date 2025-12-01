@@ -19,8 +19,8 @@ package uk.gov.hmrc.ngrnotify.model.propertyDetails
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.mustBe
-import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.{Government_Gateway, NDRRPublicInterface}
+import uk.gov.hmrc.ngrnotify.model.bridge.*
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -108,7 +108,7 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
     "process should throw an exception if job data has no Compartments" in {
       val invalidBridgeModel = sampleJobMessage().copy(
         job = sampleJobMessage().job.copy(
-          compartments = Compartments()
+          compartments = CompartmentEntity()
         )
       )
 
@@ -134,9 +134,9 @@ trait Data {
 
   val metadata: Metadata = Metadata(Sending(Extracting(), Transforming(), Loading()), Receiving(Unloading(), TransformingReceiving(), Storing()))
 
-  val propertyData = PropertyData(List(ForeignDatum(Some(Government_Gateway), Some("location"), Some("SomeId"))), List.empty, PropertyAddresses())
+  val propertyData = PropertyData(List(ForeignDatum(Some(Government_Gateway), Some("location"), Some("SomeId"))), List.empty, List.empty, PropertyAddresses())
   def sampleProductEntity(categoryCode: String = "LTX-DOM-PRP") = ProductEntity(
-    id = Some("123"),
+    id = Some(StringId("123")),
     idx = "P001",
     name = Some("Sample Product"),
     label = "Sample Label",
@@ -149,12 +149,12 @@ trait Data {
     `type` = CodeMeaning("TYPE001", Some("Type 1")),
     `class` = CodeMeaning("CLASS001", Some("Class 1")),
     data = propertyData,
-    compartments = EmptyCompartments(),
+    compartments = CompartmentEntity(),
     items = List.empty
   )
 
   def sampleJobEntity(categoryCode: String = "LTX-DOM-PRP") = JobEntity(
-    id = Some("job-123"),
+    id = Some(StringId("job-123")),
     idx = "IDX-001",
     name = Some("Sample Job"),
     label = "Sample Label",
@@ -167,7 +167,7 @@ trait Data {
     `type` = CodeMeaning("TYPE001", Some("Type 1")),
     `class` = CodeMeaning("CLASS001", Some("Class 1")),
     data = JobData(List(ForeignDatum(Some(Government_Gateway), Some("location"), Some("SomeId"))), List.empty, List.empty),
-    compartments = Compartments(products = List(sampleProductEntity(categoryCode))),
+    compartments = CompartmentEntity(products = List(sampleProductEntity(categoryCode))),
     items = List.empty
   )
 

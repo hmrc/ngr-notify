@@ -1,0 +1,286 @@
+{
+  "id": 2,
+  "idx": "1.4.1",
+  "name": null,
+  "label": "16, NEW GEORGE STREET, PLYMOUTH, PL1 1RL",
+  "description": null,
+  "origination": "20000101T000000Z",
+  "termination": null,
+  "category": {
+    "code": "LTX-DOM-PRP",
+    "meaning": "Local taxation domain property (LGFA88+92)"
+  },
+  "type": {
+    "code": "OCC",
+    "meaning": "Constituted by reference to actual occupation (LGFA88+92=>GRA67=>CommonLaw)"
+  },
+  "class": {
+    "code": "HDT",
+    "meaning": "Statutory NDR hereditament (LGFA88s64(1))"
+  },
+  "data": {
+    "foreign_ids": [
+      {
+        "system": "HMRC-VOA_CDB",
+        "location": "hmrc/voa/cdb/add_view",
+        "value": "55821184"
+      },
+      {
+        "system": "National_Address_Gazetteer",
+        "location": "https://services.geoplace.co.uk/",
+        "value": "100041063576"
+      }
+    ],
+    "foreign_names": [],
+    "foreign_labels": [],
+    "addresses": {
+      "property_full_address": "16, NEW GEORGE STREET, PLYMOUTH, PL1 1RL",
+      "address_line_1": "16",
+      "address_postcode": "PL1 1RL",
+      "address_known_as": null
+    },
+    "location": {
+      "local_authority_pseudo_area_code": "1160",
+      "ordanace_survey_coordinates": null,
+      "google_maps_coordinates": null
+    },
+    "assessments": [
+      {
+        "id": 2,
+        "idx": "1",
+        "name": null,
+        "label": "2023 List Assessment",
+        "description": null,
+        "origination": "20230825T124233Z",
+        "termination": null,
+        "category": {
+          "code": "LTX-DOM-AST",
+          "meaning": "Local taxation domain assessment (LGFA88+92)"
+        },
+        "type": {
+          "code": "CHG",
+          "meaning": "To be determined (To be determined)"
+        },
+        "class": {
+          "code": "RLE",
+          "meaning": "To be determined (To be determined)"
+        },
+        "data": {
+          "foreign_ids": [
+            {
+              "system": "HMRC-VOA_CDB",
+              "location": "hmrc/voa/cdb/ndr_assessments",
+              "value": "27399677000"
+            }
+          ],
+          "foreign_names": [],
+          "foreign_labels": [],
+          "property": {
+            "id": 2,
+            "cdb_id": "55821184"
+          },
+          "use": {
+            "is_composite": "N",
+            "is_part_exempt": "N",
+            "description": "RESTAURANT AND PREMISES"
+          },
+          "valuation_surveys": [
+            {
+              "id": 1,
+              "idx": "1",
+              "name": null,
+              "label": "Site",
+              "description": null,
+              "origination": null,
+              "termination": null,
+              "category": {
+                "code": "LTX-DOM-CON",
+                "meaning": "Temporal spatial unit formed by reference to statutory and common law principles of rateable occupation."
+              },
+              "type": {
+                "code": "HOR",
+                "meaning": "A two dimensional horizontal unit of space"
+              },
+              "class": {
+                "code": "SIT",
+                "meaning": "Site"
+              },
+              "data": {
+                "foreign_ids": [
+                  {
+                    "system": "HMRC-VOA_CDB",
+                    "location": "hmrc/voa/cdb/hereditament_vals",
+                    "value": "24104677000"
+                  }
+                ],
+                "foreign_names": [],
+                "foreign_labels": [],
+                "uses": [],
+                "constructions": [],
+                "facilities": [],
+                "artifacts": [
+                  {
+                    "activity": {
+                      "source": null,
+                      "value": null
+                    },
+                    "code": {
+                      "source": null,
+                      "value": null
+                    },
+                    "description": {
+                      "source": "tom:sql/cdb:ndr/plant_machinery/os_refno:24104677000/description",
+                      "value": "Plant and Machinery (Goods Lift)"
+                    },
+                    "quantity": {
+                      "source": "tom:sql/cdb:ndr/plant_machinery/os_refno:24104677000/value",
+                      "value": 2550
+                    },
+                    "units": {
+                      "source": null,
+                      "value": "GDP"
+                    }
+                  }
+                ],
+                "uninheritances": [],
+                "attributions": []
+              },
+              "protodata": [],
+              "metadata": {
+                "sending": {
+                  "extracting": {
+                    "selecting": {}
+                  },
+                  "transforming": {
+                    "filtering": {},
+                    "supplementing": {},
+                    "recontextualising": {}
+                  },
+                  "loading": {
+                    "readying": {},
+                    "assuring": {},
+                    "signing": {},
+                    "encrypting": {},
+                    "sending": {}
+                  }
+                },
+                "receiving": {
+                  "unloading": {
+                    "receiving": {},
+                    "decrypting": {},
+                    "verifying": {},
+                    "assuring": {},
+                    "readying": {}
+                  },
+                  "transforming": {
+                    "recontextualising": {},
+                    "dropping": {},
+                    "restoring": {}
+                  },
+                  "storing": {
+                    "inserting": {}
+                  }
+                }
+              },
+              "compartments": {},
+              "items": []
+            }
+          ],
+          "valuations": [],
+          "valuation": {
+            "method_code": "234",
+            "rateable_value": 76500,
+            "effective_date": "20230529T000000Z"
+          },
+          "list": {
+            "category": "LTX-DOM-LST",
+            "function": "Charging",
+            "year": "2023",
+            "authority_code": "1160"
+          },
+          "workflow": {
+            "cdb_job_id": "39115380283"
+          }
+        },
+        "protodata": [],
+        "metadata": {
+          "sending": {
+            "extracting": {
+              "selecting": {}
+            },
+            "transforming": {
+              "filtering": {},
+              "supplementing": {},
+              "recontextualising": {}
+            },
+            "loading": {
+              "readying": {},
+              "assuring": {},
+              "signing": {},
+              "encrypting": {},
+              "sending": {}
+            }
+          },
+          "receiving": {
+            "unloading": {
+              "receiving": {},
+              "decrypting": {},
+              "verifying": {},
+              "assuring": {},
+              "readying": {}
+            },
+            "transforming": {
+              "recontextualising": {},
+              "dropping": {},
+              "restoring": {}
+            },
+            "storing": {
+              "inserting": {}
+            }
+          }
+        },
+        "compartments": {},
+        "items": []
+      }
+    ]
+  },
+  "protodata": [],
+  "metadata": {
+    "sending": {
+      "extracting": {
+        "selecting": {}
+      },
+      "transforming": {
+        "filtering": {},
+        "supplementing": {},
+        "recontextualising": {}
+      },
+      "loading": {
+        "readying": {},
+        "assuring": {},
+        "signing": {},
+        "encrypting": {},
+        "sending": {}
+      }
+    },
+    "receiving": {
+      "unloading": {
+        "receiving": {},
+        "decrypting": {},
+        "verifying": {},
+        "assuring": {},
+        "readying": {}
+      },
+      "transforming": {
+        "recontextualising": {},
+        "dropping": {},
+        "restoring": {}
+      },
+      "storing": {
+        "inserting": {}
+      }
+    }
+  },
+  "compartments": {},
+  "items": []
+}

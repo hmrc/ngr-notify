@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.Id
 
 // #/$defs/ENTITIES/PERSONS/PERSON/ENTITY
 case class PersonEntity(
@@ -29,16 +28,15 @@ case class PersonEntity(
   termination: Option[String],
   protodata: List[Protodata],
   metadata: Metadata,
-
   // #/$defs/TAXONOMY/CAT_LTX-DOM-PSN
   category: CodeMeaning,
   `type`: CodeMeaning,
   `class`: CodeMeaning,
   // #/$defs/ENTITIES/PERSONS/PERSONS/DATA
   data: PersonData,
-  compartments: EmptyCompartments,
+  compartments: Compartments,
   items: List[PersonEntity]
-) extends Entity[PersonData, EmptyCompartments, List[PersonEntity]]
+) extends Entity[PersonData, Compartments, List[PersonEntity]]
   with StandardProperties
 
 object PersonEntity:

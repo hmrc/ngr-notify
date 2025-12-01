@@ -37,7 +37,7 @@ import scala.concurrent.{ExecutionContext, Future}
  *    5. << Bridge API returns a response indicating whether the job was successfully submitted.
  *
  */
-class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
+class AboutRatepayers @Inject()(implicit ec: ExecutionContext):
 
   def process(bridgeTemplate: JobMessage, ngrRequest: RegisterRatepayerRequest): BridgeResult[JobMessage] = Future.successful {
     try {
@@ -45,7 +45,7 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
       // During a discussion with the Bridge API team, on 2025-11-24, we understood that the "products" compartment
       // is provided as an exact replica of the "persons" compartment, ready to be "filled" with our NGR data.
       //
-      val productsCompartment = bridgeTemplate.job.compartments.products
+      val productsCompartment = Compartments.products(bridgeTemplate.job.compartments)
 
       if (productsCompartment.isEmpty) {
         // This should never happen, but we'll handle it gracefully anyway
@@ -90,7 +90,7 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
 
         val productData = productsCompartment(0).data match {
           case personData: PersonData => personData
-          case d                      => throw new RuntimeException("Unexpected data type for job.compartments.products[0].data :" + d.getClass.getName)
+          case d => throw new RuntimeException("Unexpected data type for job.compartments.products[0].data :" + d.getClass.getName)
         }
 
         // TODO How about the ngrRequest.trnReferenceNumber
@@ -100,42 +100,45 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
           bridgeTemplate.copy(
             job = bridgeTemplate.job.copy(
               name = Some("Register " + ngrRequest.name.map(_.value).getOrElse("")),
-              compartments = bridgeTemplate.job.compartments.copy(
-                products = List(productsCompartment(0).copy(
-                  name = ngrRequest.name.map(_.value),
-                  data = productData.copy(
-                    foreignIds = List(
-                      ForeignDatum(system = Some(Government_Gateway), value = Some(ngrRequest.ratepayerCredId)),
-                      ForeignDatum(location = Some("NINO"), value = ngrRequest.nino.map(_.value)),
-                      ForeignDatum(location = Some("secondary_telephone_number"), value = ngrRequest.secondaryNumber.map(_.value))
+              compartments = bridgeTemplate.job.compartments match {
+                case compartmentEntity: CompartmentEntity =>
+                  compartmentEntity.copy(products = List(productsCompartment(0).copy(
+                    name = ngrRequest.name.map(_.value),
+                    data = productData.copy(
+                      foreignIds = List(
+                        ForeignDatum(system = Some(Government_Gateway), value = Some(ngrRequest.ratepayerCredId)),
+                        ForeignDatum(location = Some("NINO"), value = ngrRequest.nino.map(_.value)),
+                        ForeignDatum(location = Some("secondary_telephone_number"), value = ngrRequest.secondaryNumber.map(_.value))
+                      )
+                    ).copy(
+                      foreignNames = List.empty
+                    ).copy(
+                      foreignLabels = List(
+                        ForeignDatum(location = Some("RatepayerType"), value = ngrRequest.userType.map(_.toString)),
+                        ForeignDatum(location = Some("AgentStatus"), value = ngrRequest.agentStatus.map(_.toString)),
+                        ForeignDatum(location = Some("RecoveryId"), value = ngrRequest.recoveryId)
+                      )
+                    ).copy(
+                      names = Some(Names(
+                        // TODO titleCommon = ???
+                        // TODO titleUncommon = ???
+                        forenames = ngrRequest.forenameAndSurname._1,
+                        surname = ngrRequest.forenameAndSurname._2,
+                        corporateName = ngrRequest.tradingName.map(_.value)
+                      ))
+                    ).copy(
+                      communications = Some(Communications(
+                        postalAddress = ngrRequest.address.map(_.singleLine),
+                        telephoneNumber = ngrRequest.contactNumber.map(_.value),
+                        email = ngrRequest.email.map(_.value)
+                      ))
                     )
-                  ).copy(
-                    foreignNames = List.empty
-                  ).copy(
-                    foreignLabels = List(
-                      ForeignDatum(location = Some("RatepayerType"), value = ngrRequest.userType.map(_.toString)),
-                      ForeignDatum(location = Some("AgentStatus"), value = ngrRequest.agentStatus.map(_.toString)),
-                      ForeignDatum(location = Some("RecoveryId"), value = ngrRequest.recoveryId)
-                    )
-                  ).copy(
-                    names = Some(Names(
-                      // TODO titleCommon = ???
-                      // TODO titleUncommon = ???
-                      forenames = ngrRequest.forenameAndSurname._1,
-                      surname = ngrRequest.forenameAndSurname._2,
-                      corporateName = ngrRequest.tradingName.map(_.value)
-                    ))
-                  ).copy(
-                    communications = Some(Communications(
-                      postalAddress = ngrRequest.address.map(_.singleLine),
-                      telephoneNumber = ngrRequest.contactNumber.map(_.value),
-                      email = ngrRequest.email.map(_.value)
-                    ))
-                  )
-                ))
-              )
+                  )))
+                case _ => bridgeTemplate.job.compartments
+              }
             )
           )
+
 
         Right(processed)
       }

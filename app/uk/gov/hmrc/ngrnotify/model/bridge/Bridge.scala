@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.*
-import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.ProductData
+//import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.ProductData
 
 object Bridge:
 
@@ -27,7 +27,7 @@ object Bridge:
   import play.api.libs.json.JsValue
   import play.api.libs.json.Reads
 
-  type Id = String
+/*  type Id = String
 
   given Reads[Id] = new Reads[Id] {
     def reads(jsValue: JsValue): JsResult[Id] =
@@ -36,10 +36,11 @@ object Bridge:
         case JsString(str) => JsSuccess(str)
         case _             => JsError("Expected a JSON number or string")
   }
-  
+
   given Writes[Id] = new Writes[Id] {
     override def writes(id: Id): JsValue = JsString(id)
-  }
+  }*/
+
   //
   //   NOTE
   //   -----

@@ -25,7 +25,7 @@ import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeFailure.unknown
-import uk.gov.hmrc.ngrnotify.model.bridge.{HodMessage, JobMessage}
+import uk.gov.hmrc.ngrnotify.model.bridge.{Compartments, HodMessage, JobMessage}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, PropertyChangesRequest}
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest}
 
@@ -90,7 +90,7 @@ class BridgeConnector @Inject() (
     for {
       response <- getJobTemplate(appConfig.getRatepayerUrl(ratepayerCredId))
     } yield {
-      val addresses = response.job.compartments.properties.map(_.data.addresses.propertyFullAddress.getOrElse(""))
+      val addresses = Compartments.properties(response.job.compartments).map(_.data.addresses.propertyFullAddress.getOrElse(""))
       RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)
     }
 

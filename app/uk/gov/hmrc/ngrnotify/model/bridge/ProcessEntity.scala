@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.{EmptyItems, Id}
+import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.EmptyItems
 
 // #/$defs/ENTITIES/PROCESSES/PROCESS
 case class ProcessEntity(

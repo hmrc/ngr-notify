@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, Json, OFormat}
 
 // TODO Review all the models' definitions in this Scala file as they've been written in a rush
 
 case class Sending(
-  extracting: Extracting,
-  transforming: Transforming,
-  loading: Loading
-)
+                    extracting: Extracting,
+                    transforming: Transforming,
+                    loading: Loading
+                  )
 
 object Sending:
   given Format[Sending] = Json.format
@@ -32,8 +32,8 @@ object Sending:
 // ------------------
 
 case class Extracting(
-  selecting: Map[String, String] = Map.empty
-)
+                       selecting: Map[String, String] = Map.empty
+                     )
 
 object Extracting:
   given Format[Extracting] = Json.format
@@ -41,10 +41,10 @@ object Extracting:
 // ------------------
 
 case class Transforming(
-  filtering: Map[String, String] = Map.empty,
-  supplementing: Map[String, String] = Map.empty,
-  recontextualising: Map[String, String] = Map.empty
-)
+                         filtering: Map[String, String] = Map.empty,
+                         supplementing: Map[String, String] = Map.empty,
+                         recontextualising: Map[String, String] = Map.empty
+                       )
 
 object Transforming:
   given Format[Transforming] = Json.format
@@ -52,12 +52,30 @@ object Transforming:
 // ------------------
 
 case class Loading(
-  readying: Map[String, String] = Map.empty,
-  assuring: Map[String, String] = Map.empty,
-  signing: Map[String, String] = Map.empty,
-  encrypting: Map[String, String] = Map.empty,
-  sending: Map[String, String] = Map.empty
-)
+                    readying: Map[String, String] = Map.empty,
+                    assuring: Map[String, String] = Map.empty,
+                    signing: Signing = Signing(),
+                    encrypting: Map[String, String] = Map.empty,
+                    sending: Map[String, String] = Map.empty
+                  )
 
 object Loading:
   given Format[Loading] = Json.format
+
+case class Signing(
+                    inputs: Option[SigningInputs] = None
+                  )
+
+object Signing:
+  given OFormat[Signing] = Json.format
+
+
+case class SigningInputs(
+                          hash: String,
+                          signature: Option[String] = None
+                        )
+
+object SigningInputs:
+  given OFormat[SigningInputs] = Json.format
+
+

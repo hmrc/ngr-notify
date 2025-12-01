@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.{EmptyItems, Id, ProductData, ProductItem}
+import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.{ProductData, ProductItem}
 
 // #/$defs/ENTITIES/PRODUCTS/VALIDATION
 case class ProductEntity(
@@ -33,13 +33,13 @@ case class ProductEntity(
   `type`: CodeMeaning,
   `class`: CodeMeaning,
   data: ProductData,
-  compartments: EmptyCompartments,
+  compartments: Compartments,
   // TODO Review the definition of ProductItem as it might be missing relationship entities
   items: List[ProductItem]
-) extends Entity[ProductData, EmptyCompartments, List[ProductItem]]
+) extends Entity[ProductData, Compartments, List[ProductItem]]
   with StandardProperties
 
 object ProductEntity:
-  import play.api.libs.json.*
   import Bridge.given
+  import play.api.libs.json.*
   given Format[ProductEntity] = Json.format

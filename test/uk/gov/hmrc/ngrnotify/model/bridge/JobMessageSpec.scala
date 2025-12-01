@@ -47,6 +47,4 @@ class JobMessageSpec extends AnyWordSpec with Matchers {
     }
   }
 
-  def testResourceContent(resource: String): String =
-    scala.io.Source.fromResource(resource).getLines().mkString("\n")
 }

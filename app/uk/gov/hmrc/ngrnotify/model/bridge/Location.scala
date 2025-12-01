@@ -16,20 +16,15 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+case class Location(
+                     localAuthorityPseudoAreaCode: Option[String] = None,
+                     ordanaceSurveyCoordinates: Option[String] = None,
+                     googleMapsCoordinates: Option[String] = None
+                   )
 
-import scala.collection.immutable.List
+object Location:
 
-// #/$defs/ENTITIES/PROPERTIES/PROPERTY/DATA
-case class PropertyData(
-  foreignIds: List[ForeignDatum] = List.empty,
-  foreignNames: List[ForeignDatum] = List.empty,
-  foreignLabels: List[ForeignDatum] = List.empty,
-  addresses: PropertyAddresses = PropertyAddresses(),
-  location: Option[Location] = None,
-  assessments: List[AssessmentEntity] = List.empty
-)
-
-object PropertyData:
+  import play.api.libs.json.{Format, Json}
   import uk.gov.hmrc.ngrnotify.model.given
-  given Format[PropertyData] = Json.format
+
+  given Format[Location] = Json.format

@@ -1,4 +1,5 @@
 {
+  "$schema": "./SCHEMA.json",
   "job": {
     "id": 1,
     "idx": "1",
@@ -509,15 +510,15 @@
           "origination": "string",
           "termination": "string",
           "category": {
-            "code": "LTX-DOM-PSN",
+            "code": "LTX-DOM-PRP",
             "meaning": "string"
           },
           "type": {
-            "code": null,
+            "code": "OCC",
             "meaning": "string"
           },
           "class": {
-            "code": null,
+            "code": "HDT",
             "meaning": "string"
           },
           "data": {
@@ -542,21 +543,53 @@
                 "value": "string"
               }
             ],
-            "names": {
-              "title_common": "Miss",
-              "title_uncommon": "Dr",
-              "forenames": "Oliver James",
-              "surname": "Harrison",
-              "post_nominals": "BSc",
-              "corporate_name": "Royal Society of Arts (RSC)",
-              "crown_name": "Lord Chancellor",
-              "known_as": "Ollie"
+            "addresses": {
+              "property_full_address": "string",
+              "address_line_1": "string",
+              "address_postcode": "string",
+              "address_known_as": "string"
             },
-            "communications": {
-              "postal_address": "",
-              "telephone_number": "",
-              "email": ""
-            }
+            "location": {
+              "local_authority_pseudo_area_code": "stri",
+              "ordnance_survey_coordinates": "string",
+              "google_maps_coordinates": "string"
+            },
+            "assessments": [
+              {
+                "id": 1,
+                "idx": "1",
+                "name": "string",
+                "label": "string",
+                "description": "string",
+                "origination": "string",
+                "termination": "string",
+                "category": {},
+                "type": {},
+                "class": {},
+                "data": {
+                  "foreign_ids": [],
+                  "foreign_names": [],
+                  "foreign_labels": [],
+                  "property": {},
+                  "use": {},
+                  "valuation_survey": [],
+                  "valuation": {},
+                  "list": {},
+                  "workflow": {}
+                },
+                "protodata": [
+                  null
+                ],
+                "metadata": {
+                  "sending": {},
+                  "receiving": {}
+                },
+                "compartments": null,
+                "items": [
+                  null
+                ]
+              }
+            ]
           },
           "protodata": [
             {
@@ -607,59 +640,7 @@
             }
           },
           "compartments": null,
-          "items": [
-            {
-              "id": 1,
-              "idx": "1",
-              "name": "string",
-              "label": "string",
-              "description": "string",
-              "origination": "string",
-              "termination": "string",
-              "category": {
-                "code": "LTX-DOM-PSA",
-                "meaning": "string"
-              },
-              "type": {
-                "code": null,
-                "meaning": "string"
-              },
-              "class": {
-                "code": null,
-                "meaning": "string"
-              },
-              "data": {
-                "foreign_ids": [
-                  {}
-                ],
-                "foreign_names": [
-                  {}
-                ],
-                "foreign_labels": [
-                  {}
-                ],
-                "names": {},
-                "communications": {}
-              },
-              "protodata": [
-                {}
-              ],
-              "metadata": {
-                "sending": {
-                  "extracting": {},
-                  "transforming": {},
-                  "loading": {}
-                },
-                "receiving": {
-                  "unloading": {},
-                  "transforming": {},
-                  "storing": {}
-                }
-              },
-              "compartments": null,
-              "items": []
-            }
-          ]
+          "items": []
         }
       ],
       "relationships": [
@@ -761,12 +742,12 @@
                 "readying": null
               },
               "transforming": {
-                "recontextualising": {},
-                "dropping": {},
-                "restoring": {}
+                "recontextualising": null,
+                "dropping": null,
+                "restoring": null
               },
               "storing": {
-                "inserting": {}
+                "inserting": null
               }
             }
           },

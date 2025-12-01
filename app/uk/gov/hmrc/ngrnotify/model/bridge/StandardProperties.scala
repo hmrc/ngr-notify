@@ -16,8 +16,6 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import Bridge.Id
-
 // #/$defs/ENTITIES/STANDARD
 trait StandardProperties:
   val id: Option[Id]

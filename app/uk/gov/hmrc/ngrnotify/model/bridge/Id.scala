@@ -16,20 +16,25 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.*
 
-import scala.collection.immutable.List
+sealed trait Id
 
-// #/$defs/ENTITIES/PROPERTIES/PROPERTY/DATA
-case class PropertyData(
-  foreignIds: List[ForeignDatum] = List.empty,
-  foreignNames: List[ForeignDatum] = List.empty,
-  foreignLabels: List[ForeignDatum] = List.empty,
-  addresses: PropertyAddresses = PropertyAddresses(),
-  location: Option[Location] = None,
-  assessments: List[AssessmentEntity] = List.empty
-)
+case object NullId extends Id
 
-object PropertyData:
-  import uk.gov.hmrc.ngrnotify.model.given
-  given Format[PropertyData] = Json.format
+case class IntId(value: Int) extends Id
+
+case class StringId(value: String) extends Id
+
+given idReads: Reads[Id] = Reads {
+    case JsNull        => JsSuccess(NullId)
+    case JsNumber(n)   => JsSuccess(IntId(n.toInt))
+    case JsString(s)   => JsSuccess(StringId(s))
+    case _             => JsError("Invalid id")
+}
+
+given idWrites: Writes[Id] = Writes {
+    case NullId           => JsNull
+    case IntId(value)     => JsNumber(value)
+    case StringId(value)  => JsString(value)
+}

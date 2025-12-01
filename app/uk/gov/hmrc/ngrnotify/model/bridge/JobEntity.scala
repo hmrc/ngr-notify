@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import Bridge.{EmptyItems, Id}
+import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.EmptyItems
 
 // #/$defs/ENTITIES/JOBS/JOB/ENTITY
 case class JobEntity(
@@ -43,7 +43,7 @@ case class JobEntity(
   with StandardProperties
 
 object JobEntity:
-  import play.api.libs.json.*
   import Bridge.given
+  import play.api.libs.json.*
   given Format[JobEntity] = Json.format
   // See https://docs.scala-lang.org/scala3/book/ca-context-parameters.html#given-instances-implicit-definitions-in-scala-2
