@@ -15,11 +15,12 @@
  */
 
 package uk.gov.hmrc.ngrnotify.model.bridge
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 case class CodeMeaning(
   code: String, // #/$defs/TAXONOMY/CAT_LTX-DOM
   // TODO couldn't the meaning be mandatory instead of optional?
-  meaning: Option[String]
+  meaning: NullableValue[String]
 )
 
 object CodeMeaning:

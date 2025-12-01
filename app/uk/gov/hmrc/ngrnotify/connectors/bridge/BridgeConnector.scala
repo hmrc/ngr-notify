@@ -90,7 +90,7 @@ class BridgeConnector @Inject() (
     for {
       response <- getJobTemplate(appConfig.getRatepayerUrl(ratepayerCredId))
     } yield {
-      val addresses = Compartments.properties(response.job.compartments).map(_.data.addresses.propertyFullAddress.getOrElse(""))
+      val addresses = response.job.compartments.properties.map(_.data.addresses.propertyFullAddress.getOrElse(""))
       RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)
     }
 

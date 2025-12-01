@@ -43,7 +43,7 @@ case class JobEntity(
   with StandardProperties
 
 object JobEntity:
-  import Bridge.given
   import play.api.libs.json.*
+  import Bridge.given
   given Format[JobEntity] = Json.format
   // See https://docs.scala-lang.org/scala3/book/ca-context-parameters.html#given-instances-implicit-definitions-in-scala-2

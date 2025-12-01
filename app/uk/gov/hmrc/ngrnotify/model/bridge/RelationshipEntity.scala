@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.{Id, RelationshipItem, WildcardType}
+import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.{RelationshipItem, WildcardType}
 
 // #/$defs/ENTITIES/RELATIONSHIPS/RELATIONSHIP/ENTITY
 case class RelationshipEntity(

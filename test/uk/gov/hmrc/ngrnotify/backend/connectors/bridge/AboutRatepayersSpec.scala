@@ -23,7 +23,6 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordControllerSpec
 import uk.gov.hmrc.ngrnotify.connectors.bridge.AboutRatepayers
-import uk.gov.hmrc.ngrnotify.model.bridge.Compartments
 import uk.gov.hmrc.ngrnotify.model.bridge.JobMessage
 import uk.gov.hmrc.ngrnotify.model.email.Email
 import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
@@ -75,7 +74,7 @@ class AboutRatepayersSpec extends AnyWordControllerSpec:
       // that the filled template actually got the NGR request data in the right spots
       whenReady(filled.toFuture) { filled =>
         filled.job.name.value                          shouldBe "Register David Smith"
-        Compartments.products(filled.job.compartments)(0).name.value shouldBe "David Smith"
+        filled.job.compartments.products(0).name.value shouldBe "David Smith"
         // TODO filled.job.compartments.products(0).data.foreignIds should contain theSameElementsAs ???
         // TODO add more assertions here ...
       }

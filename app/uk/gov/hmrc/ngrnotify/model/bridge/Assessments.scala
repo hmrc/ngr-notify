@@ -27,12 +27,12 @@ case class AssessmentEntity(
                              description: Option[String],
                              origination: Option[String],
                              termination: Option[String],
-                             protodata: List[Protodata],
-                             metadata: Metadata,
                              category: CodeMeaning,
                              `type`: CodeMeaning,
                              `class`: CodeMeaning,
                              data: AssessmentData,
+                             protodata: List[Protodata],
+                             metadata: Metadata,
                              compartments: Option[Map[String, String]] = None,
                              items: Option[List[String]] = None
                            ) extends Entity[AssessmentData, Option[Map[String, String]], Option[List[String]]]
@@ -119,15 +119,16 @@ case class AssessmentContainerEntity(
                                       description: Option[String],
                                       origination: Option[String],
                                       termination: Option[String],
-                                      protodata: List[Protodata],
-                                      metadata: Metadata,
                                       category: CodeMeaning,
                                       `type`: CodeMeaning,
                                       `class`: CodeMeaning,
                                       data: ContainerData,
+                                      protodata: List[Protodata],
+                                      metadata: Metadata,
                                       compartments: Option[Map[String, String]] = None,
                                       items: Option[List[AssessmentContainerEntity]] = None
-                                    ) extends Entity[ContainerData, Option[Map[String, String]], Option[List[AssessmentContainerEntity]] ]
+                                    ) extends Entity[ContainerData, Option[Map[String, String]], Option[List[AssessmentContainerEntity]]]
+  with StandardProperties
 
 
 object AssessmentContainerEntity:

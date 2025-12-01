@@ -27,12 +27,12 @@ case class ProductEntity(
   description: Option[String],
   origination: Option[String],
   termination: Option[String],
-  protodata: List[Protodata],
-  metadata: Metadata,
   category: CodeMeaning,
   `type`: CodeMeaning,
   `class`: CodeMeaning,
   data: ProductData,
+  protodata: List[Protodata],
+  metadata: Metadata,
   compartments: Compartments,
   // TODO Review the definition of ProductItem as it might be missing relationship entities
   items: List[ProductItem]

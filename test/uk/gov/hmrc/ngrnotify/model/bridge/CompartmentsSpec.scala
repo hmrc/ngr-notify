@@ -17,65 +17,38 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.should.Matchers.shouldBe
-import play.api.libs.json.{JsNull, JsSuccess, Json}
+import org.scalatest.matchers.must.Matchers.mustBe
+import play.api.libs.json.Json
 
 class CompartmentsSpec extends AnyFreeSpec {
-  
-  "Compartments" - {
-    "serialise and deserialise CompartmentEntity correctly" in {
-      val entity = CompartmentEntity(
-        properties = List.empty,
-        persons = List.empty,
-        relationships = List.empty,
-        products = List.empty
-      )
-      val json = Json.toJson(entity: Compartments)
-      json.validate[Compartments] shouldBe JsSuccess(EmptyCompartmentsEntity)
-    }
-
-    "serialise and deserialise CompartmentEntity with data correctly" in {
-      val metadata: Metadata = Metadata(Sending(Extracting(), Transforming(), Loading()), Receiving(Unloading(), TransformingReceiving(), Storing()))
-
-      val samplePropertyEntity = PropertyEntity(
-        id = Some(StringId("id1")),
-        idx = "idx1",
-        name = Some("Sample Name"),
-        label = "Sample Label",
-        description = Some("Sample Description"),
-        origination = Some("Origin"),
-        termination = Some("Termination"),
-        protodata = List.empty,
-        metadata = metadata,
-        category = CodeMeaning("cat", Some("Category")),
-        `type` = CodeMeaning("type", Some("Type")),
-        `class` = CodeMeaning("class", Some("Class")),
-        data = PropertyData(),
-        compartments = EmptyCompartmentsEntity,
-        items = List("item1", "item2")
-      )
-
-      val entity = CompartmentEntity(
-        properties = List(samplePropertyEntity),
-        persons = List.empty,
-        relationships = List.empty,
-        products = List.empty
-      )
-      val json = Json.toJson(entity: Compartments)
-      json.validate[Compartments] shouldBe JsSuccess(CompartmentEntity(List(PropertyEntity(Some(StringId("id1")), "idx1", Some("Sample Name"), "Sample Label", Some("Sample Description"), Some("Origin"), Some("Termination"), List(), Metadata(Sending(Extracting(Map()), Transforming(Map(), Map(), Map()), Loading(Map(), Map(), Signing(None), Map(), Map())), Receiving(Unloading(Map(), Map(), Map(), Map(), Map()), TransformingReceiving(Map(), Map(), Map()), Storing(Map()))), CodeMeaning("cat", Some("Category")), CodeMeaning("type", Some("Type")), CodeMeaning("class", Some("Class")), PropertyData(List(), List(), List(), PropertyAddresses(None, None, None, None), None, List()), EmptyCompartmentsEntity, List("item1", "item2"))), List(), List(), List()))
-
-    }
-
-    "serialise and deserialise NullCompartments correctly" in {
-      val json = Json.toJson(NullCompartments: Compartments)
-      json shouldBe JsNull
-      json.validate[Compartments] shouldBe JsSuccess(NullCompartments)
-    }
-
-    "serialise and deserialise EmptyCompartmentsEntity correctly" in {
-      val json = Json.toJson(EmptyCompartmentsEntity: Compartments)
-      json.validate[Compartments] shouldBe JsSuccess(EmptyCompartmentsEntity)
-    }
+  "serialization and deserialization of Compartments" in {
+    val json = Json.parse(
+      """
+        |  {
+        |    "properties": [],
+        |    "persons": [],
+        |    "relationships": [],
+        |    "products": []
+        |  }
+        |""".stripMargin)
+    val compartments = json.as[Compartments]
+    val expectedCompartments = Compartments(
+      properties = List.empty,
+      persons = List.empty,
+      relationships = List.empty,
+      products = List.empty
+    )
+    compartments mustBe expectedCompartments
   }
 
+  "empty compartments should serialize to empty JSON object" in {
+    val compartments = Compartments(
+      properties = List.empty,
+      persons = List.empty,
+      relationships = List.empty,
+      products = List.empty
+    )
+    val json = Json.toJson(compartments)
+    json mustBe Json.obj()
+  }
 }

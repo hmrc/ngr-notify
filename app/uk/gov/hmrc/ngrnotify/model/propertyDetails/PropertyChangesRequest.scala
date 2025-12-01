@@ -48,14 +48,14 @@ object PropertyChangesRequest {
 
   def process(bridgeTemplate: JobMessage, propertyChanges: PropertyChangesRequest)(implicit ec: ExecutionContext): BridgeResult[JobMessage] = {
     val result: Either[String, JobMessage] = try {
-      val productsCompartment: Seq[ProductEntity] = Compartments.products(bridgeTemplate.job.compartments)
+      val productsCompartment = bridgeTemplate.job.compartments.products
 
       if (productsCompartment.isEmpty) {
         Left("job.compartments.products is empty")
       } else {
         val foreignIds: List[ForeignDatum] = bridgeTemplate.job.data.foreignIds :+ ForeignDatum(Some(NDRRPublicInterface), None, propertyChanges.declarationRef)
         val updatedData: JobData = bridgeTemplate.job.data.copy(foreignIds = foreignIds)
-        val jobItemOpt = productsCompartment.find(_.category.code == "LTX-DOM-PRP") //CODE :LTX-DOM-PRP
+        val jobItemOpt = bridgeTemplate.job.compartments.products.find(_.category.code == "LTX-DOM-PRP") //CODE :LTX-DOM-PRP
           .map(_.copy(description = Some(propertyChanges.toString)))
 
         jobItemOpt match {
@@ -64,16 +64,9 @@ object PropertyChangesRequest {
               bridgeTemplate.copy(
                 job = bridgeTemplate.job.copy(
                   data = updatedData,
-                  compartments = bridgeTemplate.job.compartments match {
-                    case CompartmentEntity(props, persons, relationships, products) =>
-                      CompartmentEntity(
-                        properties = props,
-                        persons = persons,
-                        relationships = relationships,
-                        products = List(jobItem)
-                      )
-                    case _ => bridgeTemplate.job.compartments
-                  }
+                  compartments = bridgeTemplate.job.compartments.copy(
+                    products = List(jobItem)
+                  )
                 )
               )
             )

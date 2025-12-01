@@ -17,7 +17,6 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.Format
-import uk.gov.hmrc.ngrnotify.model.Scala3EnumJsonFormat
 
 sealed trait ForeignIdSystem
 
@@ -28,6 +27,7 @@ object ForeignIdSystem {
   case object National_Address_Gazetteer extends ForeignIdSystem
   case object NDRRPublicInterface extends ForeignIdSystem
   case object HMRC_VOA_CDB extends ForeignIdSystem // Scala identifiers can't have '-'
+  case object SystemX extends ForeignIdSystem // Scala identifiers can't have '-'
 
   val values: Set[ForeignIdSystem] = Set(
     Government_Gateway,
@@ -35,11 +35,12 @@ object ForeignIdSystem {
     Companies_House,
     National_Address_Gazetteer,
     NDRRPublicInterface,
-    HMRC_VOA_CDB
+    HMRC_VOA_CDB,
+    SystemX
   )
 
   given Format[ForeignIdSystem] = new Format[ForeignIdSystem] {
-    import play.api.libs.json._
+    import play.api.libs.json.*
 
     override def writes(o: ForeignIdSystem): JsValue = JsString(o match {
       case Government_Gateway         => "Government_Gateway"
@@ -48,6 +49,7 @@ object ForeignIdSystem {
       case National_Address_Gazetteer => "National_Address_Gazetteer"
       case NDRRPublicInterface        => "NDRRPublicInterface"
       case HMRC_VOA_CDB               => "HMRC-VOA_CDB"
+      case SystemX                    => "SystemX"
     })
 
     override def reads(json: JsValue): JsResult[ForeignIdSystem] = json match {
@@ -57,6 +59,7 @@ object ForeignIdSystem {
       case JsString("National_Address_Gazetteer") => JsSuccess(National_Address_Gazetteer)
       case JsString("NDRRPublicInterface")        => JsSuccess(NDRRPublicInterface)
       case JsString("HMRC-VOA_CDB")               => JsSuccess(HMRC_VOA_CDB)
+      case JsString("SystemX")                    => JsSuccess(SystemX)
       case x                                      => JsError(s"$x Unknown ForeignIdSystem")
     }
   }

@@ -20,14 +20,14 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.mustBe
 import play.api.libs.json.Json
 
-class PropertyEntitySpec extends AnyFreeSpec {
+class ProductEntitySpec extends AnyFreeSpec {
 
   "PropertyEntitySpec" - {
     "serialization and deserialization of PropertyEntity" in {
       val json         = Json.parse(testResourceContent("product-property-data.json"))
 
-      val propertyEntity = json.as[PropertyEntity]
-      val serialized = Json.toJson(propertyEntity)
+      val productItem = json.as[PropertyEntity]
+      val serialized = Json.toJson(productItem)
 
       println("================= Serialized PropertyEntity ====1==========="+Json.prettyPrint(serialized))
       println("================= Serialized PropertyEntity =====2=========="+Json.prettyPrint(json))

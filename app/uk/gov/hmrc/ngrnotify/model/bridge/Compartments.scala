@@ -16,74 +16,50 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{JsNull, JsSuccess, Reads}
+import play.api.libs.json.Format
+import play.api.libs.json.*
 
-
-sealed trait Compartments
-
-case class CompartmentEntity(
+case class Compartments(
   properties: List[PropertyEntity] = List.empty,
   persons: List[PersonEntity] = List.empty,
   // TODO processes: List[ProcessEntity] = List.empty,
   relationships: List[RelationshipEntity] = List.empty,
   products: List[ProductEntity] = List.empty
-) extends Compartments
-
-case object NullCompartments extends Compartments
-case object EmptyCompartmentsEntity extends Compartments
+)
 
 object Compartments {
-  import play.api.libs.json.*
 
-  implicit val compartmentEntityFormat: OFormat[CompartmentEntity] = Json.format[CompartmentEntity]
-  implicit val compartmentsReads: Reads[Compartments] = Reads[Compartments] {
-    case JsNull => JsSuccess(NullCompartments)
-    case json if json.asOpt[CompartmentEntity](using compartmentEntityFormat).isEmpty =>
-      JsSuccess(EmptyCompartmentsEntity)
-    case json =>
-      json.validate[CompartmentEntity](using compartmentEntityFormat).map(data => if(isEmpty(data)) EmptyCompartmentsEntity else data)
-  }
+  given Format[Compartments] = new Format[Compartments] {
+    override def writes(c: Compartments): JsValue =
+      if (
+        c.properties.isEmpty &&
+        c.persons.isEmpty &&
+        c.relationships.isEmpty &&
+        c.products.isEmpty
+      ) JsObject.empty
+      else Json.obj(
+        "properties"    -> c.properties,
+        "persons"       -> c.persons,
+        "relationships" -> c.relationships,
+        "products"      -> c.products
+      )
 
-  implicit val compartmentsWrites: Writes[Compartments] = Writes[Compartments] {
-    case NullCompartments    => JsNull
-    case EmptyCompartmentsEntity   => JsObject.empty
-    case e: CompartmentEntity => compartmentEntityFormat.writes(e)
-  }
-  
-  def isEmpty(compartments: Compartments): Boolean = {
-    compartments match {
-      case NullCompartments => true
-      case EmptyCompartmentsEntity => true
-      case CompartmentEntity(props, persons, relationships, products) =>
-        props.isEmpty && persons.isEmpty && relationships.isEmpty && products.isEmpty
-    }
-  }
-    
-    def products(compartments: Compartments): Seq[ProductEntity] = {
-    compartments match {
-      case CompartmentEntity(_, _, _, products) => products
-      case _                                    => List.empty
-    } 
-  }
-    
-    def persons(compartments: Compartments): Seq[PersonEntity] = {
-      compartments match {
-        case CompartmentEntity(_, persons, _, _) => persons
-        case _ => List.empty
-      }
-    } 
-    
-    def properties(compartments: Compartments): Seq[PropertyEntity] = {
-      compartments match {
-        case CompartmentEntity(properties, _, _, _) => properties
-        case _ => List.empty
+    override def reads(json: JsValue): JsResult[Compartments] = {
+      def getList[T: Format](field: String): List[T] =
+        (json \ field).asOpt[List[T]].getOrElse(Nil)
+
+      json match {
+        case JsObject(fields) if fields.isEmpty => JsSuccess(Compartments())
+        case _                                  =>
+          JsSuccess(
+            Compartments(
+              getList[PropertyEntity]("properties"),
+              getList[PersonEntity]("persons"),
+              getList[RelationshipEntity]("relationships"),
+              getList[ProductEntity]("products")
+            )
+          )
       }
     }
-    
-    def relationships(compartments: Compartments): Seq[RelationshipEntity] = {
-      compartments match {
-        case CompartmentEntity(_, _, relationships, _) => relationships
-        case _ => List.empty
-      }
-    }
+  }
 }

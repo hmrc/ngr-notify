@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.WildcardType
 
 // TODO Review all the models' definitions in this Scala file as they've been written in a rush

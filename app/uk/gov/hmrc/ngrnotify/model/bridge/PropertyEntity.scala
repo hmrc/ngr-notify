@@ -17,7 +17,6 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.EmptyItems
 
 // #/$defs/ENTITIES/PROPERTIES/PROPERTY/ENTITY
 case class PropertyEntity(
@@ -28,17 +27,16 @@ case class PropertyEntity(
   description: Option[String],
   origination: Option[String],
   termination: Option[String],
-  protodata: List[Protodata],
-  metadata: Metadata,
   category: CodeMeaning,
   `type`: CodeMeaning,
   `class`: CodeMeaning,
   data: PropertyData,
+  protodata: List[Protodata],
+  metadata: Metadata,
   compartments: Compartments,
-  items: EmptyItems
-) extends Entity[PropertyData, Compartments, EmptyItems]
+  items: List[ProductEntity]
+) extends Entity[PropertyData, Compartments, List[ProductEntity]]
   with StandardProperties
 
 object PropertyEntity:
-  import Bridge.given
   given Format[PropertyEntity] = Json.format

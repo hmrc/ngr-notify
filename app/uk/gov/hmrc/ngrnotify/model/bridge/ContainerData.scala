@@ -17,39 +17,38 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.{Format, Json}
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 case class ED(
-               activity: EDProperty[String],
-               code: EDProperty[String],
-               description: EDProperty[String],
-               quantity: EDProperty[BigDecimal],
-               units: EDProperty[String]
-             )
+  activity: EDProperty[String],
+  code: EDProperty[String],
+  description: EDProperty[String],
+  quantity: EDProperty[BigDecimal],
+  units: EDProperty[String]
+)
 
 object ED:
   given Format[ED] = Json.format
-  
+
 case class EDProperty[T](
-                          value: Option[T], // null or value
-                          source: Option[String] // null or string (1-255 chars)
-                        )
+  source: NullableValue[String], // null or string (1-255 chars)
+  value: NullableValue[T] // null or value
+)
 
 object EDProperty:
-    given[T: Format]: Format[EDProperty[T]] = Json.format
+  given [T: Format]: Format[EDProperty[T]] = Json.format
 
 case class ContainerData(
-                          foreignIds: List[ForeignDatum] = List.empty,
-                          foreignNames: List[ForeignDatum] = List.empty,
-                          foreignLabels: List[ForeignDatum] = List.empty,
-                          uses: List[ED] = List.empty,
-                          constructions: List[ED]  = List.empty, 
-                          facilities: List[ED] = List.empty,
-                          artifacts: List[ED] = List.empty,
-                          uninheritances: List[ED] = List.empty,
-                          attributions: List[ED] = List.empty
-                        )
+  foreign_ids: List[ForeignDatum] = List.empty,
+  foreign_names: List[ForeignDatum] = List.empty,
+  foreign_labels: List[ForeignDatum] = List.empty,
+  uses: List[ED] = List.empty,
+  constructions: List[ED] = List.empty,
+  facilities: List[ED] = List.empty,
+  artifacts: List[ED] = List.empty,
+  uninheritances: List[ED] = List.empty,
+  attributions: List[ED] = List.empty
+)
 
 object ContainerData:
   given Format[ContainerData] = Json.format
-
-

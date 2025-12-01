@@ -16,11 +16,14 @@
 
 package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
+import com.github.tomakehurst.wiremock.common.Metadata
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.mustBe
+import uk.gov.hmrc.ngrnotify.model.bridge
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.{Government_Gateway, NDRRPublicInterface}
 import uk.gov.hmrc.ngrnotify.model.bridge.*
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -108,7 +111,7 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
     "process should throw an exception if job data has no Compartments" in {
       val invalidBridgeModel = sampleJobMessage().copy(
         job = sampleJobMessage().job.copy(
-          compartments = CompartmentEntity()
+          compartments = Compartments()
         )
       )
 
@@ -132,8 +135,10 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
 
 trait Data {
 
-  val metadata: Metadata = Metadata(Sending(Extracting(), Transforming(), Loading()), Receiving(Unloading(), TransformingReceiving(), Storing()))
-
+ val metadata: bridge.Metadata = bridge.Metadata(
+  Sending(Extracting(), Transforming(), Loading()),
+  Receiving(Unloading(), TransformingReceiving(), Storing())
+)
   val propertyData = PropertyData(List(ForeignDatum(Some(Government_Gateway), Some("location"), Some("SomeId"))), List.empty, List.empty, PropertyAddresses())
   def sampleProductEntity(categoryCode: String = "LTX-DOM-PRP") = ProductEntity(
     id = Some(StringId("123")),
@@ -145,11 +150,11 @@ trait Data {
     termination = Some("Termination"),
     protodata = List.empty,
     metadata = metadata,
-    category = CodeMeaning(categoryCode, Some("Category 1")),
-    `type` = CodeMeaning("TYPE001", Some("Type 1")),
-    `class` = CodeMeaning("CLASS001", Some("Class 1")),
+    category = CodeMeaning(categoryCode, NullableValue(Some("Category 1"))),
+    `type` = CodeMeaning("TYPE001", NullableValue(Some("Type 1"))),
+    `class` = CodeMeaning("CLASS001", NullableValue(Some("Class 1"))),
     data = propertyData,
-    compartments = CompartmentEntity(),
+    compartments = Compartments(),
     items = List.empty
   )
 
@@ -163,11 +168,11 @@ trait Data {
     termination = Some("2025-12-31T23:59:59Z"),
     protodata = List(Protodata(Some("proto-1"), "value-1", "string", Some(true), "string", "string")),
     metadata = metadata,
-    category = CodeMeaning("CAT001", Some("Category 1")),
-    `type` = CodeMeaning("TYPE001", Some("Type 1")),
-    `class` = CodeMeaning("CLASS001", Some("Class 1")),
+    category = CodeMeaning(categoryCode, NullableValue(Some("Category 1"))),
+    `type` = CodeMeaning("TYPE001", NullableValue(Some("Type 1"))),
+    `class` = CodeMeaning("CLASS001", NullableValue(Some("Class 1"))),
     data = JobData(List(ForeignDatum(Some(Government_Gateway), Some("location"), Some("SomeId"))), List.empty, List.empty),
-    compartments = CompartmentEntity(products = List(sampleProductEntity(categoryCode))),
+    compartments = Compartments(products = List(sampleProductEntity(categoryCode))),
     items = List.empty
   )
 
