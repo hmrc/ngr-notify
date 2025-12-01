@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.{Format, Json}
+import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.WildcardType
 
 // TODO Review all the models' definitions in this Scala file as they've been written in a rush
 
@@ -32,11 +33,11 @@ object Receiving:
 // ------------------
 
 case class Unloading(
-  receiving: Map[String, String] = Map.empty,
-  decrypting: Map[String, String] = Map.empty,
-  verifying: Map[String, String] = Map.empty,
-  assuring: Map[String, String] = Map.empty,
-  readying: Map[String, String] = Map.empty
+  receiving: WildcardType,
+  decrypting: WildcardType,
+  verifying: WildcardType,
+  assuring: WildcardType,
+  readying: WildcardType
 )
 
 object Unloading:
@@ -45,9 +46,9 @@ object Unloading:
 // ------------------
 
 case class TransformingReceiving(
-  recontextualising: Map[String, String] = Map.empty,
-  dropping: Map[String, String] = Map.empty,
-  restoring: Map[String, String] = Map.empty
+  recontextualising: WildcardType,
+  dropping: WildcardType,
+  restoring: WildcardType
 )
 
 object TransformingReceiving:
@@ -56,7 +57,7 @@ object TransformingReceiving:
 // ------------------
 
 case class Storing(
-  inserting: Map[String, String] = Map.empty
+  inserting: WildcardType
 )
 
 object Storing:
