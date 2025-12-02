@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
+import play.api.libs.Files.logger
 import play.api.libs.json.Format
 import play.api.libs.json.*
 
@@ -51,7 +52,7 @@ object Compartments {
         (json \ field).validate[List[T]] match {
           case JsSuccess(value, _) => value
           case JsError(errors)     =>
-            println(s"JSON error for field '$field': " + errors)
+            logger.warn(s"JSON error for field '$field': " + errors)
             Nil
         }
 
