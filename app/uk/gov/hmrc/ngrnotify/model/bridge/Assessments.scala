@@ -17,16 +17,17 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.{Format, Json}
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 import uk.gov.hmrc.ngrnotify.model.given
 
 case class AssessmentEntity(
                              id: Option[Id],
                              idx: String,
-                             name: Option[String],
+                             name: NullableValue[String],
                              label: String,
-                             description: Option[String],
-                             origination: Option[String],
-                             termination: Option[String],
+                             description: NullableValue[String],
+                             origination: NullableValue[String],
+                             termination: NullableValue[String],
                              category: CodeMeaning,
                              `type`: CodeMeaning,
                              `class`: CodeMeaning,
@@ -114,11 +115,11 @@ object AssessmentWorkflow:
 case class AssessmentContainerEntity(
                                       id: Option[Id],
                                       idx: String,
-                                      name: Option[String],
+                                      name: NullableValue[String],
                                       label: String,
-                                      description: Option[String],
-                                      origination: Option[String],
-                                      termination: Option[String],
+                                      description: NullableValue[String],
+                                      origination: NullableValue[String],
+                                      termination: NullableValue[String],
                                       category: CodeMeaning,
                                       `type`: CodeMeaning,
                                       `class`: CodeMeaning,

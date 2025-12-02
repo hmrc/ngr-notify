@@ -20,6 +20,7 @@ import com.github.tomakehurst.wiremock.common.Metadata
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.mustBe
+import play.api.libs.json.JsNull
 import uk.gov.hmrc.ngrnotify.model.bridge
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.{Government_Gateway, NDRRPublicInterface}
 import uk.gov.hmrc.ngrnotify.model.bridge.*
@@ -136,18 +137,19 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
 trait Data {
 
  val metadata: bridge.Metadata = bridge.Metadata(
-  Sending(Extracting(), Transforming(), Loading()),
-  Receiving(Unloading(), TransformingReceiving(), Storing())
+  Sending(Extracting(JsNull), Transforming(JsNull, JsNull, JsNull), Loading(JsNull, JsNull, Signing(), JsNull, JsNull)),
+  Receiving(Unloading(JsNull,JsNull, JsNull, JsNull, JsNull), TransformingReceiving(JsNull, JsNull, JsNull), Storing(JsNull))
 )
+
   val propertyData = PropertyData(List(ForeignDatum(Some(Government_Gateway), Some("location"), Some("SomeId"))), List.empty, List.empty, PropertyAddresses())
   def sampleProductEntity(categoryCode: String = "LTX-DOM-PRP") = ProductEntity(
     id = Some(StringId("123")),
     idx = "P001",
-    name = Some("Sample Product"),
+    name = NullableValue(Some("Sample Product")),
     label = "Sample Label",
-    description = Some("A sample product for testing."),
-    origination = Some("Origin"),
-    termination = Some("Termination"),
+    description = NullableValue(Some("A sample product for testing.")),
+    origination = NullableValue(Some("Origin")),
+    termination = NullableValue(Some("Termination")),
     protodata = List.empty,
     metadata = metadata,
     category = CodeMeaning(categoryCode, NullableValue(Some("Category 1"))),
@@ -161,11 +163,11 @@ trait Data {
   def sampleJobEntity(categoryCode: String = "LTX-DOM-PRP") = JobEntity(
     id = Some(StringId("job-123")),
     idx = "IDX-001",
-    name = Some("Sample Job"),
+    name = NullableValue(Some("Sample Job")),
     label = "Sample Label",
-    description = Some("This is a sample job entity."),
-    origination = Some("2025-01-01T00:00:00Z"),
-    termination = Some("2025-12-31T23:59:59Z"),
+    description = NullableValue(Some("This is a sample job entity.")),
+    origination = NullableValue(Some("2025-01-01T00:00:00Z")),
+    termination = NullableValue(Some("2025-12-31T23:59:59Z")),
     protodata = List(Protodata(Some("proto-1"), "value-1", "string", Some(true), "string", "string")),
     metadata = metadata,
     category = CodeMeaning(categoryCode, NullableValue(Some("Category 1"))),

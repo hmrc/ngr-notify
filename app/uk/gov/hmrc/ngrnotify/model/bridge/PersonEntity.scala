@@ -16,16 +16,18 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
+
 
 // #/$defs/ENTITIES/PERSONS/PERSON/ENTITY
 case class PersonEntity(
   id: Option[Id],
   idx: String,
-  name: Option[String],
+  name: NullableValue[String],
   label: String,
-  description: Option[String],
-  origination: Option[String],
-  termination: Option[String],
+  description: NullableValue[String],
+  origination: NullableValue[String],
+  termination: NullableValue[String],
   protodata: List[Protodata],
   metadata: Metadata,
   // #/$defs/TAXONOMY/CAT_LTX-DOM-PSN
@@ -40,7 +42,6 @@ case class PersonEntity(
   with StandardProperties
 
 object PersonEntity:
-  import Bridge.given
   import play.api.libs.json.*
 
   given Format[PersonEntity] = Json.format

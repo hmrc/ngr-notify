@@ -17,17 +17,14 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.*
+import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.WildcardType
 //import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.ProductData
 
 object Bridge:
 
-  import play.api.libs.json.JsError
-  import play.api.libs.json.JsResult
-  import play.api.libs.json.JsSuccess
-  import play.api.libs.json.JsValue
-  import play.api.libs.json.Reads
+  import play.api.libs.json.{JsResult, JsValue, Reads}
 
-/*  type Id = String
+  /*  type Id = String
 
   given Reads[Id] = new Reads[Id] {
     def reads(jsValue: JsValue): JsResult[Id] =
@@ -109,18 +106,21 @@ object Bridge:
   type ProductData = PersonData | PropertyData | RelationshipData
 
   given Reads[ProductData] = new Reads[ProductData] {
-    def reads(jsValue: JsValue): JsResult[ProductData] =
-      //
-      // The best solution could have been reading the ..\category\code (by traversing up to the parent node)
-      // and then reading the curren data node as either Person, or Property, or Relationship depending on
-      // the category code, which can be either TX-DOM-PSN, TX-DOM-PRP or TX-DOM-REL.
-      //
-      // However, since the PlayFramework JSON library does not support such a "traversing up" access strategy,
-      // we have to resort on chaining multiple attempts until one succeeds.
-      //
-      jsValue.validate[PersonData]
-        .orElse(jsValue.validate[PropertyData])
-        .orElse(jsValue.validate[RelationshipData])
+    def reads(jsValue: JsValue): JsResult[ProductData] = {
+      // Try to extract the category code from the parent object if available
+      val categoryCodeOpt = (jsValue \ ".." \ "category" \ "code").asOpt[String]
+
+      categoryCodeOpt match {
+        case Some("TX-DOM-PSN") => jsValue.validate[PersonData]
+        case Some("TX-DOM-PRP") => jsValue.validate[PropertyData]
+        case Some("TX-DOM-REL") => jsValue.validate[RelationshipData]
+        case _ =>
+          // Fallback: try all types in order
+          jsValue.validate[PersonData]
+            .orElse(jsValue.validate[PropertyData])
+            .orElse(jsValue.validate[RelationshipData])
+      }
+    }
   }
 
   given Writes[ProductData] = new Writes[ProductData] {
@@ -142,3 +142,21 @@ object Bridge:
     * a more specific type, such as JSON string, number, or empty object instead.
     */
   type WildcardType = JsValue
+
+given Reads[WildcardType] = new Reads[WildcardType] {
+  def reads(jsValue: JsValue): JsResult[WildcardType] = jsValue match {
+    case JsNull                             => JsSuccess(JsNull)
+    case JsObject(fields) if fields.isEmpty => JsSuccess(JsObject.empty) // handle {}
+    case obj: JsObject                      => JsSuccess(obj)
+    case _                                  => JsError("Expected JsNull or JsObject")
+  }
+}
+
+given Writes[WildcardType] = new Writes[WildcardType] {
+  def writes(value: WildcardType): JsValue = value match {
+    case JsNull                             => JsNull
+    case JsObject(fields) if fields.isEmpty => JsObject.empty // handle {}
+    case obj: JsObject                      => obj
+    case _                                  => throw new IllegalArgumentException("Unreachable code: WildcardType should only be JsNull or JsObject")
+  }
+}

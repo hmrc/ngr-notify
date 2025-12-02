@@ -18,8 +18,9 @@ package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.ngrnotify.connectors.bridge.{BridgeResult, FutureEither}
-import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.NDRRPublicInterface
 import uk.gov.hmrc.ngrnotify.model.bridge.*
+import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.NDRRPublicInterface
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 import java.time.LocalDate
 import scala.concurrent.{ExecutionContext, Future}
@@ -56,7 +57,7 @@ object PropertyChangesRequest {
         val foreignIds: List[ForeignDatum] = bridgeTemplate.job.data.foreignIds :+ ForeignDatum(Some(NDRRPublicInterface), None, propertyChanges.declarationRef)
         val updatedData: JobData = bridgeTemplate.job.data.copy(foreignIds = foreignIds)
         val jobItemOpt = bridgeTemplate.job.compartments.products.find(_.category.code == "LTX-DOM-PRP") //CODE :LTX-DOM-PRP
-          .map(_.copy(description = Some(propertyChanges.toString)))
+          .map(_.copy(description = NullableValue(Some(propertyChanges.toString))))
 
         jobItemOpt match {
           case Some(jobItem) =>

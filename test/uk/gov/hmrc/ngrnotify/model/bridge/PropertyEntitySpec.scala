@@ -16,16 +16,22 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers.mustBe
+import play.api.libs.json.Json
 
-// #/$defs/ENTITIES/STANDARD
-trait StandardProperties:
-  val id: Option[Id]
-  val idx: String
-  val name: NullableValue[String]
-  val label: String
-  val description: NullableValue[String]
-  val origination: NullableValue[String] // TODO We may like to serdes to a Java Instant instead of a String
-  val termination: NullableValue[String]
-  val protodata: List[Protodata]
-  val metadata: Metadata
+class PropertyEntitySpec extends AnyFreeSpec {
+
+  "PropertyEntitySpec" - {
+    "serialization and deserialization of PropertyEntity" in {
+      val json         = Json.parse(testResourceContent("products-property-data.json"))
+
+      val productItem = json.as[PropertyEntity]
+      val serialized = Json.toJson(productItem)
+
+      Json.prettyPrint(serialized) mustBe Json.prettyPrint(json)
+    }
+  }
+
+
+}

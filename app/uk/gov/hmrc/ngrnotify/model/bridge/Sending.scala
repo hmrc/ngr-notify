@@ -55,7 +55,7 @@ object Transforming:
 case class Loading(
   readying: WildcardType,
   assuring: WildcardType,
-  signing: WildcardType,
+  signing: Signing,
   encrypting: WildcardType,
   sending: WildcardType
 )

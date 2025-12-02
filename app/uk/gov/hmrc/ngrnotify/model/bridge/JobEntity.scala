@@ -17,16 +17,17 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.EmptyItems
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 // #/$defs/ENTITIES/JOBS/JOB/ENTITY
 case class JobEntity(
   id: Option[Id],
   idx: String,
-  name: Option[String],
+  name: NullableValue[String],
   label: String,
-  description: Option[String],
-  origination: Option[String],
-  termination: Option[String],
+  description: NullableValue[String],
+  origination: NullableValue[String],
+  termination: NullableValue[String],
   protodata: List[Protodata],
   metadata: Metadata,
 

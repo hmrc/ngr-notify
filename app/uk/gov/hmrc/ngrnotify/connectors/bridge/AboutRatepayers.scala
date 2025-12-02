@@ -18,6 +18,7 @@ package uk.gov.hmrc.ngrnotify.connectors.bridge
 
 import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 import uk.gov.hmrc.ngrnotify.model.ratepayer.RegisterRatepayerRequest
 
 import javax.inject.Inject
@@ -99,10 +100,10 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
         val processed =
           bridgeTemplate.copy(
             job = bridgeTemplate.job.copy(
-              name = Some("Register " + ngrRequest.name.map(_.value).getOrElse("")),
+              name = NullableValue(Some("Register " + ngrRequest.name.map(_.value).getOrElse(""))),
               compartments = bridgeTemplate.job.compartments.copy(
                 products = List(productsCompartment(0).copy(
-                  name = ngrRequest.name.map(_.value),
+                  name = NullableValue(ngrRequest.name.map(_.value)),
                   data = productData.copy(
                     foreignIds = List(
                       ForeignDatum(system = Some(Government_Gateway), value = Some(ngrRequest.ratepayerCredId)),

@@ -18,23 +18,17 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.mustBe
+import play.api.libs.json.{JsNull, JsObject}
 
 class MetadataSpec extends AnyFreeSpec {
   "serialisation" - {
     import play.api.libs.json.Json
 
-    "should serialize and deserialize Metadata correctly" in {
+    "should serialize and deserialize Metadata correctly when the JsValue is empty object" in {
+      val empty = JsObject.empty
       val metadata: Metadata = Metadata(
-        Sending(
-          Extracting(Map()),
-          Transforming(filtering = Map(), supplementing = Map(), recontextualising = Map()),
-          Loading(readying = Map(), assuring = Map(), signing = Signing(None), encrypting = Map(), sending = Map())
-        ),
-        Receiving(
-          unloading = Unloading(receiving = Map(), decrypting = Map(), verifying = Map(), assuring = Map(), readying = Map()),
-          transforming = TransformingReceiving(recontextualising = Map(), dropping = Map(), restoring = Map()),
-          storing = Storing(inserting = Map())
-        )
+        Sending(Extracting(empty), Transforming(empty, empty, empty), Loading(empty, empty, Signing(), empty, empty)),
+        Receiving(Unloading(empty, empty, empty, empty, empty), TransformingReceiving(empty, empty, empty), Storing(empty))
       )
 
       val json = Json.parse(
@@ -79,9 +73,65 @@ class MetadataSpec extends AnyFreeSpec {
       )
 
       val deserializedMetadata = json.as[Metadata]
-      
-      Json.toJson(deserializedMetadata) mustBe metadata
+      deserializedMetadata mustBe metadata
+      Json.toJson(deserializedMetadata) mustBe json
 
     }
+
+    "should correctly serialize and deserialize Metadata when the JsValue is null" in {
+      val empty = JsNull
+      val metadata: Metadata = Metadata(
+        Sending(Extracting(empty), Transforming(empty, empty, empty), Loading(empty, empty, Signing(), empty, empty)),
+        Receiving(Unloading(empty, empty, empty, empty, empty), TransformingReceiving(empty, empty, empty), Storing(empty))
+      )
+
+      val json = Json.parse(
+        """
+          |{
+          |    "sending": {
+          |      "extracting": {
+          |        "selecting": null
+          |      },
+          |      "transforming": {
+          |        "filtering": null,
+          |        "supplementing": null,
+          |        "recontextualising": null
+          |      },
+          |      "loading": {
+          |        "readying": null,
+          |        "assuring": null,
+          |        "signing": {},
+          |        "encrypting": null,
+          |        "sending": null
+          |      }
+          |    },
+          |    "receiving": {
+          |      "unloading": {
+          |        "receiving": null,
+          |        "decrypting": null,
+          |        "verifying": null,
+          |        "assuring": null,
+          |        "readying": null
+          |      },
+          |      "transforming": {
+          |        "recontextualising": null,
+          |        "dropping": null,
+          |        "restoring": null
+          |      },
+          |      "storing": {
+          |        "inserting": null
+          |      }
+          |    }
+          |  }
+          |""".stripMargin
+      )
+
+      val deserializedMetadata = json.as[Metadata]
+      deserializedMetadata mustBe metadata
+      Json.toJson(deserializedMetadata) mustBe json
+
+    }
+
+
   }
 }
