@@ -26,7 +26,7 @@ case class PropertyData(
   foreignNames: List[ForeignDatum] = List.empty,
   foreignLabels: List[ForeignDatum] = List.empty,
   addresses: PropertyAddresses = PropertyAddresses(),
-  location: Option[Location] = None,
+  location: Location = Location(),
   assessments: List[AssessmentEntity] = List.empty
 )
 

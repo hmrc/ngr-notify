@@ -23,7 +23,6 @@ final case class CredId(value: String) {
   override def toString: String = value
 }
 
-
 object CredId {
   implicit val format: Format[CredId] = Json.format[CredId]
 
@@ -32,8 +31,7 @@ object CredId {
     override def bind(key: String, value: String): Either[String, CredId] =
       implicitly[PathBindable[String]].bind(key, value).map(CredId(_))
 
-    override def unbind(key: String, value: CredId): String = {
+    override def unbind(key: String, value: CredId): String =
       value.toString
-    }
   }
 }

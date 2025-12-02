@@ -40,6 +40,6 @@ class CredIdSpec extends AnyFreeSpec {
         unbind mustEqual "test-cred-789"
       }
     }
-    
+
   }
 }

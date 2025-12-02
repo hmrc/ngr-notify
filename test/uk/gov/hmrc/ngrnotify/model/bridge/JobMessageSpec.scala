@@ -39,11 +39,12 @@ class JobMessageSpec extends AnyWordSpec with Matchers {
     }
 
     "be serialized back to JSON matching the original get-properties-response example" in {
-      val text         = testResourceContent("get-properties-response.json")
-      val json         = Json.parse(text)
-      val jobMessage   = json.as[JobMessage]
-      val serialized   = Json.toJson(jobMessage)
-      serialized      shouldBe json
+      val text       = testResourceContent("complete_notification_information.json")
+      val json       = Json.parse(text)
+      val jobMessage = json.as[JobMessage]
+      val serialized = Json.toJson(jobMessage)
+
+      serialized shouldBe json
     }
   }
 

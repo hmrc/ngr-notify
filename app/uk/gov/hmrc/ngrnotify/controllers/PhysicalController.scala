@@ -27,8 +27,8 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PhysicalController @Inject() (
-                                     bridgeConnector: BridgeConnector,
-                                     cc: ControllerComponents
+  bridgeConnector: BridgeConnector,
+  cc: ControllerComponents
 )(implicit ec: ExecutionContext
 ) extends BackendController(cc)
   with JsonSupport
@@ -37,9 +37,8 @@ class PhysicalController @Inject() (
   def updatePropertyChanges(assessmentId: AssessmentId): Action[JsValue] = Action.async(parse.json) { implicit request =>
     request.body.validate[PropertyChangesRequest] match {
       case JsSuccess(propertyChanges, _) =>
-        println(bridgeConnector.submitPropertyChanges(propertyChanges.credId, assessmentId, propertyChanges))
         bridgeConnector.submitPropertyChanges(propertyChanges.credId, assessmentId, propertyChanges).toHttpResult()
-      case jsError: JsError => Future.successful(buildValidationErrorsResponse(jsError))
+      case jsError: JsError              => Future.successful(buildValidationErrorsResponse(jsError))
     }
   }
 }

@@ -14,7 +14,7 @@ lazy val microservice = Project(appName, file("."))
     "uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId",
     "uk.gov.hmrc.ngrnotify.model.propertyDetails.AssessmentId"
   ))
-  .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
+  .disablePlugins(JUnitXmlReportPlugin) // Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     scalacOptions += "-Wconf:src=routes/:s",

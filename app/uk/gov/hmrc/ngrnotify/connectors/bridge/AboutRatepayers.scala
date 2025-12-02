@@ -119,19 +119,19 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
                       ForeignDatum(location = Some("RecoveryId"), value = ngrRequest.recoveryId)
                     )
                   ).copy(
-                    names = Some(Names(
+                    names = Names(
                       // TODO titleCommon = ???
                       // TODO titleUncommon = ???
                       forenames = ngrRequest.forenameAndSurname._1,
                       surname = ngrRequest.forenameAndSurname._2,
                       corporateName = ngrRequest.tradingName.map(_.value)
-                    ))
+                    )
                   ).copy(
-                    communications = Some(Communications(
+                    communications = Communications(
                       postalAddress = ngrRequest.address.map(_.singleLine),
                       telephoneNumber = ngrRequest.contactNumber.map(_.value),
                       email = ngrRequest.email.map(_.value)
-                    ))
+                    )
                   )
                 ))
               )

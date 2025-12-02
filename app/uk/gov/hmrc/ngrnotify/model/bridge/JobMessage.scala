@@ -19,6 +19,7 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 import play.api.libs.json.{Format, Json}
 
 case class JobMessage(
+  $schema: String,
   job: JobEntity
 )
 

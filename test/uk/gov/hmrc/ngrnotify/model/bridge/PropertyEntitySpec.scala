@@ -24,10 +24,10 @@ class PropertyEntitySpec extends AnyFreeSpec {
 
   "PropertyEntitySpec" - {
     "serialization and deserialization of PropertyEntity" in {
-      val json         = Json.parse(testResourceContent("products-property-data.json"))
+      val json = Json.parse(testResourceContent("products-property-data.json"))
 
       val productItem = json.as[PropertyEntity]
-      val serialized = Json.toJson(productItem)
+      val serialized  = Json.toJson(productItem)
 
       Json.prettyPrint(serialized) mustBe Json.prettyPrint(json)
     }

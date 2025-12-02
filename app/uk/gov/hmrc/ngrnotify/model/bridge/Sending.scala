@@ -55,7 +55,7 @@ object Transforming:
 case class Loading(
   readying: WildcardType,
   assuring: WildcardType,
-  signing: Signing,
+  signing: WildcardType, // TODO Change to Signing once the upstream systems support it
   encrypting: WildcardType,
   sending: WildcardType
 )
@@ -64,17 +64,16 @@ object Loading:
   given Format[Loading] = Json.format
 
 case class Signing(
-                    inputs: Option[SigningInputs] = None
-                  )
+  inputs: Option[SigningInputs] = None
+)
 
 object Signing:
   given OFormat[Signing] = Json.format
 
-
 case class SigningInputs(
-                          hash: String,
-                          signature: Option[String] = None
-                        )
+  hash: String,
+  signature: Option[String] = None
+)
 
 object SigningInputs:
   given OFormat[SigningInputs] = Json.format

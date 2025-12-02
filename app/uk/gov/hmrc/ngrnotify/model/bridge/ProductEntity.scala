@@ -21,7 +21,7 @@ import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 // #/$defs/ENTITIES/PRODUCTS/VALIDATION
 case class ProductEntity(
-  id: Option[Id],
+  id: NullableValue[Id],
   idx: String,
   name: NullableValue[String],
   label: String,

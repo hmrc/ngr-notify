@@ -34,5 +34,5 @@ class JobFormMessageSpec extends AnyWordAppSpec:
 
       Json.toJson(propertiesJobFormResponse).as[JobFormMessage] shouldBe propertiesJobFormResponse
     }
-    
+
   }

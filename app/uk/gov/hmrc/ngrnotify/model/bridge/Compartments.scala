@@ -22,9 +22,9 @@ import play.api.libs.json.*
 case class Compartments(
   properties: List[PropertyEntity] = List.empty,
   persons: List[PersonEntity] = List.empty,
-  // TODO processes: List[ProcessEntity] = List.empty,
-  relationships: List[RelationshipEntity] = List.empty,
-  products: List[ProductEntity] = List.empty
+  processes: List[JsValue] = List.empty,
+  products: List[ProductEntity] = List.empty,
+  relationships: List[JsValue] = List.empty
 )
 
 object Compartments {
@@ -34,29 +34,37 @@ object Compartments {
       if (
         c.properties.isEmpty &&
         c.persons.isEmpty &&
-        c.relationships.isEmpty &&
-        c.products.isEmpty
+        c.processes.isEmpty &&
+        c.products.isEmpty &&
+        c.relationships.isEmpty
       ) JsObject.empty
       else Json.obj(
         "properties"    -> c.properties,
         "persons"       -> c.persons,
-        "relationships" -> c.relationships,
-        "products"      -> c.products
+        "processes"     -> c.processes,
+        "products"      -> c.products,
+        "relationships" -> c.relationships
       )
 
     override def reads(json: JsValue): JsResult[Compartments] = {
       def getList[T: Format](field: String): List[T] =
-        (json \ field).asOpt[List[T]].getOrElse(Nil)
+        (json \ field).validate[List[T]] match {
+          case JsSuccess(value, _) => value
+          case JsError(errors)     =>
+            println(s"JSON error for field '$field': " + errors)
+            Nil
+        }
 
       json match {
         case JsObject(fields) if fields.isEmpty => JsSuccess(Compartments())
-        case _                                  =>
+        case x                                  =>
           JsSuccess(
             Compartments(
               getList[PropertyEntity]("properties"),
               getList[PersonEntity]("persons"),
-              getList[RelationshipEntity]("relationships"),
-              getList[ProductEntity]("products")
+              getList[JsValue]("processes"),
+              getList[ProductEntity]("products"),
+              getList[JsValue]("relationships")
             )
           )
       }

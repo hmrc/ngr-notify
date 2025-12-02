@@ -28,13 +28,13 @@ class AssessmentIdSpec extends AnyFreeSpec {
   "AssessmentId" - {
     "CredId" - {
       "should create an instance with the correct value" in {
-        val id = "test-id-123"
+        val id           = "test-id-123"
         val assessmentId = AssessmentId(id)
         assessmentId.value mustBe id
       }
 
       "toString should return the correct string representation" in {
-        val id = "test-id-456"
+        val id           = "test-id-456"
         val assessmentId = AssessmentId(id)
         assessmentId.toString mustBe id
       }
@@ -44,12 +44,12 @@ class AssessmentIdSpec extends AnyFreeSpec {
 
         "should serialize AssessmentId to JSON" in {
           val assessmentId = AssessmentId("1234567890")
-          val json = Json.toJson(assessmentId)
+          val json         = Json.toJson(assessmentId)
           json mustBe JsString("1234567890")
         }
 
         "should deserialize JSON to AssessmentId" in {
-          val json = JsString("1234567890")
+          val json         = JsString("1234567890")
           val assessmentId = json.as[AssessmentId]
           assessmentId mustBe AssessmentId("1234567890")
         }
@@ -66,13 +66,12 @@ class AssessmentIdSpec extends AnyFreeSpec {
       }
 
       "should unbind a AssessmentId to a string" in {
-        val key = "assessmentId"
-        val assessmentId = AssessmentId("12345678889")
+        val key            = "assessmentId"
+        val assessmentId   = AssessmentId("12345678889")
         val unbind: String = AssessmentId.pathBindable.unbind(key, assessmentId)
         unbind mustBe "12345678889"
       }
     }
   }
-
 
 }

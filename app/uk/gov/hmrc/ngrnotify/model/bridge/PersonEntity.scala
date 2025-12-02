@@ -18,24 +18,23 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
-
 // #/$defs/ENTITIES/PERSONS/PERSON/ENTITY
 case class PersonEntity(
-  id: Option[Id],
+  id: NullableValue[Id],
   idx: String,
   name: NullableValue[String],
   label: String,
   description: NullableValue[String],
   origination: NullableValue[String],
   termination: NullableValue[String],
-  protodata: List[Protodata],
-  metadata: Metadata,
   // #/$defs/TAXONOMY/CAT_LTX-DOM-PSN
   category: CodeMeaning,
   `type`: CodeMeaning,
   `class`: CodeMeaning,
   // #/$defs/ENTITIES/PERSONS/PERSONS/DATA
   data: PersonData,
+  protodata: List[Protodata],
+  metadata: Metadata,
   compartments: Compartments,
   items: List[PersonEntity]
 ) extends Entity[PersonData, Compartments, List[PersonEntity]]

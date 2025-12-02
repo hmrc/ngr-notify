@@ -25,9 +25,9 @@ class MetadataSpec extends AnyFreeSpec {
     import play.api.libs.json.Json
 
     "should serialize and deserialize Metadata correctly when the JsValue is empty object" in {
-      val empty = JsObject.empty
+      val empty              = JsObject.empty
       val metadata: Metadata = Metadata(
-        Sending(Extracting(empty), Transforming(empty, empty, empty), Loading(empty, empty, Signing(), empty, empty)),
+        Sending(Extracting(empty), Transforming(empty, empty, empty), Loading(empty, empty, empty, empty, empty)),
         Receiving(Unloading(empty, empty, empty, empty, empty), TransformingReceiving(empty, empty, empty), Storing(empty))
       )
 
@@ -79,9 +79,9 @@ class MetadataSpec extends AnyFreeSpec {
     }
 
     "should correctly serialize and deserialize Metadata when the JsValue is null" in {
-      val empty = JsNull
+      val empty              = JsNull
       val metadata: Metadata = Metadata(
-        Sending(Extracting(empty), Transforming(empty, empty, empty), Loading(empty, empty, Signing(), empty, empty)),
+        Sending(Extracting(empty), Transforming(empty, empty, empty), Loading(empty, empty, JsObject.empty, empty, empty)),
         Receiving(Unloading(empty, empty, empty, empty, empty), TransformingReceiving(empty, empty, empty), Storing(empty))
       )
 

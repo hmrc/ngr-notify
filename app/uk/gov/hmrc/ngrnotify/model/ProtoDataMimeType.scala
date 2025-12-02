@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model.bridge
+package uk.gov.hmrc.ngrnotify.model
 
-import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
+import play.api.libs.json.Format
+import uk.gov.hmrc.ngrnotify.model.Scala3EnumJsonFormat
 
-case class CodeMeaning(
-  code: String, // #/$defs/TAXONOMY/CAT_LTX-DOM
-  // TODO couldn't the meaning be mandatory instead of optional?
-  meaning: NullableValue[String]
-)
+enum ProtoDataMimeType:
+  case Jpeg, Png, Pdf
 
-object CodeMeaning:
-  import play.api.libs.json.*
-  given Format[CodeMeaning] = Json.format
+  override def toString: String = this match
+    case Jpeg => "image/jpeg"
+    case Png  => "image/png"
+    case Pdf  => "image/pdf"
+
+object ProtoDataMimeType:
+  given Format[ProtoDataMimeType] = Scala3EnumJsonFormat.format

@@ -20,7 +20,7 @@ import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 // #/$defs/ENTITIES/STANDARD
 trait StandardProperties:
-  val id: Option[Id]
+  val id: NullableValue[Id]
   val idx: String
   val name: NullableValue[String]
   val label: String

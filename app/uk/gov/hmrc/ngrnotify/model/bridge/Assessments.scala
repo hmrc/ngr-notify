@@ -21,56 +21,56 @@ import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 import uk.gov.hmrc.ngrnotify.model.given
 
 case class AssessmentEntity(
-                             id: Option[Id],
-                             idx: String,
-                             name: NullableValue[String],
-                             label: String,
-                             description: NullableValue[String],
-                             origination: NullableValue[String],
-                             termination: NullableValue[String],
-                             category: CodeMeaning,
-                             `type`: CodeMeaning,
-                             `class`: CodeMeaning,
-                             data: AssessmentData,
-                             protodata: List[Protodata],
-                             metadata: Metadata,
-                             compartments: Option[Map[String, String]] = None,
-                             items: Option[List[String]] = None
-                           ) extends Entity[AssessmentData, Option[Map[String, String]], Option[List[String]]]
+  id: NullableValue[Id],
+  idx: String,
+  name: NullableValue[String],
+  label: String,
+  description: NullableValue[String],
+  origination: NullableValue[String],
+  termination: NullableValue[String],
+  category: CodeMeaning,
+  `type`: CodeMeaning,
+  `class`: CodeMeaning,
+  data: AssessmentData,
+  protodata: List[Protodata],
+  metadata: Metadata,
+  compartments: Option[Map[String, String]] = None,
+  items: Option[List[String]] = None
+) extends Entity[AssessmentData, Option[Map[String, String]], Option[List[String]]]
   with StandardProperties
 
 object AssessmentEntity:
   given Format[AssessmentEntity] = Json.format
 
 case class AssessmentData(
-                           foreignIds: List[ForeignDatum] = List.empty,
-                           foreignNames: List[ForeignDatum] = List.empty,
-                           foreignLabels: List[ForeignDatum] = List.empty,
-                           property: AssessmentProperty,
-                           use: AssessmentUse,
-                           valuation_surveys: Seq[AssessmentContainerEntity],
-                           valuations: List[String] = List.empty,
-                           valuation: AssessmentValuation,
-                           list: AssessmentList,
-                           workflow: AssessmentWorkflow
-                         )
+  foreignIds: List[ForeignDatum] = List.empty,
+  foreignNames: List[ForeignDatum] = List.empty,
+  foreignLabels: List[ForeignDatum] = List.empty,
+  property: AssessmentProperty,
+  use: AssessmentUse,
+  valuation_surveys: Seq[AssessmentContainerEntity],
+  valuations: List[String] = List.empty,
+  valuation: AssessmentValuation,
+  list: AssessmentList,
+  workflow: AssessmentWorkflow
+)
 
 object AssessmentData:
   given Format[AssessmentData] = Json.format
 
 case class AssessmentProperty(
-                               id: Int,
-                               cdb_id: String
-                             )
+  id: Int,
+  cdb_id: String
+)
 
 object AssessmentProperty:
   given Format[AssessmentProperty] = Json.format
 
 case class AssessmentUse(
-                          is_composite: String, // "Y" or "N"
-                          is_part_exempt: String,
-                          description: String
-                        )
+  is_composite: String, // "Y" or "N"
+  is_part_exempt: String,
+  description: String
+)
 
 object AssessmentUse:
   given Format[AssessmentUse] = Json.format
@@ -82,55 +82,52 @@ case class AssessmentIsPartExempt(
 
 object AssessmentIsPartExempt:
   given Format[AssessmentIsPartExempt] = Json.format
-*/
-
+ */
 
 case class AssessmentValuation(
-                                method_code: String,
-                                rateable_value: Long,
-                                effective_date: String
-                              )
+  method_code: String,
+  rateable_value: Long,
+  effective_date: String
+)
 
 object AssessmentValuation:
   given Format[AssessmentValuation] = Json.format
 
 case class AssessmentList(
-                           category: String = "LTX-DOM-LST",
-                           function: String,
-                           year: String,
-                           authority_code: String
-                         )
+  category: String = "LTX-DOM-LST",
+  function: String,
+  year: String,
+  authority_code: String
+)
 
 object AssessmentList:
   given Format[AssessmentList] = Json.format
 
-
 case class AssessmentWorkflow(
-                               cdb_job_id: Option[String] = None,
-                             )
+  cdb_job_id: Option[String] = None
+)
 
 object AssessmentWorkflow:
   given Format[AssessmentWorkflow] = Json.format
 
 case class AssessmentContainerEntity(
-                                      id: Option[Id],
-                                      idx: String,
-                                      name: NullableValue[String],
-                                      label: String,
-                                      description: NullableValue[String],
-                                      origination: NullableValue[String],
-                                      termination: NullableValue[String],
-                                      category: CodeMeaning,
-                                      `type`: CodeMeaning,
-                                      `class`: CodeMeaning,
-                                      data: ContainerData,
-                                      protodata: List[Protodata],
-                                      metadata: Metadata,
-                                      compartments: Option[Map[String, String]] = None,
-                                      items: Option[List[AssessmentContainerEntity]] = None
-                                    ) extends Entity[ContainerData, Option[Map[String, String]], Option[List[AssessmentContainerEntity]]]
+  id: NullableValue[Id],
+  idx: String,
+  name: NullableValue[String],
+  label: String,
+  description: NullableValue[String],
+  origination: NullableValue[String],
+  termination: NullableValue[String],
+  category: CodeMeaning,
+  `type`: CodeMeaning,
+  `class`: CodeMeaning,
+  data: ContainerData,
+  protodata: List[Protodata],
+  metadata: Metadata,
+  compartments: Option[Map[String, String]] = None,
+  items: Option[List[AssessmentContainerEntity]] = None
+) extends Entity[ContainerData, Option[Map[String, String]], Option[List[AssessmentContainerEntity]]]
   with StandardProperties
-
 
 object AssessmentContainerEntity:
   given Format[AssessmentContainerEntity] = Json.format

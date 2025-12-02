@@ -94,16 +94,13 @@ class BridgeConnector @Inject() (
       RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)
     }
 
-  def submitPropertyChanges(credId: CredId, assessmentId: AssessmentId, propertyChangesRequest: PropertyChangesRequest)(using request: Request[?]): BridgeResult[NoContent] = {
+  def submitPropertyChanges(credId: CredId, assessmentId: AssessmentId, propertyChangesRequest: PropertyChangesRequest)(using request: Request[?])
+    : BridgeResult[NoContent] =
     for {
-      template <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
-      processed <- PropertyChangesRequest.process(template, propertyChangesRequest)
+      template    <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
+      processed   <- PropertyChangesRequest.process(template, propertyChangesRequest)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
-    } yield {
-      ngrResponse
-    }
-  }
-
+    } yield ngrResponse
 
   /**
     * Get the Bridge API job template for the given URL.

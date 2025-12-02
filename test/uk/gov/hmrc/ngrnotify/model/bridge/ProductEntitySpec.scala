@@ -23,10 +23,10 @@ import play.api.libs.json.Json
 class ProductEntitySpec extends AnyFreeSpec {
   "ProductEntitySpec" - {
     "serialization and deserialization of ProductEntity" in {
-      val json         = Json.parse(testResourceContent("products-property-data.json"))
+      val json = Json.parse(testResourceContent("products-property-data.json"))
 
       val productItem = json.as[ProductEntity]
-      val serialized = Json.toJson(productItem)
+      val serialized  = Json.toJson(productItem)
 
       Json.prettyPrint(serialized) mustBe Json.prettyPrint(json)
     }

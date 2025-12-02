@@ -24,13 +24,21 @@ class ForeignIdSystemSpec extends AnyFreeSpec with Matchers {
   "ForeignIdSystem" - {
     "must have all expected values" in {
       val systems = ForeignIdSystem.values.toSet
-      systems mustBe Set(ForeignIdSystem.Government_Gateway, ForeignIdSystem.Billing_Authority, ForeignIdSystem.Companies_House, ForeignIdSystem.National_Address_Gazetteer, ForeignIdSystem.NDRRPublicInterface, ForeignIdSystem.HMRC_VOA_CDB, ForeignIdSystem.SystemX)
+      systems mustBe Set(
+        ForeignIdSystem.Government_Gateway,
+        ForeignIdSystem.Billing_Authority,
+        ForeignIdSystem.Companies_House,
+        ForeignIdSystem.National_Address_Gazetteer,
+        ForeignIdSystem.NDRRPublicInterface,
+        ForeignIdSystem.HMRC_VOA_CDB,
+        ForeignIdSystem.SystemX
+      )
     }
 
     "serialization" - {
       ForeignIdSystem.values foreach { system =>
         s"must serialize and deserialize ${system.toString} correctly" in {
-          val serialized = Json.toJson(system)
+          val serialized   = Json.toJson(system)
           val deserialized = serialized.as[ForeignIdSystem]
           deserialized mustBe system
         }

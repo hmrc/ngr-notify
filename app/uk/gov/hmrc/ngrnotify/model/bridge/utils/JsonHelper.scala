@@ -24,10 +24,11 @@ object JsonHelper {
     import play.api.libs.json._
 
     object NullableValue {
+
       implicit def format[T: Format]: Format[NullableValue[T]] = Format(
         {
           case JsNull => JsSuccess(NullableValue(None))
-          case json => implicitly[Format[T]].reads(json).map(v => NullableValue(Some(v)))
+          case json   => implicitly[Format[T]].reads(json).map(v => NullableValue(Some(v)))
         },
         nv => nv.value.map(implicitly[Format[T]].writes).getOrElse(JsNull)
       )

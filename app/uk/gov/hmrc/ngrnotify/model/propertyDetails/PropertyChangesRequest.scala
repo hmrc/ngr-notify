@@ -48,36 +48,38 @@ object PropertyChangesRequest {
   implicit val format: OFormat[PropertyChangesRequest] = Json.format
 
   def process(bridgeTemplate: JobMessage, propertyChanges: PropertyChangesRequest)(implicit ec: ExecutionContext): BridgeResult[JobMessage] = {
-    val result: Either[String, JobMessage] = try {
-      val productsCompartment = bridgeTemplate.job.compartments.products
+    val result: Either[String, JobMessage] =
+      try {
+        val productsCompartment = bridgeTemplate.job.compartments.products
 
-      if (productsCompartment.isEmpty) {
-        Left("job.compartments.products is empty")
-      } else {
-        val foreignIds: List[ForeignDatum] = bridgeTemplate.job.data.foreignIds :+ ForeignDatum(Some(NDRRPublicInterface), None, propertyChanges.declarationRef)
-        val updatedData: JobData = bridgeTemplate.job.data.copy(foreignIds = foreignIds)
-        val jobItemOpt = bridgeTemplate.job.compartments.products.find(_.category.code == "LTX-DOM-PRP") //CODE :LTX-DOM-PRP
-          .map(_.copy(description = NullableValue(Some(propertyChanges.toString))))
+        if (productsCompartment.isEmpty) {
+          Left("job.compartments.products is empty")
+        } else {
+          val foreignIds: List[ForeignDatum] =
+            bridgeTemplate.job.data.foreignIds :+ ForeignDatum(Some(NDRRPublicInterface), None, propertyChanges.declarationRef)
+          val updatedData: JobData           = bridgeTemplate.job.data.copy(foreignIds = foreignIds)
+          val jobItemOpt                     = bridgeTemplate.job.compartments.products.find(_.category.code == "LTX-DOM-PRP") // CODE :LTX-DOM-PRP
+            .map(_.copy(description = NullableValue(Some(propertyChanges.toString))))
 
-        jobItemOpt match {
-          case Some(jobItem) =>
-            Right(
-              bridgeTemplate.copy(
-                job = bridgeTemplate.job.copy(
-                  data = updatedData,
-                  compartments = bridgeTemplate.job.compartments.copy(
-                    products = List(jobItem)
+          jobItemOpt match {
+            case Some(jobItem) =>
+              Right(
+                bridgeTemplate.copy(
+                  job = bridgeTemplate.job.copy(
+                    data = updatedData,
+                    compartments = bridgeTemplate.job.compartments.copy(
+                      products = List(jobItem)
+                    )
                   )
                 )
               )
-            )
-          case None =>
-            Left("No job item found to update description")
+            case None          =>
+              Left("No job item found to update description")
+          }
         }
+      } catch {
+        case e: Throwable => Left(e.getMessage)
       }
-    } catch {
-      case e: Throwable => Left(e.getMessage)
-    }
     Future.successful(result)
   }
 }

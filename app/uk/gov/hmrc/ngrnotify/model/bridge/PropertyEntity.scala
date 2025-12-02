@@ -21,7 +21,7 @@ import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 // #/$defs/ENTITIES/PROPERTIES/PROPERTY/ENTITY
 case class PropertyEntity(
-  id: Option[Id],
+  id: NullableValue[Id],
   idx: String,
   name: NullableValue[String],
   label: String,

@@ -17,10 +17,10 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 case class Location(
-                     localAuthorityPseudoAreaCode: Option[String] = None,
-                     ordanaceSurveyCoordinates: Option[String] = None,
-                     googleMapsCoordinates: Option[String] = None
-                   )
+  localAuthorityPseudoAreaCode: Option[String] = None,
+  ordanaceSurveyCoordinates: Option[String] = None,
+  googleMapsCoordinates: Option[String] = None
+)
 
 object Location:
 
