@@ -17,28 +17,27 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.{Format, Json}
-import Bridge.{EmptyItems, Id}
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 // #/$defs/ENTITIES/PROPERTIES/PROPERTY/ENTITY
 case class PropertyEntity(
-  id: Option[Id],
+  id: NullableValue[Id],
   idx: String,
-  name: Option[String],
+  name: NullableValue[String],
   label: String,
-  description: Option[String],
-  origination: Option[String],
-  termination: Option[String],
-  protodata: List[Protodata],
-  metadata: Metadata,
+  description: NullableValue[String],
+  origination: NullableValue[String],
+  termination: NullableValue[String],
   category: CodeMeaning,
   `type`: CodeMeaning,
   `class`: CodeMeaning,
   data: PropertyData,
-  compartments: EmptyCompartments,
-  items: EmptyItems
-) extends Entity[PropertyData, EmptyCompartments, EmptyItems]
+  protodata: List[Protodata],
+  metadata: Metadata,
+  compartments: Compartments,
+  items: List[ProductEntity]
+) extends Entity[PropertyData, Compartments, List[ProductEntity]]
   with StandardProperties
 
 object PropertyEntity:
-  import Bridge.given
   given Format[PropertyEntity] = Json.format

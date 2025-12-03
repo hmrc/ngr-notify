@@ -37,8 +37,15 @@ class JobMessageSpec extends AnyWordSpec with Matchers {
       val result = json.validate[JobMessage]
       result.isSuccess shouldBe true
     }
+
+    "be serialized back to JSON matching the original get-properties-response example" in {
+      val text       = testResourceContent("complete_notification_information.json")
+      val json       = Json.parse(text)
+      val jobMessage = json.as[JobMessage]
+      val serialized = Json.toJson(jobMessage)
+
+      serialized shouldBe json
+    }
   }
 
-  def testResourceContent(resource: String): String =
-    scala.io.Source.fromResource(resource).getLines().mkString("\n")
 }

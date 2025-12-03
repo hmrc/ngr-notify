@@ -16,33 +16,31 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.Id
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 // #/$defs/ENTITIES/PERSONS/PERSON/ENTITY
 case class PersonEntity(
-  id: Option[Id],
+  id: NullableValue[Id],
   idx: String,
-  name: Option[String],
+  name: NullableValue[String],
   label: String,
-  description: Option[String],
-  origination: Option[String],
-  termination: Option[String],
-  protodata: List[Protodata],
-  metadata: Metadata,
-
+  description: NullableValue[String],
+  origination: NullableValue[String],
+  termination: NullableValue[String],
   // #/$defs/TAXONOMY/CAT_LTX-DOM-PSN
   category: CodeMeaning,
   `type`: CodeMeaning,
   `class`: CodeMeaning,
   // #/$defs/ENTITIES/PERSONS/PERSONS/DATA
   data: PersonData,
-  compartments: EmptyCompartments,
+  protodata: List[Protodata],
+  metadata: Metadata,
+  compartments: Compartments,
   items: List[PersonEntity]
-) extends Entity[PersonData, EmptyCompartments, List[PersonEntity]]
+) extends Entity[PersonData, Compartments, List[PersonEntity]]
   with StandardProperties
 
 object PersonEntity:
-  import Bridge.given
   import play.api.libs.json.*
 
   given Format[PersonEntity] = Json.format

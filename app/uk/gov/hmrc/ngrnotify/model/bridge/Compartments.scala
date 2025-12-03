@@ -16,16 +16,59 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import uk.gov.hmrc.auth.core.Relationship
+import play.api.libs.Files.logger
+import play.api.libs.json.Format
+import play.api.libs.json.*
 
 case class Compartments(
   properties: List[PropertyEntity] = List.empty,
   persons: List[PersonEntity] = List.empty,
-  // TODO processes: List[ProcessEntity] = List.empty,
-  relationships: List[RelationshipEntity] = List.empty,
-  products: List[ProductEntity] = List.empty
+  processes: List[JsValue] = List.empty,
+  products: List[ProductEntity] = List.empty,
+  relationships: List[JsValue] = List.empty
 )
 
-object Compartments:
-  import play.api.libs.json.{Format, Json}
-  given Format[Compartments] = Json.format
+object Compartments {
+
+  given Format[Compartments] = new Format[Compartments] {
+    override def writes(c: Compartments): JsValue =
+      if (
+        c.properties.isEmpty &&
+        c.persons.isEmpty &&
+        c.processes.isEmpty &&
+        c.products.isEmpty &&
+        c.relationships.isEmpty
+      ) JsObject.empty
+      else Json.obj(
+        "properties"    -> c.properties,
+        "persons"       -> c.persons,
+        "processes"     -> c.processes,
+        "products"      -> c.products,
+        "relationships" -> c.relationships
+      )
+
+    override def reads(json: JsValue): JsResult[Compartments] = {
+      def getList[T: Format](field: String): List[T] =
+        (json \ field).validate[List[T]] match {
+          case JsSuccess(value, _) => value
+          case JsError(errors)     =>
+            logger.warn(s"JSON error for field '$field': " + errors)
+            Nil
+        }
+
+      json match {
+        case JsObject(fields) if fields.isEmpty => JsSuccess(Compartments())
+        case x                                  =>
+          JsSuccess(
+            Compartments(
+              getList[PropertyEntity]("properties"),
+              getList[PersonEntity]("persons"),
+              getList[JsValue]("processes"),
+              getList[ProductEntity]("products"),
+              getList[JsValue]("relationships")
+            )
+          )
+      }
+    }
+  }
+}

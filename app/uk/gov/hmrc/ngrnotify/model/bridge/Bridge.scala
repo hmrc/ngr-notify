@@ -17,17 +17,14 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.*
-import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.ProductData
+import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.WildcardType
+//import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.ProductData
 
 object Bridge:
 
-  import play.api.libs.json.JsError
-  import play.api.libs.json.JsResult
-  import play.api.libs.json.JsSuccess
-  import play.api.libs.json.JsValue
-  import play.api.libs.json.Reads
+  import play.api.libs.json.{JsResult, JsValue, Reads}
 
-  type Id = String
+  /*  type Id = String
 
   given Reads[Id] = new Reads[Id] {
     def reads(jsValue: JsValue): JsResult[Id] =
@@ -36,6 +33,10 @@ object Bridge:
         case JsString(str) => JsSuccess(str)
         case _             => JsError("Expected a JSON number or string")
   }
+
+  given Writes[Id] = new Writes[Id] {
+    override def writes(id: Id): JsValue = JsString(id)
+  }*/
 
   //
   //   NOTE
@@ -138,3 +139,21 @@ object Bridge:
     * a more specific type, such as JSON string, number, or empty object instead.
     */
   type WildcardType = JsValue
+
+given Reads[WildcardType] = new Reads[WildcardType] {
+  def reads(jsValue: JsValue): JsResult[WildcardType] = jsValue match {
+    case JsNull                             => JsSuccess(JsNull)
+    case JsObject(fields) if fields.isEmpty => JsSuccess(JsObject.empty) // handle {}
+    case obj: JsObject                      => JsSuccess(obj)
+    case _                                  => JsError("Expected JsNull or JsObject")
+  }
+}
+
+given Writes[WildcardType] = new Writes[WildcardType] {
+  def writes(value: WildcardType): JsValue = value match {
+    case JsNull                             => JsNull
+    case JsObject(fields) if fields.isEmpty => JsObject.empty // handle {}
+    case obj: JsObject                      => obj
+    case _                                  => throw new IllegalArgumentException("Unreachable code: WildcardType should only be JsNull or JsObject")
+  }
+}

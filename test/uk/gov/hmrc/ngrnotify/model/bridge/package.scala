@@ -14,19 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model.bridge
+package uk.gov.hmrc.ngrnotify.model
 
-import play.api.libs.json.{Format, Json}
+package object bridge {
 
-case class PropertyAddresses(
-  propertyFullAddress: Option[String] = None,
-  addressLine_1: Option[String] = None,
-  addressPostcode: Option[String] = None,
-  addressKnownAs: Option[String] = None
-)
-
-object PropertyAddresses:
-
-  import uk.gov.hmrc.ngrnotify.model.given
-
-  given Format[PropertyAddresses] = Json.format
+  def testResourceContent(resource: String): String =
+    scala.io.Source.fromResource(resource).getLines().mkString("\n")
+}

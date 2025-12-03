@@ -16,19 +16,18 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import Bridge.{EmptyItems, Id}
+import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.EmptyItems
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 // #/$defs/ENTITIES/JOBS/JOB/ENTITY
 case class JobEntity(
-  id: Option[Id],
+  id: NullableValue[Id],
   idx: String,
-  name: Option[String],
+  name: NullableValue[String],
   label: String,
-  description: Option[String],
-  origination: Option[String],
-  termination: Option[String],
-  protodata: List[Protodata],
-  metadata: Metadata,
+  description: NullableValue[String],
+  origination: NullableValue[String],
+  termination: NullableValue[String],
 
   // #/$defs/TAXONOMY/CAT_LTX-DOM-JOB_LOG
   category: CodeMeaning,
@@ -37,6 +36,8 @@ case class JobEntity(
 
   // #/$defs/ENTITIES/JOBS/JOB/DATA
   data: JobData,
+  protodata: List[Protodata],
+  metadata: Metadata,
   compartments: Compartments,
   items: EmptyItems
 ) extends Entity[JobData, Compartments, EmptyItems]

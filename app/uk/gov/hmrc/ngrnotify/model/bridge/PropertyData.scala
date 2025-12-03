@@ -23,10 +23,11 @@ import scala.collection.immutable.List
 // #/$defs/ENTITIES/PROPERTIES/PROPERTY/DATA
 case class PropertyData(
   foreignIds: List[ForeignDatum] = List.empty,
+  foreignNames: List[ForeignDatum] = List.empty,
   foreignLabels: List[ForeignDatum] = List.empty,
-  addresses: PropertyAddresses
-  // TODO location:
-  // TODO assessments:
+  addresses: PropertyAddresses = PropertyAddresses(),
+  location: Location = Location(),
+  assessments: List[AssessmentEntity] = List.empty
 )
 
 object PropertyData:

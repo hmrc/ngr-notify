@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.WildcardType
 
 // TODO Review all the models' definitions in this Scala file as they've been written in a rush
@@ -55,10 +55,27 @@ object Transforming:
 case class Loading(
   readying: WildcardType,
   assuring: WildcardType,
-  signing: WildcardType,
+  signing: WildcardType, // TODO Change to Signing once the upstream systems support it
   encrypting: WildcardType,
   sending: WildcardType
 )
 
 object Loading:
   given Format[Loading] = Json.format
+
+case class Signing(
+  inputs: Option[SigningInputs] = None
+)
+
+object Signing:
+  given OFormat[Signing] = Json.format
+
+case class SigningInputs(
+  hash: String,
+  signature: Option[String] = None
+)
+
+object SigningInputs:
+  given OFormat[SigningInputs] = Json.format
+
+

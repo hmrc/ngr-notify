@@ -16,17 +16,25 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.*
 
-case class PropertyAddresses(
-  propertyFullAddress: Option[String] = None,
-  addressLine_1: Option[String] = None,
-  addressPostcode: Option[String] = None,
-  addressKnownAs: Option[String] = None
-)
+sealed trait Id
 
-object PropertyAddresses:
+case object NullId extends Id
 
-  import uk.gov.hmrc.ngrnotify.model.given
+case class IntId(value: Int) extends Id
 
-  given Format[PropertyAddresses] = Json.format
+case class StringId(value: String) extends Id
+
+given idReads: Reads[Id] = Reads {
+    case JsNull        => JsSuccess(NullId)
+    case JsNumber(n)   => JsSuccess(IntId(n.toInt))
+    case JsString(s)   => JsSuccess(StringId(s))
+    case _             => JsError("Invalid id")
+}
+
+given idWrites: Writes[Id] = Writes {
+    case NullId           => JsNull
+    case IntId(value)     => JsNumber(value)
+    case StringId(value)  => JsString(value)
+}

@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model.bridge
+package uk.gov.hmrc.ngrnotify.model
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.Format
+import uk.gov.hmrc.ngrnotify.model.Scala3EnumJsonFormat
 
-case class PropertyAddresses(
-  propertyFullAddress: Option[String] = None,
-  addressLine_1: Option[String] = None,
-  addressPostcode: Option[String] = None,
-  addressKnownAs: Option[String] = None
-)
+enum ProtoDataMimeType:
+  case Jpeg, Png, Pdf
 
-object PropertyAddresses:
+  override def toString: String = this match
+    case Jpeg => "image/jpeg"
+    case Png  => "image/png"
+    case Pdf  => "image/pdf"
 
-  import uk.gov.hmrc.ngrnotify.model.given
-
-  given Format[PropertyAddresses] = Json.format
+object ProtoDataMimeType:
+  given Format[ProtoDataMimeType] = Scala3EnumJsonFormat.format

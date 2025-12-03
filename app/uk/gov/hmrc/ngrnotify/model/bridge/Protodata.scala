@@ -20,9 +20,9 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 case class Protodata(
   // TODO Review the definition of the following fields
   node: Option[String],
-  `mime_type`: String,
+  `mime_type`: String, // TODO Change to ProtoDataMimeType once the upstream systems support it
   label: String,
-  isPointer: Option[Boolean],
+  is_pointer: Option[Boolean], // TODO as per schema it is not optional
   pointer: String,
   data: String
 )

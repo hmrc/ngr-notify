@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import Bridge.Id
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 // #/$defs/ENTITIES/STANDARD
 trait StandardProperties:
-  val id: Option[Id]
+  val id: NullableValue[Id]
   val idx: String
-  val name: Option[String]
+  val name: NullableValue[String]
   val label: String
-  val description: Option[String]
-  val origination: Option[String] // TODO We may like to serdes to a Java Instant instead of a String
-  val termination: Option[String]
+  val description: NullableValue[String]
+  val origination: NullableValue[String] // TODO We may like to serdes to a Java Instant instead of a String
+  val termination: NullableValue[String]
   val protodata: List[Protodata]
   val metadata: Metadata

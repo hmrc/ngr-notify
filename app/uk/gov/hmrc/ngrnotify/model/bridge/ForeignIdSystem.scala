@@ -17,14 +17,50 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import play.api.libs.json.Format
-import uk.gov.hmrc.ngrnotify.model.Scala3EnumJsonFormat
 
-enum ForeignIdSystem:
+sealed trait ForeignIdSystem
 
-  case Government_Gateway,
+object ForeignIdSystem {
+  case object Government_Gateway extends ForeignIdSystem
+  case object Billing_Authority extends ForeignIdSystem
+  case object Companies_House extends ForeignIdSystem
+  case object National_Address_Gazetteer extends ForeignIdSystem
+  case object NDRRPublicInterface extends ForeignIdSystem
+  case object HMRC_VOA_CDB extends ForeignIdSystem // Scala identifiers can't have '-'
+  case object SystemX extends ForeignIdSystem // Scala identifiers can't have '-'
+
+  val values: Set[ForeignIdSystem] = Set(
+    Government_Gateway,
     Billing_Authority,
     Companies_House,
+    National_Address_Gazetteer,
+    NDRRPublicInterface,
+    HMRC_VOA_CDB,
     SystemX
+  )
 
-object ForeignIdSystem:
-  given Format[ForeignIdSystem] = Scala3EnumJsonFormat.format
+  given Format[ForeignIdSystem] = new Format[ForeignIdSystem] {
+    import play.api.libs.json.*
+
+    override def writes(o: ForeignIdSystem): JsValue = JsString(o match {
+      case Government_Gateway         => "Government_Gateway"
+      case Billing_Authority          => "Billing_Authority"
+      case Companies_House            => "Companies_House"
+      case National_Address_Gazetteer => "National_Address_Gazetteer"
+      case NDRRPublicInterface        => "NDRRPublicInterface"
+      case HMRC_VOA_CDB               => "HMRC-VOA_CDB"
+      case SystemX                    => "SystemX"
+    })
+
+    override def reads(json: JsValue): JsResult[ForeignIdSystem] = json match {
+      case JsString("Government_Gateway")         => JsSuccess(Government_Gateway)
+      case JsString("Billing_Authority")          => JsSuccess(Billing_Authority)
+      case JsString("Companies_House")            => JsSuccess(Companies_House)
+      case JsString("National_Address_Gazetteer") => JsSuccess(National_Address_Gazetteer)
+      case JsString("NDRRPublicInterface")        => JsSuccess(NDRRPublicInterface)
+      case JsString("HMRC-VOA_CDB")               => JsSuccess(HMRC_VOA_CDB)
+      case JsString("SystemX")                    => JsSuccess(SystemX)
+      case x                                      => JsError(s"$x Unknown ForeignIdSystem")
+    }
+  }
+}

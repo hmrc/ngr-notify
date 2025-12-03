@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ngrnotify.backend.testUtils
 
 import org.bson.types.ObjectId
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.{ngr_add_property_request_sent, ngr_registration_successful}
 import uk.gov.hmrc.ngrnotify.model.db.EmailNotification
@@ -53,7 +53,7 @@ trait TestData {
     "postcodeEndString" -> "0AA"
   )
 
-  val bodyJsonRegistrationSuccessful = Json.obj(
+  val bodyJsonRegistrationSuccessful: JsObject = Json.obj(
     "emailTemplateId" -> ngr_registration_successful,
     "trackerId"       -> UUID.randomUUID(),
     "sendToEmails"    -> Seq(prefilledFakeEmail, prefilledFakeEmail2),

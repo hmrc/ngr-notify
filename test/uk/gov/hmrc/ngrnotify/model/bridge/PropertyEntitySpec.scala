@@ -16,17 +16,22 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Format, Json}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers.mustBe
+import play.api.libs.json.Json
 
-case class PropertyAddresses(
-  propertyFullAddress: Option[String] = None,
-  addressLine_1: Option[String] = None,
-  addressPostcode: Option[String] = None,
-  addressKnownAs: Option[String] = None
-)
+class PropertyEntitySpec extends AnyFreeSpec {
 
-object PropertyAddresses:
+  "PropertyEntitySpec" - {
+    "serialization and deserialization of PropertyEntity" in {
+      val json = Json.parse(testResourceContent("products-property-data.json"))
 
-  import uk.gov.hmrc.ngrnotify.model.given
+      val productItem = json.as[PropertyEntity]
+      val serialized  = Json.toJson(productItem)
 
-  given Format[PropertyAddresses] = Json.format
+      Json.prettyPrint(serialized) mustBe Json.prettyPrint(json)
+    }
+  }
+
+
+}

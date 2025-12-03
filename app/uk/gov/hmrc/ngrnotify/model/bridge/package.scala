@@ -14,19 +14,3 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model.bridge
-
-import play.api.libs.json.{Format, Json}
-
-case class PropertyAddresses(
-  propertyFullAddress: Option[String] = None,
-  addressLine_1: Option[String] = None,
-  addressPostcode: Option[String] = None,
-  addressKnownAs: Option[String] = None
-)
-
-object PropertyAddresses:
-
-  import uk.gov.hmrc.ngrnotify.model.given
-
-  given Format[PropertyAddresses] = Json.format

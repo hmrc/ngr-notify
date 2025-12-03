@@ -73,8 +73,8 @@ class AboutRatepayersSpec extends AnyWordControllerSpec:
       // VERIFY
       // that the filled template actually got the NGR request data in the right spots
       whenReady(filled.toFuture) { filled =>
-        filled.job.name.value                          shouldBe "Register David Smith"
-        filled.job.compartments.products(0).name.value shouldBe "David Smith"
+        filled.job.name.value.value                          shouldBe "Register David Smith"
+        filled.job.compartments.products(0).name.value.value shouldBe "David Smith"
         // TODO filled.job.compartments.products(0).data.foreignIds should contain theSameElementsAs ???
         // TODO add more assertions here ...
       }

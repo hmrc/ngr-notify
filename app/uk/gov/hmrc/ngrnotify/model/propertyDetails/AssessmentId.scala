@@ -17,14 +17,28 @@
 package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import play.api.libs.json.*
+import play.api.mvc.PathBindable
 
-case class ChangeToUseOfSpace(selectUseOfSpace: Seq[String], hasPlanningPermission: Boolean, permissionReference: Option[String]) {
+import scala.language.implicitConversions
 
-  override def toString: String =
-    s"selectUseOfSpace: [${selectUseOfSpace.mkString(", ")}] - hasPlanningPermission: $hasPlanningPermission - permissionReference: ${permissionReference.getOrElse("No permission reference provided")}"
+case class AssessmentId(value: String) {
+  override def toString: String = value
 }
 
-object ChangeToUseOfSpace {
+object AssessmentId {
 
-  implicit val format: OFormat[ChangeToUseOfSpace] = Json.format
+  implicit val format: Format[AssessmentId] = Format(
+    __.read[String].map(AssessmentId.apply),
+    Writes[AssessmentId](credId => JsString(credId.value))
+  )
+
+  implicit lazy val pathBindable: PathBindable[AssessmentId] = new PathBindable[AssessmentId] {
+
+    override def bind(key: String, value: String): Either[String, AssessmentId] =
+      implicitly[PathBindable[String]].bind(key, value).map(AssessmentId(_))
+
+    override def unbind(key: String, value: AssessmentId): String =
+      value.toString
+  }
+
 }

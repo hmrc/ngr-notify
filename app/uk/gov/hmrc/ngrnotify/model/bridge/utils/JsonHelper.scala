@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model.bridge
+package uk.gov.hmrc.ngrnotify.model.bridge.utils
 
-import play.api.libs.json.{Format, Json}
+object JsonHelper {
 
-case class PropertyAddresses(
-  propertyFullAddress: Option[String] = None,
-  addressLine_1: Option[String] = None,
-  addressPostcode: Option[String] = None,
-  addressKnownAs: Option[String] = None
-)
+  object bridge {
+    case class NullableValue[T](value: Option[T])
 
-object PropertyAddresses:
+    import play.api.libs.json._
 
-  import uk.gov.hmrc.ngrnotify.model.given
+    object NullableValue {
 
-  given Format[PropertyAddresses] = Json.format
+      implicit def format[T: Format]: Format[NullableValue[T]] = Format(
+        {
+          case JsNull => JsSuccess(NullableValue(None))
+          case json   => implicitly[Format[T]].reads(json).map(v => NullableValue(Some(v)))
+        },
+        nv => nv.value.map(implicitly[Format[T]].writes).getOrElse(JsNull)
+      )
+    }
+  }
+}

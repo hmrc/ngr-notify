@@ -25,8 +25,8 @@ case class PersonData(
   foreignIds: List[ForeignDatum] = List.empty,
   foreignNames: List[ForeignDatum] = List.empty,
   foreignLabels: List[ForeignDatum] = List.empty,
-  names: Option[Names] = None,
-  communications: Option[Communications] = None
+  names: Names,
+  communications: Communications
 ) extends ForeignData
 
 object PersonData:

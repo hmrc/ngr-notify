@@ -17,9 +17,21 @@
 package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import play.api.libs.json.{Format, Json}
+import play.api.mvc.PathBindable
 
-final case class CredId(value: String)
+final case class CredId(value: String) {
+  override def toString: String = value
+}
 
 object CredId {
   implicit val format: Format[CredId] = Json.format[CredId]
+
+  implicit lazy val pathBindable: PathBindable[CredId] = new PathBindable[CredId] {
+
+    override def bind(key: String, value: String): Either[String, CredId] =
+      implicitly[PathBindable[String]].bind(key, value).map(CredId(_))
+
+    override def unbind(key: String, value: CredId): String =
+      value.toString
+  }
 }

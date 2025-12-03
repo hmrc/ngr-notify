@@ -18,6 +18,7 @@ package uk.gov.hmrc.ngrnotify.connectors.bridge
 
 import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 import uk.gov.hmrc.ngrnotify.model.ratepayer.RegisterRatepayerRequest
 
 import javax.inject.Inject
@@ -99,10 +100,10 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
         val processed =
           bridgeTemplate.copy(
             job = bridgeTemplate.job.copy(
-              name = Some("Register " + ngrRequest.name.map(_.value).getOrElse("")),
+              name = NullableValue(Some("Register " + ngrRequest.name.map(_.value).getOrElse(""))),
               compartments = bridgeTemplate.job.compartments.copy(
                 products = List(productsCompartment(0).copy(
-                  name = ngrRequest.name.map(_.value),
+                  name = NullableValue(ngrRequest.name.map(_.value)),
                   data = productData.copy(
                     foreignIds = List(
                       ForeignDatum(system = Some(Government_Gateway), value = Some(ngrRequest.ratepayerCredId)),
@@ -118,19 +119,19 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
                       ForeignDatum(location = Some("RecoveryId"), value = ngrRequest.recoveryId)
                     )
                   ).copy(
-                    names = Some(Names(
+                    names = Names(
                       // TODO titleCommon = ???
                       // TODO titleUncommon = ???
                       forenames = ngrRequest.forenameAndSurname._1,
                       surname = ngrRequest.forenameAndSurname._2,
                       corporateName = ngrRequest.tradingName.map(_.value)
-                    ))
+                    )
                   ).copy(
-                    communications = Some(Communications(
+                    communications = Communications(
                       postalAddress = ngrRequest.address.map(_.singleLine),
                       telephoneNumber = ngrRequest.contactNumber.map(_.value),
                       email = ngrRequest.email.map(_.value)
-                    ))
+                    )
                   )
                 ))
               )

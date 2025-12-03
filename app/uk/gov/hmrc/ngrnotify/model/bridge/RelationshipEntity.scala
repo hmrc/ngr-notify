@@ -16,17 +16,18 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.{Id, RelationshipItem, WildcardType}
+import uk.gov.hmrc.ngrnotify.model.bridge.Bridge.{RelationshipItem, WildcardType}
+import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 // #/$defs/ENTITIES/RELATIONSHIPS/RELATIONSHIP/ENTITY
 case class RelationshipEntity(
-  id: Option[Id],
+  id: NullableValue[Id],
   idx: String,
-  name: Option[String],
+  name: NullableValue[String],
   label: String,
-  description: Option[String],
-  origination: Option[String],
-  termination: Option[String],
+  description: NullableValue[String],
+  origination: NullableValue[String],
+  termination: NullableValue[String],
   protodata: List[Protodata],
   metadata: Metadata,
   category: CodeMeaning,
