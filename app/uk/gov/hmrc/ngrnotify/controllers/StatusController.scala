@@ -46,9 +46,9 @@ class StatusController @Inject() (
     Future.successful(Ok(
       Json.toJsObject(
         RatepayerStatusResponse(
-          true,
           false,
-          1
+          false,
+          0
         )
       )
     ))
