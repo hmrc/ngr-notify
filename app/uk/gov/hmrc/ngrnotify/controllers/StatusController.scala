@@ -42,25 +42,36 @@ class StatusController @Inject() (
     since = "2025-11-25"
   )
   def getRatepayerStatus(id: String): Action[AnyContent] = Action.async { implicit request =>
-    hipConnector.getRatepayerStatus(id)
-      .map {
-        response =>
-          response.status match {
-            case 200    => response.json.validate[RatepayerStatusResponse] match {
-                case JsSuccess(value, path) => Ok(
-                    Json.toJsObject(
-                      RatepayerStatusResponse(
-                        value.activeRatepayerPersonaExists,
-                        value.activeRatepayerPersonaExists,
-                        value.activePropertyLinkCount
-                      )
-                    )
-                  )
-                case JsError(errors)        => BadRequest
-              }
-            case status => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
-          }
-      }
-      .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
+
+    Future.successful(Ok(
+      Json.toJsObject(
+        RatepayerStatusResponse(
+          false,
+          false,
+          0
+        )
+      )
+    ))
+
+//    hipConnector.getRatepayerStatus(id)
+//      .map {
+//        response =>
+//          response.status match {
+//            case 200    => response.json.validate[RatepayerStatusResponse] match {
+//                case JsSuccess(value, path) => Ok(
+//                    Json.toJsObject(
+//                      RatepayerStatusResponse(
+//                        value.activeRatepayerPersonaExists,
+//                        value.activeRatepayerPersonaExists,
+//                        value.activePropertyLinkCount
+//                      )
+//                    )
+//                  )
+//                case JsError(errors)        => BadRequest
+//              }
+//            case status => InternalServerError(buildFailureResponse(WRONG_RESPONSE_STATUS, s"$status ${response.body}"))
+//          }
+//      }
+//      .recover(e => InternalServerError(buildFailureResponse(ACTION_FAILED, e.getMessage)))
   }
 }

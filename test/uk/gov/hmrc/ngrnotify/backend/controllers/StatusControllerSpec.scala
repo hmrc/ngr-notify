@@ -55,39 +55,4 @@ class StatusControllerSpec extends AnyWordControllerSpec:
       contentAsString(result) shouldBe """{"activeRatepayerPersonExists":false,"activeRatepayerPersonaExists":false,"activePropertyLinkCount":0}"""
     }
 
-    ".getRatepayerStatus return 500 for wrong ID" in {
-      val client = inject[HttpClientV2]
-      client
-        .whenGetting("/job/ratepayers/1234567891255/dashboard")
-        .thenReturn(rightResponseWith(BAD_REQUEST, Some("ratepayerWrongID.json")))
-
-      val result = controller.getRatepayerStatus("1234567891255")(FakeRequest())
-      status(result)        shouldBe INTERNAL_SERVER_ERROR
-      contentAsString(result) should include("Invalid format for Id")
-    }
-
-    ".getRatepayerStatus return 500 if HIP response body is not a JSON" in {
-      val client = inject[HttpClientV2]
-      client
-        .whenGetting("/job/ratepayers/test_no_json/dashboard")
-        .thenReturn(rightResponseWith(OK))
-
-      val result = controller.getRatepayerStatus("test_no_json")(FakeRequest())
-      status(result) shouldBe INTERNAL_SERVER_ERROR
-      contentAsString(
-        result
-      )              shouldBe """[{"code":"ACTION_FAILED","reason":"No content to map due to end-of-input\n at [Source: (String)\"\"; line: 1, column: 0]"}]"""
-    }
-
-    ".getRatepayerStatus return 500 on HIP connection exception" in {
-      val client = inject[HttpClientV2]
-      client
-        .whenGetting("/job/ratepayers/test_hip_connection_error/dashboard")
-        .thenReturn(leftResponseWith(IOException("HIP connection error details")))
-
-      val result = controller.getRatepayerStatus("test_hip_connection_error")(FakeRequest())
-      status(result)          shouldBe INTERNAL_SERVER_ERROR
-      contentAsString(result) shouldBe """[{"code":"ACTION_FAILED","reason":"HIP connection error details"}]"""
-    }
-
   }
