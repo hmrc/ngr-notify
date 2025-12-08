@@ -1,7 +1,7 @@
 # microservice specific routes
 
 # Ratepayer endpoints
-GET     /ratepayer-status/:id                   uk.gov.hmrc.ngrnotify.controllers.StatusController.getRatepayerStatus(id: String)
+GET     /ratepayer-status                       uk.gov.hmrc.ngrnotify.controllers.StatusController.getRatepayerStatus
 POST    /register-ratepayer                     uk.gov.hmrc.ngrnotify.controllers.RatepayerController.registerRatepayer
 GET     /ratepayer-has-property/:credId         uk.gov.hmrc.ngrnotify.controllers.RatepayerController.getRatepayerPropertyLinks(credId)
 

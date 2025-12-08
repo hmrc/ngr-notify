@@ -21,10 +21,15 @@ import org.apache.pekko.stream.testkit.NoMaterializer
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api
+import play.api.Application
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{JsNull, JsObject, Json}
 import play.api.test.Helpers.*
 import play.api.test.{FakeRequest, Helpers, Injecting}
+import uk.gov.hmrc.ngrnotify.backend.controllers.actions.FakeIdentifierAuthAction
 import uk.gov.hmrc.ngrnotify.controllers.EmailSenderController
+import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.*
 import uk.gov.hmrc.ngrnotify.model.request.SendEmailRequest
 
@@ -32,7 +37,14 @@ import java.util.UUID
 
 class EmailSenderControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with Injecting:
 
-  private val controller = inject[EmailSenderController]
+  override lazy val app: Application =
+    GuiceApplicationBuilder()
+      .overrides(
+        api.inject.bind[IdentifierAction].to[FakeIdentifierAuthAction]
+      )
+      .build()
+
+  private val controller = app.injector.instanceOf[EmailSenderController]
 
   given Materializer = NoMaterializer
 

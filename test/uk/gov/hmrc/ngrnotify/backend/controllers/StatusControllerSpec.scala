@@ -18,14 +18,16 @@ package uk.gov.hmrc.ngrnotify.backend.controllers
 
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.testkit.NoMaterializer
-import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers.*
 import play.api.test.{FakeRequest, Helpers}
+import play.api.{Application, inject}
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordControllerSpec
+import uk.gov.hmrc.ngrnotify.backend.controllers.actions.FakeIdentifierAuthAction
 import uk.gov.hmrc.ngrnotify.controllers.StatusController
+import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 
 import java.io.IOException
 
@@ -39,7 +41,8 @@ class StatusControllerSpec extends AnyWordControllerSpec:
     val httpClientV2Mock = mock[HttpClientV2]
     // DO NOT instruct the mock here, rather instruct it for each of the test cases below.
     new GuiceApplicationBuilder()
-      .overrides(bind[HttpClientV2].to(httpClientV2Mock))
+      .overrides(bind[HttpClientV2].to(httpClientV2Mock),
+        bind[IdentifierAction].to[FakeIdentifierAuthAction])
       .build()
 
   "StatusController" should {
@@ -49,8 +52,8 @@ class StatusControllerSpec extends AnyWordControllerSpec:
       client
         .whenGetting("/job/ratepayers/GGID123345/dashboard")
         .thenReturn(rightResponseWith(OK, Some("ratepayerGetStatus.json")))
-
-      val result = controller.getRatepayerStatus("GGID123345")(FakeRequest())
+      val identifierRequest = FakeRequest().withHeaders("X-Cred-Id" -> "GGID123345")
+      val result = controller.getRatepayerStatus(identifierRequest)
       status(result)          shouldBe OK
       contentAsString(result) shouldBe """{"activeRatepayerPersonExists":false,"activeRatepayerPersonaExists":false,"activePropertyLinkCount":0}"""
     }
@@ -61,7 +64,7 @@ class StatusControllerSpec extends AnyWordControllerSpec:
         .whenGetting("/job/ratepayers/1234567891255/dashboard")
         .thenReturn(rightResponseWith(BAD_REQUEST, Some("ratepayerWrongID.json")))
 
-      val result = controller.getRatepayerStatus("1234567891255")(FakeRequest())
+      val result = controller.getRatepayerStatus(FakeRequest().withHeaders("X-Cred-Id" -> "1234567891255"))
       status(result)        shouldBe INTERNAL_SERVER_ERROR
       contentAsString(result) should include("Invalid format for Id")
     }
@@ -72,7 +75,7 @@ class StatusControllerSpec extends AnyWordControllerSpec:
         .whenGetting("/job/ratepayers/test_no_json/dashboard")
         .thenReturn(rightResponseWith(OK))
 
-      val result = controller.getRatepayerStatus("test_no_json")(FakeRequest())
+      val result = controller.getRatepayerStatus(FakeRequest().withHeaders("X-Cred-Id" -> "test_no_json"))
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsString(
         result
@@ -85,7 +88,7 @@ class StatusControllerSpec extends AnyWordControllerSpec:
         .whenGetting("/job/ratepayers/test_hip_connection_error/dashboard")
         .thenReturn(leftResponseWith(IOException("HIP connection error details")))
 
-      val result = controller.getRatepayerStatus("test_hip_connection_error")(FakeRequest())
+      val result = controller.getRatepayerStatus(FakeRequest().withHeaders("X-Cred-Id" -> "test_hip_connection_error"))
       status(result)          shouldBe INTERNAL_SERVER_ERROR
       contentAsString(result) shouldBe """[{"code":"ACTION_FAILED","reason":"HIP connection error details"}]"""
     }

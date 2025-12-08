@@ -21,6 +21,7 @@ import play.api.libs.json.*
 import play.api.mvc.*
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.connectors.bridge.BridgeConnector
+import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
@@ -34,6 +35,7 @@ import scala.util.Try
 class RatepayerController @Inject() (
   @deprecated hipConnector: HipConnector,
   bridgeConnector: BridgeConnector,
+  identifierAction: IdentifierAction,
   cc: ControllerComponents
 )(implicit ec: ExecutionContext
 ) extends BackendController(cc)
@@ -58,7 +60,7 @@ class RatepayerController @Inject() (
    *       2.2 If the request body is invalid, the action builds and returns a 400 Bad Request response
    *           with a validation error message
    */
-  def registerRatepayer: Action[JsValue] = Action.async(parse.json) { implicit request =>
+  def registerRatepayer: Action[JsValue] = identifierAction.async(parse.json) { implicit request =>
     request.body.validate[RegisterRatepayerRequest] match {
       case JsSuccess(ngrRequest, _) => bridgeConnector.registerRatepayer(ngrRequest).toHttpResult()
       case jsError: JsError         => Future.successful(buildValidationErrorsResponse(jsError))

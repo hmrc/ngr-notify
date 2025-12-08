@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.backend.controllers
 
-import play.api.Application
+import play.api.{Application, inject}
 import play.api.http.Status.*
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -25,7 +25,9 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{contentAsString, defaultAwaitTimeout, status}
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordControllerSpec
+import uk.gov.hmrc.ngrnotify.backend.controllers.actions.FakeIdentifierAuthAction
 import uk.gov.hmrc.ngrnotify.controllers.RatepayerController
+import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.model.email.Email
 import uk.gov.hmrc.ngrnotify.model.ratepayer.*
 import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
@@ -54,7 +56,10 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
     // DO NOT instruct the mock here, rather instruct it for each of the test cases below.
 
     new GuiceApplicationBuilder()
-      .overrides(bind[HttpClientV2].to(httpClient))
+      .overrides(
+        bind[HttpClientV2].to(httpClient),
+        bind[IdentifierAction].to[FakeIdentifierAuthAction]
+      )
       .build()
   }
 
