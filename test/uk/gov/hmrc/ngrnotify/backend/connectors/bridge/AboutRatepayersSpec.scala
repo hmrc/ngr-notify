@@ -25,6 +25,7 @@ import uk.gov.hmrc.ngrnotify.backend.base.AnyWordControllerSpec
 import uk.gov.hmrc.ngrnotify.connectors.bridge.AboutRatepayers
 import uk.gov.hmrc.ngrnotify.model.bridge.JobMessage
 import uk.gov.hmrc.ngrnotify.model.email.Email
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
 import uk.gov.hmrc.ngrnotify.model.ratepayer.RatepayerType.organization
 import uk.gov.hmrc.ngrnotify.model.ratepayer.*
@@ -50,7 +51,6 @@ class AboutRatepayersSpec extends AnyWordControllerSpec:
 
       // Make up a realistic NGR request for having a ratepayer registered
       val ngrRequest = RegisterRatepayerRequest(
-        ratepayerCredId = "whatever",
         userType = Some(organization),
         agentStatus = Some(agent),
         name = Some(Name("David Smith")),
@@ -68,7 +68,7 @@ class AboutRatepayersSpec extends AnyWordControllerSpec:
       // EXERCISE
       // by applying the process method with both the Bridge template and the NGR request
       val aboutRatepayers = inject[AboutRatepayers]
-      val filled          = aboutRatepayers.process(bridgeTemplate, ngrRequest)
+      val filled          = aboutRatepayers.process(bridgeTemplate, ngrRequest, CredId("CREDS12345"))
 
       // VERIFY
       // that the filled template actually got the NGR request data in the right spots

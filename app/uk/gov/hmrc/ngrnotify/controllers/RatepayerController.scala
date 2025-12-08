@@ -62,7 +62,7 @@ class RatepayerController @Inject() (
    */
   def registerRatepayer: Action[JsValue] = identifierAction.async(parse.json) { implicit request =>
     request.body.validate[RegisterRatepayerRequest] match {
-      case JsSuccess(ngrRequest, _) => bridgeConnector.registerRatepayer(ngrRequest).toHttpResult()
+      case JsSuccess(ngrRequest, _) => bridgeConnector.registerRatepayer(ngrRequest, request.credId).toHttpResult()
       case jsError: JsError         => Future.successful(buildValidationErrorsResponse(jsError))
     }
   }
@@ -71,8 +71,8 @@ class RatepayerController @Inject() (
     message = "This has to be re-implemented using the new BridgeConnector",
     since = "2025-11-25"
   )
-  def getRatepayerPropertyLinks(ratepayerCredId: String): Action[AnyContent] = Action.async { implicit request =>
-    hipConnector.getRatepayer(ratepayerCredId)
+  def getRatepayerPropertyLinks: Action[AnyContent] = identifierAction.async { implicit request =>
+    hipConnector.getRatepayer(request.credId)
       .map { response =>
         response.status match {
           case 200    => parsePropertyLinks(response.body)

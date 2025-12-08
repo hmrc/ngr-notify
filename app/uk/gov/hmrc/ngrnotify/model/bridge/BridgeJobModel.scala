@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ngrnotify.model.bridge
 
 import uk.gov.hmrc.ngrnotify.model.email.Email
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{Name, PhoneNumber, RegisterRatepayerRequest}
 import uk.gov.hmrc.ngrnotify.model.{Address, Postcode}
 
@@ -245,7 +246,6 @@ object BridgeJobModel {
     val data          = bridgeJobModel.job.compartments.products.head
     val addressString = data.data.communications.flatMap(_.postal_address).getOrElse("")
     RegisterRatepayerRequest(
-      ratepayerCredId = "",
       userType = None,
       agentStatus = None,
       name = data.name.map(Name(_)),

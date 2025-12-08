@@ -55,9 +55,9 @@ class HipConnector @Inject() (
     .execute[HttpResponse]
 
   @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
-  def getRatepayer(id: String)(using request: Request[?]): Future[HttpResponse] =
+  def getRatepayer(credId: CredId)(using request: Request[?]): Future[HttpResponse] =
     httpClient
-      .get(appConfig.getRatepayerUrl(id))(using hipHeaderCarrier)
+      .get(appConfig.getRatepayerUrl(credId))(using hipHeaderCarrier)
       .execute[HttpResponse]
 
   @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")

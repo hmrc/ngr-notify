@@ -24,7 +24,6 @@ import uk.gov.hmrc.ngrnotify.model.email.Email
   * @author Yuriy Tumakha
   */
 final case class RegisterRatepayerRequest(
-  ratepayerCredId: String,
   userType: Option[RatepayerType] = None,
   agentStatus: Option[AgentStatus] = None,
   name: Option[Name] = None,

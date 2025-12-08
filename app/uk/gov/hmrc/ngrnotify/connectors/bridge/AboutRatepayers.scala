@@ -19,6 +19,7 @@ package uk.gov.hmrc.ngrnotify.connectors.bridge
 import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
 import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.ngrnotify.model.ratepayer.RegisterRatepayerRequest
 
 import javax.inject.Inject
@@ -40,7 +41,7 @@ import scala.concurrent.{ExecutionContext, Future}
  */
 class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
 
-  def process(bridgeTemplate: JobMessage, ngrRequest: RegisterRatepayerRequest): BridgeResult[JobMessage] = Future.successful {
+  def process(bridgeTemplate: JobMessage, ngrRequest: RegisterRatepayerRequest, credId: CredId): BridgeResult[JobMessage] = Future.successful {
     try {
       //
       // During a discussion with the Bridge API team, on 2025-11-24, we understood that the "products" compartment
@@ -106,7 +107,7 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
                   name = NullableValue(ngrRequest.name.map(_.value)),
                   data = productData.copy(
                     foreignIds = List(
-                      ForeignDatum(system = Some(Government_Gateway), value = Some(ngrRequest.ratepayerCredId)),
+                      ForeignDatum(system = Some(Government_Gateway), value = Some(credId.value)),
                       ForeignDatum(location = Some("NINO"), value = ngrRequest.nino.map(_.value)),
                       ForeignDatum(location = Some("secondary_telephone_number"), value = ngrRequest.secondaryNumber.map(_.value))
                     )
