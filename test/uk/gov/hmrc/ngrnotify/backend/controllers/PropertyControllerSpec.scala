@@ -32,7 +32,9 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{POST, defaultAwaitTimeout, route, status, writeableOf_AnyContentAsJson}
 import play.api.{Application, inject}
 import uk.gov.hmrc.http.HttpResponse
+import uk.gov.hmrc.ngrnotify.backend.controllers.actions.FakeIdentifierAuthAction
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
+import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.controllers.routes
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeRequest
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.{CredId, PropertyLinkingRequest, VMVProperty}
@@ -50,7 +52,8 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
   override def fakeApplication(): Application =
     GuiceApplicationBuilder()
       .overrides(
-        inject.bind[HipConnector].toInstance(mockHipConnector)
+        inject.bind[HipConnector].toInstance(mockHipConnector),
+        inject.bind[IdentifierAction].to[FakeIdentifierAuthAction]
       )
       .build()
 

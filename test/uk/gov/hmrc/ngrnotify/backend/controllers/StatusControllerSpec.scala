@@ -18,14 +18,16 @@ package uk.gov.hmrc.ngrnotify.backend.controllers
 
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.testkit.NoMaterializer
-import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers.*
 import play.api.test.{FakeRequest, Helpers}
+import play.api.{Application, inject}
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordControllerSpec
+import uk.gov.hmrc.ngrnotify.backend.controllers.actions.FakeIdentifierAuthAction
 import uk.gov.hmrc.ngrnotify.controllers.StatusController
+import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 
 import java.io.IOException
 
@@ -39,7 +41,8 @@ class StatusControllerSpec extends AnyWordControllerSpec:
     val httpClientV2Mock = mock[HttpClientV2]
     // DO NOT instruct the mock here, rather instruct it for each of the test cases below.
     new GuiceApplicationBuilder()
-      .overrides(bind[HttpClientV2].to(httpClientV2Mock))
+      .overrides(bind[HttpClientV2].to(httpClientV2Mock),
+        bind[IdentifierAction].to[FakeIdentifierAuthAction])
       .build()
 
   "StatusController" should {
@@ -49,8 +52,8 @@ class StatusControllerSpec extends AnyWordControllerSpec:
       client
         .whenGetting("/job/ratepayers/GGID123345/dashboard")
         .thenReturn(rightResponseWith(OK, Some("ratepayerGetStatus.json")))
-
-      val result = controller.getRatepayerStatus("GGID123345")(FakeRequest())
+      val identifierRequest = FakeRequest().withHeaders("X-Cred-Id" -> "GGID123345")
+      val result = controller.getRatepayerStatus(identifierRequest)
       status(result)          shouldBe OK
       contentAsString(result) shouldBe """{"activeRatepayerPersonExists":false,"activeRatepayerPersonaExists":false,"activePropertyLinkCount":0}"""
     }

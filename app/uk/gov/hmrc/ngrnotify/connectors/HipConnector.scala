@@ -25,6 +25,7 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.connectors.bridge.HipHeaderCarrier
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeRequest
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -54,13 +55,13 @@ class HipConnector @Inject() (
     .execute[HttpResponse]
 
   @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
-  def getRatepayer(id: String)(using request: Request[?]): Future[HttpResponse] =
+  def getRatepayer(credId: CredId)(using request: Request[?]): Future[HttpResponse] =
     httpClient
-      .get(appConfig.getRatepayerUrl(id))(using hipHeaderCarrier)
+      .get(appConfig.getRatepayerUrl(credId))(using hipHeaderCarrier)
       .execute[HttpResponse]
 
   @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
-  def getRatepayerStatus(id: String)(using request: Request[?]): Future[HttpResponse] =
+  def getRatepayerStatus(id: CredId)(using request: Request[?]): Future[HttpResponse] =
     httpClient
       .get(appConfig.getRatepayerStatusUrl(id))(using hipHeaderCarrier)
       .execute[HttpResponse]

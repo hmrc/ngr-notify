@@ -19,6 +19,7 @@ package uk.gov.hmrc.ngrnotify.controllers
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.{Action, ControllerComponents, Request, Result}
+import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate
 import uk.gov.hmrc.ngrnotify.model.EmailTemplate.*
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
@@ -39,14 +40,15 @@ import scala.util.Try
 @Singleton
 class EmailSenderController @Inject() (
   emailNotificationRepo: EmailNotificationRepo,
-  cc: ControllerComponents
+  cc: ControllerComponents,
+  identifierAction: IdentifierAction
 )(using
   ec: ExecutionContext
 ) extends BackendController(cc)
   with JsonSupport
   with Logging:
 
-  def sendEmail(emailTemplateId: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+  def sendEmail(emailTemplateId: String): Action[JsValue] = identifierAction.async(parse.json) { implicit request =>
     Try(EmailTemplate.valueOf(emailTemplateId)).toEither.fold(
       error => Left(BadRequest(buildFailureResponse(EMAIL_TEMPLATE_NOT_FOUND, error.getMessage))),
       emailTemplate =>

@@ -32,7 +32,9 @@ import play.api.mvc.{Request, Result}
 import play.api.test.Helpers.*
 import play.api.test.{FakeRequest, Helpers}
 import play.api.{Application, inject}
-import uk.gov.hmrc.ngrnotify.connectors.bridge.{BridgeConnector, BridgeResult, FutureEither}
+import uk.gov.hmrc.ngrnotify.backend.controllers.actions.FakeIdentifierAuthAction
+import uk.gov.hmrc.ngrnotify.connectors.bridge.{BridgeConnector, FutureEither}
+import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.controllers.routes
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.*
 
@@ -54,7 +56,8 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
   override lazy val app: Application =
     GuiceApplicationBuilder()
       .overrides(
-        inject.bind[BridgeConnector].toInstance(mockBridgeConnector)
+        inject.bind[BridgeConnector].toInstance(mockBridgeConnector),
+        inject.bind[IdentifierAction].to[FakeIdentifierAuthAction]
       )
       .build()
 
@@ -63,7 +66,6 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       pending
       val json = Json.toJson(
         PropertyChangesRequest(
-          CredId("credId"),
           LocalDate.of(2023, 1, 1),
           Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
           Seq(("airConditioning", "none"), ("securityCamera", "23")),
@@ -91,7 +93,6 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         pending
         val json = Json.toJson(
           PropertyChangesRequest(
-            CredId("credId"),
             LocalDate.of(2023, 1, 1),
             Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
             Seq(("airConditioning", "none"), ("securityCamera", "23")),
@@ -132,7 +133,6 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     "returns InternalServerError when HipConnector fails" in {
       val json = Json.toJson(
         PropertyChangesRequest(
-          CredId("credId"),
           LocalDate.of(2023, 1, 1),
           Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
           Seq(("airConditioning", "none"), ("securityCamera", "23")),
@@ -154,7 +154,6 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     "returns InternalServerError when an exception is thrown" in {
       val json = Json.toJson(
         PropertyChangesRequest(
-          CredId("credId"),
           LocalDate.of(2023, 1, 1),
           Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
           Seq(("airConditioning", "none"), ("securityCamera", "23")),

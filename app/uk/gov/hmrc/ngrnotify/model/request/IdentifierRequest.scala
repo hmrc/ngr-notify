@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.config
+package uk.gov.hmrc.ngrnotify.model.request
 
-import com.google.inject.AbstractModule
-import uk.gov.hmrc.ngrnotify.config.AppConfig
-import uk.gov.hmrc.ngrnotify.controllers.actions.{AuthenticatedIdentifierAction, IdentifierAction}
+import play.api.mvc.{Request, WrappedRequest}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 
-class Module extends AbstractModule:
-
-  override def configure(): Unit =
-    bind(classOf[AppConfig]).asEagerSingleton()
-    bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
+case class IdentifierRequest[A](request: Request[A], credId: CredId) extends WrappedRequest[A](request)

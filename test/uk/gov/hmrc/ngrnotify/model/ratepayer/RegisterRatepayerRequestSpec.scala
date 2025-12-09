@@ -32,7 +32,6 @@ class RegisterRatepayerRequestSpec extends AnyWordSpec with Matchers:
   "Model RegisterRatepayerRequest" should {
     "be serialized/deserialized from JSON" in {
       val registerRatepayerRequest = RegisterRatepayerRequest(
-        "login",
         Some(organization),
         Some(agent),
         Some(Name("Full name")),

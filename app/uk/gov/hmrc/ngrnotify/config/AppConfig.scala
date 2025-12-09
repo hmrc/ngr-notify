@@ -44,8 +44,8 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   @deprecated val updatePropertyChangesUrl: URL = url"${hipBaseUrl + updatePropertyChangesPath}"
   @deprecated val propertyLinkingUrl: URL       = url"${hipBaseUrl + propertyLinkingPath}"
   def postJobUrl(): URL                         = url"${hipBaseUrl + jobsPath}"
-  def getRatepayerUrl(id: String): URL          = url"${hipBaseUrl + ratepayersPath + "/" + id}"
-  def getRatepayerStatusUrl(id: String): URL    = url"${hipBaseUrl + ratepayersPath + "/" + id}/dashboard"
+  def getRatepayerUrl(id: CredId): URL          = url"${hipBaseUrl + ratepayersPath + "/" + id.value}"
+  def getRatepayerStatusUrl(id: CredId): URL    = url"${hipBaseUrl + ratepayersPath + "/" + id.value}/dashboard"
 
   def getPropertiesUrl(
     id: CredId,

@@ -20,6 +20,7 @@ import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.{Action, ControllerComponents}
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
+import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
@@ -27,7 +28,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class PropertyController @Inject() (
   @deprecated hipConnector: HipConnector,
-  cc: ControllerComponents
+  cc: ControllerComponents,
+  identifierAction: IdentifierAction,
 )(implicit ec: ExecutionContext
 ) extends BackendController(cc)
   with JsonSupport
@@ -37,7 +39,7 @@ class PropertyController @Inject() (
     message = "This needs to be re-implemented using the new BridgeConnector",
     since = "2025-11-25"
   )
-  def submit(): Action[JsValue] = Action.async(parse.json) { implicit request =>
+  def submit(): Action[JsValue] = identifierAction.async(parse.json) { implicit request =>
     Future.successful(Accepted)
   }
 
