@@ -78,7 +78,6 @@ class BridgeConnector @Inject() (
   // TODO It is still unclear why the CorrelationId header serves any useful purpose for "conversating with the BridgeAPI"
 
   def registerRatepayer(ngrRequest: RegisterRatepayerRequest, credId: CredId)(using request: Request[?]): BridgeResult[NoContent] = {
-    val url = appConfig.getRatepayerUrl(credId)
     for {
       template    <- getJobTemplate(appConfig.getRatepayerUrl(credId))
       processed   <- aboutRatepayers.process(template, ngrRequest, credId)

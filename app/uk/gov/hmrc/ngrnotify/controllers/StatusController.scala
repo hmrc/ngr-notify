@@ -16,17 +16,16 @@
 
 package uk.gov.hmrc.ngrnotify.controllers
 
-import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.ngrnotify.connectors.HipConnector
 import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.model.ErrorCode
-import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.response.{ApiFailure, RatepayerStatusResponse}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton()
 class StatusController @Inject() (
@@ -43,7 +42,7 @@ class StatusController @Inject() (
     message = "This needs to be re-implemented using the new BridgeConnector",
     since = "2025-11-25"
   )
-  def getRatepayerStatus(id: String): Action[AnyContent] = Action.async { implicit request =>
+  def getRatepayerStatus: Action[AnyContent] = identifierAction.async { implicit request =>
 
     Future.successful(Ok(
       Json.toJsObject(
