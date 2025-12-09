@@ -16,17 +16,18 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
+import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.*
+import play.api.libs.json.Json
 
-class JobMessageSpec extends AnyWordSpec with Matchers {
+class JobFormSpec extends AnyWordSpec with Matchers {
 
-  "the JobMessage model" should {
+  "the JobForm model" should {
     "be made from deserializing the ratepayer-found.json example" in {
       val text   = testResourceContent("bridge/ratepayer-found.json")
       val json   = Json.parse(text)
-      val result = json.validate[JobMessage]
+      val result = json.validate[JobForm]
       result.isSuccess shouldBe true
     }
 
@@ -34,15 +35,15 @@ class JobMessageSpec extends AnyWordSpec with Matchers {
       // TODO - Fix this test case as soon as the model.bridge.ProductEntity.items[] get correctly mapped
       val text   = testResourceContent("bridge/ratepayer-not-found.json")
       val json   = Json.parse(text)
-      val result = json.validate[JobMessage]
+      val result = json.validate[JobForm]
       result.isSuccess shouldBe true
     }
 
     "be serialized back to JSON matching the original get-properties-response example" in {
       val text       = testResourceContent("complete_notification_information.json")
       val json       = Json.parse(text)
-      val jobMessage = json.as[JobMessage]
-      val serialized = Json.toJson(jobMessage)
+      val JobForm = json.as[JobForm]
+      val serialized = Json.toJson(JobForm)
 
       serialized shouldBe json
     }

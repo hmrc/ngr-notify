@@ -69,9 +69,9 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
         declarationRef = Some("declRef123")
       )
 
-      val updatedJobModel: JobMessage = PropertyChangesRequest.process(sampleJobMessage(), propertyChanges).toFuture.futureValue
+      val updatedJobModel: JobFormMessage = PropertyChangesRequest.process(sampleJobMessage(), propertyChanges).toFuture.futureValue
 
-      val foreignIds = updatedJobModel.job.data.foreignIds
+      val foreignIds = updatedJobModel.jobForm.job.data.foreignIds
       foreignIds mustBe List(
         ForeignDatum(
           system = Some(Government_Gateway),
@@ -104,11 +104,13 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
     }
 
     "process should throw an exception if job data has no Compartments" in {
-      val invalidBridgeModel = sampleJobMessage().copy(
-        job = sampleJobMessage().job.copy(
+    val invalidBridgeModel: JobFormMessage = sampleJobMessage().copy(
+      jobForm = sampleJobMessage().jobForm.copy(
+        job = sampleJobMessage().jobForm.job.copy(
           compartments = Compartments()
         )
       )
+    )
 
       val propertyChanges = PropertyChangesRequest(
         dateOfChange = java.time.LocalDate.of(2023, 1, 1),
@@ -120,7 +122,7 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
         declarationRef = Some("declRef123")
       )
 
-      val updatedJobModelOpt: Future[JobMessage] = PropertyChangesRequest.process(invalidBridgeModel, propertyChanges).toFuture
+      val updatedJobModelOpt: Future[JobFormMessage] = PropertyChangesRequest.process(invalidBridgeModel, propertyChanges).toFuture
       updatedJobModelOpt.failed.futureValue.getMessage mustBe "job.compartments.products is empty"
 
     }
@@ -172,8 +174,8 @@ trait Data {
     items = List.empty
   )
 
-  def sampleJobMessage(categoryCode: String = "LTX-DOM-PRP"): JobMessage = JobMessage(
+  def sampleJobMessage(categoryCode: String = "LTX-DOM-PRP"): JobFormMessage = JobFormMessage(JobForm(
     "",
     sampleJobEntity(categoryCode)
-  )
+  ))
 }

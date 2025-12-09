@@ -20,6 +20,7 @@ import play.api.libs.json.{Format, Json}
 import play.api.mvc.PathBindable
 
 final case class CredId(value: String) {
+  require(value.nonEmpty, "CredId value must not be empty")
   override def toString: String = value
 }
 

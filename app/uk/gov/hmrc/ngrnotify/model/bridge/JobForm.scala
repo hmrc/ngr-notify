@@ -22,7 +22,8 @@ import play.api.libs.json.{Format, Json}
   * @author Yuriy Tumakha
   */
 case class JobForm(
-  job: JobEntity
+                    $schema: String,
+                    job: JobEntity
 )
 
 object JobForm:

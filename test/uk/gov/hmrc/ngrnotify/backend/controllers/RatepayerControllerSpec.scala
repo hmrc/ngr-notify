@@ -100,7 +100,7 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
         val httpClient = inject[HttpClientV2]
         httpClient
           .whenGetting(s"/job/ratepayers/$ratepayerId")
-          .thenReturn(rightResponseWith(OK, Some("bridge/ratepayer-found.json")))
+          .thenReturn(rightResponseWith(OK, Some("bridge/ratepayer-found-job-form.json")))
         httpClient
           .whenPosting("/job")
           .thenReturn(rightResponseWith(NO_CONTENT, None))

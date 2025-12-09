@@ -46,31 +46,31 @@ case class PropertyChangesRequest(
 object PropertyChangesRequest {
   implicit val format: OFormat[PropertyChangesRequest] = Json.format
 
-  def process(bridgeTemplate: JobMessage, propertyChanges: PropertyChangesRequest)(implicit ec: ExecutionContext): BridgeResult[JobMessage] = {
-    val result: Either[String, JobMessage] =
+  def process(bridgeTemplate: JobFormMessage, propertyChanges: PropertyChangesRequest)(implicit ec: ExecutionContext): BridgeResult[JobFormMessage] = {
+    val result: Either[String, JobFormMessage] =
       try {
-        val productsCompartment = bridgeTemplate.job.compartments.products
+        val productsCompartment = bridgeTemplate.jobForm.job.compartments.products
 
         if (productsCompartment.isEmpty) {
           Left("job.compartments.products is empty")
         } else {
           val foreignIds: List[ForeignDatum] =
-            bridgeTemplate.job.data.foreignIds :+ ForeignDatum(Some(NDRRPublicInterface), None, propertyChanges.declarationRef)
-          val updatedData: JobData           = bridgeTemplate.job.data.copy(foreignIds = foreignIds)
-          val jobItemOpt                     = bridgeTemplate.job.compartments.products.find(_.category.code == "LTX-DOM-PRP") // CODE :LTX-DOM-PRP
+            bridgeTemplate.jobForm.job.data.foreignIds :+ ForeignDatum(Some(NDRRPublicInterface), None, propertyChanges.declarationRef)
+          val updatedData: JobData           = bridgeTemplate.jobForm.job.data.copy(foreignIds = foreignIds)
+          val jobItemOpt                     = bridgeTemplate.jobForm.job.compartments.products.find(_.category.code == "LTX-DOM-PRP") // CODE :LTX-DOM-PRP
             .map(_.copy(description = NullableValue(Some(propertyChanges.toString))))
 
           jobItemOpt match {
             case Some(jobItem) =>
               Right(
-                bridgeTemplate.copy(
-                  job = bridgeTemplate.job.copy(
+                JobFormMessage(bridgeTemplate.jobForm.copy(
+                  job = bridgeTemplate.jobForm.job.copy(
                     data = updatedData,
-                    compartments = bridgeTemplate.job.compartments.copy(
+                    compartments = bridgeTemplate.jobForm.job.compartments.copy(
                       products = List(jobItem)
                     )
                   )
-                )
+                ))
               )
             case None          =>
               Left("No job item found to update description")

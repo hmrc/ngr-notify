@@ -41,13 +41,13 @@ import scala.concurrent.{ExecutionContext, Future}
  */
 class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
 
-  def process(bridgeTemplate: JobMessage, ngrRequest: RegisterRatepayerRequest, credId: CredId): BridgeResult[JobMessage] = Future.successful {
+  def process(bridgeTemplate: JobFormMessage, ngrRequest: RegisterRatepayerRequest, credId: CredId): BridgeResult[JobFormMessage] = Future.successful {
     try {
       //
       // During a discussion with the Bridge API team, on 2025-11-24, we understood that the "products" compartment
       // is provided as an exact replica of the "persons" compartment, ready to be "filled" with our NGR data.
       //
-      val productsCompartment = bridgeTemplate.job.compartments.products
+      val productsCompartment = bridgeTemplate.jobForm.job.compartments.products
 
       if (productsCompartment.isEmpty) {
         // This should never happen, but we'll handle it gracefully anyway
@@ -61,9 +61,9 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
 
         // TODO Following assertions wouldn't be necessary if we had programmed a better JSON serializer/deserializer
         //      See the bridge.model.Product Scala model for more details.
-        val categoryCode = productsCompartment(0).category.code
+        val categoryCode = productsCompartment.head.category.code
         assert(categoryCode == "LTX-DOM-PSN", s"Unexpected category code: $categoryCode")
-        assert(productsCompartment(0).data.isInstanceOf[PersonData])
+        assert(productsCompartment.head.data.isInstanceOf[PersonData])
 
         /*
          * NOTE
@@ -90,7 +90,7 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
          *   to match entities against the category, type, and class codes.
          */
 
-        val productData = productsCompartment(0).data match {
+        val productData = productsCompartment.head.data match {
           case personData: PersonData => personData
           case d                      => throw new RuntimeException("Unexpected data type for job.compartments.products[0].data :" + d.getClass.getName)
         }
@@ -98,12 +98,12 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
         // TODO How about the ngrRequest.trnReferenceNumber
         // TODO How about the ngrRequest.isRegistered
         // TODO How about the ngrRequest.recoveryId
-        val processed =
-          bridgeTemplate.copy(
-            job = bridgeTemplate.job.copy(
+        val processed: JobFormMessage =
+          bridgeTemplate.copy(jobForm = bridgeTemplate.jobForm.copy(
+            job = bridgeTemplate.jobForm.job.copy(
               name = NullableValue(Some("Register " + ngrRequest.name.map(_.value).getOrElse(""))),
-              compartments = bridgeTemplate.job.compartments.copy(
-                products = List(productsCompartment(0).copy(
+              compartments = bridgeTemplate.jobForm.job.compartments.copy(
+                products = List(productsCompartment.head.copy(
                   name = NullableValue(ngrRequest.name.map(_.value)),
                   data = productData.copy(
                     foreignIds = List(
@@ -137,7 +137,7 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
                 ))
               )
             )
-          )
+          ))
 
         Right(processed)
       }

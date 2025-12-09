@@ -25,7 +25,7 @@ import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeFailure.unknown
-import uk.gov.hmrc.ngrnotify.model.bridge.{Compartments, HodMessage, JobMessage}
+import uk.gov.hmrc.ngrnotify.model.bridge.{HodMessage, JobFormMessage}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, PropertyChangesRequest}
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest}
 
@@ -89,7 +89,7 @@ class BridgeConnector @Inject() (
     for {
       response <- getJobTemplate(appConfig.getRatepayerUrl(ratepayerCredId))
     } yield {
-      val addresses = response.job.compartments.properties.map(_.data.addresses.propertyFullAddress.getOrElse(""))
+      val addresses = response.jobForm.job.compartments.properties.map(_.data.addresses.propertyFullAddress.getOrElse(""))
       RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)
     }
 
@@ -108,13 +108,13 @@ class BridgeConnector @Inject() (
     * @param request the incoming HTTP request (needed for the CorrelationId header)
     * @return the JobMessage representation of the job template, wrapped in a BridgeResult
     */
-  private def getJobTemplate(url: URL)(using request: Request[?]): BridgeResult[JobMessage] =
+  private def getJobTemplate(url: URL)(using request: Request[?]): BridgeResult[JobFormMessage] =
     httpClient
       .get(url)(using hipHeaderCarrier)
       .execute[HttpResponse]
       .map {
         case r if r.status == HttpStatus.OK =>
-          r.json.validate[JobMessage] match {
+          r.json.validate[JobFormMessage] match {
             case JsSuccess(m, _) =>
               Right(m)
             case JsError(errors) =>
@@ -134,8 +134,8 @@ class BridgeConnector @Inject() (
           Left("Bridge replied with unexpected status code: " + r.status + ", and body: " + r.body.take(100) + " ...")
       }
 
-  private def postJobTemplate(processed: JobMessage, url: URL)(using request: Request[?]): BridgeResult[NoContent] = {
-    val processedJson = Json.toJson[JobMessage](processed)
+  private def postJobTemplate(processed: JobFormMessage, url: URL)(using request: Request[?]): BridgeResult[NoContent] = {
+    val processedJson = Json.toJson[JobFormMessage](processed)
     httpClient
       .post(url)(using hipHeaderCarrier)
       .withBody(processedJson)

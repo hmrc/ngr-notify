@@ -18,7 +18,7 @@ package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
 import org.scalatest.EitherValues.convertEitherToValuable
 import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers.mustEqual
+import org.scalatest.matchers.must.Matchers.{mustEqual, noException}
 import play.api.mvc.PathBindable
 
 class CredIdSpec extends AnyFreeSpec {
@@ -39,6 +39,11 @@ class CredIdSpec extends AnyFreeSpec {
         val unbind: String = CredId.pathBindable.unbind(key, credId)
         unbind mustEqual "test-cred-789"
       }
+      
+      "throw IllegalArgumentException if value is empty" in {
+        intercept[IllegalArgumentException](CredId(""))
+      }
+
     }
 
   }

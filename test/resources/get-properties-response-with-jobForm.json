@@ -2,401 +2,487 @@
   "jobForm": {
     "$schema": "./SCHEMA.json",
     "job": {
-      "id": 1,
+      "id": null,
       "idx": "1",
-      "name": "string",
-      "label": "string",
-      "description": "string",
-      "origination": "string",
-      "termination": "string",
+      "name": "Notify Valuation Officer",
+      "label": "Register Property Link",
+      "description": "Job for creating and updating information about the relationship between the current persona_ratepayer of a hereditament and the hereditaments list entry they are the current ratepayer of.",
+      "origination": "20251209T152102Z",
+      "termination": null,
       "category": {
         "code": "LTX-DOM-JOB",
-        "meaning": "string"
+        "meaning": "Local taxation domain job"
       },
       "type": {
-        "code": null,
-        "meaning": "string"
+        "code": "INF",
+        "meaning": "Assisting information"
       },
       "class": {
-        "code": null,
-        "meaning": "string"
+        "code": "LPP",
+        "meaning": "Link ratepayer and property"
       },
       "data": {
-        "foreign_ids": [
-          {
-            "system": "Government_Gateway",
-            "location": "string",
-            "value": "string"
-          }
-        ],
-        "foreign_names": [
-          {
-            "system": "Government_Gateway",
-            "location": "string",
-            "value": "string"
-          }
-        ],
-        "foreign_labels": [
-          {
-            "system": "Government_Gateway",
-            "location": "string",
-            "value": "string"
-          }
-        ]
+        "foreign_ids": [],
+        "foreign_names": [],
+        "foreign_labels": []
       },
       "protodata": [
         {
-          "node": "string",
-          "mime_type": "image/jpeg",
-          "label": "string",
-          "is_pointer": true,
-          "pointer": "string",
+          "node": null,
+          "mime_type": "",
+          "label": "",
+          "is_pointer": null,
+          "pointer": "",
           "data": ""
         }
       ],
       "metadata": {
         "sending": {
           "extracting": {
-            "selecting": null
+            "selecting": {}
           },
           "transforming": {
-            "filtering": null,
-            "supplementing": null,
-            "recontextualising": null
+            "filtering": {},
+            "supplementing": {},
+            "recontextualising": {}
           },
           "loading": {
-            "readying": null,
-            "assuring": null,
-            "signing": {
-              "inputs": {
-                "hash": "stringstringstringstringstringstringstringst",
-                "signature": "stringstringstringstringstringstringstringst"
-              }
-            },
-            "encrypting": null,
-            "sending": null
+            "readying": {},
+            "assuring": {},
+            "signing": {},
+            "encrypting": {},
+            "sending": {}
           }
         },
         "receiving": {
           "unloading": {
-            "receiving": null,
-            "decrypting": null,
-            "verifying": null,
-            "assuring": null,
-            "readying": null
+            "receiving": {},
+            "decrypting": {},
+            "verifying": {},
+            "assuring": {},
+            "readying": {}
           },
           "transforming": {
-            "recontextualising": null,
-            "dropping": null,
-            "restoring": null
+            "recontextualising": {},
+            "dropping": {},
+            "restoring": {}
           },
           "storing": {
-            "inserting": null
+            "inserting": {}
           }
         }
       },
       "compartments": {
         "properties": [
           {
-            "id": 1,
-            "idx": "1",
-            "name": "string",
-            "label": "string",
-            "description": "string",
-            "origination": "string",
-            "termination": "string",
+            "id": 2,
+            "idx": "1.1.1",
+            "name": null,
+            "label": null,
+            "description": null,
+            "origination": "20000101T000000Z",
+            "termination": null,
             "category": {
               "code": "LTX-DOM-PRP",
-              "meaning": "string"
+              "meaning": "Local taxation domain property"
             },
             "type": {
               "code": "OCC",
-              "meaning": "string"
+              "meaning": "Constituted by reference to actual occupation"
             },
             "class": {
               "code": "HDT",
-              "meaning": "string"
+              "meaning": "Statutory NDR hereditament"
             },
             "data": {
-              "foreign_ids": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
-              "foreign_names": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
-              "foreign_labels": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
+              "foreign_ids": [],
+              "foreign_names": [],
+              "foreign_labels": [],
               "addresses": {
-                "property_full_address": "string",
-                "address_line_1": "string",
-                "address_postcode": "string",
-                "address_known_as": "string"
+                "property_full_address": null,
+                "address_line_1": null,
+                "address_postcode": null,
+                "address_known_as": null
               },
               "location": {
-                "local_authority_pseudo_area_code": "stri",
-                "ordnance_survey_coordinates": "string",
-                "google_maps_coordinates": "string"
+                "local_authority_sudo_area_code": null,
+                "ordanace_survey_coordinates": null,
+                "google_maps_coordinates": null
               },
               "assessments": [
                 {
-                  "id": 1,
-                  "idx": "1",
-                  "name": "string",
-                  "label": "string",
-                  "description": "string",
-                  "origination": "string",
-                  "termination": "string",
-                  "category": {},
-                  "type": {},
-                  "class": {},
+                  "id": 9,
+                  "idx": null,
+                  "name": null,
+                  "label": null,
+                  "description": null,
+                  "origination": null,
+                  "termination": null,
+                  "category": {
+                    "code": "LTX-DOM-AST",
+                    "meaning": "Local taxation domain assessment"
+                  },
+                  "type": {
+                    "code": "CHG",
+                    "meaning": "To be determined"
+                  },
+                  "class": {
+                    "code": "RLE",
+                    "meaning": "Register list entry"
+                  },
                   "data": {
-                    "foreign_ids": [],
+                    "foreign_ids": [
+                      {
+                        "system": "CDB",
+                        "location": "hmrc/voa/cdb/ndr_assessments",
+                        "value": "27399688000"
+                      }
+                    ],
                     "foreign_names": [],
                     "foreign_labels": [],
-                    "property": {},
-                    "use": {},
-                    "valuation_survey": [],
-                    "valuation": {},
-                    "list": {},
-                    "workflow": {}
+                    "property": {
+                      "id": null,
+                      "cdb_id": null
+                    },
+                    "use": {
+                      "is_composite": null,
+                      "is_part_exempt": null,
+                      "description": null
+                    },
+                    "valuation_survey": {
+                      "system": null,
+                      "id": null
+                    },
+                    "valuation": {
+                      "system": null,
+                      "id": null,
+                      "method_code": null,
+                      "rateable_value": null,
+                      "effective_date": null
+                    },
+                    "list": {
+                      "category": null,
+                      "function": null,
+                      "year": null,
+                      "authority_code": null
+                    },
+                    "workflow": {
+                      "cdb_job_id": null
+                    }
                   },
                   "protodata": [
-                    null
+                    {
+                      "node": null,
+                      "mime_type": "",
+                      "label": "",
+                      "is_pointer": null,
+                      "pointer": "",
+                      "data": ""
+                    }
                   ],
                   "metadata": {
-                    "sending": {},
-                    "receiving": {}
+                    "sending": {
+                      "extracting": {
+                        "selecting": {}
+                      },
+                      "transforming": {
+                        "filtering": {},
+                        "supplementing": {},
+                        "recontextualising": {}
+                      },
+                      "loading": {
+                        "readying": {},
+                        "assuring": {},
+                        "signing": {},
+                        "encrypting": {},
+                        "sending": {}
+                      }
+                    },
+                    "receiving": {
+                      "unloading": {
+                        "receiving": {},
+                        "decrypting": {},
+                        "verifying": {},
+                        "assuring": {},
+                        "readying": {}
+                      },
+                      "transforming": {
+                        "recontextualising": {},
+                        "dropping": {},
+                        "restoring": {}
+                      },
+                      "storing": {
+                        "inserting": {}
+                      }
+                    }
                   },
-                  "compartments": null,
-                  "items": [
-                    null
-                  ]
+                  "compartments": {},
+                  "items": []
                 }
               ]
             },
             "protodata": [
               {
-                "node": "string",
-                "mime_type": "image/jpeg",
-                "label": "string",
-                "is_pointer": true,
-                "pointer": "string",
+                "node": null,
+                "mime_type": "",
+                "label": "",
+                "is_pointer": null,
+                "pointer": "",
                 "data": ""
               }
             ],
             "metadata": {
               "sending": {
                 "extracting": {
-                  "selecting": null
+                  "selecting": {}
                 },
                 "transforming": {
-                  "filtering": null,
-                  "supplementing": null,
-                  "recontextualising": null
+                  "filtering": {},
+                  "supplementing": {},
+                  "recontextualising": {}
                 },
                 "loading": {
-                  "readying": null,
-                  "assuring": null,
-                  "signing": {
-                    "inputs": {}
-                  },
-                  "encrypting": null,
-                  "sending": null
+                  "readying": {},
+                  "assuring": {},
+                  "signing": {},
+                  "encrypting": {},
+                  "sending": {}
                 }
               },
               "receiving": {
                 "unloading": {
-                  "receiving": null,
-                  "decrypting": null,
-                  "verifying": null,
-                  "assuring": null,
-                  "readying": null
+                  "receiving": {},
+                  "decrypting": {},
+                  "verifying": {},
+                  "assuring": {},
+                  "readying": {}
                 },
                 "transforming": {
-                  "recontextualising": null,
-                  "dropping": null,
-                  "restoring": null
+                  "recontextualising": {},
+                  "dropping": {},
+                  "restoring": {}
                 },
                 "storing": {
-                  "inserting": null
+                  "inserting": {}
                 }
               }
             },
-            "compartments": null,
+            "compartments": {},
             "items": []
           }
         ],
         "persons": [
           {
-            "id": 1,
-            "idx": "1",
-            "name": "string",
-            "label": "string",
-            "description": "string",
-            "origination": "string",
-            "termination": "string",
+            "id": 7,
+            "idx": "1.2.1",
+            "name": "Person2",
+            "label": "Individual",
+            "description": "Test Person2 Description",
+            "origination": "20250101T000000Z",
+            "termination": null,
             "category": {
               "code": "LTX-DOM-PSN",
-              "meaning": "string"
+              "meaning": "Local taxation domain person"
             },
             "type": {
-              "code": null,
-              "meaning": "string"
+              "code": "INF",
+              "meaning": "Assisting information"
             },
             "class": {
-              "code": null,
-              "meaning": "string"
+              "code": "RPN",
+              "meaning": "Register ratepayer"
             },
             "data": {
               "foreign_ids": [
                 {
                   "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
+                  "location": "UK",
+                  "value": "john.doe2@gov.uk"
                 }
               ],
               "foreign_names": [
                 {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
+                  "system": "SystemX",
+                  "location": "UK",
+                  "value": "john.doe2@gov.uk"
                 }
               ],
               "foreign_labels": [
                 {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
+                  "system": "SystemX",
+                  "location": "UK",
+                  "value": "john.doe2@gov.uk"
                 }
               ],
               "names": {
-                "title_common": "Miss",
-                "title_uncommon": "Dr",
-                "forenames": "Oliver James",
-                "surname": "Harrison",
-                "post_nominals": "BSc",
-                "corporate_name": "Royal Society of Arts (RSC)",
-                "crown_name": "Lord Chancellor",
-                "known_as": "Ollie"
+                "title_common": "Mr",
+                "title_uncommon": null,
+                "forenames": "John2",
+                "surname": "Doe2",
+                "post_nominals": null,
+                "corporate_name": null,
+                "crown_name": null,
+                "known_as": "Johnny2"
               },
               "communications": {
-                "postal_address": "",
-                "telephone_number": "",
-                "email": ""
+                "postal_address": "p2456 abc Street, Manchester",
+                "telephone_number": "0161 1234567",
+                "email": "person2@example.com"
               }
             },
             "protodata": [
               {
-                "node": "string",
-                "mime_type": "image/jpeg",
-                "label": "string",
-                "is_pointer": true,
-                "pointer": "string",
+                "node": null,
+                "mime_type": "",
+                "label": "",
+                "is_pointer": null,
+                "pointer": "",
                 "data": ""
               }
             ],
             "metadata": {
               "sending": {
                 "extracting": {
-                  "selecting": null
+                  "selecting": {}
                 },
                 "transforming": {
-                  "filtering": null,
-                  "supplementing": null,
-                  "recontextualising": null
+                  "filtering": {},
+                  "supplementing": {},
+                  "recontextualising": {}
                 },
                 "loading": {
-                  "readying": null,
-                  "assuring": null,
-                  "signing": {
-                    "inputs": {}
-                  },
-                  "encrypting": null,
-                  "sending": null
+                  "readying": {},
+                  "assuring": {},
+                  "signing": {},
+                  "encrypting": {},
+                  "sending": {}
                 }
               },
               "receiving": {
                 "unloading": {
-                  "receiving": null,
-                  "decrypting": null,
-                  "verifying": null,
-                  "assuring": null,
-                  "readying": null
+                  "receiving": {},
+                  "decrypting": {},
+                  "verifying": {},
+                  "assuring": {},
+                  "readying": {}
                 },
                 "transforming": {
-                  "recontextualising": null,
-                  "dropping": null,
-                  "restoring": null
+                  "recontextualising": {},
+                  "dropping": {},
+                  "restoring": {}
                 },
                 "storing": {
-                  "inserting": null
+                  "inserting": {}
                 }
               }
             },
-            "compartments": null,
+            "compartments": {},
             "items": [
               {
-                "id": 1,
-                "idx": "1",
-                "name": "string",
-                "label": "string",
-                "description": "string",
-                "origination": "string",
-                "termination": "string",
+                "id": 3,
+                "idx": "1.2.1.1",
+                "name": "Persona1",
+                "label": "Individual",
+                "description": "Test Desc",
+                "origination": "20250101T000000Z",
+                "termination": null,
                 "category": {
                   "code": "LTX-DOM-PSA",
-                  "meaning": "string"
+                  "meaning": "Local taxation domain persona"
                 },
                 "type": {
-                  "code": null,
-                  "meaning": "string"
+                  "code": "TXP",
+                  "meaning": "LGFA taxpayer"
                 },
                 "class": {
-                  "code": null,
-                  "meaning": "string"
+                  "code": "RPO",
+                  "meaning": "Ratepayer (occupier)"
                 },
                 "data": {
                   "foreign_ids": [
-                    {}
+                    {
+                      "system": "PSNAFID",
+                      "location": "UK",
+                      "value": "john.doe2@gov.uk"
+                    }
                   ],
                   "foreign_names": [
-                    {}
+                    {
+                      "system": "PSNAFN",
+                      "location": "UK",
+                      "value": "john.doe2@gov.uk"
+                    }
                   ],
                   "foreign_labels": [
-                    {}
+                    {
+                      "system": "SystemX",
+                      "location": "UK",
+                      "value": "john.doe2@gov.uk"
+                    }
                   ],
-                  "names": {},
-                  "communications": {}
+                  "names": {
+                    "title_common": "Mr",
+                    "title_uncommon": null,
+                    "forenames": "PSNAJohn",
+                    "surname": "Doe",
+                    "post_nominals": null,
+                    "corporate_name": null,
+                    "crown_name": null,
+                    "known_as": "Johnny"
+                  },
+                  "communications": {
+                    "postal_address": "PSNA123 Main Street, London",
+                    "telephone_number": "01234 567890",
+                    "email": "persona1@example.com"
+                  }
                 },
                 "protodata": [
-                  {}
+                  {
+                    "node": null,
+                    "mime_type": "",
+                    "label": "",
+                    "is_pointer": null,
+                    "pointer": "",
+                    "data": ""
+                  }
                 ],
                 "metadata": {
                   "sending": {
-                    "extracting": {},
-                    "transforming": {},
-                    "loading": {}
+                    "extracting": {
+                      "selecting": {}
+                    },
+                    "transforming": {
+                      "filtering": {},
+                      "supplementing": {},
+                      "recontextualising": {}
+                    },
+                    "loading": {
+                      "readying": {},
+                      "assuring": {},
+                      "signing": {},
+                      "encrypting": {},
+                      "sending": {}
+                    }
                   },
                   "receiving": {
-                    "unloading": {},
-                    "transforming": {},
-                    "storing": {}
+                    "unloading": {
+                      "receiving": {},
+                      "decrypting": {},
+                      "verifying": {},
+                      "assuring": {},
+                      "readying": {}
+                    },
+                    "transforming": {
+                      "recontextualising": {},
+                      "dropping": {},
+                      "restoring": {}
+                    },
+                    "storing": {
+                      "inserting": {}
+                    }
                   }
                 },
-                "compartments": null,
+                "compartments": {},
                 "items": []
               }
             ]
@@ -404,392 +490,387 @@
         ],
         "processes": [
           {
-            "id": 1,
-            "idx": "1",
-            "name": "string",
-            "label": "string",
-            "description": "string",
-            "origination": "string",
-            "termination": "string",
+            "id": null,
+            "idx": "1.3.1",
+            "name": "Persona-Property Linking",
+            "label": "Ratepayer-ListEntry and Ratepayer-Agent Linking",
+            "description": "A local taxtion domain process producing persisted records about relationships between LGFA88shd9para4J person-personas and LGFA88 hereditaments for which such personas are obliged to provide LGFA88shd9para4I(1) notofiable information.",
+            "origination": "20251209T152102Z",
+            "termination": null,
             "category": {
               "code": "LTX-DOM-PRS",
-              "meaning": "string"
+              "meaning": "Local taxation domain process"
             },
             "type": {
               "code": "LRL",
-              "meaning": "string"
+              "meaning": "Local rating list process"
             },
             "class": {
               "code": "SLL",
-              "meaning": "string"
+              "meaning": "Supply of assisting information to Local Valuation Officers"
             },
             "data": {
-              "foreign_ids": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
-              "foreign_names": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
-              "foreign_labels": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
+              "foreign_ids": [],
+              "foreign_names": [],
+              "foreign_labels": [],
               "documentation": {
-                "webpage": "string"
+                "webpage": null
               }
             },
             "protodata": [
               {
-                "node": "string",
-                "mime_type": "image/jpeg",
-                "label": "string",
-                "is_pointer": true,
-                "pointer": "string",
+                "node": null,
+                "mime_type": "",
+                "label": "",
+                "is_pointer": null,
+                "pointer": "",
                 "data": ""
               }
             ],
             "metadata": {
               "sending": {
                 "extracting": {
-                  "selecting": null
+                  "selecting": {}
                 },
                 "transforming": {
-                  "filtering": null,
-                  "supplementing": null,
-                  "recontextualising": null
+                  "filtering": {},
+                  "supplementing": {},
+                  "recontextualising": {}
                 },
                 "loading": {
-                  "readying": null,
-                  "assuring": null,
-                  "signing": {
-                    "inputs": {}
-                  },
-                  "encrypting": null,
-                  "sending": null
+                  "readying": {},
+                  "assuring": {},
+                  "signing": {},
+                  "encrypting": {},
+                  "sending": {}
                 }
               },
               "receiving": {
                 "unloading": {
-                  "receiving": null,
-                  "decrypting": null,
-                  "verifying": null,
-                  "assuring": null,
-                  "readying": null
+                  "receiving": {},
+                  "decrypting": {},
+                  "verifying": {},
+                  "assuring": {},
+                  "readying": {}
                 },
                 "transforming": {
-                  "recontextualising": null,
-                  "dropping": null,
-                  "restoring": null
+                  "recontextualising": {},
+                  "dropping": {},
+                  "restoring": {}
                 },
                 "storing": {
-                  "inserting": null
+                  "inserting": {}
                 }
               }
             },
-            "compartments": null,
+            "compartments": {},
             "items": []
           }
         ],
         "products": [
           {
-            "id": 1,
-            "idx": "1",
-            "name": "string",
-            "label": "string",
-            "description": "string",
-            "origination": "string",
-            "termination": "string",
+            "id": 2,
+            "idx": "1.4.1",
+            "name": null,
+            "label": null,
+            "description": null,
+            "origination": "20000101T000000Z",
+            "termination": null,
             "category": {
-              "code": "LTX-DOM-PSN",
-              "meaning": "string"
+              "code": "LTX-DOM-PRP",
+              "meaning": "Local taxation domain property"
             },
             "type": {
-              "code": null,
-              "meaning": "string"
+              "code": "OCC",
+              "meaning": "Constituted by reference to actual occupation"
             },
             "class": {
-              "code": null,
-              "meaning": "string"
+              "code": "HDT",
+              "meaning": "Statutory NDR hereditament"
             },
             "data": {
-              "foreign_ids": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
-              "foreign_names": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
-              "foreign_labels": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
-              "names": {
-                "title_common": "Miss",
-                "title_uncommon": "Dr",
-                "forenames": "Oliver James",
-                "surname": "Harrison",
-                "post_nominals": "BSc",
-                "corporate_name": "Royal Society of Arts (RSC)",
-                "crown_name": "Lord Chancellor",
-                "known_as": "Ollie"
+              "foreign_ids": [],
+              "foreign_names": [],
+              "foreign_labels": [],
+              "addresses": {
+                "property_full_address": null,
+                "address_line_1": null,
+                "address_postcode": null,
+                "address_known_as": null
               },
-              "communications": {
-                "postal_address": "",
-                "telephone_number": "",
-                "email": ""
-              }
-            },
-            "protodata": [
-              {
-                "node": "string",
-                "mime_type": "image/jpeg",
-                "label": "string",
-                "is_pointer": true,
-                "pointer": "string",
-                "data": ""
-              }
-            ],
-            "metadata": {
-              "sending": {
-                "extracting": {
-                  "selecting": null
-                },
-                "transforming": {
-                  "filtering": null,
-                  "supplementing": null,
-                  "recontextualising": null
-                },
-                "loading": {
-                  "readying": null,
-                  "assuring": null,
-                  "signing": {
-                    "inputs": {}
-                  },
-                  "encrypting": null,
-                  "sending": null
-                }
+              "location": {
+                "local_authority_sudo_area_code": null,
+                "ordanace_survey_coordinates": null,
+                "google_maps_coordinates": null
               },
-              "receiving": {
-                "unloading": {
-                  "receiving": null,
-                  "decrypting": null,
-                  "verifying": null,
-                  "assuring": null,
-                  "readying": null
-                },
-                "transforming": {
-                  "recontextualising": null,
-                  "dropping": null,
-                  "restoring": null
-                },
-                "storing": {
-                  "inserting": null
-                }
-              }
-            },
-            "compartments": null,
-            "items": [
-              {
-                "id": 1,
-                "idx": "1",
-                "name": "string",
-                "label": "string",
-                "description": "string",
-                "origination": "string",
-                "termination": "string",
-                "category": {
-                  "code": "LTX-DOM-PSA",
-                  "meaning": "string"
-                },
-                "type": {
-                  "code": null,
-                  "meaning": "string"
-                },
-                "class": {
-                  "code": null,
-                  "meaning": "string"
-                },
-                "data": {
-                  "foreign_ids": [
-                    {}
-                  ],
-                  "foreign_names": [
-                    {}
-                  ],
-                  "foreign_labels": [
-                    {}
-                  ],
-                  "names": {},
-                  "communications": {}
-                },
-                "protodata": [
-                  {}
-                ],
-                "metadata": {
-                  "sending": {
-                    "extracting": {},
-                    "transforming": {},
-                    "loading": {}
+              "assessments": [
+                {
+                  "id": 9,
+                  "idx": null,
+                  "name": null,
+                  "label": null,
+                  "description": null,
+                  "origination": null,
+                  "termination": null,
+                  "category": "LTX-DOM-AST",
+                  "type": "CHG",
+                  "class": {
+                    "code": null,
+                    "meaning": null
                   },
-                  "receiving": {
-                    "unloading": {},
-                    "transforming": {},
-                    "storing": {}
-                  }
-                },
-                "compartments": null,
-                "items": []
-              }
-            ]
-          }
-        ],
-        "relationships": [
-          {
-            "id": 1,
-            "idx": "1",
-            "name": "string",
-            "label": "string",
-            "description": "string",
-            "origination": "string",
-            "termination": "string",
-            "category": {
-              "code": "LTX-DOM-REL",
-              "meaning": "string"
-            },
-            "type": {
-              "code": "LIB",
-              "meaning": "string"
-            },
-            "class": {
-              "code": "OHC",
-              "meaning": "string"
-            },
-            "data": {
-              "foreign_ids": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
-              "foreign_names": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
-              "foreign_labels": [
-                {
-                  "system": "Government_Gateway",
-                  "location": "string",
-                  "value": "string"
-                }
-              ],
-              "manifestations": [
-                {
-                  "artifact_reference": "string",
-                  "artifact_code": "str",
-                  "artifact_description": "string",
-                  "issued_date": "string",
-                  "withdrawn_date": "string",
-                  "effective_from_date": "string",
-                  "effective_to_date": "string",
-                  "observed_date": "string",
-                  "operative_area_code": "stri",
-                  "operative_area_name": "string",
-                  "protodata_ptr": "string",
-                  "notes": "string"
+                  "data": {
+                    "foreign_ids": [
+                      {
+                        "system": "CDB",
+                        "location": "hmrc/voa/cdb/ndr_assessments",
+                        "value": "27399688000"
+                      }
+                    ],
+                    "foreign_names": [],
+                    "foreign_labels": [],
+                    "property": {
+                      "id": null,
+                      "cdb_id": null
+                    },
+                    "use": {
+                      "is_composite": null,
+                      "is_part_exempt": null,
+                      "description": null
+                    },
+                    "valuation_survey": {
+                      "system": null,
+                      "id": null
+                    },
+                    "valuation": {
+                      "system": null,
+                      "id": null,
+                      "method_code": null,
+                      "rateable_value": null,
+                      "effective_date": null
+                    },
+                    "list": {
+                      "category": null,
+                      "function": null,
+                      "year": null,
+                      "authority_code": null
+                    },
+                    "workflow": {
+                      "cdb_job_id": null
+                    }
+                  },
+                  "protodata": [
+                    {
+                      "node": null,
+                      "mime_type": "",
+                      "label": "",
+                      "is_pointer": null,
+                      "pointer": "",
+                      "data": ""
+                    }
+                  ],
+                  "metadata": {
+                    "sending": {
+                      "extracting": {
+                        "selecting": {}
+                      },
+                      "transforming": {
+                        "filtering": {},
+                        "supplementing": {},
+                        "recontextualising": {}
+                      },
+                      "loading": {
+                        "readying": {},
+                        "assuring": {},
+                        "signing": {},
+                        "encrypting": {},
+                        "sending": {}
+                      }
+                    },
+                    "receiving": {
+                      "unloading": {
+                        "receiving": {},
+                        "decrypting": {},
+                        "verifying": {},
+                        "assuring": {},
+                        "readying": {}
+                      },
+                      "transforming": {
+                        "recontextualising": {},
+                        "dropping": {},
+                        "restoring": {}
+                      },
+                      "storing": {
+                        "inserting": {}
+                      }
+                    }
+                  },
+                  "compartments": {},
+                  "items": []
                 }
               ]
             },
             "protodata": [
               {
-                "node": "string",
-                "mime_type": "image/jpeg",
-                "label": "string",
-                "is_pointer": true,
-                "pointer": "string",
+                "node": null,
+                "mime_type": "",
+                "label": "",
+                "is_pointer": null,
+                "pointer": "",
                 "data": ""
               }
             ],
             "metadata": {
               "sending": {
                 "extracting": {
-                  "selecting": null
+                  "selecting": {}
                 },
                 "transforming": {
-                  "filtering": null,
-                  "supplementing": null,
-                  "recontextualising": null
+                  "filtering": {},
+                  "supplementing": {},
+                  "recontextualising": {}
                 },
                 "loading": {
-                  "readying": null,
-                  "assuring": null,
-                  "signing": {
-                    "inputs": {}
-                  },
-                  "encrypting": null,
-                  "sending": null
+                  "readying": {},
+                  "assuring": {},
+                  "signing": {},
+                  "encrypting": {},
+                  "sending": {}
                 }
               },
               "receiving": {
                 "unloading": {
-                  "receiving": null,
-                  "decrypting": null,
-                  "verifying": null,
-                  "assuring": null,
-                  "readying": null
+                  "receiving": {},
+                  "decrypting": {},
+                  "verifying": {},
+                  "assuring": {},
+                  "readying": {}
                 },
                 "transforming": {
-                  "recontextualising": null,
-                  "dropping": null,
-                  "restoring": null
+                  "recontextualising": {},
+                  "dropping": {},
+                  "restoring": {}
                 },
                 "storing": {
-                  "inserting": null
+                  "inserting": {}
                 }
               }
             },
-            "compartments": null,
+            "compartments": {},
+            "items": []
+          }
+        ],
+        "relationships": [
+          {
+            "id": 1,
+            "idx": "1.2.1",
+            "name": "PerRelationship",
+            "label": "Ratepayer-ListEntry-Property Link",
+            "description": "A relationships between LGFA88shd9para4J person-personas and LGFA88 hereditaments for which such personas are obliged to provide LGFA88shd9para4I(1) notofiable information.",
+            "origination": "20250101T000000Z",
+            "termination": null,
+            "category": {
+              "code": "LTX-DOM-REL",
+              "meaning": "Local taxation domain relationship"
+            },
+            "type": {
+              "code": "LIB",
+              "meaning": "Liability | One entity is liable for other entity(s) and the other entity(s) are the basis for the liabilities extent"
+            },
+            "class": {
+              "code": "LOC",
+              "meaning": "Local Non Domestic Rating Occupied Hereditament Charge"
+            },
+            "data": {
+              "foreign_ids": [
+                {
+                  "system": "SystemX",
+                  "location": "UK",
+                  "value": "123"
+                }
+              ],
+              "foreign_names": [],
+              "foreign_labels": [],
+              "manifestations": [
+                {
+                  "artifact_reference": null,
+                  "artifact_code": null,
+                  "artifact_description": null,
+                  "issued_date": null,
+                  "withdrawn_date": null,
+                  "effective_from_date": null,
+                  "effective_to_date": null,
+                  "observed_date": null,
+                  "operative_area_code": null,
+                  "operative_area_name": null,
+                  "protodata_ptr": null,
+                  "notes": null
+                }
+              ]
+            },
+            "protodata": [
+              {
+                "node": null,
+                "mime_type": "",
+                "label": "",
+                "is_pointer": null,
+                "pointer": "",
+                "data": ""
+              }
+            ],
+            "metadata": {
+              "sending": {
+                "extracting": {
+                  "selecting": {}
+                },
+                "transforming": {
+                  "filtering": {},
+                  "supplementing": {},
+                  "recontextualising": {}
+                },
+                "loading": {
+                  "readying": {},
+                  "assuring": {},
+                  "signing": {},
+                  "encrypting": {},
+                  "sending": {}
+                }
+              },
+              "receiving": {
+                "unloading": {
+                  "receiving": {},
+                  "decrypting": {},
+                  "verifying": {},
+                  "assuring": {},
+                  "readying": {}
+                },
+                "transforming": {
+                  "recontextualising": {},
+                  "dropping": {},
+                  "restoring": {}
+                },
+                "storing": {
+                  "inserting": {}
+                }
+              }
+            },
+            "compartments": {},
             "items": [
               {
                 "transportation": {
-                  "path": "string"
+                  "path": "/job/compartments/properties/@id=2/items/@id=9"
                 },
                 "persistence": {
-                  "place": "LTX-DOM-PSA",
-                  "identifier": 0
+                  "place": "LTX-DOM-AST",
+                  "identifier": "9"
                 }
               },
               {
                 "transportation": {
-                  "path": "string"
+                  "path": "/job/compartments/persons/@id=7/items/@id=3"
                 },
                 "persistence": {
                   "place": "LTX-DOM-PSA",
-                  "identifier": 0
+                  "identifier": "3"
                 }
               }
             ]

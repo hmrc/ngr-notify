@@ -23,12 +23,12 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.backend.base.AnyWordControllerSpec
 import uk.gov.hmrc.ngrnotify.connectors.bridge.AboutRatepayers
-import uk.gov.hmrc.ngrnotify.model.bridge.JobMessage
+import uk.gov.hmrc.ngrnotify.model.bridge.{JobForm, JobFormMessage}
 import uk.gov.hmrc.ngrnotify.model.email.Email
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
+import uk.gov.hmrc.ngrnotify.model.ratepayer.*
 import uk.gov.hmrc.ngrnotify.model.ratepayer.AgentStatus.agent
 import uk.gov.hmrc.ngrnotify.model.ratepayer.RatepayerType.organization
-import uk.gov.hmrc.ngrnotify.model.ratepayer.*
 import uk.gov.hmrc.ngrnotify.model.{Address, Postcode}
 
 class AboutRatepayersSpec extends AnyWordControllerSpec:
@@ -47,7 +47,7 @@ class AboutRatepayersSpec extends AnyWordControllerSpec:
       // Load the template that the Bridge API service would provide over the network
       // and which we saved in a JSON file in the test resources directory (for convenience)
       val text           = testResourceContent("bridge/ratepayer-found.json")
-      val bridgeTemplate = Json.parse(text).as[JobMessage]
+      val bridgeTemplate = Json.parse(text).as[JobForm]
 
       // Make up a realistic NGR request for having a ratepayer registered
       val ngrRequest = RegisterRatepayerRequest(
@@ -68,13 +68,13 @@ class AboutRatepayersSpec extends AnyWordControllerSpec:
       // EXERCISE
       // by applying the process method with both the Bridge template and the NGR request
       val aboutRatepayers = inject[AboutRatepayers]
-      val filled          = aboutRatepayers.process(bridgeTemplate, ngrRequest, CredId("CREDS12345"))
+      val filled          = aboutRatepayers.process(JobFormMessage(JobForm("", bridgeTemplate.job)), ngrRequest, CredId("CREDS12345"))
 
       // VERIFY
       // that the filled template actually got the NGR request data in the right spots
       whenReady(filled.toFuture) { filled =>
-        filled.job.name.value.value                          shouldBe "Register David Smith"
-        filled.job.compartments.products(0).name.value.value shouldBe "David Smith"
+        filled.jobForm.job.name.value.value                          shouldBe "Register David Smith"
+        filled.jobForm.job.compartments.products.head.name.value.value shouldBe "David Smith"
         // TODO filled.job.compartments.products(0).data.foreignIds should contain theSameElementsAs ???
         // TODO add more assertions here ...
       }

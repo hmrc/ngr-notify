@@ -35,4 +35,11 @@ class JobFormMessageSpec extends AnyWordAppSpec:
       Json.toJson(propertiesJobFormResponse).as[JobFormMessage] shouldBe propertiesJobFormResponse
     }
 
+    "Get properties:be serialized/deserialized from JSON" in {
+      val propertiesJobFormResponseJson = Json.parse(testResourceContent("get-properties-response-with-jobForm.json"))
+      val propertiesJobFormResponse = propertiesJobFormResponseJson.as[JobFormMessage]
+
+      Json.toJson(propertiesJobFormResponse).as[JobFormMessage] shouldBe propertiesJobFormResponse
+    }
+
   }
