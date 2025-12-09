@@ -66,7 +66,6 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       pending
       val json = Json.toJson(
         PropertyChangesRequest(
-          CredId("credId"),
           LocalDate.of(2023, 1, 1),
           Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
           Seq(("airConditioning", "none"), ("securityCamera", "23")),
@@ -94,7 +93,6 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         pending
         val json = Json.toJson(
           PropertyChangesRequest(
-            CredId("credId"),
             LocalDate.of(2023, 1, 1),
             Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
             Seq(("airConditioning", "none"), ("securityCamera", "23")),
@@ -135,7 +133,6 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     "returns InternalServerError when HipConnector fails" in {
       val json = Json.toJson(
         PropertyChangesRequest(
-          CredId("credId"),
           LocalDate.of(2023, 1, 1),
           Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
           Seq(("airConditioning", "none"), ("securityCamera", "23")),
@@ -157,7 +154,6 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     "returns InternalServerError when an exception is thrown" in {
       val json = Json.toJson(
         PropertyChangesRequest(
-          CredId("credId"),
           LocalDate.of(2023, 1, 1),
           Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
           Seq(("airConditioning", "none"), ("securityCamera", "23")),

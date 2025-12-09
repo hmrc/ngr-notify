@@ -33,7 +33,6 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
   "PropertyChangesRequest" - {
     "toString should redact uploadedDocuments" in {
       val request        = PropertyChangesRequest(
-        credId = CredId("credId"),
         dateOfChange = java.time.LocalDate.of(2023, 1, 1),
         useOfSpace = Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
         internalFeatures = Seq(("airConditioning", "none"), ("securityCamera", "23")),
@@ -42,12 +41,11 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
         uploadedDocuments = Seq("uploadId1", "uploadId2")
       )
       val toStringOutput = request.toString
-      toStringOutput mustBe "credId: credId - dateOfChange: 2023-01-01 - useOfSpace: selectUseOfSpace: [rearrangedTheUseOfSpace] - hasPlanningPermission: true - permissionReference: REFzR42536T - internalFeatures: [(airConditioning, none), (securityCamera, 23)], externalFeatures: [(loadingBays, added), (lockupGarages, removedSome)], additionalInfo: value: true - text: additional text - uploadedDocuments: [uploadId1, uploadId2]"
+      toStringOutput mustBe "dateOfChange: 2023-01-01 - useOfSpace: selectUseOfSpace: [rearrangedTheUseOfSpace] - hasPlanningPermission: true - permissionReference: REFzR42536T - internalFeatures: [(airConditioning, none), (securityCamera, 23)], externalFeatures: [(loadingBays, added), (lockupGarages, removedSome)], additionalInfo: value: true - text: additional text - uploadedDocuments: [uploadId1, uploadId2]"
     }
 
     "toString should handle None values correctly" in {
       val request        = PropertyChangesRequest(
-        credId = CredId("credId"),
         dateOfChange = java.time.LocalDate.of(2023, 1, 1),
         useOfSpace = None,
         internalFeatures = Seq.empty,
@@ -56,13 +54,12 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
         uploadedDocuments = Seq.empty
       )
       val toStringOutput = request.toString
-      toStringOutput mustBe "credId: credId - dateOfChange: 2023-01-01 - useOfSpace: No change to use of space - internalFeatures: [], externalFeatures: [], additionalInfo: No additional information provided - uploadedDocuments: []"
+      toStringOutput mustBe "dateOfChange: 2023-01-01 - useOfSpace: No change to use of space - internalFeatures: [], externalFeatures: [], additionalInfo: No additional information provided - uploadedDocuments: []"
     }
 
     "process should update JobMessage with correct data for the category code 'LTX-DOM-PRP'" in {
 
       val propertyChanges = PropertyChangesRequest(
-        credId = CredId("credId"),
         dateOfChange = java.time.LocalDate.of(2023, 1, 1),
         useOfSpace = None,
         internalFeatures = Seq.empty,
@@ -92,7 +89,6 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
     "process should throw an exception when the products category code not 'LTX-DOM-PRP'" in {
 
       val propertyChanges = PropertyChangesRequest(
-        credId = CredId("credId"),
         dateOfChange = java.time.LocalDate.of(2023, 1, 1),
         useOfSpace = None,
         internalFeatures = Seq.empty,
@@ -115,7 +111,6 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with Data with ScalaFutures
       )
 
       val propertyChanges = PropertyChangesRequest(
-        credId = CredId("credId"),
         dateOfChange = java.time.LocalDate.of(2023, 1, 1),
         useOfSpace = None,
         internalFeatures = Seq.empty,
