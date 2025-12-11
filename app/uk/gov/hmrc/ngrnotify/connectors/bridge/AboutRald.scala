@@ -65,9 +65,17 @@ class AboutRald {
   }
 
   private def mergeDescription(existing: Option[String], raldChanges: JsObject): String = {
-    val baseJson: JsObject =
-      existing.flatMap(s => Json.parse(s).asOpt[JsObject]).getOrElse(Json.obj())
-    val merged = baseJson ++ Json.obj("rald" -> raldChanges)
+    val baseJson: JsObject = existing.flatMap { s =>
+      try {
+        Json.parse(s).asOpt[JsObject]
+      } catch {
+        case _: Throwable => None
+      }
+    }.getOrElse(Json.obj())
+
+    val merged = if (baseJson.fields.isEmpty) Json.obj("rald" -> raldChanges)
+    else baseJson ++ Json.obj("rald" -> raldChanges)
+
     Json.stringify(merged)
   }
 

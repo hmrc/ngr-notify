@@ -88,9 +88,23 @@ object PropertyChangesRequest {
   }
 
   private def mergeDescription(existing: Option[String], valueJsonString: String): String = {
-    val existingJson: JsObject = existing.flatMap(s => Json.parse(s).asOpt[JsObject]).getOrElse(Json.obj())
-    val parsedValue: JsValue = Json.parse(valueJsonString)
-    val merged = existingJson ++ Json.obj("physical" -> parsedValue)
+    val existingJson: JsObject = existing.flatMap { s =>
+      try {
+        Json.parse(s).asOpt[JsObject]
+      } catch {
+        case _: Throwable => None
+      }
+    }.getOrElse(Json.obj())
+
+    val parsedValue: JsValue = try {
+      Json.parse(valueJsonString)
+    } catch {
+      case _: Throwable => Json.obj()
+    }
+
+    val merged: JsObject = if (existingJson.fields.isEmpty) Json.obj("physical" -> parsedValue)
+    else existingJson ++ Json.obj("physical" -> parsedValue)
+
     Json.stringify(merged)
   }
 
