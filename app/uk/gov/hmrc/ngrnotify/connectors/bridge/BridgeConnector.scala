@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ngrnotify.connectors.bridge
 
 import play.api.http.Status as HttpStatus
-import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsError, JsObject, JsSuccess, JsValue, Json}
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import play.api.mvc.Request
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
@@ -37,7 +37,8 @@ import scala.concurrent.ExecutionContext
 class BridgeConnector @Inject() (
   appConfig: AppConfig,
   httpClient: HttpClientV2,
-  val aboutRatepayers: AboutRatepayers
+  val aboutRatepayers: AboutRatepayers,
+  val aboutRald: AboutRald,
   // ... inject more conversation utilities here if needed ...
 )(using ec: ExecutionContext
 ) extends HipHeaderCarrier(appConfig):
@@ -100,7 +101,14 @@ class BridgeConnector @Inject() (
       processed   <- PropertyChangesRequest.process(template, propertyChangesRequest)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
-
+    
+  def submitRaldChanges(credId: CredId, assessmentId: AssessmentId, raldChanges: JsObject)(using request: Request[?]): BridgeResult[NoContent] =
+    for {
+      template    <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
+      processed   <- aboutRald.process(template, raldChanges, assessmentId.value)
+      ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
+    } yield ngrResponse
+    
   /**
     * Get the Bridge API job template for the given URL.
     *
