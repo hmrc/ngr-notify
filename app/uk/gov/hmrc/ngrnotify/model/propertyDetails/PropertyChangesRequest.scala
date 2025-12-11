@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.propertyDetails
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{JsObject, JsValue, Json, OFormat}
 import uk.gov.hmrc.ngrnotify.connectors.bridge.{BridgeResult, FutureEither}
 import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.NDRRPublicInterface
@@ -58,7 +58,12 @@ object PropertyChangesRequest {
             bridgeTemplate.job.data.foreignIds :+ ForeignDatum(Some(NDRRPublicInterface), None, propertyChanges.declarationRef)
           val updatedData: JobData           = bridgeTemplate.job.data.copy(foreignIds = foreignIds)
           val jobItemOpt                     = bridgeTemplate.job.compartments.products.find(_.category.code == "LTX-DOM-PRP") // CODE :LTX-DOM-PRP
-            .map(_.copy(description = NullableValue(Some(propertyChanges.toString))))
+            .map { item =>
+              val existingDesc = item.description.value
+              val propertyChangesJsonString = Json.stringify(Json.toJson(propertyChanges))
+              val merged = mergeDescription(existingDesc, propertyChangesJsonString)
+              item.copy(description = NullableValue(Some(merged)))
+            }
 
           jobItemOpt match {
             case Some(jobItem) =>
@@ -81,4 +86,12 @@ object PropertyChangesRequest {
       }
     Future.successful(result)
   }
+
+  private def mergeDescription(existing: Option[String], valueJsonString: String): String = {
+    val existingJson: JsObject = existing.flatMap(s => Json.parse(s).asOpt[JsObject]).getOrElse(Json.obj())
+    val parsedValue: JsValue = Json.parse(valueJsonString)
+    val merged = existingJson ++ Json.obj("physical" -> parsedValue)
+    Json.stringify(merged)
+  }
+
 }
