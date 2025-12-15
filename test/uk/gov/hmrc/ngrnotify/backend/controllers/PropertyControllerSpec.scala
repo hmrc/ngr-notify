@@ -66,7 +66,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
           FutureEither(Future.successful(Right(NO_CONTENT)))
         )
 
-      val request = FakeRequest(POST, routes.PropertyController.updatePropertyChanges(assessmentId = assessmentId).url)
+      val request = FakeRequest(POST, routes.PropertyController.updatePropertyChanges().url)
         .withJsonBody(propertyLinkingRequestJson)
 
       val result: Future[Result] = route(app, request).value
@@ -81,7 +81,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
           FutureEither(Future.successful(Left(INTERNAL_SERVER_ERROR)))
         )
 
-      val request = FakeRequest(POST, routes.PropertyController.updatePropertyChanges(assessmentId = assessmentId).url)
+      val request = FakeRequest(POST, routes.PropertyController.updatePropertyChanges().url)
         .withJsonBody(propertyLinkingRequestJson)
 
       val result: Future[Result] = route(app, request).value
@@ -94,7 +94,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         "invalidField" -> "invalidValue"
       )
 
-      val request = FakeRequest(POST, routes.PropertyController.updatePropertyChanges(assessmentId = assessmentId).url)
+      val request = FakeRequest(POST, routes.PropertyController.updatePropertyChanges().url)
         .withJsonBody(json)
 
       val result: Future[Result] = route(app, request).value
@@ -107,7 +107,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
         .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
 
-      val request                = FakeRequest(POST, routes.PropertyController.updatePropertyChanges(assessmentId = assessmentId).url)
+      val request                = FakeRequest(POST, routes.PropertyController.updatePropertyChanges().url)
         .withJsonBody(propertyLinkingRequestJson)
       val result: Future[Result] = route(app, request).value
       status(result) mustEqual INTERNAL_SERVER_ERROR
@@ -117,7 +117,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
         .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
 
-      val request                = FakeRequest(POST, routes.PropertyController.updatePropertyChanges(assessmentId = assessmentId).url)
+      val request                = FakeRequest(POST, routes.PropertyController.updatePropertyChanges().url)
         .withJsonBody(propertyLinkingRequestJson)
       val result: Future[Result] = route(app, request).value
       status(result) mustEqual INTERNAL_SERVER_ERROR
@@ -127,7 +127,24 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
 
 trait PropertyLinkingData {
   val credId: CredId                             = CredId("test-cred-id")
-  val vmvProperty: VMVProperty                   = VMVProperty(100L, "property-id", "address", "LA123", List())
+
+  val valuations                                 = List(
+    Valuation(
+      assessmentRef = 12345L,
+      assessmentStatus = "CURRENT",
+      rateableValue = None,
+      scatCode = Some("Details about valuation"),
+      descriptionText = "description",
+      effectiveDate = java.time.LocalDate.now(),
+      currentFromDate = java.time.LocalDate.now(),
+      listYear = "2023",
+      primaryDescription = "primary",
+      allowedActions = List.empty,
+      listType = "type",
+      propertyLinkEarliestStartDate = None
+    )
+  )
+  val vmvProperty: VMVProperty                   = VMVProperty(100L, "property-id", "address", "LA123", valuations)
   val currentRatepayer: Option[CurrentRatepayer] = Some(CurrentRatepayer(true, Some("John Doe")))
 
   val propertyLinkingRequest              = PropertyLinkingRequest(
