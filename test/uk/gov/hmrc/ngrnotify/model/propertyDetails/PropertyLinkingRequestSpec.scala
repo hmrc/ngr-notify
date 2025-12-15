@@ -19,16 +19,14 @@ package uk.gov.hmrc.ngrnotify.model.propertyDetails
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.mustBe
-import play.api.libs.json.{JsNull, JsObject, Json}
-import uk.gov.hmrc.ngrnotify.model.bridge
+import play.api.libs.json.Json
 import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.{Government_Gateway, NDRRPublicInterface}
-import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class PropertyLinkingRequestSpec extends AnyFreeSpec with PropertyData with ScalaFutures {
+class PropertyLinkingRequestSpec extends AnyFreeSpec with JobMessageTestData with ScalaFutures {
   "PropertyLinkingRequest" - {
     "serialization and deserialization" - {
       "should work correctly" in {
@@ -42,10 +40,10 @@ class PropertyLinkingRequestSpec extends AnyFreeSpec with PropertyData with Scal
     "propertyLinkingRequest toString" - {
       "should return correct string representation" in {
         val expectedString =
-          "vmvProperty: VMVProperty(100,property-id,address,LA123,List()), currentRatepayer: isBeforeApril: true - becomeRatepayerDate: John Doe," +
+          "vmvProperty: uarn: 100, addressFull: property-id, localAuthorityCode: address, localAuthorityReference: LA123, valuations: [], currentRatepayer: isBeforeApril: true - becomeRatepayerDate: John Doe," +
             " businessRatesBill: bill.pdf, connectionToProperty: Owner, requestSentReference: ref-123, evidenceDocument: evidence.pdf, evidenceDocumentUrl: http://example.com/evidence.pdf, evidenceDocumentUploadId: upload-123, uploadEvidence: yes"
 
-        propertyLinkingRequest.toString mustBe expectedString
+        propertyLinkingRequest.copy(vmvProperty = vmvProperty.copy(valuations = List.empty)).toString mustBe expectedString
       }
     }
 
@@ -141,70 +139,4 @@ class PropertyLinkingRequestSpec extends AnyFreeSpec with PropertyData with Scal
       updatedProduct.description.value mustBe Some(expectedDescription)
     }
   }
-}
-
-trait PropertyData {
-
-  val credId = CredId("test-cred-id")
-  val vmvProperty = VMVProperty(100L, "property-id", "address", "LA123", List())
-  val currentRatepayer = Some(CurrentRatepayer(true, Some("John Doe")))
-  val propertyLinkingRequest = PropertyLinkingRequest(
-    vmvProperty = vmvProperty,
-    currentRatepayer = currentRatepayer,
-    businessRatesBill = Some("bill.pdf"),
-    connectionToProperty = Some("Owner"),
-    requestSentReference = Some("ref-123"),
-    evidenceDocument = Some("evidence.pdf"),
-    evidenceDocumentUrl = Some("http://example.com/evidence.pdf"),
-    evidenceDocumentUploadId = Some("upload-123"),
-    uploadEvidence = Some("yes")
-  )
-
-  val metadata: bridge.Metadata = bridge.Metadata(
-    Sending(Extracting(JsNull), Transforming(JsNull, JsNull, JsNull), Loading(JsNull, JsNull, JsNull, JsNull, JsNull)),
-    Receiving(Unloading(JsNull, JsNull, JsNull, JsNull, JsNull), TransformingReceiving(JsNull, JsNull, JsNull), Storing(JsNull))
-  )
-
-  val propertyData                                              = PropertyData(List(ForeignDatum(Some(Government_Gateway), Some("location"), Some("SomeId"))), List.empty, List.empty, PropertyAddresses())
-
-  def sampleProductEntity(categoryCode: String = "LTX-DOM-PRP") = ProductEntity(
-    id = NullableValue(Some(StringId("123"))),
-    idx = "P001",
-    name = NullableValue(Some("Sample Product")),
-    label = "Sample Label",
-    description = NullableValue(Some("A sample product for testing.")),
-    origination = NullableValue(Some("Origin")),
-    termination = NullableValue(Some("Termination")),
-    protodata = List.empty,
-    metadata = metadata,
-    category = CodeMeaning(categoryCode, NullableValue(Some("Category 1"))),
-    `type` = CodeMeaning("TYPE001", NullableValue(Some("Type 1"))),
-    `class` = CodeMeaning("CLASS001", NullableValue(Some("Class 1"))),
-    data = propertyData,
-    compartments = Compartments(),
-    items = List.empty
-  )
-
-  def sampleJobEntity(categoryCode: String = "LTX-DOM-PRP") = JobEntity(
-    id = NullableValue(Some(StringId("job-123"))),
-    idx = "IDX-001",
-    name = NullableValue(Some("Sample Job")),
-    label = "Sample Label",
-    description = NullableValue(Some("This is a sample job entity.")),
-    origination = NullableValue(Some("2025-01-01T00:00:00Z")),
-    termination = NullableValue(Some("2025-12-31T23:59:59Z")),
-    protodata = List(Protodata(Some("proto-1"), "Pdf", "string", Some(true), "string", "")),
-    metadata = metadata,
-    category = CodeMeaning(categoryCode, NullableValue(Some("Category 1"))),
-    `type` = CodeMeaning("TYPE001", NullableValue(Some("Type 1"))),
-    `class` = CodeMeaning("CLASS001", NullableValue(Some("Class 1"))),
-    data = JobData(List(ForeignDatum(Some(Government_Gateway), Some("location"), Some("SomeId"))), List.empty, List.empty),
-    compartments = Compartments(products = List(sampleProductEntity(categoryCode))),
-    items = List.empty
-  )
-
-  def sampleJobMessage(categoryCode: String = "LTX-DOM-PRP"): JobMessage = JobMessage(
-    "",
-    sampleJobEntity(categoryCode)
-  )
 }

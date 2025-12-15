@@ -26,7 +26,7 @@ import org.scalatest.matchers.should.Matchers.shouldBe
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import play.api.mvc.{Request, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -40,7 +40,7 @@ import uk.gov.hmrc.ngrnotify.model.propertyDetails.*
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach with PropertyLinkingData:
+class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach with JobMessageTestData:
 
   val mockBridgeConnector: BridgeConnector = mock[BridgeConnector]
   val assessmentId: AssessmentId           = AssessmentId("assessmentId123")
@@ -124,39 +124,3 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
 
     }
   }
-
-trait PropertyLinkingData {
-  val credId: CredId                             = CredId("test-cred-id")
-
-  val valuations                                 = List(
-    Valuation(
-      assessmentRef = 12345L,
-      assessmentStatus = "CURRENT",
-      rateableValue = None,
-      scatCode = Some("Details about valuation"),
-      descriptionText = "description",
-      effectiveDate = java.time.LocalDate.now(),
-      currentFromDate = java.time.LocalDate.now(),
-      listYear = "2023",
-      primaryDescription = "primary",
-      allowedActions = List.empty,
-      listType = "type",
-      propertyLinkEarliestStartDate = None
-    )
-  )
-  val vmvProperty: VMVProperty                   = VMVProperty(100L, "property-id", "address", "LA123", valuations)
-  val currentRatepayer: Option[CurrentRatepayer] = Some(CurrentRatepayer(true, Some("John Doe")))
-
-  val propertyLinkingRequest              = PropertyLinkingRequest(
-    vmvProperty = vmvProperty,
-    currentRatepayer = currentRatepayer,
-    businessRatesBill = Some("bill.pdf"),
-    connectionToProperty = Some("Owner"),
-    requestSentReference = Some("ref-123"),
-    evidenceDocument = Some("evidence.pdf"),
-    evidenceDocumentUrl = Some("http://example.com/evidence.pdf"),
-    evidenceDocumentUploadId = Some("upload-123"),
-    uploadEvidence = Some("yes")
-  )
-  val propertyLinkingRequestJson: JsValue = Json.toJson(propertyLinkingRequest)
-}

@@ -30,7 +30,11 @@ case class VMVProperty(
   localAuthorityCode: String,
   localAuthorityReference: String,
   valuations: List[Valuation]
-)
+) {
+    override def toString: String =
+        s"uarn: $uarn, addressFull: $addressFull, localAuthorityCode: $localAuthorityCode, " +
+        s"localAuthorityReference: $localAuthorityReference, valuations: [${valuations.mkString(", ")}]"
+}
 
 object VMVProperty {
   implicit val format: OFormat[VMVProperty] = Json.format[VMVProperty]
