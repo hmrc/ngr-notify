@@ -58,37 +58,6 @@ class HipConnectorSpec extends AnyWordControllerSpec {
     ).thenReturn(RequestBuilderStub(Right(responseStatus), "{}"))
     httpClientV2Mock
 
-  "updatePropertyChanges" must {
-    "return a successful response" in {
-      pending
-      val httpMock                     = httpPostMock(ACCEPTED)
-      val connector                    = HipConnector(appConfig, httpMock)
-      given Request[AnyContent]        = FakeRequest()
-      val bridgeRequest: BridgeRequest = ???
-
-      val response = connector.updatePropertyChanges(bridgeRequest).futureValue
-      response.status shouldBe ACCEPTED
-
-      verify(httpMock)
-        .post(argThat(urlEndsWith("/job/physical")))(using any[HeaderCarrier])
-    }
-  }
-
-  "submitPropertyLinkingChanges" must {
-    "return a successful response" in {
-      pending
-      val httpMock                     = httpPostMock(ACCEPTED)
-      val connector                    = HipConnector(appConfig, httpMock)
-      given Request[AnyContent]        = FakeRequest()
-      val bridgeRequest: BridgeRequest = ???
-      val response                     = connector.submitPropertyLinkingChanges(bridgeRequest).futureValue
-      response.status shouldBe ACCEPTED
-
-      verify(httpMock)
-        .post(argThat(urlEndsWith("/job/property")))(using any[HeaderCarrier])
-    }
-  }
-
   "getRatepayer" must {
     "return a successful response" in {
       val httpMock              = httpGetMock(OK)

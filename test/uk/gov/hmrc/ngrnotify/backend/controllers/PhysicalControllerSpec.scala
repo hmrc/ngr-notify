@@ -27,7 +27,6 @@ import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import play.api.mvc.Results.Status
 import play.api.mvc.{Request, Result}
 import play.api.test.Helpers.*
 import play.api.test.{FakeRequest, Helpers}
@@ -62,8 +61,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       .build()
 
   "PhysicalController" - {
-    ".updatePropertyChanges return 202" in {
-      pending
+    ".updatePhysicalPropertyChanges return 202" in {
       val json = Json.toJson(
         PropertyChangesRequest(
           LocalDate.of(2023, 1, 1),
@@ -75,10 +73,11 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         )
       )
 
-      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
-        .thenReturn(
-          Future.successful(Right(NO_CONTENT))
-        )
+      when(
+        mockBridgeConnector.submitPhysicalPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]])
+      ).thenReturn(
+        FutureEither(Future.successful(Right(NO_CONTENT)))
+      )
 
       val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId = assessmentId).url)
         .withJsonBody(json)
@@ -88,33 +87,30 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       status(result) shouldBe ACCEPTED
     }
 
-    Seq(INTERNAL_SERVER_ERROR, BAD_REQUEST) foreach { statusCode =>
-      s"return $statusCode for a valid request but Hip returns $statusCode" in {
-        pending
-        val json = Json.toJson(
-          PropertyChangesRequest(
-            LocalDate.of(2023, 1, 1),
-            Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
-            Seq(("airConditioning", "none"), ("securityCamera", "23")),
-            Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
-            Some(AnythingElseData(true, Some("addtional text"))),
-            Seq("uploadId1", "uploadId2")
-          )
+    s"return $INTERNAL_SERVER_ERROR for a valid request but Hip returns $INTERNAL_SERVER_ERROR" in {
+      val json = Json.toJson(
+        PropertyChangesRequest(
+          LocalDate.of(2023, 1, 1),
+          Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
+          Seq(("airConditioning", "none"), ("securityCamera", "23")),
+          Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
+          Some(AnythingElseData(true, Some("addtional text"))),
+          Seq("uploadId1", "uploadId2")
+        )
+      )
+
+      when(mockBridgeConnector.submitPhysicalPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
+        .thenReturn(
+          FutureEither(Future.successful(Left(INTERNAL_SERVER_ERROR)))
         )
 
-        when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
-          .thenReturn(
-            Future.successful(Right(Status(statusCode)))
-          )
+      val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId = assessmentId).url)
+        .withJsonBody(json)
 
-        val request = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId = assessmentId).url)
-          .withJsonBody(json)
+      val result: Future[Result] = route(app, request).value
 
-        val result: Future[Result] = route(app, request).value
+      status(result) mustEqual INTERNAL_SERVER_ERROR
 
-        status(result) mustEqual statusCode
-
-      }
     }
 
     "returns BadRequest for an invalid request" in {
@@ -142,7 +138,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         )
       )
 
-      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
+      when(mockBridgeConnector.submitPhysicalPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
         .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
 
       val request                = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId = assessmentId).url)
@@ -163,7 +159,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         )
       )
 
-      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
+      when(mockBridgeConnector.submitPhysicalPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
         .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
 
       val request                = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId = assessmentId).url)

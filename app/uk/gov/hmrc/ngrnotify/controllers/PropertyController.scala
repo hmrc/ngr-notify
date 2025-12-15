@@ -19,32 +19,28 @@ package uk.gov.hmrc.ngrnotify.controllers
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.{Action, ControllerComponents}
-import uk.gov.hmrc.ngrnotify.connectors.HipConnector
+import uk.gov.hmrc.ngrnotify.connectors.bridge.BridgeConnector
 import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, PropertyChangesRequest, PropertyLinkingRequest}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PropertyController @Inject() (
-  @deprecated hipConnector: HipConnector,
+  bridgeConnector: BridgeConnector,
   cc: ControllerComponents,
-  identifierAction: IdentifierAction,
+  identifierAction: IdentifierAction
 )(implicit ec: ExecutionContext
 ) extends BackendController(cc)
   with JsonSupport
   with Logging {
 
-  @deprecated(
-    message = "This needs to be re-implemented using the new BridgeConnector",
-    since = "2025-11-25"
-  )
-  def submit(): Action[JsValue] = identifierAction.async(parse.json) { implicit request =>
-    Future.successful(Accepted)
+  def updatePropertyChanges(assessmentId: AssessmentId): Action[JsValue] = identifierAction.async(parse.json) { implicit request =>
+    request.body.validate[PropertyLinkingRequest] match {
+      case JsSuccess(propertyChanges, _) =>
+        bridgeConnector.submitPropertyChanges(request.credId, assessmentId, propertyChanges).toHttpResult()
+      case jsError: JsError              => Future.successful(buildValidationErrorsResponse(jsError))
+    }
   }
-
-//  private def toBridgeRequest(propertyRequest: PropertyLinkingRequest): BridgeRequest =
-//    // Conversion of messages is going to be moved to the new BridgeConnector
-//    ???
-
 }

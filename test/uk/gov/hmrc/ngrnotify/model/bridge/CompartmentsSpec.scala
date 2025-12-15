@@ -24,7 +24,7 @@ import uk.gov.hmrc.ngrnotify.model.bridge.*
 import uk.gov.hmrc.ngrnotify.model.bridge.ForeignIdSystem.Government_Gateway
 import uk.gov.hmrc.ngrnotify.model.bridge.utils.JsonHelper.bridge.NullableValue
 
-class CompartmentsSpec extends AnyFreeSpec with Data {
+class CompartmentsSpec extends AnyFreeSpec with CompartmentData {
   "serialization and deserialization of Compartments" in {
     val json                 = Json.parse(
       """
@@ -169,7 +169,7 @@ class CompartmentsSpec extends AnyFreeSpec with Data {
   }
 }
 
-trait Data {
+trait CompartmentData {
 
   val metadata: bridge.Metadata = bridge.Metadata(
     Sending(

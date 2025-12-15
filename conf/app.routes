@@ -13,6 +13,6 @@ POST    /send-email/:emailTemplateId            uk.gov.hmrc.ngrnotify.controller
 # update property endpoints
 POST    /physical/:assessmentId                 uk.gov.hmrc.ngrnotify.controllers.PhysicalController.updatePropertyChanges(assessmentId: AssessmentId)
 
-POST    /property                               uk.gov.hmrc.ngrnotify.controllers.PropertyController.submit()
+POST    /property/:assessmentId                 uk.gov.hmrc.ngrnotify.controllers.PropertyController.updatePropertyChanges(assessmentId: AssessmentId)
 
 POST    /rald/:assessmentId                     uk.gov.hmrc.ngrnotify.controllers.RaldController.updateRaldChanges(assessmentId: AssessmentId)

@@ -22,102 +22,79 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.OptionValues.convertOptionToValuable
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatest.matchers.should.Matchers.shouldBe
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.http.Status.{ACCEPTED, BAD_REQUEST, INTERNAL_SERVER_ERROR, OK}
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.Json
-import play.api.mvc.{AnyContent, Request, Result}
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Request, Result}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{POST, defaultAwaitTimeout, route, status, writeableOf_AnyContentAsJson}
+import play.api.test.Helpers.*
 import play.api.{Application, inject}
-import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.ngrnotify.backend.controllers.actions.FakeIdentifierAuthAction
-import uk.gov.hmrc.ngrnotify.connectors.HipConnector
+import uk.gov.hmrc.ngrnotify.connectors.bridge.{BridgeConnector, FutureEither}
 import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.controllers.routes
-import uk.gov.hmrc.ngrnotify.model.bridge.BridgeRequest
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.{CredId, PropertyLinkingRequest, VMVProperty}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.*
 
-import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach {
-  val mockHipConnector: HipConnector = mock[HipConnector]
+class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach with PropertyLinkingData:
+
+  val mockBridgeConnector: BridgeConnector = mock[BridgeConnector]
+  val assessmentId: AssessmentId           = AssessmentId("assessmentId123")
 
   override def beforeEach(): Unit = {
-    reset(mockHipConnector)
+    reset(mockBridgeConnector)
     super.beforeEach()
   }
 
-  override def fakeApplication(): Application =
+  override lazy val app: Application =
     GuiceApplicationBuilder()
       .overrides(
-        inject.bind[HipConnector].toInstance(mockHipConnector),
+        inject.bind[BridgeConnector].toInstance(mockBridgeConnector),
         inject.bind[IdentifierAction].to[FakeIdentifierAuthAction]
       )
       .build()
 
   "PropertyController" - {
-    "returns OK for a valid request" in {
-      pending
-      // TODO restore this test as soon as migrated to the new BridgeConnector
-      val vmvProperty = VMVProperty(100L, "property-id", "address", "LA123", List())
+    ".updatePropertyChanges return 202" in {
 
-      val propertyLinkingRequest = PropertyLinkingRequest(
-        credId = CredId("some-cred-id"),
-        vmvProperty = vmvProperty
-      )
-      val json                   = Json.toJson(propertyLinkingRequest)
-
-      when(mockHipConnector.submitPropertyLinkingChanges(any[BridgeRequest])(using any[Request[AnyContent]]))
+      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
         .thenReturn(
-          Future.successful(HttpResponse(OK, ""))
+          FutureEither(Future.successful(Right(NO_CONTENT)))
         )
 
-      val request = FakeRequest(POST, routes.PropertyController.submit().url)
-        .withJsonBody(json)
+      val request = FakeRequest(POST, routes.PropertyController.updatePropertyChanges(assessmentId = assessmentId).url)
+        .withJsonBody(propertyLinkingRequestJson)
 
       val result: Future[Result] = route(app, request).value
 
-      status(result) mustEqual ACCEPTED
-
+      status(result) shouldBe ACCEPTED
     }
 
-    Seq(INTERNAL_SERVER_ERROR, BAD_REQUEST) foreach { statusCode =>
-      s"return $statusCode for a valid request but Hip returns $statusCode" in {
-        pending
-        // TODO restore this test as soon as migrated to the new BridgeConnector
-        val vmvProperty = VMVProperty(100L, "property-id", "address", "LA123", List())
+    s"return $INTERNAL_SERVER_ERROR for a valid request but Hip returns $INTERNAL_SERVER_ERROR" in {
 
-        val propertyLinkingRequest = PropertyLinkingRequest(
-          credId = CredId("some-cred-id"),
-          vmvProperty = vmvProperty
+      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
+        .thenReturn(
+          FutureEither(Future.successful(Left(INTERNAL_SERVER_ERROR)))
         )
-        val json                   = Json.toJson(propertyLinkingRequest)
 
-        when(mockHipConnector.submitPropertyLinkingChanges(any[BridgeRequest])(using any[Request[AnyContent]]))
-          .thenReturn(
-            Future.successful(HttpResponse(statusCode, ""))
-          )
+      val request = FakeRequest(POST, routes.PropertyController.updatePropertyChanges(assessmentId = assessmentId).url)
+        .withJsonBody(propertyLinkingRequestJson)
 
-        val request = FakeRequest(POST, routes.PropertyController.submit().url)
-          .withJsonBody(json)
+      val result: Future[Result] = route(app, request).value
 
-        val result: Future[Result] = route(app, request).value
-
-        status(result) mustEqual statusCode
-
-      }
+      status(result) mustEqual INTERNAL_SERVER_ERROR
     }
 
     "returns BadRequest for an invalid request" in {
-      pending
-      // TODO restore this test as soon as migrated to the new BridgeConnector
       val json = Json.obj(
         "invalidField" -> "invalidValue"
       )
 
-      val request = FakeRequest(POST, routes.PropertyController.submit().url)
+      val request = FakeRequest(POST, routes.PropertyController.updatePropertyChanges(assessmentId = assessmentId).url)
         .withJsonBody(json)
 
       val result: Future[Result] = route(app, request).value
@@ -126,23 +103,43 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     }
 
     "returns InternalServerError when HipConnector fails" in {
-      pending
-      // TODO restore this test as soon as migrated to the new BridgeConnector
-      val vmvProperty            = VMVProperty(100L, "property-id", "address", "LA123", List())
-      val propertyLinkingRequest = PropertyLinkingRequest(
-        credId = CredId("some-cred-id"),
-        vmvProperty = vmvProperty
-      )
-      val json                   = Json.toJson(propertyLinkingRequest)
-      when(mockHipConnector.submitPropertyLinkingChanges(any[BridgeRequest])(using any[Request[AnyContent]]))
-        .thenReturn(
-          Future.failed(new Exception("HipConnector failure"))
-        )
-      val request                = FakeRequest(POST, routes.PropertyController.submit().url)
-        .withJsonBody(json)
+
+      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
+        .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
+
+      val request                = FakeRequest(POST, routes.PropertyController.updatePropertyChanges(assessmentId = assessmentId).url)
+        .withJsonBody(propertyLinkingRequestJson)
+      val result: Future[Result] = route(app, request).value
+      status(result) mustEqual INTERNAL_SERVER_ERROR
+    }
+
+    "returns InternalServerError when an exception is thrown" in {
+      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
+        .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
+
+      val request                = FakeRequest(POST, routes.PropertyController.updatePropertyChanges(assessmentId = assessmentId).url)
+        .withJsonBody(propertyLinkingRequestJson)
       val result: Future[Result] = route(app, request).value
       status(result) mustEqual INTERNAL_SERVER_ERROR
 
     }
   }
+
+trait PropertyLinkingData {
+  val credId: CredId                             = CredId("test-cred-id")
+  val vmvProperty: VMVProperty                   = VMVProperty(100L, "property-id", "address", "LA123", List())
+  val currentRatepayer: Option[CurrentRatepayer] = Some(CurrentRatepayer(true, Some("John Doe")))
+
+  val propertyLinkingRequest              = PropertyLinkingRequest(
+    vmvProperty = vmvProperty,
+    currentRatepayer = currentRatepayer,
+    businessRatesBill = Some("bill.pdf"),
+    connectionToProperty = Some("Owner"),
+    requestSentReference = Some("ref-123"),
+    evidenceDocument = Some("evidence.pdf"),
+    evidenceDocumentUrl = Some("http://example.com/evidence.pdf"),
+    evidenceDocumentUploadId = Some("upload-123"),
+    uploadEvidence = Some("yes")
+  )
+  val propertyLinkingRequestJson: JsValue = Json.toJson(propertyLinkingRequest)
 }
