@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeFailure.unknown
 import uk.gov.hmrc.ngrnotify.model.bridge.{Compartments, HodMessage, JobMessage}
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, PropertyChangesRequest}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, PropertyChangesRequest, PropertyLinkingRequest}
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest}
 
 import java.net.URL
@@ -38,7 +38,7 @@ class BridgeConnector @Inject() (
   appConfig: AppConfig,
   httpClient: HttpClientV2,
   val aboutRatepayers: AboutRatepayers,
-  val aboutRald: AboutRald,
+  val aboutRald: AboutRald
   // ... inject more conversation utilities here if needed ...
 )(using ec: ExecutionContext
 ) extends HipHeaderCarrier(appConfig):
@@ -78,13 +78,12 @@ class BridgeConnector @Inject() (
 
   // TODO It is still unclear why the CorrelationId header serves any useful purpose for "conversating with the BridgeAPI"
 
-  def registerRatepayer(ngrRequest: RegisterRatepayerRequest, credId: CredId)(using request: Request[?]): BridgeResult[NoContent] = {
+  def registerRatepayer(ngrRequest: RegisterRatepayerRequest, credId: CredId)(using request: Request[?]): BridgeResult[NoContent] =
     for {
       template    <- getJobTemplate(appConfig.getRatepayerUrl(credId))
       processed   <- aboutRatepayers.process(template, ngrRequest, credId)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
-  }
 
   def getRatepayerPropertyLinks(ratepayerCredId: CredId)(using request: Request[?]): BridgeResult[NoContent] =
     for {
@@ -94,21 +93,29 @@ class BridgeConnector @Inject() (
       RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)
     }
 
-  def submitPropertyChanges(credId: CredId, assessmentId: AssessmentId, propertyChangesRequest: PropertyChangesRequest)(using request: Request[?])
+  def submitPhysicalPropertyChanges(credId: CredId, assessmentId: AssessmentId, propertyChangesRequest: PropertyChangesRequest)(using request: Request[?])
     : BridgeResult[NoContent] =
     for {
       template    <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
       processed   <- PropertyChangesRequest.process(template, propertyChangesRequest)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
-    
+
+  def submitPropertyChanges(credId: CredId, assessmentId: AssessmentId, propertyLinkingRequest: PropertyLinkingRequest)(using request: Request[?])
+    : BridgeResult[NoContent] =
+    for {
+      template    <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
+      processed   <- PropertyLinkingRequest.process(template, propertyLinkingRequest)
+      ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
+    } yield ngrResponse
+
   def submitRaldChanges(credId: CredId, assessmentId: AssessmentId, raldChanges: JsObject)(using request: Request[?]): BridgeResult[NoContent] =
     for {
       template    <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
       processed   <- aboutRald.process(template, raldChanges, assessmentId.value)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
-    
+
   /**
     * Get the Bridge API job template for the given URL.
     *

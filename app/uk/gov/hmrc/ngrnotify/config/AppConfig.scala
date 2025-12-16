@@ -38,11 +38,7 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   private val hipBaseUrl                        = servicesConfig.baseUrl("hip")
   private val jobsPath                          = servicesConfig.getConfString("hip.jobsPath", "/job")
   private val ratepayersPath                    = servicesConfig.getConfString("hip.ratepayersPath", "/job/ratepayers")
-  private val updatePropertyChangesPath         = servicesConfig.getConfString("hip.updatePropertyChangesPath", "/job/physical")
-  private val propertyLinkingPath               = servicesConfig.getConfString("hip.propertyLinkingPath", "/job/property")
   private val propertiesPath                    = servicesConfig.getConfString("hip.propertiesPath", "/voa/v1/job/properties")
-  @deprecated val updatePropertyChangesUrl: URL = url"${hipBaseUrl + updatePropertyChangesPath}"
-  @deprecated val propertyLinkingUrl: URL       = url"${hipBaseUrl + propertyLinkingPath}"
   def postJobUrl(): URL                         = url"${hipBaseUrl + jobsPath}"
   def getRatepayerUrl(id: CredId): URL          = url"${hipBaseUrl + ratepayersPath + "/" + id.value}"
   def getRatepayerStatusUrl(id: CredId): URL    = url"${hipBaseUrl + ratepayersPath + "/" + id.value}/dashboard"

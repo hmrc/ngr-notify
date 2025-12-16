@@ -33,7 +33,15 @@ case class Valuation(
   allowedActions: List[String],
   listType: String,
   propertyLinkEarliestStartDate: Option[LocalDate]
-)
+) {
+
+  override def toString: String =
+    s"assessmentRef: $assessmentRef, assessmentStatus: $assessmentStatus, rateableValue: $rateableValue, " +
+      s"scatCode: $scatCode, descriptionText: $descriptionText, effectiveDate: $effectiveDate, " +
+      s"currentFromDate: $currentFromDate, listYear: $listYear, primaryDescription: $primaryDescription, " +
+      s"allowedActions: [${allowedActions.mkString(", ")}], listType: $listType, " +
+      s"propertyLinkEarliestStartDate: $propertyLinkEarliestStartDate"
+}
 
 object Valuation {
 

@@ -42,19 +42,6 @@ class HipConnector @Inject() (
 ) extends HipHeaderCarrier(appConfig):
 
   @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
-  def updatePropertyChanges(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] =
-    httpClient
-      .post(appConfig.updatePropertyChangesUrl)(using hipHeaderCarrier)
-      .withBody(Json.toJson(bridgeRequest))
-      .execute[HttpResponse]
-
-  @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
-  def submitPropertyLinkingChanges(bridgeRequest: BridgeRequest)(using request: Request[?]): Future[HttpResponse] = httpClient
-    .post(appConfig.propertyLinkingUrl)(using hipHeaderCarrier)
-    .withBody(Json.toJson(bridgeRequest))
-    .execute[HttpResponse]
-
-  @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
   def getRatepayer(credId: CredId)(using request: Request[?]): Future[HttpResponse] =
     httpClient
       .get(appConfig.getRatepayerUrl(credId))(using hipHeaderCarrier)

@@ -19,6 +19,10 @@ package uk.gov.hmrc.ngrnotify.model.propertyDetails
 import play.api.libs.json.{Format, Json}
 
 final case class CurrentRatepayer(isBeforeApril: Boolean, becomeRatepayerDate: Option[String])
+{
+  override def toString: String =
+    s"isBeforeApril: $isBeforeApril - becomeRatepayerDate: ${becomeRatepayerDate.getOrElse("No rate payer date is not provided")}"
+}
 
 object CurrentRatepayer {
   implicit val format: Format[CurrentRatepayer] = Json.format[CurrentRatepayer]
