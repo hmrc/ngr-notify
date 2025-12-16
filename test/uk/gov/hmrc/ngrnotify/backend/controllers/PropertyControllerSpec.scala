@@ -123,4 +123,21 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       status(result) mustEqual INTERNAL_SERVER_ERROR
 
     }
+
+    "return an exception message when assessment Reference is missing in the response" in {
+
+      val exceptionMessage = "assessmentRef is missing in the valuations"
+
+      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
+        .thenReturn(
+          FutureEither(Future.successful(Right(NO_CONTENT)))
+        )
+
+      val request = FakeRequest(POST, routes.PropertyController.updatePropertyChanges().url)
+        .withJsonBody(propertyLinkingRequestNoValuationJson)
+      intercept[IllegalStateException] {
+        await(route(app, request).value)
+      }.getMessage shouldBe exceptionMessage
+
+    }
   }

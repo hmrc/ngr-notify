@@ -43,6 +43,7 @@ trait JobMessageTestData {
   )
   
   val vmvProperty = VMVProperty(100L, "property-id", "address", "LA123", valuations)
+  val VMVPropertyWithNoValuations = VMVProperty(101L, "property-id-2", "address-2", "LA124", List.empty)
   val currentRatepayer = Some(CurrentRatepayer(true, Some("John Doe")))
    val propertyLinkingRequest              = PropertyLinkingRequest(
     vmvProperty = vmvProperty,
@@ -56,6 +57,7 @@ trait JobMessageTestData {
     uploadEvidence = Some("yes")
   )
   val propertyLinkingRequestJson: JsValue = Json.toJson(propertyLinkingRequest)
+  val propertyLinkingRequestNoValuationJson: JsValue = Json.toJson(propertyLinkingRequest.copy(vmvProperty = VMVPropertyWithNoValuations))
 
   val metadata: bridge.Metadata = bridge.Metadata(
     Sending(Extracting(JsNull), Transforming(JsNull, JsNull, JsNull), Loading(JsNull, JsNull, JsNull, JsNull, JsNull)),
