@@ -84,6 +84,28 @@ trait JobMessageTestData {
     items = List.empty
   )
 
+  def samplePropertyEntity(categoryCode: String = "LTX-DOM-PRP") = PropertyEntity(
+    id = NullableValue(Some(StringId("123"))),
+    idx = "P001",
+    name = NullableValue(Some("Sample Product")),
+    label = "Sample Label",
+    description = NullableValue(Some("A sample product for testing.")),
+    origination = NullableValue(Some("Origin")),
+    termination = NullableValue(Some("Termination")),
+    protodata = List.empty,
+    metadata = metadata,
+    category = CodeMeaning(categoryCode, NullableValue(Some("Category 1"))),
+    `type` = CodeMeaning("TYPE001", NullableValue(Some("Type 1"))),
+    `class` = CodeMeaning("CLASS001", NullableValue(Some("Class 1"))),
+    data = propertyData,
+    compartments = Compartments(),
+    items = List.empty
+  )
+  
+  val sampleCompartments: Compartments = Compartments(
+    properties = List(samplePropertyEntity())
+  )
+
   def sampleJobEntity(categoryCode: String = "LTX-DOM-PRP") = JobEntity(
     id = NullableValue(Some(StringId("job-123"))),
     idx = "IDX-001",

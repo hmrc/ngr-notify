@@ -16,9 +16,12 @@
 
 package uk.gov.hmrc.ngrnotify.controllers
 
+import org.apache.pekko.http.scaladsl.model.HttpMethod
 import play.api.libs.json.{JsError, JsValue, Json, JsonValidationError, Writes}
 import play.api.mvc.Result
 import play.api.mvc.Results.{Accepted, BadRequest, InternalServerError, Ok}
+import uk.gov.hmrc.http.HttpVerbs
+import uk.gov.hmrc.http.HttpVerbs.{GET, POST}
 import uk.gov.hmrc.ngrnotify.connectors.bridge.BridgeResult
 import uk.gov.hmrc.ngrnotify.model.{ErrorCode, NgrNotifyMessage}
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.{ACTION_FAILED, JSON_VALIDATION_ERROR}
@@ -55,8 +58,8 @@ trait JsonSupport:
     * It extends the BridgeResult with the ability to convert it to a proper HTTP response
     * and also provides a common failure response builder.
     */
-  extension [T](bridgeResult: BridgeResult[T])
-
+  extension (bridgeResult: BridgeResult[Unit])
+        
     /**
       * Transforms a `BridgeResult` to an `HttpResult` by handling the encapsulated future.
       *
@@ -88,4 +91,18 @@ trait JsonSupport:
             InternalServerError(buildFailureResponse(ACTION_FAILED, ex.getMessage))
         }
 
-    // TODO def toHttpResultWithContent()(using w: Writes[T], e: ExecutionContext): Future[Result] = ???
+  extension [T](bridgeResult: BridgeResult[T])
+
+    def toHttpResultWithContent(using w: Writes[T], e: ExecutionContext): Future[Result] =
+      bridgeResult
+        .wrapped
+        .map {
+          case Left(bridgeFailure) =>
+            InternalServerError(buildFailureResponse(ACTION_FAILED, bridgeFailure))
+          case Right(value)        =>
+            Ok(Json.toJson(value))
+        }
+        .recover {
+          case ex =>
+            InternalServerError(buildFailureResponse(ACTION_FAILED, ex.getMessage))
+        }
