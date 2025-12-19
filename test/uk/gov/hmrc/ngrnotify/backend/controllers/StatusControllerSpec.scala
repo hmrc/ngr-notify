@@ -29,8 +29,6 @@ import uk.gov.hmrc.ngrnotify.backend.controllers.actions.FakeIdentifierAuthActio
 import uk.gov.hmrc.ngrnotify.controllers.StatusController
 import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 
-import java.io.IOException
-
 class StatusControllerSpec extends AnyWordControllerSpec:
 
   private val controller = inject[StatusController]
@@ -41,19 +39,21 @@ class StatusControllerSpec extends AnyWordControllerSpec:
     val httpClientV2Mock = mock[HttpClientV2]
     // DO NOT instruct the mock here, rather instruct it for each of the test cases below.
     new GuiceApplicationBuilder()
-      .overrides(bind[HttpClientV2].to(httpClientV2Mock),
-        bind[IdentifierAction].to[FakeIdentifierAuthAction])
+      .overrides(
+        bind[HttpClientV2].to(httpClientV2Mock),
+        bind[IdentifierAction].to[FakeIdentifierAuthAction]
+      )
       .build()
 
   "StatusController" should {
 
     ".getRatepayerStatus return 200" in {
-      val client = inject[HttpClientV2]
+      val client            = inject[HttpClientV2]
       client
-        .whenGetting("/job/ratepayers/GGID123345/dashboard")
+        .whenGetting("/ratepayers/GGID123345/dashboard")
         .thenReturn(rightResponseWith(OK, Some("ratepayerGetStatus.json")))
       val identifierRequest = FakeRequest().withHeaders("X-Cred-Id" -> "GGID123345")
-      val result = controller.getRatepayerStatus(identifierRequest)
+      val result            = controller.getRatepayerStatus(identifierRequest)
       status(result)          shouldBe OK
       contentAsString(result) shouldBe """{"activeRatepayerPersonExists":false,"activeRatepayerPersonaExists":false,"activePropertyLinkCount":0}"""
     }

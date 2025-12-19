@@ -137,7 +137,7 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
         val ratepayerId = "1234567891255"
         val httpClient = inject[HttpClientV2]
         httpClient
-          .whenGetting(s"/job/ratepayers/$ratepayerId")
+          .whenGetting(s"/ratepayers/$ratepayerId")
           .thenReturn(rightResponseWith(BAD_REQUEST, Some("ratepayerWrongID.json")))
 
         val controller = inject[RatepayerController]
@@ -150,7 +150,7 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
         val ratepayerId         = "1234567890123456780"
         val httpClient = inject[HttpClientV2]
         httpClient
-          .whenGetting(s"/job/ratepayers/$ratepayerId")
+          .whenGetting(s"/ratepayers/$ratepayerId")
           .thenReturn(rightResponseWith(OK, Some("empty-object.json")))
 
         val controller = inject[RatepayerController]
@@ -163,7 +163,7 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
         val ratepayerId = "test_no_json"
         val httpClient = inject[HttpClientV2]
         httpClient
-          .whenGetting(s"/job/ratepayers/$ratepayerId")
+          .whenGetting(s"/ratepayers/$ratepayerId")
           .thenReturn(rightResponseWith(OK))
 
         val controller = inject[RatepayerController]
@@ -176,7 +176,7 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
         val ratepayerId = "test_hip_connection_error"
         val httpClient = inject[HttpClientV2]
         httpClient
-          .whenGetting(s"/job/ratepayers/$ratepayerId")
+          .whenGetting(s"/ratepayers/$ratepayerId")
           .thenReturn(leftResponseWith(IOException("HIP connection error details")))
 
         val controller = inject[RatepayerController]
