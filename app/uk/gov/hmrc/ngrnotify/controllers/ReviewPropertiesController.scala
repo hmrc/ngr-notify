@@ -19,7 +19,6 @@ package uk.gov.hmrc.ngrnotify.controllers
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.ngrnotify.connectors.bridge.BridgeConnector
 import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
-import uk.gov.hmrc.ngrnotify.model.bridge.JobMessage
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.AssessmentId
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
