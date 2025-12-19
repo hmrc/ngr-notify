@@ -68,7 +68,7 @@ class HipConnectorSpec extends AnyWordControllerSpec {
       response.status shouldBe OK
 
       verify(httpMock)
-        .get(argThat(urlEndsWith("/job/ratepayers/ID_123")))(using any[HeaderCarrier])
+        .get(argThat(urlEndsWith("/ratepayers/ID_123")))(using any[HeaderCarrier])
     }
   }
 }

@@ -80,14 +80,14 @@ class BridgeConnector @Inject() (
 
   def registerRatepayer(ngrRequest: RegisterRatepayerRequest, credId: CredId)(using request: Request[?]): BridgeResult[NoContent] =
     for {
-      template    <- getJobTemplate(appConfig.getRatepayerUrl(credId))
+      template    <- getJobTemplate(appConfig.getRatepayerJobUrl(credId))
       processed   <- aboutRatepayers.process(template, ngrRequest, credId)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
 
   def getRatepayerPropertyLinks(ratepayerCredId: CredId)(using request: Request[?]): BridgeResult[NoContent] =
     for {
-      response <- getJobTemplate(appConfig.getRatepayerUrl(ratepayerCredId))
+      response <- getJobTemplate(appConfig.getRatepayerPropertyLinksUrl(ratepayerCredId))
     } yield {
       val addresses = response.job.compartments.properties.map(_.data.addresses.propertyFullAddress.getOrElse(""))
       RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)
