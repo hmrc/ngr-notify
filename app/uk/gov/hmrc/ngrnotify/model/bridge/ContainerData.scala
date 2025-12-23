@@ -23,7 +23,7 @@ case class ED(
   activity: EDProperty[String],
   code: EDProperty[String],
   description: EDProperty[String],
-  quantity: EDProperty[BigDecimal],
+  quantity: EDProperty[BigInt],
   units: EDProperty[String]
 )
 
@@ -37,6 +37,16 @@ case class EDProperty[T](
 
 object EDProperty:
   given [T: Format]: Format[EDProperty[T]] = Json.format
+
+case class ValuationSurveysData(
+  foreign_ids: List[ForeignDatum] = List.empty,
+  foreign_names: List[ForeignDatum] = List.empty,
+  foreign_labels: List[ForeignDatum] = List.empty,
+  survey: SurveyEntity
+)
+
+object ValuationSurveysData:
+  given Format[ValuationSurveysData] = Json.format
 
 case class ContainerData(
   foreign_ids: List[ForeignDatum] = List.empty,
@@ -52,3 +62,27 @@ case class ContainerData(
 
 object ContainerData:
   given Format[ContainerData] = Json.format
+
+case class SurveyEntity(
+  id: NullableValue[Id],
+  idx: String,
+  name: NullableValue[String],
+  label: String,
+  description: NullableValue[String],
+  origination: NullableValue[String],
+  termination: NullableValue[String],
+  category: CodeMeaning,
+  `type`: CodeMeaning,
+  `class`: CodeMeaning,
+  data: ContainerData,
+  protodata: List[Protodata],
+  metadata: Metadata,
+  compartments: Option[Map[String, String]] = None,
+  items: Option[List[SurveyEntity]] = None
+) extends Entity[ContainerData, Option[Map[String, String]], Option[List[SurveyEntity]]]
+  with StandardProperties
+
+object SurveyEntity:
+    given Format[SurveyEntity] = Json.format
+
+

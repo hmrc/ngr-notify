@@ -28,10 +28,8 @@ class PropertyEntitySpec extends AnyFreeSpec {
 
       val productItem = json.as[PropertyEntity]
       val serialized  = Json.toJson(productItem)
-
+      
       Json.prettyPrint(serialized) mustBe Json.prettyPrint(json)
     }
   }
-
-
 }

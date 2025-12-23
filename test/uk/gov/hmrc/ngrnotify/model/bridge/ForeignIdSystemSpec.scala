@@ -23,7 +23,7 @@ import play.api.libs.json.Json
 class ForeignIdSystemSpec extends AnyFreeSpec with Matchers {
   "ForeignIdSystem" - {
     "must have all expected values" in {
-      val systems = ForeignIdSystem.values.toSet
+      val systems = ForeignIdSystem.values
       systems mustBe Set(
         ForeignIdSystem.Government_Gateway,
         ForeignIdSystem.Billing_Authority,
@@ -31,7 +31,8 @@ class ForeignIdSystemSpec extends AnyFreeSpec with Matchers {
         ForeignIdSystem.National_Address_Gazetteer,
         ForeignIdSystem.NDRRPublicInterface,
         ForeignIdSystem.HMRC_VOA_CDB,
-        ForeignIdSystem.SystemX
+        ForeignIdSystem.SystemX,
+        ForeignIdSystem.CDB_VSA_SURVEY
       )
     }
 

@@ -16,15 +16,27 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-case class Location(
-  localAuthorityPseudoAreaCode: Option[String] = None,
-  ordnanceSurvey: Option[String] = None,
-  googleMaps: Option[String] = None
-)
+import org.scalatest.freespec.AnyFreeSpec
 
-object Location:
-
-  import play.api.libs.json.{Format, Json}
-  import uk.gov.hmrc.ngrnotify.model.given
-
-  given Format[Location] = Json.format
+class PropertyDataSpec extends AnyFreeSpec {
+  "PropertyData" - {
+    
+    val json = """
+      |{
+      |  "property": {
+      |    "property_id": 1,
+      |    "cdb_property_id": 12345678
+      |  },
+      |  "address": {
+      |    "line_1": "10 Downing Street",
+      |    "line_2": "Westminster",
+      |    "line_3": null,
+      |    "line_4": null,
+      |    "line_5": null,
+      |    "postcode": "SW1A 2AA"
+      |  }
+      |}
+      |""".stripMargin
+      
+  }
+}

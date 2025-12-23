@@ -108,12 +108,12 @@
               "property_full_address": "16, NEW GEORGE STREET, PLYMOUTH, PL1 1RL",
               "address_line_1": "16",
               "address_postcode": "PL1 1RL",
-              "address_known_as": null
+              "known_as": null
             },
             "location": {
               "local_authority_pseudo_area_code": "1160",
-              "ordanace_survey_coordinates": null,
-              "google_maps_coordinates": null
+              "ordnance_survey": null,
+              "google_maps": null
             },
             "assessments": [
               {
@@ -147,13 +147,13 @@
                   "foreign_names": [],
                   "foreign_labels": [],
                   "property": {
-                    "id": 2,
-                    "cdb_id": 55821184
+                    "property_id": 2,
+                    "cdb_property_id": 55821184
                   },
                   "use": {
                     "is_composite": "N",
                     "is_part_exempt": "N",
-                    "description": "RESTAURANT AND PREMISES RESTAURANT AND PREMISES"
+                    "use_description": "RESTAURANT AND PREMISES RESTAURANT AND PREMISES"
                   },
                   "valuation_surveys": [],
                   "valuations": [],
