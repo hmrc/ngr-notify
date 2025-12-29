@@ -26,13 +26,13 @@ import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeFailure.unknown
-import uk.gov.hmrc.ngrnotify.model.bridge.{Compartments, HodMessage, JobMessage}
+import uk.gov.hmrc.ngrnotify.model.bridge.{Compartments, HodMessage, JobMessage, SurveyEntity, ValuationSurveysData}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, PropertyChangesRequest, PropertyLinkingRequest}
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest}
 
 import java.net.URL
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class BridgeConnector @Inject() (
@@ -118,8 +118,20 @@ class BridgeConnector @Inject() (
     } yield ngrResponse
 
 
-  def getReviewProperties(credId: CredId, assessmentId: AssessmentId)(using request: Request[?]): BridgeResult[Compartments] =
-    getJobTemplate[Compartments](appConfig.getPropertiesUrl(credId, assessmentId))
+  def getReviewProperties(credId: CredId, assessmentId: AssessmentId)(using request: Request[?]): BridgeResult[SurveyEntity] =
+    getJobTemplate[Compartments](appConfig.getPropertiesUrl(credId, assessmentId)).flatMap { compartments =>
+      val maybeData = for {
+        property   <- compartments.properties.headOption
+        assessment <- property.data.assessments.headOption
+        survey     <- assessment.data.valuation_surveys.headOption
+      } yield survey.data.survey
+
+      maybeData match {
+        case Some(data) => FutureEither(Future.successful(Right(data)))
+        case None       => FutureEither(Future.successful(Left("'Surveys'[/properties/data/assessments/valuation_surveys/data/valuation_surveys/data/survey] node not found")))
+      }
+    }
+
   /**
     * Get the Bridge API job template for the given URL.
     *
