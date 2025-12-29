@@ -23,7 +23,7 @@ case class ED(
   activity: EDProperty[String],
   code: EDProperty[String],
   description: EDProperty[String],
-  quantity: EDProperty[BigInt],
+  quantity: EDProperty[BigDecimal],
   units: EDProperty[String]
 )
 
@@ -63,6 +63,7 @@ case class ContainerData(
 object ContainerData:
   given Format[ContainerData] = Json.format
 
+
 case class SurveyEntity(
   id: NullableValue[Id],
   idx: String,
@@ -83,6 +84,7 @@ case class SurveyEntity(
   with StandardProperties
 
 object SurveyEntity:
+  
     given Format[SurveyEntity] = Json.format
 
 
