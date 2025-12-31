@@ -59,8 +59,8 @@ object AssessmentData:
   given Format[AssessmentData] = Json.format
 
 case class AssessmentProperty(
-  id: Int,
-  cdb_id: String
+  property_id: Int,
+  cdb_property_id: BigInt
 )
 
 object AssessmentProperty:
@@ -69,42 +69,33 @@ object AssessmentProperty:
 case class AssessmentUse(
   is_composite: String, // "Y" or "N"
   is_part_exempt: String,
-  description: String
+  use_description: String
 )
 
 object AssessmentUse:
   given Format[AssessmentUse] = Json.format
 
-/*
-case class AssessmentIsPartExempt(
-                                   is_composite: String // "Y" or "N"
-                                 )
-
-object AssessmentIsPartExempt:
-  given Format[AssessmentIsPartExempt] = Json.format
- */
-
 case class AssessmentValuation(
-  method_code: String,
-  rateable_value: Long,
-  effective_date: String
+                                valuation_method_code: String,
+                                valuation_rateable: Long,
+                                valuation_effective_date: String
 )
 
 object AssessmentValuation:
   given Format[AssessmentValuation] = Json.format
 
 case class AssessmentList(
-  category: String = "LTX-DOM-LST",
-  function: String,
-  year: String,
-  authority_code: String
+                           list_category: String = "LTX-DOM-LST",
+                           list_function: String,
+                           list_year: String,
+                           list_authority_code: String
 )
 
 object AssessmentList:
   given Format[AssessmentList] = Json.format
 
 case class AssessmentWorkflow(
-  cdb_job_id: Option[String] = None
+  cdb_job_id: Option[BigInt] = None
 )
 
 object AssessmentWorkflow:
@@ -121,12 +112,12 @@ case class AssessmentContainerEntity(
   category: CodeMeaning,
   `type`: CodeMeaning,
   `class`: CodeMeaning,
-  data: ContainerData,
+  data: ValuationSurveysData,
   protodata: List[Protodata],
   metadata: Metadata,
   compartments: Option[Map[String, String]] = None,
   items: Option[List[AssessmentContainerEntity]] = None
-) extends Entity[ContainerData, Option[Map[String, String]], Option[List[AssessmentContainerEntity]]]
+) extends Entity[ValuationSurveysData, Option[Map[String, String]], Option[List[AssessmentContainerEntity]]]
   with StandardProperties
 
 object AssessmentContainerEntity:

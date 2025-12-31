@@ -36,29 +36,29 @@ class AssessmentDataSpec extends AnyFreeSpec {
         |"foreign_names": [],
         |"foreign_labels": [],
         |"property": {
-        |  "id": 2,
-        |  "cdb_id": "55821184"
+        |  "property_id": 2,
+        |  "cdb_property_id": 55821184
         |},
         |"use": {
         |  "is_composite": "N",
         |  "is_part_exempt": "N",
-        |  "description": "RESTAURANT AND PREMISES"
+        |  "use_description": "RESTAURANT AND PREMISES"
         |},
         |"valuation_surveys": [],
         |"valuations": [],
         |"valuation": {
-        |  "method_code": "234",
-        |  "rateable_value": 76500,
-        |  "effective_date": "20230529T000000Z"
+        |  "valuation_method_code": "234",
+        |  "valuation_rateable": 76500,
+        |  "valuation_effective_date": "20230529T000000Z"
         |},
         |"list": {
-        |  "category": "LTX-DOM-LST",
-        |  "function": "Charging",
-        |  "year": "2023",
-        |  "authority_code": "1160"
+        |  "list_category": "LTX-DOM-LST",
+        |  "list_function": "Charging",
+        |  "list_year": "2023",
+        |  "list_authority_code": "1160"
         |},
         |"workflow": {
-        |  "cdb_job_id": "39115380283"
+        |  "cdb_job_id": 39115380283
         |}
         |        }
         |""".stripMargin

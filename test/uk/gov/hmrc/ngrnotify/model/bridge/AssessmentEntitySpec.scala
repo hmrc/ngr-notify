@@ -52,30 +52,30 @@ class AssessmentEntitySpec extends AnyFreeSpec {
                           |    "foreign_names": [],
                           |    "foreign_labels": [],
                           |    "property": {
-                          |    "id": 1111,
-                          |    "cdb_id": "Government_Gateway"
+                          |    "property_id": 1111,
+                          |    "cdb_property_id": 12345667
                           |  },
                           |    "use": {
                           |    "is_composite": "null",
                           |    "is_part_exempt": "null",
-                          |    "description": "null"
+                          |    "use_description": "null"
                           |  },
                           |    "valuation_surveys": [],
                           |    "valuation": {
                           |    "system": "null",
                           |    "id": "null",
-                          |    "method_code": "null",
-                          |    "rateable_value": 123,
-                          |    "effective_date": "null"
+                          |    "valuation_method_code": "null",
+                          |    "valuation_rateable": 123,
+                          |    "valuation_effective_date": "null"
                           |  },
                           |    "list": {
-                          |    "category": "null",
-                          |    "function": "null",
-                          |    "year": "null",
-                          |    "authority_code": "null"
+                          |    "list_category": "null",
+                          |    "list_function": "null",
+                          |    "list_year": "null",
+                          |    "list_authority_code": "null"
                           |  },
                           |    "workflow": {
-                          |    "cdb_job_id": "null"
+                          |    "cdb_job_id": 12345666
                           |  }
                           |  },
                           |    "protodata": [ {

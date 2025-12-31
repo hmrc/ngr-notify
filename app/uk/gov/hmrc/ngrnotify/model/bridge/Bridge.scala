@@ -105,27 +105,16 @@ object Bridge:
 
   type ProductData = PersonData | PropertyData | RelationshipData
 
-  given Reads[ProductData] = new Reads[ProductData] {
-    def reads(jsValue: JsValue): JsResult[ProductData] =
-      //
-      // The best solution could have been reading the ..\category\code (by traversing up to the parent node)
-      // and then reading the curren data node as either Person, or Property, or Relationship depending on
-      // the category code, which can be either TX-DOM-PSN, TX-DOM-PRP or TX-DOM-REL.
-      //
-      // However, since the PlayFramework JSON library does not support such a "traversing up" access strategy,
-      // we have to resort on chaining multiple attempts until one succeeds.
-      //
-      jsValue.validate[PersonData]
-        .orElse(jsValue.validate[PropertyData])
-        .orElse(jsValue.validate[RelationshipData])
+  given Reads[ProductData] = (jsValue: JsValue) => {
+    jsValue.validate[PersonData]
+      .orElse(jsValue.validate[PropertyData])
+      .orElse(jsValue.validate[RelationshipData])
   }
 
-  given Writes[ProductData] = new Writes[ProductData] {
-    def writes(productData: ProductData): JsValue = productData match {
-      case personData: PersonData             => Json.toJson(personData)
-      case propertyData: PropertyData         => Json.toJson(propertyData)
-      case relationshipData: RelationshipData => Json.toJson(relationshipData)
-    }
+  given Writes[ProductData] = {
+    case personData: PersonData => Json.toJson(personData)
+    case propertyData: PropertyData => Json.toJson(propertyData)
+    case relationshipData: RelationshipData => Json.toJson(relationshipData)
   }
 
   /**

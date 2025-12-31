@@ -63,6 +63,24 @@ trait JobMessageTestData {
     Sending(Extracting(JsNull), Transforming(JsNull, JsNull, JsNull), Loading(JsNull, JsNull, JsNull, JsNull, JsNull)),
     Receiving(Unloading(JsNull, JsNull, JsNull, JsNull, JsNull), TransformingReceiving(JsNull, JsNull, JsNull), Storing(JsNull))
   )
+  
+  val sampleSurveyEntity =  SurveyEntity(
+    id = NullableValue(Some(StringId("survey-123"))),
+    idx = "S001",
+    name = NullableValue(Some("Sample Survey")),
+    label = "Sample Survey Label",
+    description = NullableValue(Some("A sample survey for testing.")),
+    origination = NullableValue(Some("2025-01-01T00:00:00Z")),
+    termination = NullableValue(Some("2025-12-31T23:59:59Z")),
+    category = CodeMeaning("SURV-CAT-001", NullableValue(Some("Survey Category"))),
+    `type` = CodeMeaning("SURV-TYPE-001", NullableValue(Some("Survey Type"))),
+    `class` = CodeMeaning("SURV-CLASS-001", NullableValue(Some("Survey Class"))),
+    data = ContainerData(),
+    protodata = List.empty,
+    metadata = metadata,
+    compartments = None,
+    items = None
+  )
 
   val propertyData                                              = PropertyData(List(ForeignDatum(Some(Government_Gateway), Some("location"), Some("SomeId"))), List.empty, List.empty, PropertyAddresses())
 
@@ -82,6 +100,28 @@ trait JobMessageTestData {
     data = propertyData,
     compartments = Compartments(),
     items = List.empty
+  )
+
+  def samplePropertyEntity(categoryCode: String = "LTX-DOM-PRP") = PropertyEntity(
+    id = NullableValue(Some(StringId("123"))),
+    idx = "P001",
+    name = NullableValue(Some("Sample Product")),
+    label = "Sample Label",
+    description = NullableValue(Some("A sample product for testing.")),
+    origination = NullableValue(Some("Origin")),
+    termination = NullableValue(Some("Termination")),
+    protodata = List.empty,
+    metadata = metadata,
+    category = CodeMeaning(categoryCode, NullableValue(Some("Category 1"))),
+    `type` = CodeMeaning("TYPE001", NullableValue(Some("Type 1"))),
+    `class` = CodeMeaning("CLASS001", NullableValue(Some("Class 1"))),
+    data = propertyData,
+    compartments = Compartments(),
+    items = List.empty
+  )
+  
+  val sampleCompartments: Compartments = Compartments(
+    properties = List(samplePropertyEntity())
   )
 
   def sampleJobEntity(categoryCode: String = "LTX-DOM-PRP") = JobEntity(
