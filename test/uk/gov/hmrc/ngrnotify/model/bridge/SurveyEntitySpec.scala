@@ -31,6 +31,7 @@ class SurveyEntitySpec extends AnyFreeSpec {
       Json.prettyPrint(serialized) mustBe Json.prettyPrint(json)
     }
 
+    //TODO: Testing only work in progress - remove unit tests later
     // Recursively traverse and display the hierarchy
     def displayHierarchy(node: JsValue, level: Int = 1): Unit = {
       val label = (node \ "label").asOpt[String].getOrElse("No Label")
