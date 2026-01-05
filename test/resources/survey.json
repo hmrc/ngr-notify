@@ -462,7 +462,74 @@
                 "foreign_labels": [],
                 "uses": [],
                 "constructions": [],
-                "facilities": [],
+                "facilities": [
+                  {
+                    "activity": {
+                      "source": null,
+                      "value": null
+                    },
+                    "code": {
+                      "source": null,
+                      "value": null
+                    },
+                    "description": {
+                      "source": null,
+                      "value": "Escalators To All Floors"
+                    },
+                    "quantity": {
+                      "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/escalator_all_floors",
+                      "value": 3
+                    },
+                    "units": {
+                      "source": null,
+                      "value": "Option"
+                    }
+                  },
+                  {
+                    "activity": {
+                      "source": null,
+                      "value": null
+                    },
+                    "code": {
+                      "source": null,
+                      "value": null
+                    },
+                    "description": {
+                      "source": null,
+                      "value": "Central Heating"
+                    },
+                    "quantity": {
+                      "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/central_heating",
+                      "value": 1
+                    },
+                    "units": {
+                      "source": null,
+                      "value": "Option"
+                    }
+                  },
+                  {
+                    "activity": {
+                      "source": null,
+                      "value": null
+                    },
+                    "code": {
+                      "source": null,
+                      "value": null
+                    },
+                    "description": {
+                      "source": null,
+                      "value": "Air Conditioning"
+                    },
+                    "quantity": {
+                      "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/air_conditioning",
+                      "value": 10
+                    },
+                    "units": {
+                      "source": null,
+                      "value": "Option"
+                    }
+                  }
+                ],
                 "artifacts": [],
                 "uninheritances": [],
                 "attributions": []
@@ -1191,7 +1258,73 @@
                       }
                     ],
                     "constructions": [],
-                    "facilities": [],
+                    "facilities": [              {
+                      "activity": {
+                        "source": null,
+                        "value": null
+                      },
+                      "code": {
+                        "source": null,
+                        "value": null
+                      },
+                      "description": {
+                        "source": null,
+                        "value": "Escalators To All Floors"
+                      },
+                      "quantity": {
+                        "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/escalator_all_floors",
+                        "value": 0
+                      },
+                      "units": {
+                        "source": null,
+                        "value": "Option"
+                      }
+                    },
+                      {
+                        "activity": {
+                          "source": null,
+                          "value": null
+                        },
+                        "code": {
+                          "source": null,
+                          "value": null
+                        },
+                        "description": {
+                          "source": null,
+                          "value": "Central Heating"
+                        },
+                        "quantity": {
+                          "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/central_heating",
+                          "value": 1
+                        },
+                        "units": {
+                          "source": null,
+                          "value": "Option"
+                        }
+                      },
+                      {
+                        "activity": {
+                          "source": null,
+                          "value": null
+                        },
+                        "code": {
+                          "source": null,
+                          "value": null
+                        },
+                        "description": {
+                          "source": null,
+                          "value": "Air Conditioning"
+                        },
+                        "quantity": {
+                          "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/air_conditioning",
+                          "value": 0
+                        },
+                        "units": {
+                          "source": null,
+                          "value": "Option"
+                        }
+                      }
+                    ],
                     "artifacts": [],
                     "uninheritances": [],
                     "attributions": []
@@ -1379,7 +1512,73 @@
                       }
                     ],
                     "constructions": [],
-                    "facilities": [],
+                    "facilities": [              {
+                      "activity": {
+                        "source": null,
+                        "value": null
+                      },
+                      "code": {
+                        "source": null,
+                        "value": null
+                      },
+                      "description": {
+                        "source": null,
+                        "value": "Escalators To All Floors"
+                      },
+                      "quantity": {
+                        "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/escalator_all_floors",
+                        "value": 0
+                      },
+                      "units": {
+                        "source": null,
+                        "value": "Option"
+                      }
+                    },
+                      {
+                        "activity": {
+                          "source": null,
+                          "value": null
+                        },
+                        "code": {
+                          "source": null,
+                          "value": null
+                        },
+                        "description": {
+                          "source": null,
+                          "value": "Central Heating"
+                        },
+                        "quantity": {
+                          "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/central_heating",
+                          "value": 1
+                        },
+                        "units": {
+                          "source": null,
+                          "value": "Option"
+                        }
+                      },
+                      {
+                        "activity": {
+                          "source": null,
+                          "value": null
+                        },
+                        "code": {
+                          "source": null,
+                          "value": null
+                        },
+                        "description": {
+                          "source": null,
+                          "value": "Air Conditioning"
+                        },
+                        "quantity": {
+                          "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/air_conditioning",
+                          "value": 0
+                        },
+                        "units": {
+                          "source": null,
+                          "value": "Option"
+                        }
+                      }
+                    ],
                     "artifacts": [],
                     "uninheritances": [],
                     "attributions": []
@@ -1452,7 +1651,73 @@
                 "foreign_labels": [],
                 "uses": [],
                 "constructions": [],
-                "facilities": [],
+                "facilities": [              {
+                  "activity": {
+                    "source": null,
+                    "value": null
+                  },
+                  "code": {
+                    "source": null,
+                    "value": null
+                  },
+                  "description": {
+                    "source": null,
+                    "value": "Escalators To All Floors"
+                  },
+                  "quantity": {
+                    "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/escalator_all_floors",
+                    "value": 0
+                  },
+                  "units": {
+                    "source": null,
+                    "value": "Option"
+                  }
+                },
+                  {
+                    "activity": {
+                      "source": null,
+                      "value": null
+                    },
+                    "code": {
+                      "source": null,
+                      "value": null
+                    },
+                    "description": {
+                      "source": null,
+                      "value": "Central Heating"
+                    },
+                    "quantity": {
+                      "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/central_heating",
+                      "value": 1
+                    },
+                    "units": {
+                      "source": null,
+                      "value": "Option"
+                    }
+                  },
+                  {
+                    "activity": {
+                      "source": null,
+                      "value": null
+                    },
+                    "code": {
+                      "source": null,
+                      "value": null
+                    },
+                    "description": {
+                      "source": null,
+                      "value": "Air Conditioning"
+                    },
+                    "quantity": {
+                      "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/air_conditioning",
+                      "value": 0
+                    },
+                    "units": {
+                      "source": null,
+                      "value": "Option"
+                    }
+                  }
+                ],
                 "artifacts": [],
                 "uninheritances": [],
                 "attributions": []
@@ -1626,7 +1891,7 @@
                         },
                         "description": {
                           "source": "ns_au_desc",
-                          "value": "internal storage"
+                          "value": "internal storage1"
                         },
                         "quantity": {
                           "source": "accomarea",
@@ -1639,7 +1904,74 @@
                       }
                     ],
                     "constructions": [],
-                    "facilities": [],
+                    "facilities": [
+                      {
+                        "activity": {
+                          "source": null,
+                          "value": null
+                        },
+                        "code": {
+                          "source": null,
+                          "value": null
+                        },
+                        "description": {
+                          "source": null,
+                          "value": "Escalators To All Floors"
+                        },
+                        "quantity": {
+                          "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/escalator_all_floors",
+                          "value": 0
+                        },
+                        "units": {
+                          "source": null,
+                          "value": "Option"
+                        }
+                      },
+                      {
+                        "activity": {
+                          "source": null,
+                          "value": null
+                        },
+                        "code": {
+                          "source": null,
+                          "value": null
+                        },
+                        "description": {
+                          "source": null,
+                          "value": "Central Heating"
+                        },
+                        "quantity": {
+                          "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/central_heating",
+                          "value": 1
+                        },
+                        "units": {
+                          "source": null,
+                          "value": "Option"
+                        }
+                      },
+                      {
+                        "activity": {
+                          "source": null,
+                          "value": null
+                        },
+                        "code": {
+                          "source": null,
+                          "value": null
+                        },
+                        "description": {
+                          "source": null,
+                          "value": "Air Conditioning"
+                        },
+                        "quantity": {
+                          "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/air_conditioning",
+                          "value": 0
+                        },
+                        "units": {
+                          "source": null,
+                          "value": "Option"
+                        }
+                      }
+                    ],
                     "artifacts": [],
                     "uninheritances": [],
                     "attributions": []
@@ -1720,7 +2052,7 @@
                         },
                         "description": {
                           "source": "ns_au_desc",
-                          "value": "internal storage"
+                          "value": "internal storage2"
                         },
                         "quantity": {
                           "source": "accomarea",
@@ -1814,7 +2146,7 @@
                         },
                         "description": {
                           "source": "ns_au_desc",
-                          "value": "internal storage"
+                          "value": "internal storage3"
                         },
                         "quantity": {
                           "source": "accomarea",
@@ -1908,7 +2240,7 @@
                         },
                         "description": {
                           "source": "ns_au_desc",
-                          "value": "internal storage"
+                          "value": "internal storage5"
                         },
                         "quantity": {
                           "source": "accomarea",
@@ -1921,7 +2253,74 @@
                       }
                     ],
                     "constructions": [],
-                    "facilities": [],
+                    "facilities": [
+                      {
+                        "activity": {
+                          "source": null,
+                          "value": null
+                        },
+                        "code": {
+                          "source": null,
+                          "value": null
+                        },
+                        "description": {
+                          "source": null,
+                          "value": "Escalators To All Floors"
+                        },
+                        "quantity": {
+                          "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/escalator_all_floors",
+                          "value": 0
+                        },
+                        "units": {
+                          "source": null,
+                          "value": "Option"
+                        }
+                      },
+                      {
+                        "activity": {
+                          "source": null,
+                          "value": null
+                        },
+                        "code": {
+                          "source": null,
+                          "value": null
+                        },
+                        "description": {
+                          "source": null,
+                          "value": "Central Heating"
+                        },
+                        "quantity": {
+                          "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/central_heating",
+                          "value": 1
+                        },
+                        "units": {
+                          "source": null,
+                          "value": "Option"
+                        }
+                      },
+                      {
+                        "activity": {
+                          "source": null,
+                          "value": null
+                        },
+                        "code": {
+                          "source": null,
+                          "value": null
+                        },
+                        "description": {
+                          "source": null,
+                          "value": "Air Conditioning"
+                        },
+                        "quantity": {
+                          "source": "tom:sql/cdb:ndr/survey_unit/os_refno:24104677000/air_conditioning",
+                          "value": 0
+                        },
+                        "units": {
+                          "source": null,
+                          "value": "Option"
+                        }
+                      }
+                    ],
                     "artifacts": [],
                     "uninheritances": [],
                     "attributions": []
@@ -2002,7 +2401,7 @@
                         },
                         "description": {
                           "source": "ns_au_desc",
-                          "value": "internal storage"
+                          "value": "internal storage6"
                         },
                         "quantity": {
                           "source": "accomarea",
@@ -2096,7 +2495,7 @@
                         },
                         "description": {
                           "source": "ns_au_desc",
-                          "value": "internal storage"
+                          "value": "internal storage7"
                         },
                         "quantity": {
                           "source": "accomarea",
@@ -2190,7 +2589,7 @@
                         },
                         "description": {
                           "source": "ns_au_desc",
-                          "value": "internal storage"
+                          "value": "internal storage8"
                         },
                         "quantity": {
                           "source": "accomarea",
@@ -2288,7 +2687,7 @@
                         },
                         "quantity": {
                           "source": "accomarea",
-                          "value": 0
+                          "value": 10
                         },
                         "units": {
                           "source": null,
@@ -2616,7 +3015,7 @@
                         },
                         "description": {
                           "source": "ns_au_desc",
-                          "value": "internal storage"
+                          "value": "internal storage123"
                         },
                         "quantity": {
                           "source": "accomarea",

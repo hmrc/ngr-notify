@@ -16,9 +16,12 @@
 
 package uk.gov.hmrc.ngrnotify.controllers
 
+import play.api.libs.json.Writes
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.ngrnotify.connectors.bridge.BridgeConnector
 import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
+import uk.gov.hmrc.ngrnotify.model.bridge.SurveyEntity
+import uk.gov.hmrc.ngrnotify.model.bridge.SurveyEntity.extractFloorAndParkingData
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.AssessmentId
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -35,7 +38,8 @@ class ReviewPropertiesController @Inject() (
   with JsonSupport {
 
   def properties(assessmentId: AssessmentId): Action[AnyContent] = identifierAction.async { implicit request =>
-    bridgeConnector.getReviewProperties(request.credId, assessmentId = assessmentId)
+    bridgeConnector.getReviewProperties(request.credId, assessmentId = assessmentId).map(extractFloorAndParkingData)
       .toHttpResultWithContent
   }
+
 }

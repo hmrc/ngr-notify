@@ -63,28 +63,3 @@ case class ContainerData(
 object ContainerData:
   given Format[ContainerData] = Json.format
 
-
-case class SurveyEntity(
-  id: NullableValue[Id],
-  idx: String,
-  name: NullableValue[String],
-  label: String,
-  description: NullableValue[String],
-  origination: NullableValue[String],
-  termination: NullableValue[String],
-  category: CodeMeaning,
-  `type`: CodeMeaning,
-  `class`: CodeMeaning,
-  data: ContainerData,
-  protodata: List[Protodata],
-  metadata: Metadata,
-  compartments: Option[Map[String, String]] = None,
-  items: Option[List[SurveyEntity]] = None
-) extends Entity[ContainerData, Option[Map[String, String]], Option[List[SurveyEntity]]]
-  with StandardProperties
-
-object SurveyEntity:
-  
-    given Format[SurveyEntity] = Json.format
-
-

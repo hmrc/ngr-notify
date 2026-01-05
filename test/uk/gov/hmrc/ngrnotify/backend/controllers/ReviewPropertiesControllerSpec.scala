@@ -116,6 +116,5 @@ class ReviewPropertiesControllerSpec extends AnyFreeSpec with GuiceOneAppPerSuit
       status(result) mustEqual INTERNAL_SERVER_ERROR
 
     }
-
   }
 

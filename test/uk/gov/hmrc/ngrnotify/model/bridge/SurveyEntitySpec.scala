@@ -18,65 +18,42 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.mustBe
-import play.api.libs.json.{JsArray, JsValue, Json}
+import play.api.libs.json.Json
+import uk.gov.hmrc.ngrnotify.model.bridge.SurveyEntity.{LevelSummary, Details}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.JobMessageTestData
 
-class SurveyEntitySpec extends AnyFreeSpec {
+class SurveyEntitySpec extends AnyFreeSpec with JobMessageTestData{
+
   "ProductEntitySpec" - {
     "serialization and deserialization of ProductEntity" in {
       val json = Json.parse(testResourceContent("survey.json"))
 
       val surveyEntity = json.as[SurveyEntity]
-      val serialized  = Json.toJson(surveyEntity)
+      val serialized = Json.toJson(surveyEntity)
 
       Json.prettyPrint(serialized) mustBe Json.prettyPrint(json)
     }
 
-    //TODO: Testing only work in progress - remove unit tests later
-    // Recursively traverse and display the hierarchy
-    def displayHierarchy(node: JsValue, level: Int = 1): Unit = {
-      val label = (node \ "label").asOpt[String].getOrElse("No Label")
-      println(s"${"  " * (level - 1)}Level $level: $label")
-        // Display facilities at each level
-      val facilities = (node \ "data" \ "facilities").asOpt[JsArray].getOrElse(Json.arr())
-      facilities.value.foreach { facility =>
-        val desc = (facility \ "description" \ "value").asOpt[String].getOrElse("No Description")
-        val qty = (facility \ "quantity" \ "value").asOpt[Double].getOrElse(0.0)
-        val units = (facility \ "units" \ "value").asOpt[String].getOrElse("")
-        println(s"${"  " * level}Facility: $desc, Quantity: $qty, Units: $units")
-      }
+    "extractFloorAndParkingData to return empty lists when no items are present" in {
+      val surveyEntity = sampleSurveyEntity
 
+      val reviewDetails: SurveyEntity.ReviewDetails = SurveyEntity.extractFloorAndParkingData(surveyEntity)
 
-      // At level 5 (room/unit), display dimensional data
-      if (level == 5) {
-
-        val uses = (node \ "data" \ "uses").asOpt[JsArray].getOrElse(Json.arr())
-        uses.value.foreach { use =>
-          val desc = (use \ "description" \ "value").asOpt[String].getOrElse("No Description")
-          val qty = (use \ "quantity" \ "value").asOpt[Double].getOrElse(0.0)
-          val units = (use \ "units" \ "value").asOpt[String].getOrElse("")
-          println(s"${"  " * level}Area: $qty $units ($desc)")
-        }
-      }
-
-      // Traverse child items
-      (node \ "items").asOpt[JsArray].foreach { items =>
-        items.value.foreach { child =>
-          displayHierarchy(child, level + 1)
-        }
-      }
+      reviewDetails.floorsInfo mustBe Nil
+      reviewDetails.parkingInfo mustBe Nil
+      reviewDetails.totalArea mustBe 0
     }
-    
-    "load test resource content" in {
-      val json = Json.parse(testResourceContent("survey.json"))
 
-      // Start from the root survey node
-      val rootItems = (json \ "items").as[JsArray]
-      rootItems.value.foreach { site =>
-        displayHierarchy(site)
-      }
+    "extractFloorAndParkingData to return ReviewDetails" in {
+      val json = Json.parse(testResourceContent("min_survey.json"))
 
+      val surveyEntity = json.as[SurveyEntity]
+
+      val reviewDetails: SurveyEntity.ReviewDetails = SurveyEntity.extractFloorAndParkingData(surveyEntity)
+
+      reviewDetails.floorsInfo mustBe List(LevelSummary("Floor Level GF to GF", List(Details("Escalators To All Floors", 3, "Option"), Details("Central Heating", 1, "Option"), Details("Air Conditioning", 10, "Option"), Details("Escalators To All Floors1", 10, "Option"), Details("Air Conditioning1", 15, "Option")), List(Details("retail zone a", 100.11, "m2"), Details("retail zone b", 200.22, "m2"), Details("retail zone c", 300.33, "m2")), 600.66))
+      reviewDetails.parkingInfo mustBe List(LevelSummary("All Levels", List(), List(Details("Surfaced open spaces", 2, "car spaces")), 2))
+      reviewDetails.totalArea mustBe 600.66
     }
-    
-    
   }
 }
