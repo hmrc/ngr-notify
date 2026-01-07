@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeFailure.unknown
-import uk.gov.hmrc.ngrnotify.model.bridge.{Compartments, HodMessage, JobMessage, SurveyEntity, ValuationSurveysData}
+import uk.gov.hmrc.ngrnotify.model.bridge.{HodMessage, JobMessage, ReviewProperties, SurveyEntity}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, PropertyChangesRequest, PropertyLinkingRequest}
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest}
 
@@ -118,17 +118,18 @@ class BridgeConnector @Inject() (
     } yield ngrResponse
 
 
-  def getReviewProperties(credId: CredId, assessmentId: AssessmentId)(using request: Request[?]): BridgeResult[SurveyEntity] =
-    getJobTemplate[Compartments](appConfig.getPropertiesUrl(credId, assessmentId)).flatMap { compartments =>
+  def getReviewProperties(credId: CredId, assessmentId: AssessmentId)(using request: Request[?]): FutureEither[BridgeFailureReason, (SurveyEntity, Option[String])] =
+    getJobTemplate[ReviewProperties](appConfig.reviewPropertiesUrl(credId, assessmentId)).flatMap { reviewProperties =>
+
       val maybeData = for {
-        property   <- compartments.properties.headOption
+        property   <- reviewProperties.properties.headOption
         assessment <- property.data.assessments.headOption
         survey     <- assessment.data.valuation_surveys.headOption
-      } yield survey.data.survey
+      } yield (survey.data.survey, property.data.addresses.propertyFullAddress)
 
       maybeData match {
         case Some(data) => FutureEither(Future.successful(Right(data)))
-        case None       => FutureEither(Future.successful(Left("'Surveys'[/properties/data/assessments/valuation_surveys/data/valuation_surveys/data/survey] node not found")))
+        case None       => FutureEither(Future.successful(Left("'Surveys'[/properties/data/assessments/valuation_surveys/data/survey] node not found")))
       }
     }
 

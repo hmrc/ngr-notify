@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ngrnotify.controllers
 
-import play.api.libs.json.Writes
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.ngrnotify.connectors.bridge.BridgeConnector
 import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction

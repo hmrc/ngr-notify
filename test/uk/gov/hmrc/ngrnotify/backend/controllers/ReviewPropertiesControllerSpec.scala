@@ -61,7 +61,7 @@ class ReviewPropertiesControllerSpec extends AnyFreeSpec with GuiceOneAppPerSuit
 
       when(mockBridgeConnector.getReviewProperties(any[CredId], any[AssessmentId])(using any[Request[?]]))
         .thenReturn(
-          FutureEither(Future.successful(Right(sampleSurveyEntity)))
+          FutureEither(Future.successful(Right((sampleSurveyEntity, None))))
         )
 
       val request = FakeRequest(GET, routes.ReviewPropertiesController.properties(assessmentId).url)

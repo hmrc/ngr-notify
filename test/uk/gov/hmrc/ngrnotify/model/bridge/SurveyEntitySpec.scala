@@ -19,7 +19,7 @@ package uk.gov.hmrc.ngrnotify.model.bridge
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.mustBe
 import play.api.libs.json.Json
-import uk.gov.hmrc.ngrnotify.model.bridge.SurveyEntity.{LevelSummary, Details}
+import uk.gov.hmrc.ngrnotify.model.bridge.SurveyEntity.{LevelSummary, PhysicalDetails}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.JobMessageTestData
 
 class SurveyEntitySpec extends AnyFreeSpec with JobMessageTestData{
@@ -37,7 +37,7 @@ class SurveyEntitySpec extends AnyFreeSpec with JobMessageTestData{
     "extractFloorAndParkingData to return empty lists when no items are present" in {
       val surveyEntity = sampleSurveyEntity
 
-      val reviewDetails: SurveyEntity.ReviewDetails = SurveyEntity.extractFloorAndParkingData(surveyEntity)
+      val reviewDetails: SurveyEntity.ReviewDetails = SurveyEntity.extractFloorAndParkingData(surveyEntity, None)
 
       reviewDetails.floorsInfo mustBe Nil
       reviewDetails.parkingInfo mustBe Nil
@@ -49,10 +49,10 @@ class SurveyEntitySpec extends AnyFreeSpec with JobMessageTestData{
 
       val surveyEntity = json.as[SurveyEntity]
 
-      val reviewDetails: SurveyEntity.ReviewDetails = SurveyEntity.extractFloorAndParkingData(surveyEntity)
+      val reviewDetails: SurveyEntity.ReviewDetails = SurveyEntity.extractFloorAndParkingData(surveyEntity, None)
 
-      reviewDetails.floorsInfo mustBe List(LevelSummary("Floor Level GF to GF", List(Details("Escalators To All Floors", 3, "Option"), Details("Central Heating", 1, "Option"), Details("Air Conditioning", 10, "Option"), Details("Escalators To All Floors1", 10, "Option"), Details("Air Conditioning1", 15, "Option")), List(Details("retail zone a", 100.11, "m2"), Details("retail zone b", 200.22, "m2"), Details("retail zone c", 300.33, "m2")), 600.66))
-      reviewDetails.parkingInfo mustBe List(LevelSummary("All Levels", List(), List(Details("Surfaced open spaces", 2, "car spaces")), 2))
+      reviewDetails.floorsInfo mustBe List(LevelSummary("Floor Level GF to GF", List(PhysicalDetails("Escalators To All Floors", 3, "Option"), PhysicalDetails("Central Heating", 1, "Option"), PhysicalDetails("Air Conditioning", 10, "Option"), PhysicalDetails("Escalators To All Floors1", 10, "Option"), PhysicalDetails("Air Conditioning1", 15, "Option")), List(PhysicalDetails("retail zone a", 100.11, "m2"), PhysicalDetails("retail zone b", 200.22, "m2"), PhysicalDetails("retail zone c", 300.33, "m2")), 600.66))
+      reviewDetails.parkingInfo mustBe List(LevelSummary("All Levels", List(), List(PhysicalDetails("Surfaced open spaces", 2, "car spaces")), 2))
       reviewDetails.totalArea mustBe 600.66
     }
   }

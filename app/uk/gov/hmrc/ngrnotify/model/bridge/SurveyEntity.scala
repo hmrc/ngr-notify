@@ -42,42 +42,42 @@ object SurveyEntity {
 
   given Format[SurveyEntity] = Json.format
 
-  case class Details(
+  case class PhysicalDetails(
     description: String,
     quantity: BigDecimal,
     units: String
   )
 
-  object Details:
-    given OWrites[Details] = Json.writes
+  object PhysicalDetails:
+    given OWrites[PhysicalDetails] = Json.writes
 
-  case class ReviewDetails(floorsInfo: List[LevelSummary], parkingInfo: List[LevelSummary], totalArea: BigDecimal)
+  case class ReviewDetails(floorsInfo: List[LevelSummary], parkingInfo: List[LevelSummary], totalArea: BigDecimal, fullAddress: Option[String])
 
   object ReviewDetails:
     given OWrites[ReviewDetails] = Json.writes
 
   case class LevelSummary(
                            label: String,
-                           facilities: List[Details],
-                           spaces: List[Details],
+                           facilities: List[PhysicalDetails],
+                           spaces: List[PhysicalDetails],
                            totalArea: BigDecimal
   )
 
   object LevelSummary:
     given OWrites[LevelSummary] = Json.writes
 
-  def extractFloorAndParkingData(entity: SurveyEntity): ReviewDetails = {
-    def getFacilities(e: SurveyEntity): List[Details] =
-      val own: List[Details] =
+  def extractFloorAndParkingData(entity: SurveyEntity, fullAddress: Option[String]): ReviewDetails = {
+    def getFacilities(e: SurveyEntity): List[PhysicalDetails] =
+      val own: List[PhysicalDetails] =
         e.data.facilities.flatMap { x =>
           (for {
             desc  <- x.description.value.value
             units <- x.units.value.value
             qty   <- x.quantity.value.value
-          } yield Details(desc, qty, units)).toList
+          } yield PhysicalDetails(desc, qty, units)).toList
         }
 
-      val fromHor: List[Details] =
+      val fromHor: List[PhysicalDetails] =
         e.items.getOrElse(Nil)
           .filter(_.`type`.code == "HOR")
           .flatMap(_.data.facilities.flatMap { x =>
@@ -85,12 +85,12 @@ object SurveyEntity {
               desc  <- x.description.value.value
               units <- x.units.value.value
               qty   <- x.quantity.value.value
-            } yield Details(desc, qty, units)).toList
+            } yield PhysicalDetails(desc, qty, units)).toList
           })
 
       own ++ fromHor
 
-    def getSpaces(e: SurveyEntity): List[Details] =
+    def getSpaces(e: SurveyEntity): List[PhysicalDetails] =
       e.items.getOrElse(Nil)
         .filter(x => x.`type`.code == "HOR" && (x.`class`.code == "BUV" || x.`class`.code == "PUV"))
         .flatMap(_.data.uses.flatMap(u =>
@@ -98,7 +98,7 @@ object SurveyEntity {
             description <- u.description.value.value
             units       <- u.units.value.value
             area        <- u.quantity.value.value
-          } yield Details(description, area, units)
+          } yield PhysicalDetails(description, area, units)
         ))
 
     def recurse(e: SurveyEntity): ReviewDetails = {
@@ -114,7 +114,7 @@ object SurveyEntity {
       val parking = (if (isParking) List(LevelSummary(e.label, facilities, spaces, currentArea)) else Nil) ++ childDetails.flatMap(_.parkingInfo)
       val total   = currentArea + childDetails.flatMap(_.floorsInfo).map(_.totalArea).sum
 
-      ReviewDetails(floors, parking, total)
+      ReviewDetails(floors, parking, total, fullAddress)
     }
 
     recurse(entity)

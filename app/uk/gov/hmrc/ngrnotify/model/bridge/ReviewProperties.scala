@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ngrnotify.model.bridge.utils
+package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.*
+import play.api.libs.json.{Format, Json}
 
-object JsonHelper {
+final case class ReviewProperties (properties: List[PropertyEntity] = List.empty)
 
-  object bridge {
-    case class NullableValue[T](value: Option[T])
-
-    object NullableValue {
-
-      implicit def format[T: Format]: Format[NullableValue[T]] = Format(
-        {
-          case JsNull => JsSuccess(NullableValue(None))
-          case json   => implicitly[Format[T]].reads(json).map(v => NullableValue(Some(v)))
-        },
-        nv => nv.value.map(implicitly[Format[T]].writes).getOrElse(JsNull)
-      )
-    }
-  }
+object ReviewProperties {
+  given Format[ReviewProperties] = Json.format
 }
