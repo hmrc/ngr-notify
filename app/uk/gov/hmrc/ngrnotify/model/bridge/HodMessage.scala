@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{Format, JsValue, Json, Reads}
 
 /*
 
@@ -41,25 +41,29 @@ import play.api.libs.json.{Json, Reads}
     Neither is clear if those systems are present in both development, testing or production arrangements.
 
  */
-case class HodMessage(
-  origin: String,
-  response: HodResponse
-)
-
-object HodMessage:
-  given Reads[HodMessage] = Json.reads
-
-case class HodResponse(
-  origin: String,
-  response: HipResponse
-)
-
-object HodResponse:
-  given Reads[HodResponse] = Json.reads
-
-case class HipResponse(
-  failures: List[BridgeFailure]
-)
-
+case class HipResponse(failures: List[BridgeFailure])
 object HipResponse:
-  given Reads[HipResponse] = Json.reads
+  given Format[HipResponse] = Json.format
+
+case class HodResponse(origin: String, response: HipResponse)
+object HodResponse:
+  given Reads[HodResponse] = Reads { json =>
+    for
+      origin <- (json \ "origin").validate[String]
+      responseJson <- (json \ "response").validate[JsValue]
+      hipResponse <- responseJson.validate[HipResponse]
+        .orElse(
+          responseJson.validate[HodResponse].map(hr => hr.response)
+        )
+    yield HodResponse(origin, hipResponse)
+  }
+
+case class HodMessage(origin: String, response: HodResponse)
+object HodMessage:
+  given Reads[HodMessage] = Reads { json =>
+    for
+      origin <- (json \ "origin").validate[String]
+      responseJson <- (json \ "response").validate[JsValue]
+      hodResponse <- responseJson.validate[HodResponse]
+    yield HodMessage(origin, hodResponse)
+  }
