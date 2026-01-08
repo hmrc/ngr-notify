@@ -51,8 +51,9 @@ class SurveyEntitySpec extends AnyFreeSpec with JobMessageTestData{
 
       val reviewDetails: SurveyEntity.ReviewDetails = SurveyEntity.extractFloorAndParkingData(surveyEntity, None)
 
-      reviewDetails.floorsInfo mustBe List(LevelSummary("Floor Level GF to GF", List(PhysicalDetails("Escalators To All Floors", 3, "Option"), PhysicalDetails("Central Heating", 1, "Option"), PhysicalDetails("Air Conditioning", 10, "Option"), PhysicalDetails("Escalators To All Floors1", 10, "Option"), PhysicalDetails("Air Conditioning1", 15, "Option")), List(PhysicalDetails("retail zone a", 100.11, "m2"), PhysicalDetails("retail zone b", 200.22, "m2"), PhysicalDetails("retail zone c", 300.33, "m2")), 600.66))
-      reviewDetails.parkingInfo mustBe List(LevelSummary("All Levels", List(), List(PhysicalDetails("Surfaced open spaces", 2, "car spaces")), 2))
+      reviewDetails.floorsInfo mustBe List(LevelSummary("Floor Level GF to GF", List(PhysicalDetails("retail zone a", 100.11, "m2"), PhysicalDetails("retail zone b", 200.22, "m2"), PhysicalDetails("retail zone c", 300.33, "m2")), 600.66))
+      reviewDetails.parkingInfo mustBe List(LevelSummary("All Levels", List(PhysicalDetails("Surfaced open spaces", 2, "car spaces")), 2))
+      reviewDetails.otherAdditionInfo mustBe List(LevelSummary("All Levels", List(PhysicalDetails("Air conditioning system", 142.52, "m2"), PhysicalDetails("Land used for storage", 10.23, "m2")), 152.75))
       reviewDetails.totalArea mustBe 600.66
     }
   }
