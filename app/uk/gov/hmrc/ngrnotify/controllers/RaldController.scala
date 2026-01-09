@@ -39,7 +39,7 @@ class RaldController @Inject() (
   def updateRaldChanges(assessmentId: AssessmentId): Action[JsValue] = identifierAction.async(parse.json) { implicit request =>
     request.body.validate[JsObject] match {
       case JsSuccess(raldChanges, _) =>
-        bridgeConnector.submitRaldChanges(request.credId, assessmentId, raldChanges).toHttpResult()
+        bridgeConnector.submitRaldChanges(request.providerId, assessmentId, raldChanges).toHttpResult()
       case jsError: JsError              => Future.successful(buildValidationErrorsResponse(jsError))
     }
   }

@@ -78,7 +78,7 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
           .thenReturn(rightResponseWith(BAD_REQUEST, Some("bridge/ratepayer-invalid.json")))
 
         val controller = inject[RatepayerController]
-        val request    = FakeRequest("POST", "/").withHeaders("X-Cred-Id" -> ratepayerId).withBody(Json.toJson(
+        val request    = FakeRequest("POST", "/").withHeaders("X-Provider-Id" -> ratepayerId).withBody(Json.toJson(
           RegisterRatepayerRequest(Some(individual))
         ))
 
@@ -107,7 +107,7 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
 
         val controller = inject[RatepayerController]
         val request    = FakeRequest("POST", "/")
-          .withHeaders("X-Cred-Id" -> ratepayerId)
+          .withHeaders("X-Provider-Id" -> ratepayerId)
           .withBody(Json.toJson(
           RegisterRatepayerRequest(
             userType = Some(organization),
@@ -141,7 +141,7 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
           .thenReturn(rightResponseWith(BAD_REQUEST, Some("ratepayerWrongID.json")))
 
         val controller = inject[RatepayerController]
-        val result     = controller.getRatepayerPropertyLinks(FakeRequest().withHeaders("X-Cred-Id" -> ratepayerId))
+        val result     = controller.getRatepayerPropertyLinks(FakeRequest().withHeaders("X-Provider-Id" -> ratepayerId))
         status(result)        shouldBe INTERNAL_SERVER_ERROR
         contentAsString(result) should include("Invalid format for Id")
       }
@@ -154,7 +154,7 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
           .thenReturn(rightResponseWith(OK, Some("empty-object.json")))
 
         val controller = inject[RatepayerController]
-        val result     = controller.getRatepayerPropertyLinks(FakeRequest().withHeaders("X-Cred-Id" -> ratepayerId))
+        val result     = controller.getRatepayerPropertyLinks(FakeRequest().withHeaders("X-Provider-Id" -> ratepayerId))
         status(result)          shouldBe INTERNAL_SERVER_ERROR
         contentAsString(result) shouldBe """[{"code":"JSON_VALIDATION_ERROR","reason":"/job <- error.path.missing"}]"""
       }
@@ -167,7 +167,7 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
           .thenReturn(rightResponseWith(OK))
 
         val controller = inject[RatepayerController]
-        val result     = controller.getRatepayerPropertyLinks(FakeRequest().withHeaders("X-Cred-Id" -> ratepayerId))
+        val result     = controller.getRatepayerPropertyLinks(FakeRequest().withHeaders("X-Provider-Id" -> ratepayerId))
         status(result)          shouldBe INTERNAL_SERVER_ERROR
         contentAsString(result) shouldBe """[{"code":"WRONG_RESPONSE_BODY","reason":"HIP response could not be parsed into JSON format."}]"""
       }
@@ -180,7 +180,7 @@ class RatepayerControllerSpec extends AnyWordControllerSpec:
           .thenReturn(leftResponseWith(IOException("HIP connection error details")))
 
         val controller = inject[RatepayerController]
-        val result     = controller.getRatepayerPropertyLinks(FakeRequest().withHeaders("X-Cred-Id" -> ratepayerId))
+        val result     = controller.getRatepayerPropertyLinks(FakeRequest().withHeaders("X-Provider-Id" -> ratepayerId))
         status(result)          shouldBe INTERNAL_SERVER_ERROR
         contentAsString(result) shouldBe """[{"code":"ACTION_FAILED","reason":"HIP connection error details"}]"""
       }

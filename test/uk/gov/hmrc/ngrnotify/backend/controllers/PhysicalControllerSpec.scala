@@ -74,7 +74,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       )
 
       when(
-        mockBridgeConnector.submitPhysicalPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]])
+        mockBridgeConnector.submitPhysicalPropertyChanges(any[String], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]])
       ).thenReturn(
         FutureEither(Future.successful(Right(NO_CONTENT)))
       )
@@ -99,7 +99,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         )
       )
 
-      when(mockBridgeConnector.submitPhysicalPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
+      when(mockBridgeConnector.submitPhysicalPropertyChanges(any[String], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
         .thenReturn(
           FutureEither(Future.successful(Left(INTERNAL_SERVER_ERROR)))
         )
@@ -138,7 +138,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         )
       )
 
-      when(mockBridgeConnector.submitPhysicalPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
+      when(mockBridgeConnector.submitPhysicalPropertyChanges(any[String], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
         .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
 
       val request                = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId = assessmentId).url)
@@ -159,7 +159,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
         )
       )
 
-      when(mockBridgeConnector.submitPhysicalPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
+      when(mockBridgeConnector.submitPhysicalPropertyChanges(any[String], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
         .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
 
       val request                = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId = assessmentId).url)

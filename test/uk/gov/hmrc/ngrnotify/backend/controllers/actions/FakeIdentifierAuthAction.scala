@@ -31,7 +31,8 @@ class FakeIdentifierAuthAction @Inject() (
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
       val credIdValue = request.headers.get("X-Cred-Id").getOrElse("cred-id")
-      block(IdentifierRequest(request, credId = CredId(credIdValue)))
+      val providerIdValue = request.headers.get("X-Provider-Id").getOrElse("provider-id")
+      block(IdentifierRequest(request, credId = CredId(credIdValue), providerId = providerIdValue))
     }
 
 }

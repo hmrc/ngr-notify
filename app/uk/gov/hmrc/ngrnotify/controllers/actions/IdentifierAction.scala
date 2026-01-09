@@ -21,7 +21,7 @@ import play.api.Logging
 import play.api.mvc.*
 import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
-import uk.gov.hmrc.auth.core.retrieve.{Credentials, Retrieval}
+import uk.gov.hmrc.auth.core.retrieve.{Credentials, Retrieval, ~}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 import uk.gov.hmrc.ngrnotify.model.request.IdentifierRequest
@@ -38,19 +38,19 @@ class AuthenticatedIdentifierAction @Inject() (
 ) extends IdentifierAction
   with AuthorisedFunctions with Logging {
 
-  private type RetrievalsType = Option[Credentials]
+  private type RetrievalsType = Option[Credentials] ~ Option[String]
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequest(request)
 
-    val retrievals: Retrieval[RetrievalsType] = Retrievals.credentials
+    val retrievals: Retrieval[RetrievalsType] = Retrievals.credentials and Retrievals.externalId
 
     authorised(ConfidenceLevel.L250).retrieve(retrievals) {
-      case Some(credentials) =>
-        block(IdentifierRequest(request = request, credId = CredId(credentials.providerId)))
+      case Some(credentials) ~ Some(externalId) =>
+        block(IdentifierRequest(request = request, credId = CredId(credentials.providerId), providerId = externalId))
 
-      case None =>
+      case _ =>
         logger.warn("Credentials are missing for the authenticated user")
         Future.successful(Results.Unauthorized("Credentials are missing"))
 

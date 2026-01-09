@@ -24,5 +24,5 @@ class AllowedCredentialsConnector @Inject() ():
 
   private val allowedCredentials = List("test-cred-1", "test-cred-2", "test-cred-3", "test-cred-4")
 
-  def isAllowed(credId: String): Future[Boolean] =
-    Future.successful(allowedCredentials.contains(credId))
+  def isAllowed(id: String): Future[Boolean] =
+    Future.successful(allowedCredentials.contains(id))

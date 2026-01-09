@@ -52,7 +52,7 @@ class StatusControllerSpec extends AnyWordControllerSpec:
       client
         .whenGetting("/ratepayers/GGID123345/dashboard")
         .thenReturn(rightResponseWith(OK, Some("ratepayerGetStatus.json")))
-      val identifierRequest = FakeRequest().withHeaders("X-Cred-Id" -> "GGID123345")
+      val identifierRequest = FakeRequest().withHeaders("X-Provider-Id" -> "GGID123345")
       val result            = controller.getRatepayerStatus(identifierRequest)
       status(result)          shouldBe OK
       contentAsString(result) shouldBe """{"activeRatepayerPersonExists":false,"activeRatepayerPersonaExists":false,"activePropertyLinkCount":0}"""

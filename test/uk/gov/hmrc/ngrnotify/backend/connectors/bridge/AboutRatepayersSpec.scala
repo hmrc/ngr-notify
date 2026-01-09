@@ -68,7 +68,7 @@ class AboutRatepayersSpec extends AnyWordControllerSpec:
       // EXERCISE
       // by applying the process method with both the Bridge template and the NGR request
       val aboutRatepayers = inject[AboutRatepayers]
-      val filled          = aboutRatepayers.process(bridgeTemplate, ngrRequest, CredId("CREDS12345"))
+      val filled          = aboutRatepayers.process(bridgeTemplate, ngrRequest, "123")
 
       // VERIFY
       // that the filled template actually got the NGR request data in the right spots

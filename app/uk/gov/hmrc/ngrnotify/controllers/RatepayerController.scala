@@ -62,7 +62,7 @@ class RatepayerController @Inject() (
    */
   def registerRatepayer: Action[JsValue] = identifierAction.async(parse.json) { implicit request =>
     request.body.validate[RegisterRatepayerRequest] match {
-      case JsSuccess(ngrRequest, _) => bridgeConnector.registerRatepayer(ngrRequest, request.credId).toHttpResult()
+      case JsSuccess(ngrRequest, _) => bridgeConnector.registerRatepayer(ngrRequest, request.providerId).toHttpResult()
       case jsError: JsError         => Future.successful(buildValidationErrorsResponse(jsError))
     }
   }
@@ -72,7 +72,7 @@ class RatepayerController @Inject() (
     since = "2025-11-25"
   )
   def getRatepayerPropertyLinks: Action[AnyContent] = identifierAction.async { implicit request =>
-    hipConnector.getRatepayer(request.credId)
+    hipConnector.getRatepayer(request.providerId)
       .map { response =>
         response.status match {
           case 200    => parsePropertyLinks(response.body)

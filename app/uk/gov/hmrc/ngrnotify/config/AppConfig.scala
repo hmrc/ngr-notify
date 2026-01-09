@@ -18,7 +18,7 @@ package uk.gov.hmrc.ngrnotify.config
 
 import play.api.Configuration
 import uk.gov.hmrc.http.StringContextOps
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId}
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.net.URL
@@ -41,16 +41,16 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   private val ratepayersJobPath                 = servicesConfig.getConfString("hip.ratepayersJobPath", "/voa/v1/job/ratepayers")
   private val propertiesPath                    = servicesConfig.getConfString("hip.propertiesPath", "/voa/v1/job/properties")
   def postJobUrl(): URL                         = url"${hipBaseUrl + jobsPath}"
-  def getRatepayerUrl(id: CredId): URL          = url"${hipBaseUrl + ratepayersPath + "/" + id.value}"
-  def getRatepayerJobUrl(id: CredId): URL       = url"${hipBaseUrl + ratepayersJobPath + "/" + id.value}"
-  def getRatepayerStatusUrl(id: CredId): URL    = url"${hipBaseUrl + ratepayersPath + "/" + id.value}/dashboard"
-  def getRatepayerPropertyLinksUrl(id: CredId): URL    = url"${hipBaseUrl + ratepayersPath + "/" + id.value}/propertyLinks"
+  def getRatepayerUrl(id: String): URL          = url"${hipBaseUrl + ratepayersPath + "/" + id}"
+  def getRatepayerJobUrl(id: String): URL       = url"${hipBaseUrl + ratepayersJobPath + "/" + id}"
+  def getRatepayerStatusUrl(id: String): URL    = url"${hipBaseUrl + ratepayersPath + "/" + id}/dashboard"
+  def getRatepayerPropertyLinksUrl(id: String): URL    = url"${hipBaseUrl + ratepayersPath + "/" + id}/propertyLinks"
 
   def getPropertiesUrl(
-    id: CredId,
+    id: String,
     assessmentId: AssessmentId
   ): URL = {
-    val url = s"$hipBaseUrl$propertiesPath?assessmentId=${assessmentId.value}&personForeignId=${id.value}"
+    val url = s"$hipBaseUrl$propertiesPath?assessmentId=${assessmentId.value}&personForeignId=${id}"
     url"$url"
   }
 
