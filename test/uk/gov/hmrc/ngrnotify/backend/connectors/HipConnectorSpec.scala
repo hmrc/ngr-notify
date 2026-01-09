@@ -64,7 +64,7 @@ class HipConnectorSpec extends AnyWordControllerSpec {
       val connector             = HipConnector(appConfig, httpMock)
       given Request[AnyContent] = FakeRequest()
 
-      val response = connector.getRatepayer(CredId("ID_123")).futureValue
+      val response = connector.getRatepayer("ID_123").futureValue
       response.status shouldBe OK
 
       verify(httpMock)

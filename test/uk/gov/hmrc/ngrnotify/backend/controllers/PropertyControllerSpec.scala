@@ -61,7 +61,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
   "PropertyController" - {
     ".updatePropertyChanges return 202" in {
 
-      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
+      when(mockBridgeConnector.submitPropertyChanges(any[String], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
         .thenReturn(
           FutureEither(Future.successful(Right(NO_CONTENT)))
         )
@@ -76,7 +76,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
 
     s"return $INTERNAL_SERVER_ERROR for a valid request but Hip returns $INTERNAL_SERVER_ERROR" in {
 
-      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
+      when(mockBridgeConnector.submitPropertyChanges(any[String], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
         .thenReturn(
           FutureEither(Future.successful(Left(INTERNAL_SERVER_ERROR)))
         )
@@ -104,7 +104,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
 
     "returns InternalServerError when HipConnector fails" in {
 
-      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
+      when(mockBridgeConnector.submitPropertyChanges(any[String], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
         .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
 
       val request                = FakeRequest(POST, routes.PropertyController.updatePropertyChanges().url)
@@ -114,7 +114,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     }
 
     "returns InternalServerError when an exception is thrown" in {
-      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
+      when(mockBridgeConnector.submitPropertyChanges(any[String], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
         .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
 
       val request                = FakeRequest(POST, routes.PropertyController.updatePropertyChanges().url)
@@ -128,7 +128,7 @@ class PropertyControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
 
       val exceptionMessage = "assessmentRef is missing in the valuations"
 
-      when(mockBridgeConnector.submitPropertyChanges(any[CredId], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
+      when(mockBridgeConnector.submitPropertyChanges(any[String], any[AssessmentId], any[PropertyLinkingRequest])(using any[Request[?]]))
         .thenReturn(
           FutureEither(Future.successful(Right(NO_CONTENT)))
         )

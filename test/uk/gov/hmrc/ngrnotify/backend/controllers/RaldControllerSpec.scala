@@ -70,7 +70,7 @@ class RaldControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSu
 
       when(
         mockBridgeConnector.submitRaldChanges(
-          any[CredId],
+          any[String],
           any[AssessmentId],
           any[JsObject]
         )(using any[Request[?]])
@@ -95,7 +95,7 @@ class RaldControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSu
 
         when(
           mockBridgeConnector.submitRaldChanges(
-            any[CredId],
+            any[String],
             any[AssessmentId],
             any[JsObject]
           )(using any[Request[?]])

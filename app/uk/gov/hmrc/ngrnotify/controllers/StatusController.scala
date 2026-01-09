@@ -45,7 +45,7 @@ class StatusController @Inject() (
   )
   def getRatepayerStatus: Action[AnyContent] = identifierAction.async { implicit request =>
 
-    hipConnector.getRatepayerStatus(request.credId)
+    hipConnector.getRatepayerStatus(request.providerId)
       .map {
         response =>
           response.status match {

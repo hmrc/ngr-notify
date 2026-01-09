@@ -41,7 +41,7 @@ class PropertyController @Inject() (
     request.body.validate[PropertyLinkingRequest] match {
       case JsSuccess(propertyChanges, _) =>
         val assessmentId = getAssessmentId(propertyChanges)
-        bridgeConnector.submitPropertyChanges(request.credId, assessmentId, propertyChanges).toHttpResult()
+        bridgeConnector.submitPropertyChanges(request.providerId, assessmentId, propertyChanges).toHttpResult()
       case jsError: JsError              => Future.successful(buildValidationErrorsResponse(jsError))
     }
   }

@@ -19,4 +19,4 @@ package uk.gov.hmrc.ngrnotify.model.request
 import play.api.mvc.{Request, WrappedRequest}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.CredId
 
-case class IdentifierRequest[A](request: Request[A], credId: CredId) extends WrappedRequest[A](request)
+case class IdentifierRequest[A](request: Request[A], credId: CredId, providerId: String) extends WrappedRequest[A](request)

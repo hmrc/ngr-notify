@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeFailure.unknown
 import uk.gov.hmrc.ngrnotify.model.bridge.{Compartments, HodMessage, JobMessage}
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, PropertyChangesRequest, PropertyLinkingRequest}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, PropertyChangesRequest, PropertyLinkingRequest}
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest}
 
 import java.net.URL
@@ -78,40 +78,40 @@ class BridgeConnector @Inject() (
 
   // TODO It is still unclear why the CorrelationId header serves any useful purpose for "conversating with the BridgeAPI"
 
-  def registerRatepayer(ngrRequest: RegisterRatepayerRequest, credId: CredId)(using request: Request[?]): BridgeResult[NoContent] =
+  def registerRatepayer(ngrRequest: RegisterRatepayerRequest, id: String)(using request: Request[?]): BridgeResult[NoContent] =
     for {
-      template    <- getJobTemplate(appConfig.getRatepayerJobUrl(credId))
-      processed   <- aboutRatepayers.process(template, ngrRequest, credId)
+      template    <- getJobTemplate(appConfig.getRatepayerJobUrl(id))
+      processed   <- aboutRatepayers.process(template, ngrRequest, id)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
 
-  def getRatepayerPropertyLinks(ratepayerCredId: CredId)(using request: Request[?]): BridgeResult[NoContent] =
+  def getRatepayerPropertyLinks(ratepayerId: String)(using request: Request[?]): BridgeResult[NoContent] =
     for {
-      response <- getJobTemplate(appConfig.getRatepayerPropertyLinksUrl(ratepayerCredId))
+      response <- getJobTemplate(appConfig.getRatepayerPropertyLinksUrl(ratepayerId))
     } yield {
       val addresses = response.job.compartments.properties.map(_.data.addresses.propertyFullAddress.getOrElse(""))
       RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)
     }
 
-  def submitPhysicalPropertyChanges(credId: CredId, assessmentId: AssessmentId, propertyChangesRequest: PropertyChangesRequest)(using request: Request[?])
+  def submitPhysicalPropertyChanges(id: String, assessmentId: AssessmentId, propertyChangesRequest: PropertyChangesRequest)(using request: Request[?])
     : BridgeResult[NoContent] =
     for {
-      template    <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
+      template    <- getJobTemplate(appConfig.getPropertiesUrl(id, assessmentId))
       processed   <- PropertyChangesRequest.process(template, propertyChangesRequest)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
 
-  def submitPropertyChanges(credId: CredId, assessmentId: AssessmentId, propertyLinkingRequest: PropertyLinkingRequest)(using request: Request[?])
+  def submitPropertyChanges(id: String, assessmentId: AssessmentId, propertyLinkingRequest: PropertyLinkingRequest)(using request: Request[?])
     : BridgeResult[NoContent] =
     for {
-      template    <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
+      template    <- getJobTemplate(appConfig.getPropertiesUrl(id, assessmentId))
       processed   <- PropertyLinkingRequest.process(template, propertyLinkingRequest)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
 
-  def submitRaldChanges(credId: CredId, assessmentId: AssessmentId, raldChanges: JsObject)(using request: Request[?]): BridgeResult[NoContent] =
+  def submitRaldChanges(id: String, assessmentId: AssessmentId, raldChanges: JsObject)(using request: Request[?]): BridgeResult[NoContent] =
     for {
-      template    <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
+      template    <- getJobTemplate(appConfig.getPropertiesUrl(id, assessmentId))
       processed   <- aboutRald.process(template, raldChanges, assessmentId.value)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse

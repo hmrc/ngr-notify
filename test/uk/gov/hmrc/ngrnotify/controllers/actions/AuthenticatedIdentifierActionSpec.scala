@@ -57,14 +57,19 @@ class AuthenticatedIdentifierActionSpec extends AnyFreeSpec {
 
     "when the user is logged in" - {
       "should return Ok when credentials are present" in {
-        type AuthRetrievals = Option[Credentials]
+        type AuthRetrievals = Option[Credentials] ~ Option[String]
+
         running(application) {
+          val mockResponse: AuthRetrievals =
+            new ~(Some(Credentials("id", "provider")), Some("internal-123"))
+
           when(mockAuthConnector.authorise[AuthRetrievals](any(), any())(using any(), any()))
-            .thenReturn(Future.successful(Some(Credentials("id", "provider"))))
+            .thenReturn(Future.successful(mockResponse))
 
           val action = application.injector.instanceOf[AuthenticatedIdentifierAction]
           val controller = new Harness(action)
           val result = controller.onPageLoad()(FakeRequest("", ""))
+
           status(result) mustBe OK
         }
       }

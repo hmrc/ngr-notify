@@ -41,7 +41,7 @@ import scala.concurrent.{ExecutionContext, Future}
  */
 class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
 
-  def process(bridgeTemplate: JobMessage, ngrRequest: RegisterRatepayerRequest, credId: CredId): BridgeResult[JobMessage] = Future.successful {
+  def process(bridgeTemplate: JobMessage, ngrRequest: RegisterRatepayerRequest, id: String): BridgeResult[JobMessage] = Future.successful {
     try {
       //
       // During a discussion with the Bridge API team, on 2025-11-24, we understood that the "products" compartment
@@ -107,7 +107,7 @@ class AboutRatepayers @Inject() (implicit ec: ExecutionContext):
                   name = NullableValue(ngrRequest.name.map(_.value)),
                   data = productData.copy(
                     foreignIds = List(
-                      ForeignDatum(system = Some(Government_Gateway), value = Some(credId.value)),
+                      ForeignDatum(system = Some(Government_Gateway), value = Some(id)),
                       ForeignDatum(location = Some("NINO"), value = ngrRequest.nino.map(_.value)),
                       ForeignDatum(location = Some("secondary_telephone_number"), value = ngrRequest.secondaryNumber.map(_.value))
                     )

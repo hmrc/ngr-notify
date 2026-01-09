@@ -42,13 +42,13 @@ class HipConnector @Inject() (
 ) extends HipHeaderCarrier(appConfig):
 
   @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
-  def getRatepayer(credId: CredId)(using request: Request[?]): Future[HttpResponse] =
+  def getRatepayer(id: String)(using request: Request[?]): Future[HttpResponse] =
     httpClient
-      .get(appConfig.getRatepayerUrl(credId))(using hipHeaderCarrier)
+      .get(appConfig.getRatepayerUrl(id))(using hipHeaderCarrier)
       .execute[HttpResponse]
 
   @deprecated("This method is going to be moved to the new BridgeConnector", "2025-11-21")
-  def getRatepayerStatus(id: CredId)(using request: Request[?]): Future[HttpResponse] =
+  def getRatepayerStatus(id: String)(using request: Request[?]): Future[HttpResponse] =
     httpClient
       .get(appConfig.getRatepayerStatusUrl(id))(using hipHeaderCarrier)
       .execute[HttpResponse]
