@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,19 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-case class Location(
-  localAuthorityPseudoAreaCode: Option[String] = None,
-  ordnanceSurvey: Option[String] = None,
-  googleMaps: Option[String] = None
-)
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers.mustBe
+import play.api.libs.json.Json
 
-object Location:
+class ReviewPropertiesSpec extends AnyFreeSpec {
+  "ReviewProperties" - {
+    "serialization and deserialization of ReviewProperties" in {
+      val json = Json.parse(testResourceContent("review-page-properties-data.json"))
 
-  import play.api.libs.json.{Format, Json}
-  import uk.gov.hmrc.ngrnotify.model.given
+      val productItem = json.as[ReviewProperties]
+      val serialized = Json.toJson(productItem)
 
-  given Format[Location] = Json.format
+      Json.prettyPrint(serialized) mustBe Json.prettyPrint(json)
+    }
+  }
+}

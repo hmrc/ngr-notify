@@ -28,6 +28,7 @@ object ForeignIdSystem {
   case object NDRRPublicInterface extends ForeignIdSystem
   case object HMRC_VOA_CDB extends ForeignIdSystem // Scala identifiers can't have '-'
   case object SystemX extends ForeignIdSystem // Scala identifiers can't have '-'
+  case object CDB_VSA_SURVEY extends ForeignIdSystem // Scala identifiers can't have '-'
 
   val values: Set[ForeignIdSystem] = Set(
     Government_Gateway,
@@ -36,7 +37,8 @@ object ForeignIdSystem {
     National_Address_Gazetteer,
     NDRRPublicInterface,
     HMRC_VOA_CDB,
-    SystemX
+    SystemX,
+    CDB_VSA_SURVEY
   )
 
   given Format[ForeignIdSystem] = new Format[ForeignIdSystem] {
@@ -50,6 +52,7 @@ object ForeignIdSystem {
       case NDRRPublicInterface        => "NDRRPublicInterface"
       case HMRC_VOA_CDB               => "HMRC-VOA_CDB"
       case SystemX                    => "SystemX"
+      case CDB_VSA_SURVEY                    => "CDB_VSA_SURVEY"
     })
 
     override def reads(json: JsValue): JsResult[ForeignIdSystem] = json match {
@@ -60,6 +63,7 @@ object ForeignIdSystem {
       case JsString("NDRRPublicInterface")        => JsSuccess(NDRRPublicInterface)
       case JsString("HMRC-VOA_CDB")               => JsSuccess(HMRC_VOA_CDB)
       case JsString("SystemX")                    => JsSuccess(SystemX)
+      case JsString("CDB_VSA_SURVEY")                    => JsSuccess(CDB_VSA_SURVEY)
       case x                                      => JsError(s"$x Unknown ForeignIdSystem")
     }
   }

@@ -40,13 +40,13 @@ trait TestData {
   val prefilledDateInput: LocalDate = LocalDate.of(2022, 6, 1)
   val today: LocalDate              = LocalDate.now
 
-  val templateParamsJsonRegistration = Json.obj(
+  val templateParamsJsonRegistration: JsObject = Json.obj(
     "firstName" -> "David",
     "lastName"  -> "Jones",
     "reference" -> "REG12345"
   )
 
-  val templateParamsJsonAddProperty = Json.obj(
+  val templateParamsJsonAddProperty: JsObject = Json.obj(
     "firstName"         -> "David",
     "lastName"          -> "Jones",
     "reference"         -> "REG12345",

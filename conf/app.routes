@@ -16,3 +16,5 @@ POST    /physical/:assessmentId                 uk.gov.hmrc.ngrnotify.controller
 POST    /property                               uk.gov.hmrc.ngrnotify.controllers.PropertyController.updatePropertyChanges()
 
 POST    /rald/:assessmentId                     uk.gov.hmrc.ngrnotify.controllers.RaldController.updateRaldChanges(assessmentId: AssessmentId)
+
+GET    /review-properties/:assessmentId        uk.gov.hmrc.ngrnotify.controllers.ReviewPropertiesController.properties(assessmentId: AssessmentId)

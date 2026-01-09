@@ -222,7 +222,8 @@ class ExportEmailNotificationSpec extends FixtureAsyncFlatSpec with MockitoExten
         // ------
         "microservice.services.hip.host"  -> "localhost",
         "microservice.services.hip.port"  -> "1501",
-        "sendSubmission.retryWindowHours" -> "24" // 1 day
+        "sendSubmission.retryWindowHours" -> "24", // 1 day
+        "feature.use-static-review-response"  -> "false"
       )
     )
     val appConfig     = AppConfig(configuration, ServicesConfig(configuration))
