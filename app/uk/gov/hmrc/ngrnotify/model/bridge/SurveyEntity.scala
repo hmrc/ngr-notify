@@ -67,35 +67,35 @@ object SurveyEntity {
 
   private def getPhysicalDetails(ed: ED): List[PhysicalDetails] =
     for {
-      desc  <- ed.description.value.value.toList
+      description  <- ed.description.value.value.toList
       units <- ed.units.value.value
       qty   <- ed.quantity.value.value
-    } yield PhysicalDetails(desc, qty, units)
-  
+    } yield PhysicalDetails(description, qty, units)
+
   private val validClassCodes = Set("BUV", "PUV", "AUV")
-  
+
   private def getSpaces(e: SurveyEntity): List[PhysicalDetails] =
     e.items.toList.flatten
       .view
       .filter(x => x.`type`.code == "HOR" && validClassCodes(x.`class`.code))
       .flatMap(_.data.uses.flatMap(getPhysicalDetails))
       .toList
-  
+
   def extractFloorAndParkingData(entity: SurveyEntity, fullAddress: Option[String]): ReviewDetails = {
     def recurse(e: SurveyEntity): ReviewDetails = {
       val childDetails = e.items.toList.flatten.map(recurse)
       val isVertical = e.`type`.code == "VER"
       val spaces = getSpaces(e)
       val currentArea = spaces.map(_.quantity).sum
-  
+
       def levelSummaryIf(cond: Boolean) =
         if (cond) List(LevelSummary(e.label, spaces, currentArea)) else Nil
-  
+
       val floors  = levelSummaryIf(isVertical && e.`class`.code == "BLV") ++ childDetails.flatMap(_.floorsInfo)
       val parking = levelSummaryIf(isVertical && e.`class`.code == "PLV") ++ childDetails.flatMap(_.parkingInfo)
       val additionalUnits = levelSummaryIf(isVertical && e.`class`.code == "ALV") ++ childDetails.flatMap(_.otherAdditionInfo)
       val total = currentArea + childDetails.flatMap(_.floorsInfo).map(_.totalArea).sum
-  
+
       ReviewDetails(floors, additionalUnits, parking, total, fullAddress)
     }
     recurse(entity)

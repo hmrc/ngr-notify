@@ -117,9 +117,19 @@ class BridgeConnector @Inject() (
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
 
+  //TODO: Remove the feature flag and associated code once static response is no longer needed in QA environment
+  // as of now Bridge is not returning expected data refer to https://jira.voa.enterpriseipaas.com/browse/NGR-3905.
+  def getReviewProperties(credId: CredId, assessmentId: AssessmentId)(using request: Request[?]): FutureEither[BridgeFailureReason, (SurveyEntity, Option[String])] = {
 
-  def getReviewProperties(credId: CredId, assessmentId: AssessmentId)(using request: Request[?]): FutureEither[BridgeFailureReason, (SurveyEntity, Option[String])] =
-    getJobTemplate[ReviewProperties](appConfig.reviewPropertiesUrl(credId, assessmentId)).flatMap { reviewProperties =>
+    val response: BridgeResult[ReviewProperties] = {
+      if(appConfig.useStaticReviewPropertiesResponse) {
+        Future.successful(Right(Json.parse(scala.io.Source.fromResource("resources/review-page-properties.json").mkString).as[ReviewProperties]))
+      } else{
+        getJobTemplate[ReviewProperties](appConfig.reviewPropertiesUrl(credId, assessmentId))
+      }
+    }
+
+    response.flatMap { reviewProperties =>
 
       val maybeData = for {
         property   <- reviewProperties.properties.headOption
@@ -132,6 +142,7 @@ class BridgeConnector @Inject() (
         case None       => FutureEither(Future.successful(Left("'Surveys'[/properties/data/assessments/valuation_surveys/data/survey] node not found")))
       }
     }
+  }
 
   /**
     * Get the Bridge API job template for the given URL.

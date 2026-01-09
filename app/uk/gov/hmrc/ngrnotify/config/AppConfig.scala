@@ -63,5 +63,8 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
     url"$url"
   }
 
+  val useStaticReviewPropertiesResponse: Boolean =
+    config.get[Boolean]("feature.use-static-review-response")
+
   val hipClientId: String     = servicesConfig.getConfString("hip.clientId", "CLIENT_ID")
   val hipClientSecret: String = servicesConfig.getConfString("hip.clientSecret", "CLIENT_SECRET")
