@@ -44,11 +44,11 @@ class AuthenticatedIdentifierAction @Inject() (
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequest(request)
 
-    val retrievals: Retrieval[RetrievalsType] = Retrievals.credentials and Retrievals.internalId
+    val retrievals: Retrieval[RetrievalsType] = Retrievals.credentials and Retrievals.externalId
 
     authorised(ConfidenceLevel.L250).retrieve(retrievals) {
-      case Some(credentials) ~ Some(internalId) =>
-        block(IdentifierRequest(request = request, credId = CredId(credentials.providerId), providerId = internalId))
+      case Some(credentials) ~ Some(externalId) =>
+        block(IdentifierRequest(request = request, credId = CredId(credentials.providerId), providerId = externalId))
 
       case _ =>
         logger.warn("Credentials are missing for the authenticated user")
