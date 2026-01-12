@@ -1,0 +1,1805 @@
+{
+  "properties": [
+    {
+      "id": 11,
+      "idx": "1",
+      "name": null,
+      "label": "16, NEW GEORGE STREET, PLYMOUTH, PL1 1RL",
+      "description": null,
+      "origination": "20000101T000000Z",
+      "termination": null,
+      "category": {
+        "code": "LTX-DOM-PRP",
+        "meaning": "Local taxation domain property (LGFA88+92)"
+      },
+      "type": {
+        "code": "OCC",
+        "meaning": "Constituted by reference to actual occupation (LGFA88+92=>GRA67=>CommonLaw)"
+      },
+      "class": {
+        "code": "HDT",
+        "meaning": "Statutory NDR hereditament (LGFA88s64(1))"
+      },
+      "data": {
+        "foreign_ids": [
+          {
+            "system": "HMRC-VOA_CDB",
+            "location": "hmrc/voa/cdb/add_view",
+            "value": "55821184"
+          },
+          {
+            "system": "National_Address_Gazetteer",
+            "location": "https://services.geoplace.co.uk/",
+            "value": "100041063576"
+          }
+        ],
+        "foreign_names": [],
+        "foreign_labels": [],
+        "addresses": {
+          "property_full_address": "16, NEW GEORGE STREET, PLYMOUTH, PL1 1RL",
+          "address_line_1": "16",
+          "address_postcode": "PL1 1RL",
+          "known_as": null
+        },
+        "location": {
+          "local_authority_pseudo_area_code": "1160",
+          "ordnance_survey": null,
+          "google_maps": null
+        },
+        "assessments": [
+          {
+            "id": 11,
+            "idx": "1",
+            "name": null,
+            "label": "Non Domestic Rating Assessment",
+            "description": null,
+            "origination": "20230825T124233Z",
+            "termination": null,
+            "category": {
+              "code": "LTX-DOM-AST",
+              "meaning": "Local taxation domain assessment (LGFA88+92)"
+            },
+            "type": {
+              "code": "CHG",
+              "meaning": "To be determined (To be determined)"
+            },
+            "class": {
+              "code": "RLE",
+              "meaning": "To be determined (To be determined)"
+            },
+            "data": {
+              "foreign_ids": [
+                {
+                  "system": "HMRC-VOA_CDB",
+                  "location": "hmrc/voa/cdb/ndr_assessments",
+                  "value": "27399677000"
+                }
+              ],
+              "foreign_names": [],
+              "foreign_labels": [],
+              "property": {
+                "property_id": 11,
+                "cdb_property_id": 55821184
+              },
+              "use": {
+                "is_composite": "N",
+                "is_part_exempt": "N",
+                "use_description": "RESTAURANT AND PREMISES RESTAURANT AND PREMISES"
+              },
+              "valuation_surveys": [
+                {
+                  "id": 7,
+                  "idx": "1",
+                  "name": null,
+                  "label": "Valuation survey supporting a local taxation rating list entry (assessment)",
+                  "description": "Valuation Survey",
+                  "origination": "20251122T000000Z",
+                  "termination": null,
+                  "category": {
+                    "code": "LTX-DOM-VAS",
+                    "meaning": "Local taxation domain valuation survey (LGFA88sch6)"
+                  },
+                  "type": {
+                    "code": "SPL",
+                    "meaning": "Composed of a hierarchy of spatial containers (To be determined)"
+                  },
+                  "class": {
+                    "code": "NIA",
+                    "meaning": "Areas measured to faces of internal perimeter or party walls (To be determined)"
+                  },
+                  "data": {
+                    "foreign_ids": [
+                      {
+                        "system": "CDB_VSA_SURVEY",
+                        "location": "hmrc-voa/cdb/vsa/hereditament_vals",
+                        "value": "24104677000"
+                      }
+                    ],
+                    "foreign_names": [],
+                    "foreign_labels": [],
+                    "survey": {
+                      "id": 1,
+                      "idx": "1",
+                      "name": null,
+                      "label": "Site",
+                      "description": null,
+                      "origination": null,
+                      "termination": null,
+                      "category": {
+                        "code": "LTX-DOM-CON",
+                        "meaning": "Temporal spatial unit formed by reference to statutory and common law principles of rateable occupation."
+                      },
+                      "type": {
+                        "code": "HOR",
+                        "meaning": "A two dimensional horizontal unit of space"
+                      },
+                      "class": {
+                        "code": "SIT",
+                        "meaning": "Site"
+                      },
+                      "data": {
+                        "foreign_ids": [
+                          {
+                            "system": "HMRC-VOA_CDB",
+                            "location": "hmrc/voa/cdb/hereditament_vals",
+                            "value": "24104677000"
+                          }
+                        ],
+                        "foreign_names": [],
+                        "foreign_labels": [],
+                        "uses": [],
+                        "constructions": [],
+                        "facilities": [],
+                        "artifacts": [],
+                        "uninheritances": [],
+                        "attributions": []
+                      },
+                      "protodata": [],
+                      "metadata": {
+                        "sending": {
+                          "extracting": {
+                            "selecting": {}
+                          },
+                          "transforming": {
+                            "filtering": {},
+                            "supplementing": {},
+                            "recontextualising": {}
+                          },
+                          "loading": {
+                            "readying": {},
+                            "assuring": {},
+                            "signing": {},
+                            "encrypting": {},
+                            "sending": {}
+                          }
+                        },
+                        "receiving": {
+                          "unloading": {
+                            "receiving": {},
+                            "decrypting": {},
+                            "verifying": {},
+                            "assuring": {},
+                            "readying": {}
+                          },
+                          "transforming": {
+                            "recontextualising": {},
+                            "dropping": {},
+                            "restoring": {}
+                          },
+                          "storing": {
+                            "inserting": {}
+                          }
+                        }
+                      },
+                      "compartments": {},
+                      "items": [
+                        {
+                          "id": 2,
+                          "idx": "1.1",
+                          "name": null,
+                          "label": "Site Level 0 to 0",
+                          "description": null,
+                          "origination": "19490115T000000Z",
+                          "termination": null,
+                          "category": {
+                            "code": "LTX-DOM-CON",
+                            "meaning": null
+                          },
+                          "type": {
+                            "code": "VER",
+                            "meaning": "The vertical (3rd) dimension of the parent two dimensional horizontal unit of space"
+                          },
+                          "class": {
+                            "code": "SLV",
+                            "meaning": "Site Level"
+                          },
+                          "data": {
+                            "foreign_ids": [],
+                            "foreign_names": [],
+                            "foreign_labels": [],
+                            "uses": [],
+                            "constructions": [],
+                            "facilities": [],
+                            "artifacts": [],
+                            "uninheritances": [],
+                            "attributions": []
+                          },
+                          "protodata": [],
+                          "metadata": {
+                            "sending": {
+                              "extracting": {
+                                "selecting": {}
+                              },
+                              "transforming": {
+                                "filtering": {},
+                                "supplementing": {},
+                                "recontextualising": {}
+                              },
+                              "loading": {
+                                "readying": {},
+                                "assuring": {},
+                                "signing": {},
+                                "encrypting": {},
+                                "sending": {}
+                              }
+                            },
+                            "receiving": {
+                              "unloading": {
+                                "receiving": {},
+                                "decrypting": {},
+                                "verifying": {},
+                                "assuring": {},
+                                "readying": {}
+                              },
+                              "transforming": {
+                                "recontextualising": {},
+                                "dropping": {},
+                                "restoring": {}
+                              },
+                              "storing": {
+                                "inserting": {}
+                              }
+                            }
+                          },
+                          "compartments": {},
+                          "items": [
+                            {
+                              "id": 3,
+                              "idx": "1.1.1",
+                              "name": null,
+                              "label": "Separate Survey Unit 1",
+                              "description": null,
+                              "origination": "19490610T000000Z",
+                              "termination": null,
+                              "category": {
+                                "code": "LTX-DOM-CON",
+                                "meaning": null
+                              },
+                              "type": {
+                                "code": "HOR",
+                                "meaning": "A two dimensional horizontal unit of space"
+                              },
+                              "class": {
+                                "code": "BSU",
+                                "meaning": "Building or Structure Survey Unit"
+                              },
+                              "data": {
+                                "foreign_ids": [],
+                                "foreign_names": [],
+                                "foreign_labels": [],
+                                "uses": [],
+                                "constructions": [],
+                                "facilities": [],
+                                "artifacts": [],
+                                "uninheritances": [],
+                                "attributions": []
+                              },
+                              "protodata": [],
+                              "metadata": {
+                                "sending": {
+                                  "extracting": {
+                                    "selecting": {}
+                                  },
+                                  "transforming": {
+                                    "filtering": {},
+                                    "supplementing": {},
+                                    "recontextualising": {}
+                                  },
+                                  "loading": {
+                                    "readying": {},
+                                    "assuring": {},
+                                    "signing": {},
+                                    "encrypting": {},
+                                    "sending": {}
+                                  }
+                                },
+                                "receiving": {
+                                  "unloading": {
+                                    "receiving": {},
+                                    "decrypting": {},
+                                    "verifying": {},
+                                    "assuring": {},
+                                    "readying": {}
+                                  },
+                                  "transforming": {
+                                    "recontextualising": {},
+                                    "dropping": {},
+                                    "restoring": {}
+                                  },
+                                  "storing": {
+                                    "inserting": {}
+                                  }
+                                }
+                              },
+                              "compartments": {},
+                              "items": [
+                                {
+                                  "id": 4,
+                                  "idx": "1.1.1.1",
+                                  "name": null,
+                                  "label": "Floor Level GF to GF",
+                                  "description": null,
+                                  "origination": "19490610T000000Z",
+                                  "termination": null,
+                                  "category": {
+                                    "code": "LTX-DOM-CON",
+                                    "meaning": null
+                                  },
+                                  "type": {
+                                    "code": "VER",
+                                    "meaning": "The vertical (3rd) dimension of the parent two dimensional horizontal unit of space"
+                                  },
+                                  "class": {
+                                    "code": "BLV",
+                                    "meaning": "Building or Structure Level"
+                                  },
+                                  "data": {
+                                    "foreign_ids": [],
+                                    "foreign_names": [],
+                                    "foreign_labels": [],
+                                    "uses": [],
+                                    "constructions": [],
+                                    "facilities": [],
+                                    "artifacts": [],
+                                    "uninheritances": [],
+                                    "attributions": []
+                                  },
+                                  "protodata": [],
+                                  "metadata": {
+                                    "sending": {
+                                      "extracting": {
+                                        "selecting": {}
+                                      },
+                                      "transforming": {
+                                        "filtering": {},
+                                        "supplementing": {},
+                                        "recontextualising": {}
+                                      },
+                                      "loading": {
+                                        "readying": {},
+                                        "assuring": {},
+                                        "signing": {},
+                                        "encrypting": {},
+                                        "sending": {}
+                                      }
+                                    },
+                                    "receiving": {
+                                      "unloading": {
+                                        "receiving": {},
+                                        "decrypting": {},
+                                        "verifying": {},
+                                        "assuring": {},
+                                        "readying": {}
+                                      },
+                                      "transforming": {
+                                        "recontextualising": {},
+                                        "dropping": {},
+                                        "restoring": {}
+                                      },
+                                      "storing": {
+                                        "inserting": {}
+                                      }
+                                    }
+                                  },
+                                  "compartments": {},
+                                  "items": [
+                                    {
+                                      "id": 6,
+                                      "idx": "1.1.1.1.1",
+                                      "name": null,
+                                      "label": "Unit of Valuation 1",
+                                      "description": null,
+                                      "origination": "19490610T000000Z",
+                                      "termination": null,
+                                      "category": {
+                                        "code": "LTX-DOM-CON",
+                                        "meaning": null
+                                      },
+                                      "type": {
+                                        "code": "HOR",
+                                        "meaning": "A two dimensional horizontal unit of space"
+                                      },
+                                      "class": {
+                                        "code": "BUV",
+                                        "meaning": "Unit Of Valuation (Buildings and Structures)"
+                                      },
+                                      "data": {
+                                        "foreign_ids": [],
+                                        "foreign_names": [],
+                                        "foreign_labels": [],
+                                        "uses": [
+                                          {
+                                            "activity": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "code": {
+                                              "source": "aucode",
+                                              "value": "SZA"
+                                            },
+                                            "description": {
+                                              "source": "ns_au_desc",
+                                              "value": "Retail zone a"
+                                            },
+                                            "quantity": {
+                                              "source": "accomarea",
+                                              "value": 53.31
+                                            },
+                                            "units": {
+                                              "source": null,
+                                              "value": "m2"
+                                            }
+                                          }
+                                        ],
+                                        "constructions": [],
+                                        "facilities": [],
+                                        "artifacts": [],
+                                        "uninheritances": [],
+                                        "attributions": []
+                                      },
+                                      "protodata": [],
+                                      "metadata": {
+                                        "sending": {
+                                          "extracting": {
+                                            "selecting": {}
+                                          },
+                                          "transforming": {
+                                            "filtering": {},
+                                            "supplementing": {},
+                                            "recontextualising": {}
+                                          },
+                                          "loading": {
+                                            "readying": {},
+                                            "assuring": {},
+                                            "signing": {},
+                                            "encrypting": {},
+                                            "sending": {}
+                                          }
+                                        },
+                                        "receiving": {
+                                          "unloading": {
+                                            "receiving": {},
+                                            "decrypting": {},
+                                            "verifying": {},
+                                            "assuring": {},
+                                            "readying": {}
+                                          },
+                                          "transforming": {
+                                            "recontextualising": {},
+                                            "dropping": {},
+                                            "restoring": {}
+                                          },
+                                          "storing": {
+                                            "inserting": {}
+                                          }
+                                        }
+                                      },
+                                      "compartments": {},
+                                      "items": []
+                                    },
+                                    {
+                                      "id": 7,
+                                      "idx": "1.1.1.1.2",
+                                      "name": null,
+                                      "label": "Unit of Valuation 2",
+                                      "description": null,
+                                      "origination": "19490610T000000Z",
+                                      "termination": null,
+                                      "category": {
+                                        "code": "LTX-DOM-CON",
+                                        "meaning": null
+                                      },
+                                      "type": {
+                                        "code": "HOR",
+                                        "meaning": "A two dimensional horizontal unit of space"
+                                      },
+                                      "class": {
+                                        "code": "BUV",
+                                        "meaning": "Unit Of Valuation (Buildings and Structures)"
+                                      },
+                                      "data": {
+                                        "foreign_ids": [],
+                                        "foreign_names": [],
+                                        "foreign_labels": [],
+                                        "uses": [
+                                          {
+                                            "activity": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "code": {
+                                              "source": "aucode",
+                                              "value": "SZB"
+                                            },
+                                            "description": {
+                                              "source": "ns_au_desc",
+                                              "value": "Retail zone b"
+                                            },
+                                            "quantity": {
+                                              "source": "accomarea",
+                                              "value": 53.31
+                                            },
+                                            "units": {
+                                              "source": null,
+                                              "value": "m2"
+                                            }
+                                          }
+                                        ],
+                                        "constructions": [],
+                                        "facilities": [],
+                                        "artifacts": [],
+                                        "uninheritances": [],
+                                        "attributions": []
+                                      },
+                                      "protodata": [],
+                                      "metadata": {
+                                        "sending": {
+                                          "extracting": {
+                                            "selecting": {}
+                                          },
+                                          "transforming": {
+                                            "filtering": {},
+                                            "supplementing": {},
+                                            "recontextualising": {}
+                                          },
+                                          "loading": {
+                                            "readying": {},
+                                            "assuring": {},
+                                            "signing": {},
+                                            "encrypting": {},
+                                            "sending": {}
+                                          }
+                                        },
+                                        "receiving": {
+                                          "unloading": {
+                                            "receiving": {},
+                                            "decrypting": {},
+                                            "verifying": {},
+                                            "assuring": {},
+                                            "readying": {}
+                                          },
+                                          "transforming": {
+                                            "recontextualising": {},
+                                            "dropping": {},
+                                            "restoring": {}
+                                          },
+                                          "storing": {
+                                            "inserting": {}
+                                          }
+                                        }
+                                      },
+                                      "compartments": {},
+                                      "items": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "id": 16,
+                                  "idx": "1.1.1.3",
+                                  "name": null,
+                                  "label": "Floor Level FF to FF",
+                                  "description": null,
+                                  "origination": "19490610T000000Z",
+                                  "termination": null,
+                                  "category": {
+                                    "code": "LTX-DOM-CON",
+                                    "meaning": null
+                                  },
+                                  "type": {
+                                    "code": "VER",
+                                    "meaning": "The vertical (3rd) dimension of the parent two dimensional horizontal unit of space"
+                                  },
+                                  "class": {
+                                    "code": "BLV",
+                                    "meaning": "Unit Of Valuation (Buildings and Structures)"
+                                  },
+                                  "data": {
+                                    "foreign_ids": [],
+                                    "foreign_names": [],
+                                    "foreign_labels": [],
+                                    "uses": [],
+                                    "constructions": [],
+                                    "facilities": [],
+                                    "artifacts": [],
+                                    "uninheritances": [],
+                                    "attributions": []
+                                  },
+                                  "protodata": [],
+                                  "metadata": {
+                                    "sending": {
+                                      "extracting": {
+                                        "selecting": {}
+                                      },
+                                      "transforming": {
+                                        "filtering": {},
+                                        "supplementing": {},
+                                        "recontextualising": {}
+                                      },
+                                      "loading": {
+                                        "readying": {},
+                                        "assuring": {},
+                                        "signing": {},
+                                        "encrypting": {},
+                                        "sending": {}
+                                      }
+                                    },
+                                    "receiving": {
+                                      "unloading": {
+                                        "receiving": {},
+                                        "decrypting": {},
+                                        "verifying": {},
+                                        "assuring": {},
+                                        "readying": {}
+                                      },
+                                      "transforming": {
+                                        "recontextualising": {},
+                                        "dropping": {},
+                                        "restoring": {}
+                                      },
+                                      "storing": {
+                                        "inserting": {}
+                                      }
+                                    }
+                                  },
+                                  "compartments": {},
+                                  "items": [
+                                    {
+                                      "id": 17,
+                                      "idx": "1.1.1.3.1",
+                                      "name": null,
+                                      "label": "Unit of Valuation 10",
+                                      "description": null,
+                                      "origination": "19490610T000000Z",
+                                      "termination": null,
+                                      "category": {
+                                        "code": "LTX-DOM-CON",
+                                        "meaning": null
+                                      },
+                                      "type": {
+                                        "code": "HOR",
+                                        "meaning": "A two dimensional horizontal unit of space"
+                                      },
+                                      "class": {
+                                        "code": "BUV",
+                                        "meaning": "Unit Of Valuation (Buildings and Structures)"
+                                      },
+                                      "data": {
+                                        "foreign_ids": [],
+                                        "foreign_names": [],
+                                        "foreign_labels": [],
+                                        "uses": [
+                                          {
+                                            "activity": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "code": {
+                                              "source": "aucode",
+                                              "value": "ASI"
+                                            },
+                                            "description": {
+                                              "source": "ns_au_desc",
+                                              "value": "Internal storage 1"
+                                            },
+                                            "quantity": {
+                                              "source": "accomarea",
+                                              "value": 7.24
+                                            },
+                                            "units": {
+                                              "source": null,
+                                              "value": "m2"
+                                            }
+                                          }
+                                        ],
+                                        "constructions": [],
+                                        "facilities": [],
+                                        "artifacts": [],
+                                        "uninheritances": [],
+                                        "attributions": []
+                                      },
+                                      "protodata": [],
+                                      "metadata": {
+                                        "sending": {
+                                          "extracting": {
+                                            "selecting": {}
+                                          },
+                                          "transforming": {
+                                            "filtering": {},
+                                            "supplementing": {},
+                                            "recontextualising": {}
+                                          },
+                                          "loading": {
+                                            "readying": {},
+                                            "assuring": {},
+                                            "signing": {},
+                                            "encrypting": {},
+                                            "sending": {}
+                                          }
+                                        },
+                                        "receiving": {
+                                          "unloading": {
+                                            "receiving": {},
+                                            "decrypting": {},
+                                            "verifying": {},
+                                            "assuring": {},
+                                            "readying": {}
+                                          },
+                                          "transforming": {
+                                            "recontextualising": {},
+                                            "dropping": {},
+                                            "restoring": {}
+                                          },
+                                          "storing": {
+                                            "inserting": {}
+                                          }
+                                        }
+                                      },
+                                      "compartments": {},
+                                      "items": []
+                                    },
+                                    {
+                                      "id": 21,
+                                      "idx": "1.1.1.3.5",
+                                      "name": null,
+                                      "label": "Unit of Valuation 14",
+                                      "description": null,
+                                      "origination": "19490610T000000Z",
+                                      "termination": null,
+                                      "category": {
+                                        "code": "LTX-DOM-CON",
+                                        "meaning": null
+                                      },
+                                      "type": {
+                                        "code": "HOR",
+                                        "meaning": "A two dimensional horizontal unit of space"
+                                      },
+                                      "class": {
+                                        "code": "BUV",
+                                        "meaning": "Unit Of Valuation (Buildings and Structures)"
+                                      },
+                                      "data": {
+                                        "foreign_ids": [],
+                                        "foreign_names": [],
+                                        "foreign_labels": [],
+                                        "uses": [
+                                          {
+                                            "activity": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "code": {
+                                              "source": "aucode",
+                                              "value": "ASI"
+                                            },
+                                            "description": {
+                                              "source": "ns_au_desc",
+                                              "value": "Kitchen"
+                                            },
+                                            "quantity": {
+                                              "source": "accomarea",
+                                              "value": 16.69
+                                            },
+                                            "units": {
+                                              "source": null,
+                                              "value": "m2"
+                                            }
+                                          }
+                                        ],
+                                        "constructions": [],
+                                        "facilities": [],
+                                        "artifacts": [],
+                                        "uninheritances": [],
+                                        "attributions": []
+                                      },
+                                      "protodata": [],
+                                      "metadata": {
+                                        "sending": {
+                                          "extracting": {
+                                            "selecting": {}
+                                          },
+                                          "transforming": {
+                                            "filtering": {},
+                                            "supplementing": {},
+                                            "recontextualising": {}
+                                          },
+                                          "loading": {
+                                            "readying": {},
+                                            "assuring": {},
+                                            "signing": {},
+                                            "encrypting": {},
+                                            "sending": {}
+                                          }
+                                        },
+                                        "receiving": {
+                                          "unloading": {
+                                            "receiving": {},
+                                            "decrypting": {},
+                                            "verifying": {},
+                                            "assuring": {},
+                                            "readying": {}
+                                          },
+                                          "transforming": {
+                                            "recontextualising": {},
+                                            "dropping": {},
+                                            "restoring": {}
+                                          },
+                                          "storing": {
+                                            "inserting": {}
+                                          }
+                                        }
+                                      },
+                                      "compartments": {},
+                                      "items": []
+                                    },
+                                    {
+                                      "id": 22,
+                                      "idx": "1.1.1.3.6",
+                                      "name": null,
+                                      "label": "Unit of Valuation 15",
+                                      "description": null,
+                                      "origination": "19490610T000000Z",
+                                      "termination": null,
+                                      "category": {
+                                        "code": "LTX-DOM-CON",
+                                        "meaning": null
+                                      },
+                                      "type": {
+                                        "code": "HOR",
+                                        "meaning": "A two dimensional horizontal unit of space"
+                                      },
+                                      "class": {
+                                        "code": "BUV",
+                                        "meaning": "Unit Of Valuation (Buildings and Structures)"
+                                      },
+                                      "data": {
+                                        "foreign_ids": [],
+                                        "foreign_names": [],
+                                        "foreign_labels": [],
+                                        "uses": [
+                                          {
+                                            "activity": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "code": {
+                                              "source": "aucode",
+                                              "value": "ASI"
+                                            },
+                                            "description": {
+                                              "source": "ns_au_desc",
+                                              "value": "Retail area"
+                                            },
+                                            "quantity": {
+                                              "source": "accomarea",
+                                              "value": 6.17
+                                            },
+                                            "units": {
+                                              "source": null,
+                                              "value": "m2"
+                                            }
+                                          }
+                                        ],
+                                        "constructions": [],
+                                        "facilities": [],
+                                        "artifacts": [],
+                                        "uninheritances": [],
+                                        "attributions": []
+                                      },
+                                      "protodata": [],
+                                      "metadata": {
+                                        "sending": {
+                                          "extracting": {
+                                            "selecting": {}
+                                          },
+                                          "transforming": {
+                                            "filtering": {},
+                                            "supplementing": {},
+                                            "recontextualising": {}
+                                          },
+                                          "loading": {
+                                            "readying": {},
+                                            "assuring": {},
+                                            "signing": {},
+                                            "encrypting": {},
+                                            "sending": {}
+                                          }
+                                        },
+                                        "receiving": {
+                                          "unloading": {
+                                            "receiving": {},
+                                            "decrypting": {},
+                                            "verifying": {},
+                                            "assuring": {},
+                                            "readying": {}
+                                          },
+                                          "transforming": {
+                                            "recontextualising": {},
+                                            "dropping": {},
+                                            "restoring": {}
+                                          },
+                                          "storing": {
+                                            "inserting": {}
+                                          }
+                                        }
+                                      },
+                                      "compartments": {},
+                                      "items": []
+                                    },
+                                    {
+                                      "id": 25,
+                                      "idx": "1.1.1.3.9",
+                                      "name": null,
+                                      "label": "Unit of Valuation 18",
+                                      "description": null,
+                                      "origination": "19490610T000000Z",
+                                      "termination": null,
+                                      "category": {
+                                        "code": "LTX-DOM-CON",
+                                        "meaning": null
+                                      },
+                                      "type": {
+                                        "code": "HOR",
+                                        "meaning": "A two dimensional horizontal unit of space"
+                                      },
+                                      "class": {
+                                        "code": "BUV",
+                                        "meaning": "Unit Of Valuation (Buildings and Structures)"
+                                      },
+                                      "data": {
+                                        "foreign_ids": [],
+                                        "foreign_names": [],
+                                        "foreign_labels": [],
+                                        "uses": [
+                                          {
+                                            "activity": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "code": {
+                                              "source": "aucode",
+                                              "value": "WCS"
+                                            },
+                                            "description": {
+                                              "source": "ns_au_desc",
+                                              "value": "Staff toilets"
+                                            },
+                                            "quantity": {
+                                              "source": "accomarea",
+                                              "value": 20
+                                            },
+                                            "units": {
+                                              "source": null,
+                                              "value": "m2"
+                                            }
+                                          }
+                                        ],
+                                        "constructions": [],
+                                        "facilities": [],
+                                        "artifacts": [],
+                                        "uninheritances": [],
+                                        "attributions": []
+                                      },
+                                      "protodata": [],
+                                      "metadata": {
+                                        "sending": {
+                                          "extracting": {
+                                            "selecting": {}
+                                          },
+                                          "transforming": {
+                                            "filtering": {},
+                                            "supplementing": {},
+                                            "recontextualising": {}
+                                          },
+                                          "loading": {
+                                            "readying": {},
+                                            "assuring": {},
+                                            "signing": {},
+                                            "encrypting": {},
+                                            "sending": {}
+                                          }
+                                        },
+                                        "receiving": {
+                                          "unloading": {
+                                            "receiving": {},
+                                            "decrypting": {},
+                                            "verifying": {},
+                                            "assuring": {},
+                                            "readying": {}
+                                          },
+                                          "transforming": {
+                                            "recontextualising": {},
+                                            "dropping": {},
+                                            "restoring": {}
+                                          },
+                                          "storing": {
+                                            "inserting": {}
+                                          }
+                                        }
+                                      },
+                                      "compartments": {},
+                                      "items": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "id": 30,
+                              "idx": "1.1.3",
+                              "name": null,
+                              "label": "Additional Survey Items 1",
+                              "description": null,
+                              "origination": "19481126T000000Z",
+                              "termination": null,
+                              "category": {
+                                "code": "LTX-DOM-CON",
+                                "meaning": null
+                              },
+                              "type": {
+                                "code": "HOR",
+                                "meaning": "A two dimensional horizontal unit of space"
+                              },
+                              "class": {
+                                "code": "ASU",
+                                "meaning": "Additional Survey Unit"
+                              },
+                              "data": {
+                                "foreign_ids": [],
+                                "foreign_names": [],
+                                "foreign_labels": [],
+                                "uses": [],
+                                "constructions": [],
+                                "facilities": [],
+                                "artifacts": [],
+                                "uninheritances": [],
+                                "attributions": []
+                              },
+                              "protodata": [],
+                              "metadata": {
+                                "sending": {
+                                  "extracting": {
+                                    "selecting": {}
+                                  },
+                                  "transforming": {
+                                    "filtering": {},
+                                    "supplementing": {},
+                                    "recontextualising": {}
+                                  },
+                                  "loading": {
+                                    "readying": {},
+                                    "assuring": {},
+                                    "signing": {},
+                                    "encrypting": {},
+                                    "sending": {}
+                                  }
+                                },
+                                "receiving": {
+                                  "unloading": {
+                                    "receiving": {},
+                                    "decrypting": {},
+                                    "verifying": {},
+                                    "assuring": {},
+                                    "readying": {}
+                                  },
+                                  "transforming": {
+                                    "recontextualising": {},
+                                    "dropping": {},
+                                    "restoring": {}
+                                  },
+                                  "storing": {
+                                    "inserting": {}
+                                  }
+                                }
+                              },
+                              "compartments": {},
+                              "items": [
+                                {
+                                  "id": 31,
+                                  "idx": "1.1.3.1",
+                                  "name": null,
+                                  "label": "All Levels",
+                                  "description": null,
+                                  "origination": "19490610T000000Z",
+                                  "termination": null,
+                                  "category": {
+                                    "code": "LTX-DOM-CON",
+                                    "meaning": null
+                                  },
+                                  "type": {
+                                    "code": "VER",
+                                    "meaning": "The vertical (3rd) dimension of the parent two dimensional horizontal unit of space"
+                                  },
+                                  "class": {
+                                    "code": "ALV",
+                                    "meaning": "Every Additional Survey Unit Level"
+                                  },
+                                  "data": {
+                                    "foreign_ids": [],
+                                    "foreign_names": [],
+                                    "foreign_labels": [],
+                                    "uses": [],
+                                    "constructions": [],
+                                    "facilities": [],
+                                    "artifacts": [],
+                                    "uninheritances": [],
+                                    "attributions": []
+                                  },
+                                  "protodata": [],
+                                  "metadata": {
+                                    "sending": {
+                                      "extracting": {
+                                        "selecting": {}
+                                      },
+                                      "transforming": {
+                                        "filtering": {},
+                                        "supplementing": {},
+                                        "recontextualising": {}
+                                      },
+                                      "loading": {
+                                        "readying": {},
+                                        "assuring": {},
+                                        "signing": {},
+                                        "encrypting": {},
+                                        "sending": {}
+                                      }
+                                    },
+                                    "receiving": {
+                                      "unloading": {
+                                        "receiving": {},
+                                        "decrypting": {},
+                                        "verifying": {},
+                                        "assuring": {},
+                                        "readying": {}
+                                      },
+                                      "transforming": {
+                                        "recontextualising": {},
+                                        "dropping": {},
+                                        "restoring": {}
+                                      },
+                                      "storing": {
+                                        "inserting": {}
+                                      }
+                                    }
+                                  },
+                                  "compartments": {},
+                                  "items": [
+                                    {
+                                      "id": 32,
+                                      "idx": "1.1.3.1.1",
+                                      "name": null,
+                                      "label": "Unit of Valuation 1",
+                                      "description": null,
+                                      "origination": "20030513T000000Z",
+                                      "termination": null,
+                                      "category": {
+                                        "code": "LTX-DOM-CON",
+                                        "meaning": null
+                                      },
+                                      "type": {
+                                        "code": "HOR",
+                                        "meaning": "A two dimensional horizontal unit of space"
+                                      },
+                                      "class": {
+                                        "code": "AUV",
+                                        "meaning": "Unit Of Valuation (Additional Areas And Items)"
+                                      },
+                                      "data": {
+                                        "foreign_ids": [],
+                                        "foreign_names": [],
+                                        "foreign_labels": [],
+                                        "uses": [
+                                          {
+                                            "activity": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "code": {
+                                              "source": "oacode",
+                                              "value": "AIR"
+                                            },
+                                            "description": {
+                                              "source": "ns_oa_desc",
+                                              "value": "Air conditioning system"
+                                            },
+                                            "quantity": {
+                                              "source": "oa_quant",
+                                              "value": 142.52
+                                            },
+                                            "units": {
+                                              "source": null,
+                                              "value": "m2"
+                                            }
+                                          }
+                                        ],
+                                        "constructions": [],
+                                        "facilities": [],
+                                        "artifacts": [],
+                                        "uninheritances": [],
+                                        "attributions": []
+                                      },
+                                      "protodata": [],
+                                      "metadata": {
+                                        "sending": {
+                                          "extracting": {
+                                            "selecting": {}
+                                          },
+                                          "transforming": {
+                                            "filtering": {},
+                                            "supplementing": {},
+                                            "recontextualising": {}
+                                          },
+                                          "loading": {
+                                            "readying": {},
+                                            "assuring": {},
+                                            "signing": {},
+                                            "encrypting": {},
+                                            "sending": {}
+                                          }
+                                        },
+                                        "receiving": {
+                                          "unloading": {
+                                            "receiving": {},
+                                            "decrypting": {},
+                                            "verifying": {},
+                                            "assuring": {},
+                                            "readying": {}
+                                          },
+                                          "transforming": {
+                                            "recontextualising": {},
+                                            "dropping": {},
+                                            "restoring": {}
+                                          },
+                                          "storing": {
+                                            "inserting": {}
+                                          }
+                                        }
+                                      },
+                                      "compartments": {},
+                                      "items": []
+                                    },
+                                    {
+                                      "id": 33,
+                                      "idx": "1.1.3.1.2",
+                                      "name": null,
+                                      "label": "Unit of Valuation 2",
+                                      "description": null,
+                                      "origination": "19490610T000000Z",
+                                      "termination": null,
+                                      "category": {
+                                        "code": "LTX-DOM-CON",
+                                        "meaning": null
+                                      },
+                                      "type": {
+                                        "code": "HOR",
+                                        "meaning": "A two dimensional horizontal unit of space"
+                                      },
+                                      "class": {
+                                        "code": "AUV",
+                                        "meaning": "Unit Of Valuation (Additional Areas And Items)"
+                                      },
+                                      "data": {
+                                        "foreign_ids": [],
+                                        "foreign_names": [],
+                                        "foreign_labels": [],
+                                        "uses": [
+                                          {
+                                            "activity": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "code": {
+                                              "source": "oacode",
+                                              "value": "STL"
+                                            },
+                                            "description": {
+                                              "source": "ns_oa_desc",
+                                              "value": "Land used for storage"
+                                            },
+                                            "quantity": {
+                                              "source": "oa_quant",
+                                              "value": 10.23
+                                            },
+                                            "units": {
+                                              "source": null,
+                                              "value": "m2"
+                                            }
+                                          }
+                                        ],
+                                        "constructions": [],
+                                        "facilities": [],
+                                        "artifacts": [],
+                                        "uninheritances": [],
+                                        "attributions": []
+                                      },
+                                      "protodata": [],
+                                      "metadata": {
+                                        "sending": {
+                                          "extracting": {
+                                            "selecting": {}
+                                          },
+                                          "transforming": {
+                                            "filtering": {},
+                                            "supplementing": {},
+                                            "recontextualising": {}
+                                          },
+                                          "loading": {
+                                            "readying": {},
+                                            "assuring": {},
+                                            "signing": {},
+                                            "encrypting": {},
+                                            "sending": {}
+                                          }
+                                        },
+                                        "receiving": {
+                                          "unloading": {
+                                            "receiving": {},
+                                            "decrypting": {},
+                                            "verifying": {},
+                                            "assuring": {},
+                                            "readying": {}
+                                          },
+                                          "transforming": {
+                                            "recontextualising": {},
+                                            "dropping": {},
+                                            "restoring": {}
+                                          },
+                                          "storing": {
+                                            "inserting": {}
+                                          }
+                                        }
+                                      },
+                                      "compartments": {},
+                                      "items": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "id": 34,
+                              "idx": "1.1.4",
+                              "name": null,
+                              "label": "Parking Areas 1",
+                              "description": null,
+                              "origination": "19481126T000000Z",
+                              "termination": null,
+                              "category": {
+                                "code": "LTX-DOM-CON",
+                                "meaning": null
+                              },
+                              "type": {
+                                "code": "HOR",
+                                "meaning": "A two dimensional horizontal unit of space"
+                              },
+                              "class": {
+                                "code": "PSU",
+                                "meaning": "Parking Survey Unit"
+                              },
+                              "data": {
+                                "foreign_ids": [],
+                                "foreign_names": [],
+                                "foreign_labels": [],
+                                "uses": [],
+                                "constructions": [],
+                                "facilities": [],
+                                "artifacts": [],
+                                "uninheritances": [],
+                                "attributions": []
+                              },
+                              "protodata": [],
+                              "metadata": {
+                                "sending": {
+                                  "extracting": {
+                                    "selecting": {}
+                                  },
+                                  "transforming": {
+                                    "filtering": {},
+                                    "supplementing": {},
+                                    "recontextualising": {}
+                                  },
+                                  "loading": {
+                                    "readying": {},
+                                    "assuring": {},
+                                    "signing": {},
+                                    "encrypting": {},
+                                    "sending": {}
+                                  }
+                                },
+                                "receiving": {
+                                  "unloading": {
+                                    "receiving": {},
+                                    "decrypting": {},
+                                    "verifying": {},
+                                    "assuring": {},
+                                    "readying": {}
+                                  },
+                                  "transforming": {
+                                    "recontextualising": {},
+                                    "dropping": {},
+                                    "restoring": {}
+                                  },
+                                  "storing": {
+                                    "inserting": {}
+                                  }
+                                }
+                              },
+                              "compartments": {},
+                              "items": [
+                                {
+                                  "id": 35,
+                                  "idx": "1.1.4.1",
+                                  "name": null,
+                                  "label": "All Levels",
+                                  "description": null,
+                                  "origination": "19490115T000000Z",
+                                  "termination": null,
+                                  "category": {
+                                    "code": "LTX-DOM-CON",
+                                    "meaning": null
+                                  },
+                                  "type": {
+                                    "code": "VER",
+                                    "meaning": "The vertical (3rd) dimension of the parent two dimensional horizontal unit of space"
+                                  },
+                                  "class": {
+                                    "code": "PLV",
+                                    "meaning": "Every Parking Survey Unit Level"
+                                  },
+                                  "data": {
+                                    "foreign_ids": [],
+                                    "foreign_names": [],
+                                    "foreign_labels": [],
+                                    "uses": [],
+                                    "constructions": [],
+                                    "facilities": [],
+                                    "artifacts": [],
+                                    "uninheritances": [],
+                                    "attributions": []
+                                  },
+                                  "protodata": [],
+                                  "metadata": {
+                                    "sending": {
+                                      "extracting": {
+                                        "selecting": {}
+                                      },
+                                      "transforming": {
+                                        "filtering": {},
+                                        "supplementing": {},
+                                        "recontextualising": {}
+                                      },
+                                      "loading": {
+                                        "readying": {},
+                                        "assuring": {},
+                                        "signing": {},
+                                        "encrypting": {},
+                                        "sending": {}
+                                      }
+                                    },
+                                    "receiving": {
+                                      "unloading": {
+                                        "receiving": {},
+                                        "decrypting": {},
+                                        "verifying": {},
+                                        "assuring": {},
+                                        "readying": {}
+                                      },
+                                      "transforming": {
+                                        "recontextualising": {},
+                                        "dropping": {},
+                                        "restoring": {}
+                                      },
+                                      "storing": {
+                                        "inserting": {}
+                                      }
+                                    }
+                                  },
+                                  "compartments": {},
+                                  "items": [
+                                    {
+                                      "id": 36,
+                                      "idx": "1.1.4.1.1",
+                                      "name": null,
+                                      "label": "Unit of Valuation 1",
+                                      "description": null,
+                                      "origination": "19861128T000000Z",
+                                      "termination": null,
+                                      "category": {
+                                        "code": "LTX-DOM-CON",
+                                        "meaning": null
+                                      },
+                                      "type": {
+                                        "code": "HOR",
+                                        "meaning": "A two dimensional horizontal unit of space"
+                                      },
+                                      "class": {
+                                        "code": "PUV",
+                                        "meaning": "Unit Of Valuation (Parking Areas)"
+                                      },
+                                      "data": {
+                                        "foreign_ids": [],
+                                        "foreign_names": [],
+                                        "foreign_labels": [],
+                                        "uses": [
+                                          {
+                                            "activity": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "code": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "description": {
+                                              "source": null,
+                                              "value": "Surfaced open spaces"
+                                            },
+                                            "quantity": {
+                                              "source": "surfaced_open_spaces",
+                                              "value": 2
+                                            },
+                                            "units": {
+                                              "source": null,
+                                              "value": "car spaces"
+                                            }
+                                          },
+                                          {
+                                            "activity": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "code": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "description": {
+                                              "source": null,
+                                              "value": "Surfaced covered"
+                                            },
+                                            "quantity": {
+                                              "source": "surfaced_covered",
+                                              "value": 2
+                                            },
+                                            "units": {
+                                              "source": null,
+                                              "value": "car spaces"
+                                            }
+                                          },
+                                          {
+                                            "activity": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "code": {
+                                              "source": null,
+                                              "value": null
+                                            },
+                                            "description": {
+                                              "source": null,
+                                              "value": "Unsurfaced uncovered"
+                                            },
+                                            "quantity": {
+                                              "source": "unsurfaced_uncovered",
+                                              "value": 2
+                                            },
+                                            "units": {
+                                              "source": null,
+                                              "value": "car spaces"
+                                            }
+                                          }
+                                        ],
+                                        "constructions": [],
+                                        "facilities": [],
+                                        "artifacts": [],
+                                        "uninheritances": [],
+                                        "attributions": []
+                                      },
+                                      "protodata": [],
+                                      "metadata": {
+                                        "sending": {
+                                          "extracting": {
+                                            "selecting": {}
+                                          },
+                                          "transforming": {
+                                            "filtering": {},
+                                            "supplementing": {},
+                                            "recontextualising": {}
+                                          },
+                                          "loading": {
+                                            "readying": {},
+                                            "assuring": {},
+                                            "signing": {},
+                                            "encrypting": {},
+                                            "sending": {}
+                                          }
+                                        },
+                                        "receiving": {
+                                          "unloading": {
+                                            "receiving": {},
+                                            "decrypting": {},
+                                            "verifying": {},
+                                            "assuring": {},
+                                            "readying": {}
+                                          },
+                                          "transforming": {
+                                            "recontextualising": {},
+                                            "dropping": {},
+                                            "restoring": {}
+                                          },
+                                          "storing": {
+                                            "inserting": {}
+                                          }
+                                        }
+                                      },
+                                      "compartments": {},
+                                      "items": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "protodata": [],
+                  "metadata": {
+                    "sending": {
+                      "extracting": {
+                        "selecting": {}
+                      },
+                      "transforming": {
+                        "filtering": {},
+                        "supplementing": {},
+                        "recontextualising": {}
+                      },
+                      "loading": {
+                        "readying": {},
+                        "assuring": {},
+                        "signing": {},
+                        "encrypting": {},
+                        "sending": {}
+                      }
+                    },
+                    "receiving": {
+                      "unloading": {
+                        "receiving": {},
+                        "decrypting": {},
+                        "verifying": {},
+                        "assuring": {},
+                        "readying": {}
+                      },
+                      "transforming": {
+                        "recontextualising": {},
+                        "dropping": {},
+                        "restoring": {}
+                      },
+                      "storing": {
+                        "inserting": {}
+                      }
+                    }
+                  },
+                  "compartments": {},
+                  "items": []
+                }
+              ],
+              "valuations": [],
+              "valuation": {
+                "valuation_method_code": "234",
+                "valuation_rateable": 76500,
+                "valuation_effective_date": "20230529T000000Z"
+              },
+              "list": {
+                "list_category": "LTX-DOM-LST",
+                "list_function": "Charging",
+                "list_year": "2023",
+                "list_authority_code": "1160"
+              },
+              "workflow": {
+                "cdb_job_id": 39115380283
+              }
+            },
+            "protodata": [],
+            "metadata": {
+              "sending": {
+                "extracting": {
+                  "selecting": {}
+                },
+                "transforming": {
+                  "filtering": {},
+                  "supplementing": {},
+                  "recontextualising": {}
+                },
+                "loading": {
+                  "readying": {},
+                  "assuring": {},
+                  "signing": {},
+                  "encrypting": {},
+                  "sending": {}
+                }
+              },
+              "receiving": {
+                "unloading": {
+                  "receiving": {},
+                  "decrypting": {},
+                  "verifying": {},
+                  "assuring": {},
+                  "readying": {}
+                },
+                "transforming": {
+                  "recontextualising": {},
+                  "dropping": {},
+                  "restoring": {}
+                },
+                "storing": {
+                  "inserting": {}
+                }
+              }
+            },
+            "compartments": {},
+            "items": []
+          }
+        ]
+      },
+      "protodata": [],
+      "metadata": {
+        "sending": {
+          "extracting": {
+            "selecting": {}
+          },
+          "transforming": {
+            "filtering": {},
+            "supplementing": {},
+            "recontextualising": {}
+          },
+          "loading": {
+            "readying": {},
+            "assuring": {},
+            "signing": {},
+            "encrypting": {},
+            "sending": {}
+          }
+        },
+        "receiving": {
+          "unloading": {
+            "receiving": {},
+            "decrypting": {},
+            "verifying": {},
+            "assuring": {},
+            "readying": {}
+          },
+          "transforming": {
+            "recontextualising": {},
+            "dropping": {},
+            "restoring": {}
+          },
+          "storing": {
+            "inserting": {}
+          }
+        }
+      },
+      "compartments": {},
+      "items": []
+    }
+  ]
+}

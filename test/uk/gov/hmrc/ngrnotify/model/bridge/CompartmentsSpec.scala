@@ -107,12 +107,12 @@ class CompartmentsSpec extends AnyFreeSpec with CompartmentData {
         |          "property_full_address": null,
         |          "address_line_1": null,
         |          "address_postcode": null,
-        |          "address_known_as": null
+        |          "known_as": null
         |        },
         |        "location": {
         |          "local_authority_pseudo_area_code": null,
-        |          "ordanace_survey_coordinates": null,
-        |          "google_maps_coordinates": null
+        |          "ordnance_survey": null,
+        |          "google_maps": null
         |        },
         |        "assessments": []
         |      },

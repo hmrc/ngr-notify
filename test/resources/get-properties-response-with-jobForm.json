@@ -143,12 +143,12 @@
                 "property_full_address": "string",
                 "address_line_1": "string",
                 "address_postcode": "string",
-                "address_known_as": "string"
+                "known_as": "string"
               },
               "location": {
                 "local_authority_pseudo_area_code": "stri",
                 "ordnance_survey_coordinates": "string",
-                "google_maps_coordinates": "string"
+                "google_maps": "string"
               },
               "assessments": [
                 {

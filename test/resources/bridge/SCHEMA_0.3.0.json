@@ -1,7 +1,7 @@
 {
   "$id": "https://ndreform.blob.core.windows.net/schemas/assurance-20250415-000-000-entity.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$comment": "",
+  "$comment": "version 0.3.0",
   "title": "JOB",
   "description": "JSON schema for assuring that an instance of transported data about a JOB entity is fit for intended consumption",
   "type": "object",
@@ -17,7 +17,7 @@
     "$schema",
     "job"
   ],
-  "maxProperties": 2,
+  "maxProperties": 15,
   "$defs": {
     "COMMON": {
       "INSTANT": {
@@ -27,9 +27,17 @@
       "ENUMERATION": {
         "type": "object",
         "properties": {
-          "description": {
-            "type": "string",
-            "maxLength": 63
+          "meaning": {
+            "oneOf": [
+              {
+                "const": null
+              },
+              {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 255
+              }
+            ]
           }
         },
         "required": [
@@ -60,7 +68,9 @@
             "is_pointer": {
               "type": "boolean"
             },
-            "pointer": {},
+            "pointer": {
+              "type": "string"
+            },
             "data": {
               "type": "string"
             }
@@ -170,6 +180,20 @@
           "persistence"
         ],
         "maxProperties": 2
+      },
+      "BLANKS": {
+        "OBJECT": {
+          "type": "object",
+          "maxProperties": 0
+        },
+        "ARRAY": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "maxProperties": 0
+          },
+          "maxItems": 0
+        }
       },
       "ED": {
         "type": "object",
@@ -370,9 +394,11 @@
                   {
                     "enum": [
                       "Government_Gateway",
+                      "One_Login",
                       "Billing_Authority",
                       "Companies_House",
                       "HMRC-VOA_CDB",
+                      "CDB_VSA_SURVEY",
                       "National_Address_Gazetteer"
                     ]
                   }
@@ -519,12 +545,44 @@
         "foreign_names"
       ]
     },
+    "INTERPRETATIONS": {
+      "MANIFESTATION": {
+        "RELATIONSHIPS": {
+          "ARTIFACTS": {
+            "CODES": {
+              "oneOf": [
+                {
+                  "enum": [
+                    "NRB"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "LOCAL_AUTHORITIES": {
+        "CODES": {
+          "oneOf": [
+            {
+              "const": null
+            },
+            {
+              "enum": [
+                "1160"
+              ]
+            }
+          ]
+        }
+      }
+    },
     "TAXONOMY": {
       "CAT_LTX-DOM": {
         "enum": [
           "LTX-DOM-JOB",
           "LTX-DOM-PRP",
           "LTX-DOM-AST",
+          "LTX-DOM-VAS",
           "LTX-DOM-CON",
           "LTX-DOM-PSN",
           "LTX-DOM-PSA",
@@ -874,6 +932,66 @@
           "RLE"
         ]
       },
+      "CAT_LTX-DOM-VAS_LOG": {
+        "if": {
+          "properties": {
+            "category": {
+              "properties": {
+                "code": {
+                  "const": "LTX-DOM-VAS"
+                }
+              }
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "type": {
+              "properties": {
+                "code": {
+                  "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM-VAS_TYP"
+                }
+              }
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "properties": {
+                      "code": {
+                        "const": "SPL"
+                      }
+                    }
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "class": {
+                    "properties": {
+                      "code": {
+                        "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM-VAS_TYP_SPL_CLS"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "CAT_LTX-DOM-VAS_TYP": {
+        "enum": [
+          "SPL"
+        ]
+      },
+      "CAT_LTX-DOM-VAS_TYP_SPL_CLS": {
+        "enum": [
+          "NIA"
+        ]
+      },
       "CAT_LTX-DOM-CON_LOG": {
         "if": {
           "properties": {
@@ -1072,6 +1190,13 @@
         }
       },
       "CAT_LTX-DOM-PSN_TYP": {
+        "$comment": "Indicates the type of person from a choise of natural, corporate or crown.",
+        "description": "Select the code indicating that the persons is an individual (NAT), body corporate (COR) of acts in the stead of the Crown (CWN).",
+        "examples": [
+          "NAT | A living individual",
+          "COR | A registered company, council, chartered corporation or other aggregate body corporate.",
+          "CWN | Ministers, Secretaries of State, Crown Estates Commision and other agents of the Crown."
+        ],
         "enum": [
           "NAT",
           "COR",
@@ -1079,8 +1204,15 @@
         ]
       },
       "CAT_LTX-DOM-PSN_TYP_NAT_CLS": {
+        "$comment": "Indicates the foreign system of persons used by the local system as a source of recognised persons.",
+        "description": "Select the code indicating that the persons id is from either Government Gateway (GGY) oe One Logon (OLG). ",
+        "examples": [
+          "GGY | Users whose id originates from HMRC Government Gateway.",
+          "OLG | Users whose id originates from the GOV.UKs One Logon."
+        ],
         "enum": [
           "GGY",
+          "OLG",
           "UNH",
           "CON",
           "UCN"
@@ -1089,6 +1221,7 @@
       "CAT_LTX-DOM-PSN_TYP_COR_CLS": {
         "enum": [
           "GGY",
+          "OLG",
           "REG",
           "STA",
           "CHT"
@@ -1330,6 +1463,135 @@
           "CRT"
         ]
       },
+      "CAT_LTX-DOM-PRS_LOG": {
+        "if": {
+          "properties": {
+            "category": {
+              "properties": {
+                "code": {
+                  "const": "LTX-DOM-PRS"
+                }
+              }
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "type": {
+              "properties": {
+                "code": {
+                  "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM-PRS_TYP"
+                }
+              }
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "properties": {
+                      "code": {
+                        "const": "LRP"
+                      }
+                    }
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "class": {
+                    "properties": {
+                      "code": {
+                        "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM-PRS_TYP_LRP_CLS"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "properties": {
+                      "code": {
+                        "const": "CRP"
+                      }
+                    }
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "class": {
+                    "properties": {
+                      "code": {
+                        "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM-PRS_TYP_CRP_CLS"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "properties": {
+                      "code": {
+                        "const": "VLP"
+                      }
+                    }
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "class": {
+                    "properties": {
+                      "code": {
+                        "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM-PRS_TYP_VRL_CLS"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "CAT_LTX-DOM-PRS_TYP": {
+        "enum": [
+          "LRP",
+          "CRP",
+          "VLP"
+        ]
+      },
+      "CAT_LTX-DOM-PRS_TYP_LRP_CLS": {
+        "enum": [
+          "SLL",
+          "CLL",
+          "MLL",
+          "RLL"
+        ]
+      },
+      "CAT_LTX-DOM-PRS_TYP_CRP_CLS": {
+        "enum": [
+          "SCL",
+          "CCL",
+          "MCL",
+          "RCL"
+        ]
+      },
+      "CAT_LTX-DOM-PRS_TYP_VLP_CLS": {
+        "enum": [
+          "SVL",
+          "CVL",
+          "MVL",
+          "RVL"
+        ]
+      },
       "CAT_LTX-DOM-REL_LOG": {
         "if": {
           "properties": {
@@ -1523,7 +1785,9 @@
                   "extracting": {
                     "type": "object",
                     "properties": {
-                      "selecting": {}
+                      "selecting": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      }
                     },
                     "required": [
                       "selecting"
@@ -1533,9 +1797,15 @@
                   "transforming": {
                     "type": "object",
                     "properties": {
-                      "filtering": {},
-                      "supplementing": {},
-                      "recontextualising": {}
+                      "filtering": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      },
+                      "supplementing": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      },
+                      "recontextualising": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      }
                     },
                     "required": [
                       "filtering",
@@ -1547,8 +1817,12 @@
                   "loading": {
                     "type": "object",
                     "properties": {
-                      "readying": {},
-                      "assuring": {},
+                      "readying": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      },
+                      "assuring": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      },
                       "signing": {
                         "properties": {
                           "inputs": {
@@ -1581,8 +1855,12 @@
                         "required": [],
                         "maxProperties": 2
                       },
-                      "encrypting": {},
-                      "sending": {}
+                      "encrypting": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      },
+                      "sending": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      }
                     },
                     "required": [
                       "readying",
@@ -1607,11 +1885,21 @@
                   "unloading": {
                     "type": "object",
                     "properties": {
-                      "receiving": {},
-                      "decrypting": {},
-                      "verifying": {},
-                      "assuring": {},
-                      "readying": {}
+                      "receiving": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      },
+                      "decrypting": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      },
+                      "verifying": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      },
+                      "assuring": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      },
+                      "readying": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      }
                     },
                     "required": [
                       "receiving",
@@ -1625,9 +1913,15 @@
                   "transforming": {
                     "type": "object",
                     "properties": {
-                      "recontextualising": {},
-                      "dropping": {},
-                      "restoring": {}
+                      "recontextualising": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      },
+                      "dropping": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      },
+                      "restoring": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      }
                     },
                     "required": [
                       "recontextualising",
@@ -1639,7 +1933,9 @@
                   "storing": {
                     "type": "object",
                     "properties": {
-                      "inserting": {}
+                      "inserting": {
+                        "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+                      }
                     },
                     "required": [
                       "inserting"
@@ -1693,20 +1989,25 @@
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
                   "code": {
-                    "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM"
+                    "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM",
+                    "type": "string"
                   }
                 }
               },
               "type": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "class": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "data": {
@@ -1717,15 +2018,24 @@
                 "properties": {
                   "properties": {
                     "type": "array",
-                    "items": {}
+                    "items": {
+                      "type": "object",
+                      "maxItems": 99999
+                    }
                   },
                   "persons": {
                     "type": "array",
-                    "items": {}
+                    "items": {
+                      "type": "object",
+                      "maxItems": 99999
+                    }
                   },
                   "processes": {
                     "type": "array",
-                    "items": {}
+                    "items": {
+                      "type": "object",
+                      "maxItems": 99999
+                    }
                   },
                   "products": {
                     "type": "array",
@@ -1735,7 +2045,10 @@
                   },
                   "relationships": {
                     "type": "array",
-                    "items": {}
+                    "items": {
+                      "type": "object",
+                      "maxItems": 99999
+                    }
                   }
                 },
                 "required": [
@@ -1748,9 +2061,7 @@
                 "maxProperties": 5
               },
               "items": {
-                "type": "array",
-                "maxItems": 0,
-                "items": {}
+                "$ref": "#/$defs/COMMON/BLANKS/ARRAY"
               }
             },
             "required": [
@@ -1798,20 +2109,28 @@
               "type": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "class": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "data": {
                 "$ref": "#/$defs/ENTITIES/PROPERTIES/PROPERTY/DATA"
               },
-              "compartments": {},
-              "items": {}
+              "compartments": {
+                "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+              },
+              "items": {
+                "$ref": "#/$defs/COMMON/BLANKS/ARRAY"
+              }
             },
             "required": [
               "category",
@@ -1876,7 +2195,7 @@
                     ]
                   },
                   "known_as": {
-                    "$comment": "Alternative property address or part thereof assisting the property's indetification",
+                    "$comment": "Alternative property address or part thereof assisting property indetification",
                     "description": "",
                     "examples": [],
                     "oneOf": [
@@ -1917,7 +2236,7 @@
                       }
                     ]
                   },
-                  "ordnance_survey": {
+                  "ordanace_survey": {
                     "$comment": "",
                     "description": "",
                     "examples": [],
@@ -1997,20 +2316,28 @@
               "type": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "class": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "data": {
                 "$ref": "#/$defs/ENTITIES/PROPERTIES/ASSESSMENT/DATA"
               },
-              "compartments": {},
-              "items": {}
+              "compartments": {
+                "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+              },
+              "items": {
+                "$ref": "#/$defs/COMMON/BLANKS/ARRAY"
+              }
             },
             "required": [
               "category",
@@ -2029,7 +2356,7 @@
               "property": {
                 "type": "object",
                 "properties": {
-                  "id": {
+                  "property_id": {
                     "$comment": "",
                     "description": "",
                     "examples": [],
@@ -2037,18 +2364,16 @@
                     "minimum": 1,
                     "maximum": 99999999
                   },
-                  "cdb_id": {
+                  "cdb_property_id": {
                     "$comment": "",
                     "description": "",
                     "examples": [],
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 127
+                    "type": "number"
                   }
                 },
                 "required": [
-                  "id",
-                  "cdb_id"
+                  "property_id",
+                  "cdb_property_id"
                 ],
                 "maxProperties": 2
               },
@@ -2075,7 +2400,7 @@
                       ]
                     }
                   },
-                  "description": {
+                  "use_description": {
                     "$comment": "",
                     "description": "",
                     "examples": [],
@@ -2094,19 +2419,17 @@
               "valuation_surveys": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/$defs/ENTITIES/PROPERTIES/CONTAINER/ENTITY"
+                  "$ref": "#/$defs/ENTITIES/PROPERTIES/SURVEY_VALUATION/ENTITY"
                 },
                 "maxItems": 1
               },
               "valuations": {
-                "type": "array",
-                "items": {},
-                "maxItems": 0
+                "$ref": "#/$defs/COMMON/BLANKS/ARRAY"
               },
               "valuation": {
                 "type": "object",
                 "properties": {
-                  "method_code": {
+                  "valuation_method_code": {
                     "$comment": "",
                     "description": "",
                     "examples": [],
@@ -2114,7 +2437,7 @@
                     "minLength": 3,
                     "maxLength": 3
                   },
-                  "rateable_value": {
+                  "valuation_rateable": {
                     "$comment": "",
                     "description": "",
                     "examples": [],
@@ -2122,7 +2445,7 @@
                     "minimum": 0,
                     "maximum": 99999999999
                   },
-                  "effective_date": {
+                  "valuation_effective_date": {
                     "$comment": "",
                     "description": "",
                     "examples": [],
@@ -2130,22 +2453,22 @@
                   }
                 },
                 "required": [
-                  "method_code",
-                  "rateable_value",
-                  "effective_date"
+                  "valuation_method_code",
+                  "valuation_rateable",
+                  "valuation_effective_date"
                 ],
                 "maxProperties": 3
               },
               "list": {
                 "type": "object",
                 "properties": {
-                  "category": {
+                  "list_category": {
                     "$comment": "",
                     "description": "",
                     "examples": [],
                     "const": "LTX-DOM-LST"
                   },
-                  "function": {
+                  "list_function": {
                     "$comment": "",
                     "description": "",
                     "examples": [],
@@ -2153,7 +2476,7 @@
                     "minLength": 1,
                     "maxLength": 255
                   },
-                  "year": {
+                  "list_year": {
                     "$comment": "",
                     "description": "",
                     "examples": [],
@@ -2161,7 +2484,7 @@
                     "minLength": 4,
                     "maxLength": 4
                   },
-                  "authority_code": {
+                  "list_authority_code": {
                     "$comment": "",
                     "description": "",
                     "examples": [],
@@ -2171,10 +2494,10 @@
                   }
                 },
                 "required": [
-                  "category",
-                  "function",
-                  "year",
-                  "authority_code"
+                  "list_category",
+                  "list_function",
+                  "list_year",
+                  "list_authority_code"
                 ],
                 "maxProperties": 4
               },
@@ -2185,9 +2508,7 @@
                     "$comment": "",
                     "description": "",
                     "examples": [],
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 127
+                    "type": "number"
                   }
                 },
                 "required": [
@@ -2206,6 +2527,80 @@
               "workflow"
             ],
             "maxProperties": 10
+          }
+        },
+        "SURVEY_VALUATION": {
+          "ENTITY": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$comment": "",
+            "title": "VALUATION_SURVEY",
+            "description": "JSON schema for assuring that transported data about an VALUATION SURVEY is fit for intended consumption",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/$defs/ENTITIES/STANDARD"
+              },
+              {
+                "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM-VAS_LOG"
+              }
+            ],
+            "properties": {
+              "category": {
+                "$ref": "#/$defs/COMMON/ENUMERATION",
+                "properties": {
+                  "code": {
+                    "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM"
+                  }
+                }
+              },
+              "type": {
+                "$ref": "#/$defs/COMMON/ENUMERATION",
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  }
+                }
+              },
+              "class": {
+                "$ref": "#/$defs/COMMON/ENUMERATION",
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  }
+                }
+              },
+              "data": {
+                "$ref": "#/$defs/ENTITIES/PROPERTIES/SURVEY_VALUATION/DATA"
+              },
+              "compartments": {
+                "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+              },
+              "items": {
+                "$ref": "#/$defs/COMMON/BLANKS/ARRAY"
+              }
+            },
+            "required": [
+              "category",
+              "type",
+              "class",
+              "data",
+              "compartments",
+              "items"
+            ],
+            "maxProperties": 15
+          },
+          "DATA": {
+            "type": "object",
+            "$ref": "#/$defs/FOREIGN",
+            "properties": {
+              "survey": {
+                "$ref": "#/$defs/ENTITIES/PROPERTIES/CONTAINER/ENTITY"
+              }
+            },
+            "required": [
+              "survey"
+            ],
+            "maxProperties": 4
           }
         },
         "CONTAINER": {
@@ -2235,19 +2630,25 @@
               "type": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "class": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "data": {
                 "$ref": "#/$defs/ENTITIES/PROPERTIES/CONTAINER/DATA"
               },
-              "compartments": {},
+              "compartments": {
+                "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+              },
               "items": {
                 "type": "array",
                 "items": {
@@ -2346,19 +2747,25 @@
               "type": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "class": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "data": {
                 "$ref": "#/$defs/ENTITIES/PERSONS/PERSON/DATA"
               },
-              "compartments": {},
+              "compartments": {
+                "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+              },
               "items": {
                 "type": "array",
                 "items": {
@@ -2610,23 +3017,27 @@
               "type": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "class": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "data": {
                 "$ref": "#/$defs/ENTITIES/PERSONS/PERSONA/DATA"
               },
-              "compartments": {},
+              "compartments": {
+                "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+              },
               "items": {
-                "type": "array",
-                "maxItems": 0,
-                "items": {}
+                "$ref": "#/$defs/COMMON/BLANKS/ARRAY"
               }
             },
             "required": [
@@ -2848,8 +3259,103 @@
         }
       },
       "PROCESSES": {
-        "PROCESS": {},
-        "ACTION": {}
+        "PROCESS": {
+          "ENTITY": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$comment": "",
+            "title": "PROCESS",
+            "description": "JSON schema for assuring that transported data about a PROCESS is fit for intended consumption",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/$defs/ENTITIES/STANDARD"
+              },
+              {
+                "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM-PRS_LOG"
+              }
+            ],
+            "properties": {
+              "category": {
+                "$ref": "#/$defs/COMMON/ENUMERATION",
+                "properties": {
+                  "code": {
+                    "$ref": "#/$defs/TAXONOMY/CAT_LTX-DOM"
+                  }
+                }
+              },
+              "type": {
+                "$ref": "#/$defs/COMMON/ENUMERATION",
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  }
+                }
+              },
+              "class": {
+                "$ref": "#/$defs/COMMON/ENUMERATION",
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  }
+                }
+              },
+              "data": {
+                "$ref": "#/$defs/ENTITIES/PROCESSES/PROCESS/DATA"
+              },
+              "compartments": {
+                "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+              },
+              "items": {
+                "$ref": "#/$defs/COMMON/BLANKS/ARRAY"
+              }
+            },
+            "required": [
+              "category",
+              "type",
+              "class",
+              "data",
+              "compartments",
+              "items"
+            ],
+            "maxProperties": 15
+          },
+          "DATA": {
+            "type": "object",
+            "$ref": "#/$defs/FOREIGN",
+            "properties": {
+              "documentation": {
+                "type": "object",
+                "properties": {
+                  "webpage": {
+                    "oneOf": [
+                      {
+                        "const": null
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 8,
+                        "maxLength": 2048
+                      }
+                    ],
+                    "$comment": "URL to the NDR Reform web site page that the ratepayer was referred to for the purpose of getting this job done.",
+                    "description": "",
+                    "examples": [
+                      "https://hmrc/voa/ndrreform/processname/actionpage.html"
+                    ]
+                  }
+                },
+                "required": [
+                  "webpage"
+                ],
+                "maxProperties": 1
+              }
+            },
+            "required": [
+              "documentation"
+            ],
+            "maxProperties": 1
+          }
+        }
       },
       "PRODUCTS": {
         "PERMITTED": {
@@ -2962,19 +3468,25 @@
               "type": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "class": {
                 "$ref": "#/$defs/COMMON/ENUMERATION",
                 "properties": {
-                  "code": {}
+                  "code": {
+                    "type": "string"
+                  }
                 }
               },
               "data": {
                 "$ref": "#/$defs/ENTITIES/RELATIONSHIPS/RELATIONSHIP/DATA"
               },
-              "compartments": {},
+              "compartments": {
+                "$ref": "#/$defs/COMMON/BLANKS/OBJECT"
+              },
               "items": {
                 "type": "array",
                 "items": {
@@ -3020,16 +3532,7 @@
                       "$comment": "",
                       "description": "",
                       "examples": [],
-                      "oneOf": [
-                        {
-                          "const": null
-                        },
-                        {
-                          "enum": [
-                            "NRB"
-                          ]
-                        }
-                      ]
+                      "$ref": "#/$defs/INTERPRETATIONS/MANIFESTATION/RELATIONSHIPS/ARTIFACTS/CODES"
                     },
                     "artifact_description": {
                       "$comment": "",
@@ -3115,16 +3618,7 @@
                       "$comment": "",
                       "description": "",
                       "examples": [],
-                      "oneOf": [
-                        {
-                          "const": null
-                        },
-                        {
-                          "type": "string",
-                          "minLength": 4,
-                          "maxLength": 4
-                        }
-                      ]
+                      "$ref": "#/$defs/INTERPRETATIONS/LOCAL_AUTHORITIES/CODES"
                     },
                     "operative_area_name": {
                       "$comment": "",
@@ -3147,9 +3641,6 @@
                       "examples": [],
                       "oneOf": [
                         {
-                          "const": null
-                        },
-                        {
                           "type": "string",
                           "minLength": 1,
                           "maxLength": 255
@@ -3167,7 +3658,7 @@
                         {
                           "type": "string",
                           "minLength": 1,
-                          "maxLength": 1023
+                          "maxLength": 2048
                         }
                       ]
                     }
@@ -3202,12 +3693,7 @@
             "$comment": "",
             "title": "ASSOCIATE",
             "description": "JSON schema for assuring that transported data about a ASSOCIATE is fit for intended consumption",
-            "type": "object",
-            "oneOf": [
-              {
-                "$ref": "#/$defs/COMMON/POINTER"
-              }
-            ]
+            "$ref": "#/$defs/COMMON/POINTER"
           }
         }
       }

@@ -24,7 +24,7 @@ import uk.gov.hmrc.ngrnotify.connectors.bridge.BridgeConnector
 import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.model.ErrorCode.*
 import uk.gov.hmrc.ngrnotify.model.bridge.*
-import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest, RegisterRatepayerResponse, RegistrationStatus}
+import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}

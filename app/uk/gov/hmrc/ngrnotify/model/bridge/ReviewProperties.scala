@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,10 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge
 
-case class Location(
-  localAuthorityPseudoAreaCode: Option[String] = None,
-  ordnanceSurvey: Option[String] = None,
-  googleMaps: Option[String] = None
-)
+import play.api.libs.json.{Format, Json}
 
-object Location:
+final case class ReviewProperties (properties: List[PropertyEntity] = List.empty)
 
-  import play.api.libs.json.{Format, Json}
-  import uk.gov.hmrc.ngrnotify.model.given
-
-  given Format[Location] = Json.format
+object ReviewProperties {
+  given Format[ReviewProperties] = Json.format
+}

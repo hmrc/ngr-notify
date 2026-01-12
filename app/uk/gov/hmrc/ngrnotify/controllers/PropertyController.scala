@@ -24,7 +24,6 @@ import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, PropertyLinkingRequest}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -38,6 +38,16 @@ case class EDProperty[T](
 object EDProperty:
   given [T: Format]: Format[EDProperty[T]] = Json.format
 
+case class ValuationSurveysData(
+  foreign_ids: List[ForeignDatum] = List.empty,
+  foreign_names: List[ForeignDatum] = List.empty,
+  foreign_labels: List[ForeignDatum] = List.empty,
+  survey: SurveyEntity
+)
+
+object ValuationSurveysData:
+  given Format[ValuationSurveysData] = Json.format
+
 case class ContainerData(
   foreign_ids: List[ForeignDatum] = List.empty,
   foreign_names: List[ForeignDatum] = List.empty,
@@ -52,3 +62,4 @@ case class ContainerData(
 
 object ContainerData:
   given Format[ContainerData] = Json.format
+

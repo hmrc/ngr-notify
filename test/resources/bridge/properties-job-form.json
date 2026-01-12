@@ -150,12 +150,12 @@
                 "property_full_address": "string",
                 "address_line_1": "string",
                 "address_postcode": "string",
-                "address_known_as": "string"
+                "known_as": "string"
               },
               "location": {
                 "local_authority_pseudo_area_code": "stri",
                 "ordnance_survey_coordinates": "string",
-                "google_maps_coordinates": "string"
+                "google_maps": "string"
               },
               "assessments": [
                 {
@@ -201,13 +201,13 @@
                       }
                     ],
                     "property": {
-                      "id": 9999999999,
-                      "cdb_id": 10000000000000000000
+                      "property_id": 9999999999,
+                      "cdb_property_id": 10000000000000000000
                     },
                     "use": {
                       "is_composite": "Y",
                       "is_part_exempt": "Y",
-                      "description": "string"
+                      "use_description": "string"
                     },
                     "valuation_survey": [
                       {
@@ -1713,12 +1713,12 @@
                 "property_full_address": "string",
                 "address_line_1": "string",
                 "address_postcode": "string",
-                "address_known_as": "string"
+                "known_as": "string"
               },
               "location": {
                 "local_authority_pseudo_area_code": "stri",
                 "ordnance_survey_coordinates": "string",
-                "google_maps_coordinates": "string"
+                "google_maps": "string"
               },
               "assessments": [
                 {
@@ -1764,13 +1764,13 @@
                       }
                     ],
                     "property": {
-                      "id": 9999999999,
-                      "cdb_id": 10000000000000000000
+                      "property_id": 9999999999,
+                      "cdb_property_id": 10000000000000000000
                     },
                     "use": {
                       "is_composite": "Y",
                       "is_part_exempt": "Y",
-                      "description": "string"
+                      "use_description": "string"
                     },
                     "valuation_survey": [
                       {

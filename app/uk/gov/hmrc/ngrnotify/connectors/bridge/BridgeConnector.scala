@@ -17,21 +17,22 @@
 package uk.gov.hmrc.ngrnotify.connectors.bridge
 
 import play.api.http.Status as HttpStatus
-import play.api.libs.json.{JsError, JsObject, JsSuccess, JsValue, Json}
+import play.api.libs.json.*
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import play.api.mvc.Request
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
+import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeFailure.unknown
-import uk.gov.hmrc.ngrnotify.model.bridge.{Compartments, HodMessage, JobMessage}
+import uk.gov.hmrc.ngrnotify.model.bridge.{HodMessage, JobMessage, ReviewProperties, SurveyEntity}
 import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, PropertyChangesRequest, PropertyLinkingRequest}
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest}
 
 import java.net.URL
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class BridgeConnector @Inject() (
@@ -80,14 +81,14 @@ class BridgeConnector @Inject() (
 
   def registerRatepayer(ngrRequest: RegisterRatepayerRequest, credId: CredId)(using request: Request[?]): BridgeResult[NoContent] =
     for {
-      template    <- getJobTemplate(appConfig.getRatepayerJobUrl(credId))
+      template    <- getJobTemplate[JobMessage](appConfig.getRatepayerJobUrl(credId))
       processed   <- aboutRatepayers.process(template, ngrRequest, credId)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
 
   def getRatepayerPropertyLinks(ratepayerCredId: CredId)(using request: Request[?]): BridgeResult[NoContent] =
     for {
-      response <- getJobTemplate(appConfig.getRatepayerPropertyLinksUrl(ratepayerCredId))
+      response <- getJobTemplate[JobMessage](appConfig.getRatepayerPropertyLinksUrl(ratepayerCredId))
     } yield {
       val addresses = response.job.compartments.properties.map(_.data.addresses.propertyFullAddress.getOrElse(""))
       RatepayerPropertyLinksResponse(addresses.nonEmpty, addresses)
@@ -96,7 +97,7 @@ class BridgeConnector @Inject() (
   def submitPhysicalPropertyChanges(credId: CredId, assessmentId: AssessmentId, propertyChangesRequest: PropertyChangesRequest)(using request: Request[?])
     : BridgeResult[NoContent] =
     for {
-      template    <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
+      template    <- getJobTemplate[JobMessage](appConfig.getPropertiesUrl(credId, assessmentId))
       processed   <- PropertyChangesRequest.process(template, propertyChangesRequest)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
@@ -104,17 +105,44 @@ class BridgeConnector @Inject() (
   def submitPropertyChanges(credId: CredId, assessmentId: AssessmentId, propertyLinkingRequest: PropertyLinkingRequest)(using request: Request[?])
     : BridgeResult[NoContent] =
     for {
-      template    <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
+      template    <- getJobTemplate[JobMessage](appConfig.getPropertiesUrl(credId, assessmentId))
       processed   <- PropertyLinkingRequest.process(template, propertyLinkingRequest)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
 
   def submitRaldChanges(credId: CredId, assessmentId: AssessmentId, raldChanges: JsObject)(using request: Request[?]): BridgeResult[NoContent] =
     for {
-      template    <- getJobTemplate(appConfig.getPropertiesUrl(credId, assessmentId))
+      template    <- getJobTemplate[JobMessage](appConfig.getPropertiesUrl(credId, assessmentId))
       processed   <- aboutRald.process(template, raldChanges, assessmentId.value)
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
+
+  //TODO: Remove the feature flag and associated code once static response is no longer needed in QA environment
+  // as of now Bridge is not returning expected data refer to https://jira.voa.enterpriseipaas.com/browse/NGR-3905.
+  def getReviewProperties(credId: CredId, assessmentId: AssessmentId)(using request: Request[?]): FutureEither[BridgeFailureReason, (SurveyEntity, Option[String])] = {
+
+    val response: BridgeResult[ReviewProperties] = {
+      if(appConfig.useStaticReviewPropertiesResponse) {
+        Future.successful(Right(Json.parse(scala.io.Source.fromResource("resources/review-page-properties.json").mkString).as[ReviewProperties]))
+      } else{
+        getJobTemplate[ReviewProperties](appConfig.reviewPropertiesUrl(credId, assessmentId))
+      }
+    }
+
+    response.flatMap { reviewProperties =>
+
+      val maybeData = for {
+        property   <- reviewProperties.properties.headOption
+        assessment <- property.data.assessments.headOption
+        survey     <- assessment.data.valuation_surveys.headOption
+      } yield (survey.data.survey, property.data.addresses.propertyFullAddress)
+
+      maybeData match {
+        case Some(data) => FutureEither(Future.successful(Right(data)))
+        case None       => FutureEither(Future.successful(Left("'Surveys'[/properties/data/assessments/valuation_surveys/data/survey] node not found")))
+      }
+    }
+  }
 
   /**
     * Get the Bridge API job template for the given URL.
@@ -123,13 +151,13 @@ class BridgeConnector @Inject() (
     * @param request the incoming HTTP request (needed for the CorrelationId header)
     * @return the JobMessage representation of the job template, wrapped in a BridgeResult
     */
-  private def getJobTemplate(url: URL)(using request: Request[?]): BridgeResult[JobMessage] =
+  private def getJobTemplate[T](url: URL)(using request: Request[?], reads: play.api.libs.json.Reads[T]): BridgeResult[T] =
     httpClient
       .get(url)(using hipHeaderCarrier)
       .execute[HttpResponse]
       .map {
         case r if r.status == HttpStatus.OK =>
-          r.json.validate[JobMessage] match {
+          r.json.validate[T] match {
             case JsSuccess(m, _) =>
               Right(m)
             case JsError(errors) =>
@@ -137,9 +165,6 @@ class BridgeConnector @Inject() (
           }
 
         case r if r.status == HttpStatus.BAD_REQUEST =>
-          // Deserialize the response as HodMessage
-          // TODO It's not clear if the Hod (and the HIP) are intermediate systems operating in both development, test or production environments,
-          //      or if we should expect to receive the BridgeFailure message directly from the Bridge API depending on the environment.
           val m      = r.json.as[HodMessage]
           // Attempt to extract the first failure reason (if it exists) from the HodMessage
           val reason = m.response.response.failures.headOption.map(_.reason).getOrElse(unknown().reason)

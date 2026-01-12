@@ -25,16 +25,16 @@ class LocationSpec extends AnyFreeSpec {
     "serialization and deserialization of Location" in {
       val location = Location(
         localAuthorityPseudoAreaCode = Some("LAPAC123"),
-        ordanaceSurveyCoordinates = Some("OS123456"),
-        googleMapsCoordinates = Some("GM123456")
+        ordnanceSurvey = Some("OS123456"),
+        googleMaps = Some("GM123456")
       )
 
       val jsonString =
         """
           |{
           |  "local_authority_pseudo_area_code": "LAPAC123",
-          |  "ordanace_survey_coordinates": "OS123456",
-          |  "google_maps_coordinates": "GM123456"
+          |  "ordnance_survey": "OS123456",
+          |  "google_maps": "GM123456"
           |}
           |""".stripMargin
 

@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.ngrnotify.model.bridge.utils
 
+import play.api.libs.json.*
+
 object JsonHelper {
 
   object bridge {
     case class NullableValue[T](value: Option[T])
-
-    import play.api.libs.json._
 
     object NullableValue {
 
