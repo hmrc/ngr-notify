@@ -16,16 +16,18 @@
 
 package uk.gov.hmrc.ngrnotify.controllers
 
+import com.fasterxml.jackson.databind.JsonMappingException.Reference
+import play.api.libs.json.{JsError, JsSuccess, JsValue}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.ngrnotify.connectors.bridge.BridgeConnector
 import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.model.bridge.SurveyEntity
 import uk.gov.hmrc.ngrnotify.model.bridge.SurveyEntity.extractFloorAndParkingData
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.AssessmentId
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, PropertyChangesRequest, ReviewChangesUserAnswers}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton()
 class ReviewPropertiesController @Inject() (
@@ -39,6 +41,15 @@ class ReviewPropertiesController @Inject() (
   def properties(assessmentId: AssessmentId): Action[AnyContent] = identifierAction.async { implicit request =>
     bridgeConnector.getReviewProperties(request.credId, assessmentId = assessmentId).map(extractFloorAndParkingData)
       .toHttpResultWithContent
+  }
+
+  def updatePropertyChanges(assessmentId: AssessmentId): Action[JsValue] = identifierAction.async(parse.json) { implicit request =>
+    request.body.validate[ReviewChangesUserAnswers] match {
+      case JsSuccess(propertyChanges, _) =>
+        bridgeConnector.submitReviewPropertyChanges(request.credId, assessmentId, propertyChanges).toHttpResult()
+      case jsError: JsError              => Future.successful(buildValidationErrorsResponse(jsError))
+
+    }
   }
 
 }
