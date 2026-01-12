@@ -27,7 +27,7 @@ import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import play.api.mvc.{Request, Result}
+import play.api.mvc.{AnyContentAsJson, Request, Result}
 import play.api.test.Helpers.*
 import play.api.test.{FakeRequest, Helpers}
 import play.api.{Application, inject}
@@ -162,7 +162,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
       when(mockBridgeConnector.submitPhysicalPropertyChanges(any[CredId], any[AssessmentId], any[PropertyChangesRequest])(using any[Request[?]]))
         .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
 
-      val request                = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId = assessmentId).url)
+      val request: FakeRequest[AnyContentAsJson] = FakeRequest(POST, routes.PhysicalController.updatePropertyChanges(assessmentId = assessmentId).url)
         .withJsonBody(json)
       val result: Future[Result] = route(app, request).value
       status(result) mustEqual INTERNAL_SERVER_ERROR

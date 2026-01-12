@@ -24,17 +24,18 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.mustEqual
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, OK}
+import play.api.http.Status.{ACCEPTED, BAD_REQUEST, INTERNAL_SERVER_ERROR, OK}
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.mvc.{Request, Result}
+import play.api.libs.json.Json
+import play.api.mvc.{AnyContentAsJson, Request, Result}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{GET, defaultAwaitTimeout, route, status, writeableOf_AnyContentAsEmpty}
+import play.api.test.Helpers.{GET, POST, defaultAwaitTimeout, route, status, writeableOf_AnyContentAsEmpty, writeableOf_AnyContentAsJson}
 import play.api.{Application, inject}
 import uk.gov.hmrc.ngrnotify.backend.controllers.actions.FakeIdentifierAuthAction
 import uk.gov.hmrc.ngrnotify.connectors.bridge.{BridgeConnector, FutureEither}
 import uk.gov.hmrc.ngrnotify.controllers.actions.IdentifierAction
 import uk.gov.hmrc.ngrnotify.controllers.routes
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, JobMessageTestData}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, JobMessageTestData, ReviewChangesUserAnswers}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -115,6 +116,34 @@ class ReviewPropertiesControllerSpec extends AnyFreeSpec with GuiceOneAppPerSuit
       val result: Future[Result] = route(app, request).value
       status(result) mustEqual INTERNAL_SERVER_ERROR
 
+    }
+
+    "submitReviewPropertyChanges" - {
+      "returns ACCEPTED for valid input" in {
+
+        when(mockBridgeConnector.submitReviewPropertyChanges(any[CredId], any[AssessmentId], any[ReviewChangesUserAnswers])(using any[Request[?]]))
+          .thenReturn(
+            FutureEither(Future.successful(Right(())))
+          )
+
+        val request: FakeRequest[AnyContentAsJson] = FakeRequest(POST, routes.ReviewPropertiesController.updatePropertyChanges(assessmentId).url)
+          .withJsonBody(Json.toJson(ReviewChangesUserAnswers("Reference123")))
+
+        val result: Future[Result] = route(app, request).value
+
+        status(result) mustEqual ACCEPTED
+      }
+
+      "returns InternalServerError when HipConnector fails" in {
+
+        when(mockBridgeConnector.submitReviewPropertyChanges(any[CredId], any[AssessmentId], any[ReviewChangesUserAnswers])(using any[Request[?]]))
+          .thenReturn(FutureEither(Future.successful(Left("Exception occurred"))))
+
+        val request: FakeRequest[AnyContentAsJson] = FakeRequest(POST, routes.ReviewPropertiesController.updatePropertyChanges(assessmentId).url)
+          .withJsonBody(Json.toJson(ReviewChangesUserAnswers("Reference123")))
+        val result: Future[Result] = route(app, request).value
+        status(result) mustEqual INTERNAL_SERVER_ERROR
+      }
     }
   }
 
