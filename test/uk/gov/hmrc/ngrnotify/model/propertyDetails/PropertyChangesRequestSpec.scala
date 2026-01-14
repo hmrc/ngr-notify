@@ -30,7 +30,7 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with JobMessageTestData wit
   "PropertyChangesRequest" - {
     "toString should redact uploadedDocuments" in {
       val request        = PropertyChangesRequest(
-        dateOfChange = java.time.LocalDate.of(2023, 1, 1),
+        dateOfChange = Some(java.time.LocalDate.of(2023, 1, 1)),
         useOfSpace = Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
         internalFeatures = Seq(("airConditioning", "none"), ("securityCamera", "23")),
         externalFeatures = Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
@@ -43,7 +43,7 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with JobMessageTestData wit
 
     "toString should handle None values correctly" in {
       val request        = PropertyChangesRequest(
-        dateOfChange = java.time.LocalDate.of(2023, 1, 1),
+        dateOfChange = Some(java.time.LocalDate.of(2023, 1, 1)),
         useOfSpace = None,
         internalFeatures = Seq.empty,
         externalFeatures = Seq.empty,
@@ -57,7 +57,7 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with JobMessageTestData wit
     "process should update JobMessage with correct data for the category code 'LTX-DOM-PRP'" in {
 
       val propertyChanges = PropertyChangesRequest(
-        dateOfChange = java.time.LocalDate.of(2023, 1, 1),
+        dateOfChange = Some(java.time.LocalDate.of(2023, 1, 1)),
         useOfSpace = None,
         internalFeatures = Seq.empty,
         externalFeatures = Seq.empty,
@@ -86,7 +86,7 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with JobMessageTestData wit
     "process should throw an exception when the products category code not 'LTX-DOM-PRP'" in {
 
       val propertyChanges = PropertyChangesRequest(
-        dateOfChange = java.time.LocalDate.of(2023, 1, 1),
+        dateOfChange = Some(java.time.LocalDate.of(2023, 1, 1)),
         useOfSpace = None,
         internalFeatures = Seq.empty,
         externalFeatures = Seq.empty,
@@ -108,7 +108,7 @@ class PropertyChangesRequestSpec extends AnyFreeSpec with JobMessageTestData wit
       )
 
       val propertyChanges = PropertyChangesRequest(
-        dateOfChange = java.time.LocalDate.of(2023, 1, 1),
+        dateOfChange = Some(java.time.LocalDate.of(2023, 1, 1)),
         useOfSpace = None,
         internalFeatures = Seq.empty,
         externalFeatures = Seq.empty,
