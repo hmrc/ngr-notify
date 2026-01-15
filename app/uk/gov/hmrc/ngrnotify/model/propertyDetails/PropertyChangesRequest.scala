@@ -26,7 +26,7 @@ import java.time.LocalDate
 import scala.concurrent.{ExecutionContext, Future}
 
 case class PropertyChangesRequest(
-  dateOfChange: LocalDate,
+  dateOfChange: Option[LocalDate],
   useOfSpace: Option[ChangeToUseOfSpace] = None,
   internalFeatures: Seq[(String, String)],
   externalFeatures: Seq[(String, String)],
@@ -37,7 +37,7 @@ case class PropertyChangesRequest(
   private val useOfSpaceData: String     = useOfSpace.map(_.toString).getOrElse("No change to use of space")
   private val additionalInfoData: String = additionalInfo.map(_.toString).getOrElse("No additional information provided")
 
-  override def toString: String = s"dateOfChange: $dateOfChange - useOfSpace: $useOfSpaceData - " +
+  override def toString: String = s"${dateOfChange.map( date => s"dateOfChange: $date -").getOrElse("")} useOfSpace: $useOfSpaceData - " +
     s"internalFeatures: ${internalFeatures.map { case (k, v) => s"($k, $v)" }.mkString("[", ", ", "]")}, " +
     s"externalFeatures: ${externalFeatures.map { case (k, v) => s"($k, $v)" }.mkString("[", ", ", "]")}, " +
     s"additionalInfo: $additionalInfoData - uploadedDocuments: ${uploadedDocuments.map(x => s"$x").mkString("[", ", ", "]")}"

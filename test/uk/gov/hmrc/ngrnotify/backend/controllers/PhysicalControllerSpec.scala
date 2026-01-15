@@ -64,7 +64,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     ".updatePhysicalPropertyChanges return 202" in {
       val json = Json.toJson(
         PropertyChangesRequest(
-          LocalDate.of(2023, 1, 1),
+          Some(LocalDate.of(2023, 1, 1)),
           Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
           Seq(("airConditioning", "none"), ("securityCamera", "23")),
           Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
@@ -90,7 +90,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     s"return $INTERNAL_SERVER_ERROR for a valid request but Hip returns $INTERNAL_SERVER_ERROR" in {
       val json = Json.toJson(
         PropertyChangesRequest(
-          LocalDate.of(2023, 1, 1),
+          Some(LocalDate.of(2023, 1, 1)),
           Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
           Seq(("airConditioning", "none"), ("securityCamera", "23")),
           Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
@@ -129,7 +129,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     "returns InternalServerError when HipConnector fails" in {
       val json = Json.toJson(
         PropertyChangesRequest(
-          LocalDate.of(2023, 1, 1),
+          Some(LocalDate.of(2023, 1, 1)),
           Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
           Seq(("airConditioning", "none"), ("securityCamera", "23")),
           Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
@@ -150,7 +150,7 @@ class PhysicalControllerSpec extends AnyFreeSpec with Matchers with GuiceOneAppP
     "returns InternalServerError when an exception is thrown" in {
       val json = Json.toJson(
         PropertyChangesRequest(
-          LocalDate.of(2023, 1, 1),
+          Some(LocalDate.of(2023, 1, 1)),
           Some(ChangeToUseOfSpace(Seq("rearrangedTheUseOfSpace"), true, Some("REFzR42536T"))),
           Seq(("airConditioning", "none"), ("securityCamera", "23")),
           Seq(("loadingBays", "added"), ("lockupGarages", "removedSome")),
