@@ -3344,10 +3344,10 @@
                                             },
                                             "description": {
                                               "source": null,
-                                              "value": "Surfaced open spaces"
+                                              "value": "Surfaced open"
                                             },
                                             "quantity": {
-                                              "source": "surfaced_open_spaces",
+                                              "source": "surfaced_open",
                                               "value": 2
                                             },
                                             "units": {
@@ -7030,10 +7030,10 @@
                                             },
                                             "description": {
                                               "source": null,
-                                              "value": "Surfaced open spaces"
+                                              "value": "Surfaced open"
                                             },
                                             "quantity": {
-                                              "source": "surfaced_open_spaces",
+                                              "source": "surfaced_open",
                                               "value": 2
                                             },
                                             "units": {
