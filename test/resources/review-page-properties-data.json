@@ -3305,7 +3305,7 @@
                                             },
                                             "description": {
                                               "source": null,
-                                              "value": "Surfaced open spaces"
+                                              "value": "Surfaced open"
                                             },
                                             "quantity": {
                                               "source": "surfaced_open_spaces",
@@ -3543,7 +3543,7 @@
                                             },
                                             "description": {
                                               "source": null,
-                                              "value": "Surfaced open spaces"
+                                              "value": "Surfaced open"
                                             },
                                             "quantity": {
                                               "source": "surfaced_open_spaces",
