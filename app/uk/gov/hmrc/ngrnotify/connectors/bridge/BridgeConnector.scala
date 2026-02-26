@@ -27,7 +27,7 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.ngrnotify.config.AppConfig
 import uk.gov.hmrc.ngrnotify.model.bridge.BridgeFailure.unknown
 import uk.gov.hmrc.ngrnotify.model.bridge.{HodMessage, JobMessage, ReviewProperties, SurveyEntity}
-import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, PropertyChangesRequest, PropertyLinkingRequest}
+import uk.gov.hmrc.ngrnotify.model.propertyDetails.{AssessmentId, CredId, PropertyChangesRequest, PropertyLinkingRequest, ReviewChangesUserAnswers}
 import uk.gov.hmrc.ngrnotify.model.ratepayer.{RatepayerPropertyLinksResponse, RegisterRatepayerRequest}
 
 import java.net.URL
@@ -117,7 +117,14 @@ class BridgeConnector @Inject() (
       ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
     } yield ngrResponse
 
-  //TODO: Remove the feature flag and associated code once static response is no longer needed in QA environment
+  def submitReviewPropertyChanges(credId: CredId, assessmentId: AssessmentId, reviewChanges: ReviewChangesUserAnswers)(using request: Request[?]): BridgeResult[NoContent] =
+    for {
+      template    <- getJobTemplate[JobMessage](appConfig.getPropertiesUrl(credId, assessmentId))
+      processed   <- ReviewChangesUserAnswers.process(template, reviewChanges)
+      ngrResponse <- postJobTemplate(processed, appConfig.postJobUrl())(using request)
+    } yield ngrResponse  
+
+  //TODO: Remove the feature flag 'useStaticReviewPropertiesResponse' and associated code once static response is no longer needed in QA environment
   // as of now Bridge is not returning expected data refer to https://jira.voa.enterpriseipaas.com/browse/NGR-3905.
   def getReviewProperties(credId: CredId, assessmentId: AssessmentId)(using request: Request[?]): FutureEither[BridgeFailureReason, (SurveyEntity, Option[String])] = {
 
